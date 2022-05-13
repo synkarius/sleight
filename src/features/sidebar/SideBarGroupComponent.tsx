@@ -12,16 +12,11 @@ interface SideBarGroupProps {
   type: string;
   createFn: (e: React.MouseEvent<HTMLLinkElement>) => void;
   selectFn: (id: string) => void;
+  clearAllFn: () => void;
   items: Item[];
 }
 
 export const SideBarGroupComponent: React.FC<SideBarGroupProps> = (props) => {
-  const dispatch = useAppDispatch();
-  const clearAllWorkspaces = () => {
-    dispatch(clearFocusedContext());
-    dispatch(clearFocusedExtra());
-  };
-
   return (
     <Accordion.Item eventKey={props.eventKey}>
       <Accordion.Header>{props.type}s</Accordion.Header>
@@ -42,7 +37,7 @@ export const SideBarGroupComponent: React.FC<SideBarGroupProps> = (props) => {
               key={item.id}
               action
               onClick={(_e) => {
-                clearAllWorkspaces();
+                props.clearAllFn();
                 props.selectFn(item.id);
               }}
             >

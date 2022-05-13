@@ -19,8 +19,9 @@ interface Item extends Named, Ided {}
 interface ItemGroup {
   type: string;
   items: Item[];
-  createFn: (e: React.MouseEvent<HTMLLinkElement>) => void;
+  createFn: () => void;
   selectFn: (id: string) => void;
+  clearFn: () => void;
 }
 
 export const SidebarComponent = () => {
@@ -33,40 +34,48 @@ export const SidebarComponent = () => {
     {
       type: 'Action',
       items: [],
-      createFn: (e) => {},
+      createFn: () => {},
       selectFn: (id) => {},
+      clearFn: () => {},
     },
     {
       type: 'Command',
       items: [],
-      createFn: (e) => {},
+      createFn: () => {},
       selectFn: (id) => {},
+      clearFn: () => {},
     },
     {
       type: 'Context',
       items: contexts,
-      createFn: (_e) => dispatch(createNewContext()),
+      createFn: () => dispatch(createNewContext()),
       selectFn: (id) => dispatch(selectContext(id)),
+      clearFn: () => dispatch(clearFocusedContext()),
     },
     {
       type: 'Role',
       items: [],
-      createFn: (e) => {},
+      createFn: () => {},
       selectFn: (id) => {},
+      clearFn: () => {},
     },
     {
       type: 'Spec',
       items: [],
-      createFn: (e) => {},
+      createFn: () => {},
       selectFn: (id) => {},
+      clearFn: () => {},
     },
     {
       type: 'Variable',
       items: variables,
-      createFn: (_e) => dispatch(createNewExtra()),
+      createFn: () => dispatch(createNewExtra()),
       selectFn: (id) => dispatch(selectExtra(id)),
+      clearFn: () => dispatch(clearFocusedExtra()),
     },
   ];
+
+  const clearAllWorkspaces = () => groups.forEach((group) => group.clearFn());
 
   return (
     <Accordion defaultActiveKey={['2']} flush alwaysOpen>
@@ -75,8 +84,9 @@ export const SidebarComponent = () => {
           key={group.type}
           eventKey={'' + index}
           type={group.type}
-          createFn={group.createFn}
+          createFn={(_e) => group.createFn()}
           selectFn={group.selectFn}
+          clearAllFn={clearAllWorkspaces}
           items={group.items}
         />
       ))}
