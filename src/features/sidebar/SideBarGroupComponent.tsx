@@ -2,7 +2,8 @@ import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../app/hooks';
 import { Named, Ided } from '../domain';
-import { selectExtra } from '../model/extra/extra-reducers';
+import { clearFocusedContext } from '../model/context/context-reducers';
+import { clearFocusedExtra } from '../model/extra/extra-reducers';
 
 interface Item extends Named, Ided {}
 
@@ -10,13 +11,15 @@ interface SideBarGroupProps {
   eventKey: string;
   type: string;
   createFn: (e: React.MouseEvent<HTMLLinkElement>) => void;
+  selectFn: (id: string) => void;
   items: Item[];
 }
 
 export const SideBarGroupComponent: React.FC<SideBarGroupProps> = (props) => {
   const dispatch = useAppDispatch();
-  const selectExtraFn = (extraId: string) => {
-    dispatch(selectExtra(extraId));
+  const clearAllWorkspaces = () => {
+    dispatch(clearFocusedContext());
+    dispatch(clearFocusedExtra());
   };
 
   return (
@@ -38,7 +41,10 @@ export const SideBarGroupComponent: React.FC<SideBarGroupProps> = (props) => {
             <ListGroup.Item
               key={item.id}
               action
-              onClick={(_e) => selectExtraFn(item.id)}
+              onClick={(_e) => {
+                clearAllWorkspaces();
+                props.selectFn(item.id);
+              }}
             >
               {item.name}
             </ListGroup.Item>

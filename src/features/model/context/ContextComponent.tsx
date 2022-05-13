@@ -1,43 +1,37 @@
 import React, { useId } from 'react';
-import { useAppDispatch } from '../../../app/hooks';
 import {
+  Button,
+  Col,
+  Form,
   FormControl,
   FormGroup,
   FormLabel,
   FormText,
-  Button,
-  Form,
   Row,
-  Col,
 } from 'react-bootstrap';
-import { ChoiceComponent } from './choice/ChoiceComponent';
-import { Extra } from './extra';
-import { Range } from './range/range';
-import { Choice } from './choice/choice';
-import { VariableType } from './extra-types';
-import { RangeComponent } from './range/RangeComponent';
-import {
-  editFocusedExtraName,
-  editFocusedExtraType,
-  upsertFocusedExtra,
-  clearFocusedExtra,
-} from './extra-reducers';
+import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
+import { Context } from './context';
+import {
+  editFocusedContextName,
+  editFocusedContextType,
+  upsertFocusedContext,
+} from './context-reducers';
+import { ContextType } from './context-types';
 
-export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
+export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const dispatch = useAppDispatch();
   const nameInputId = useId();
   const typeInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(editFocusedExtraName(event.target.value));
+    dispatch(editFocusedContextName(event.target.value));
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(editFocusedExtraType(event.target.value));
+    dispatch(editFocusedContextType(event.target.value));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(upsertFocusedExtra());
-    dispatch(clearFocusedExtra());
+    dispatch(upsertFocusedContext());
   };
 
   return (
@@ -50,9 +44,9 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <FormControl
             type="text"
             onChange={nameChangedHandler}
-            value={props.extra.name}
+            value={props.context.name}
           ></FormControl>
-          <FormText className="text-muted">name of variable</FormText>
+          <FormText className="text-muted">name of context</FormText>
         </Col>
       </FormGroup>
       <FormGroup as={Row} className="mb-3" controlId={typeInputId}>
@@ -63,23 +57,17 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <Form.Select
             aria-label="Variable type selection"
             onChange={typeChangedHandler}
-            value={props.extra.type}
+            value={props.context.type}
           >
-            {VariableType.values().map((vt) => (
-              <option key={vt} value={vt}>
-                {vt}
+            {ContextType.values().map((ct) => (
+              <option key={ct} value={ct}>
+                {ct}
               </option>
             ))}
           </Form.Select>
           <FormText className="text-muted">kind of variable</FormText>
         </Col>
       </FormGroup>
-      {props.extra.type === VariableType.RANGE && (
-        <RangeComponent range={props.extra as Range} />
-      )}
-      {props.extra.type === VariableType.CHOICE && (
-        <ChoiceComponent choice={props.extra as Choice} />
-      )}
       <Button onClick={submitHandler} variant="primary" size="lg">
         Save
       </Button>

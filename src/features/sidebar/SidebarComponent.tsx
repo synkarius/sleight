@@ -2,40 +2,81 @@ import React from 'react';
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Ided, Named } from '../domain';
-import { createNewExtra } from '../model/extra/extra-reducers';
+import {
+  clearFocusedContext,
+  createNewContext,
+  selectContext,
+} from '../model/context/context-reducers';
+import {
+  clearFocusedExtra,
+  createNewExtra,
+  selectExtra,
+} from '../model/extra/extra-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 
 interface Item extends Named, Ided {}
 
 interface ItemGroup {
-  type: String;
+  type: string;
   items: Item[];
   createFn: (e: React.MouseEvent<HTMLLinkElement>) => void;
+  selectFn: (id: string) => void;
 }
 
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
-  const extras = useAppSelector((state) => state.extra.extras);
+  const contexts = useAppSelector((state) => state.context.contexts);
+  const variables = useAppSelector((state) => state.extra.extras);
 
-  const createNewExtraFn = (_e: React.MouseEvent<HTMLLinkElement>) => {
-    dispatch(createNewExtra());
-  };
-
-  // TODO: get rid of this fake data
+  // TODO: fill these in from redux
   const groups: ItemGroup[] = [
-    { type: 'Action', items: [], createFn: (e) => {} },
-    { type: '-Key', items: [], createFn: (e) => {} },
-    { type: 'Extra', items: extras, createFn: createNewExtraFn },
+    {
+      type: 'Action',
+      items: [],
+      createFn: (e) => {},
+      selectFn: (id) => {},
+    },
+    {
+      type: 'Command',
+      items: [],
+      createFn: (e) => {},
+      selectFn: (id) => {},
+    },
+    {
+      type: 'Context',
+      items: contexts,
+      createFn: (_e) => dispatch(createNewContext()),
+      selectFn: (id) => dispatch(selectContext(id)),
+    },
+    {
+      type: 'Role',
+      items: [],
+      createFn: (e) => {},
+      selectFn: (id) => {},
+    },
+    {
+      type: 'Spec',
+      items: [],
+      createFn: (e) => {},
+      selectFn: (id) => {},
+    },
+    {
+      type: 'Variable',
+      items: variables,
+      createFn: (_e) => dispatch(createNewExtra()),
+      selectFn: (id) => dispatch(selectExtra(id)),
+    },
   ];
 
   return (
     <Accordion defaultActiveKey={['2']} flush alwaysOpen>
       {groups.map((group, index) => (
         <SideBarGroupComponent
-          key={group.type.toString()}
+          key={group.type}
           eventKey={'' + index}
-          type={group.type.toString()}
+          type={group.type}
           createFn={group.createFn}
+          selectFn={group.selectFn}
           items={group.items}
         />
       ))}

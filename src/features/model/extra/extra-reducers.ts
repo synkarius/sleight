@@ -14,7 +14,7 @@ import { VariableType } from './extra-types';
 import { Range, createRange } from './range/range';
 import { createText } from './text/text';
 
-export type Extras = {
+type Extras = {
     extras: Extra[]
     focused: Extra | null
 }
@@ -33,6 +33,9 @@ const extrasSlice = createSlice({
         },
         selectExtra: (state, action:PayloadAction<string>) => {
             state.focused = state.extras.find(extra => extra.id === action.payload) as Extra;
+        },
+        clearFocusedExtra: (state) => {
+            state.focused = null;
         },
         editFocusedExtraName: (state, action: PayloadAction<string>) => {
             // casting here to non-null b/c should not ever be null while editing
@@ -59,7 +62,6 @@ const extrasSlice = createSlice({
             // casting here to non-null b/c should not ever be null while editing
             // TODO: validation
             state.extras = upsertIded(state.extras, state.focused as Extra);
-            state.focused = null;
         },
         editRangeMin: (state, action: PayloadAction<number>) => {
             const range = state.focused as Range;
@@ -102,6 +104,7 @@ const extrasSlice = createSlice({
 export const { 
     createNewExtra,
     selectExtra,
+    clearFocusedExtra,
     editFocusedExtraName, 
     editFocusedExtraType, 
     upsertFocusedExtra, 
