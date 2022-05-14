@@ -1,44 +1,35 @@
 import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
-import { useAppDispatch } from '../../app/hooks';
-import { Named, Ided } from '../domain';
-import { clearFocusedContext } from '../model/context/context-reducers';
-import { clearFocusedExtra } from '../model/extra/extra-reducers';
+import { ItemGroup } from './SidebarComponent';
 
-interface Item extends Named, Ided {}
-
-interface SideBarGroupProps {
+export const SideBarGroupComponent: React.FC<{
+  key: string | number;
+  group: ItemGroup;
   eventKey: string;
-  type: string;
-  createFn: (e: React.MouseEvent<HTMLLinkElement>) => void;
-  selectFn: (id: string) => void;
   clearAllFn: () => void;
-  items: Item[];
-}
-
-export const SideBarGroupComponent: React.FC<SideBarGroupProps> = (props) => {
+}> = (props) => {
   return (
     <Accordion.Item eventKey={props.eventKey}>
-      <Accordion.Header>{props.type}s</Accordion.Header>
+      <Accordion.Header>{props.group.type}s</Accordion.Header>
       <Accordion.Body className="px-0">
         <ListGroup
-          defaultActiveKey={'#create-new-' + props.type}
+          defaultActiveKey={'#create-new-' + props.group.type}
           variant="flush"
         >
           <ListGroup.Item
             action
-            href={'#create-new-' + props.type}
-            onClick={props.createFn}
+            href={'#create-new-' + props.group.type}
+            onClick={props.group.createFn}
           >
-            Create New {props.type}
+            Create New {props.group.type}
           </ListGroup.Item>
-          {props.items.map((item) => (
+          {props.group.items.map((item) => (
             <ListGroup.Item
               key={item.id}
               action
               onClick={(_e) => {
                 props.clearAllFn();
-                props.selectFn(item.id);
+                props.group.selectFn(item.id);
               }}
             >
               {item.name}

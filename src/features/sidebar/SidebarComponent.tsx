@@ -1,4 +1,3 @@
-import React from 'react';
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Ided, Named } from '../domain';
@@ -16,7 +15,7 @@ import { SideBarGroupComponent } from './SideBarGroupComponent';
 
 interface Item extends Named, Ided {}
 
-interface ItemGroup {
+export interface ItemGroup {
   type: string;
   items: Item[];
   createFn: () => void;
@@ -83,11 +82,8 @@ export const SidebarComponent = () => {
         <SideBarGroupComponent
           key={group.type}
           eventKey={'' + index}
-          type={group.type}
-          createFn={(_e) => group.createFn()}
-          selectFn={group.selectFn}
+          group={group}
           clearAllFn={clearAllWorkspaces}
-          items={group.items}
         />
       ))}
     </Accordion>
