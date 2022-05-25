@@ -8,6 +8,11 @@ export const SideBarGroupComponent: React.FC<{
   eventKey: string;
   clearAllFn: () => void;
 }> = (props) => {
+  const createNew = () => {
+    props.clearAllFn();
+    props.group.createFn();
+  };
+
   return (
     <Accordion.Item eventKey={props.eventKey}>
       <Accordion.Header>{props.group.type}s</Accordion.Header>
@@ -19,7 +24,7 @@ export const SideBarGroupComponent: React.FC<{
           <ListGroup.Item
             action
             href={'#create-new-' + props.group.type}
-            onClick={props.group.createFn}
+            onClick={createNew}
           >
             Create New {props.group.type}
           </ListGroup.Item>
