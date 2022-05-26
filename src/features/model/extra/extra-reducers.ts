@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { upsertIded } from '../../domain';
+import { createSelector, createSelectorItem } from '../selector/selector';
 import { 
     Choice, 
     ChoiceItem, 
@@ -12,7 +13,7 @@ import {
 import { Extra } from "./extra";
 import { VariableType } from './extra-types';
 import { Range, createRange } from './range/range';
-import { createText } from './text/text';
+import { createText, Text } from './text/text';
 
 type Extras = {
     extras: Extra[]
@@ -29,7 +30,8 @@ const extrasSlice = createSlice({
     initialState,
     reducers: {
         createNewExtra: (state) => {
-            state.focused = createText();
+            const selector = createSelector([createSelectorItem()]);
+            state.focused = createText(selector);
         },
         selectExtra: (state, action:PayloadAction<string>) => {
             state.focused = state.extras.find(extra => extra.id === action.payload) as Extra;
@@ -46,7 +48,8 @@ const extrasSlice = createSlice({
             // casting here to non-null b/c should not ever be null while editing
             switch (action.payload) {
                 case VariableType.TEXT:
-                    state.focused = createText(state.focused);
+                    const text = state.focused as Text;
+                    state.focused = createText(text.selector, text);
                     break;
                 case VariableType.RANGE:
                     state.focused = createRange(0, 9, state.focused);
