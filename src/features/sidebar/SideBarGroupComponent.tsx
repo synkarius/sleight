@@ -1,5 +1,7 @@
 import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
+import { useAppDispatch } from '../../app/hooks';
+import { setFocus } from '../menu/focus/focus-reducers';
 import { ItemGroup } from './SidebarComponent';
 
 export const SideBarGroupComponent: React.FC<{
@@ -8,9 +10,20 @@ export const SideBarGroupComponent: React.FC<{
   eventKey: string;
   clearAllFn: () => void;
 }> = (props) => {
-  const createNew = () => {
+  const dispatch = useAppDispatch();
+
+  const changeFocusedTypeFn = () => {
+    dispatch(setFocus(props.group.type));
+  };
+  const createNewItem = () => {
     props.clearAllFn();
     props.group.createFn();
+    changeFocusedTypeFn();
+  };
+  const selectItem = (itemId: string) => {
+    props.clearAllFn();
+    props.group.selectFn(itemId);
+    changeFocusedTypeFn();
   };
 
   return (
@@ -24,7 +37,7 @@ export const SideBarGroupComponent: React.FC<{
           <ListGroup.Item
             action
             href={'#create-new-' + props.group.type}
-            onClick={createNew}
+            onClick={createNewItem}
           >
             Create New {props.group.type}
           </ListGroup.Item>
@@ -32,10 +45,7 @@ export const SideBarGroupComponent: React.FC<{
             <ListGroup.Item
               key={item.id}
               action
-              onClick={(_e) => {
-                props.clearAllFn();
-                props.group.selectFn(item.id);
-              }}
+              onClick={(_e) => selectItem(item.id)}
             >
               {item.name}
             </ListGroup.Item>

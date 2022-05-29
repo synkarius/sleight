@@ -7,11 +7,11 @@ import { SidebarComponent } from './features/sidebar/SidebarComponent';
 import { Col, Row } from 'react-bootstrap';
 import { useAppSelector } from './app/hooks';
 import { ContextComponent } from './features/model/context/ContextComponent';
+import { ElementType } from './features/model/common/element-types';
+import { Context } from './features/model/context/context';
+import { FocusComponent } from './features/menu/focus/FocusComponent';
 
 function App() {
-  const focusedContext = useAppSelector((state) => state.context.focused);
-  const focusedExtra = useAppSelector((state) => state.extra.focused);
-
   return (
     <div className="App">
       <Navigation />
@@ -20,8 +20,7 @@ function App() {
           <SidebarComponent />
         </Col>
         <Col sm="8">
-          {focusedContext && <ContextComponent context={focusedContext} />}
-          {focusedExtra && <ExtraComponent extra={focusedExtra} />}
+          <FocusComponent />
         </Col>
       </Row>
     </div>

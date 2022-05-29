@@ -28,20 +28,21 @@ const contextsSlice = createSlice({
             state.focused = null;
         },
         editFocusedContextName: (state, action: PayloadAction<string>) => {
-            // casting here to non-null b/c should not ever be null while editing
-            const focused = state.focused as Context;
-            focused.name = action.payload;
+            if (state.focused) {
+                state.focused.name = action.payload;
+            }
         },
         editFocusedContextType: (state, action: PayloadAction<string>) => {
-            // casting here to non-null b/c should not ever be null while editing
-            const focused = state.focused as Context; 
-            focused.type = action.payload;
+            if (state.focused) {
+                state.focused.type = action.payload;
+            }
         },
         upsertFocusedContext: (state) => {
-            // casting here to non-null b/c should not ever be null while editing
-            // TODO: validation
-            state.contexts = upsertIded(state.contexts, state.focused as Context);
-            state.focused = null;
+            if (state.focused) {
+                // TODO: validation
+                state.contexts = upsertIded(state.contexts, state.focused as Context);
+                state.focused = null;
+            }
         }
     }
 });

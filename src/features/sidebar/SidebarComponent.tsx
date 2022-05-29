@@ -1,6 +1,7 @@
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Ided, Named } from '../domain';
+import { ElementType } from '../model/common/element-types';
 import {
   clearFocusedContext,
   createNewContext,
@@ -31,42 +32,42 @@ export const SidebarComponent = () => {
   // TODO: fill these in from redux
   const groups: ItemGroup[] = [
     {
-      type: 'Action',
+      type: ElementType.ACTION,
       items: [],
       createFn: () => {},
       selectFn: (id) => {},
       clearFn: () => {},
     },
     {
-      type: 'Command',
+      type: ElementType.COMMAND,
       items: [],
       createFn: () => {},
       selectFn: (id) => {},
       clearFn: () => {},
     },
     {
-      type: 'Context',
+      type: ElementType.CONTEXT,
       items: contexts,
       createFn: () => dispatch(createNewContext()),
       selectFn: (id) => dispatch(selectContext(id)),
       clearFn: () => dispatch(clearFocusedContext()),
     },
     {
-      type: 'Role',
+      type: ElementType.KEY,
       items: [],
       createFn: () => {},
       selectFn: (id) => {},
       clearFn: () => {},
     },
     {
-      type: 'Spec',
+      type: ElementType.SPEC,
       items: [],
       createFn: () => {},
       selectFn: (id) => {},
       clearFn: () => {},
     },
     {
-      type: 'Variable',
+      type: ElementType.VARIABLE,
       items: variables,
       createFn: () => dispatch(createNewExtra()),
       selectFn: (id) => dispatch(selectExtra(id)),

@@ -40,14 +40,14 @@ const extrasSlice = createSlice({
             state.focused = null;
         },
         editFocusedExtraName: (state, action: PayloadAction<string>) => {
-            // casting here to non-null b/c should not ever be null while editing
-            const focused = state.focused as Extra; 
-            focused.name = action.payload;
+            if (state.focused) {
+                state.focused.name = action.payload;
+            }
         },
         editFocusedExtraType: (state, action: PayloadAction<string>) => {
-            // casting here to non-null b/c should not ever be null while editing
             switch (action.payload) {
                 case VariableType.TEXT:
+                    // casting here to non-null b/c should not ever be null while editing
                     const text = state.focused as Text;
                     state.focused = createText(text.selector, text);
                     break;
@@ -62,9 +62,10 @@ const extrasSlice = createSlice({
             }
         },
         upsertFocusedExtra: (state) => {
-            // casting here to non-null b/c should not ever be null while editing
-            // TODO: validation
-            state.extras = upsertIded(state.extras, state.focused as Extra);
+            if (state.focused) {
+                // TODO: validation
+                state.extras = upsertIded(state.extras, state.focused);
+            }
         },
         editRangeMin: (state, action: PayloadAction<number>) => {
             const range = state.focused as Range;
