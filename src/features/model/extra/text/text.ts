@@ -1,19 +1,29 @@
 import { 
-    abstractCreateExtra, 
     ApiKeyed, 
+    copyVariable, 
+    createVariable, 
     Ided, 
-    Identifiable, 
     Named, 
     Typed } from "../../../domain";
-import { Selected, Selector } from '../../selector/selector';
+import { Selected } from '../../selector/selector';
 import { VariableType } from '../extra-types';
 
 export interface Text extends ApiKeyed, Named, Ided, Typed, Selected {
 }
 
-export const createText = (selector:Selector, from:Identifiable = null):Text => {
+interface TextCompatible extends ApiKeyed, Named, Ided, Typed {}
+
+export const createText = ():Text => {
     return {
-        ...abstractCreateExtra(VariableType.TEXT, from),
-        selector: selector
+        ...createVariable(VariableType.TEXT),
+        selectorIds: []
     };
+}
+
+export const copyIntoText = (variable: TextCompatible):Text => {
+    return {
+        ...copyVariable(variable),
+        type: VariableType.TEXT,
+        selectorIds: []
+    }
 }

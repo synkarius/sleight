@@ -1,14 +1,17 @@
-import { abstractCreateExtra, ApiKeyed, Ided, Identifiable, Named, Typed } from "../../domain";
+import { ApiKeyed, Ided, Named, Typed } from "../../domain";
 import { ContextType } from './context-types';
 
 export interface Context extends ApiKeyed, Ided, Named, Typed {
     // "Gmail" (window-title-match), "chrome.exe" (executable-name-match)
-    selector: string
+    matcher: string
 }
 
-export const createContext = (selector:string, from:Identifiable = null):Context => {
+export const createContext = ():Context => {
     return {
-        ...abstractCreateExtra(ContextType.EXECUTABLE_NAME, from),
-        selector: selector
+        apiKey: null,
+        id: crypto.randomUUID(),
+        name: '',
+        type: ContextType.EXECUTABLE_NAME,
+        matcher: ''
     };
 }

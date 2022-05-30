@@ -17,10 +17,10 @@ import { Choice } from './choice/choice';
 import { VariableType } from './extra-types';
 import { RangeComponent } from './range/RangeComponent';
 import {
-  editFocusedExtraName,
-  editFocusedExtraType,
-  upsertFocusedExtra,
-  clearFocusedExtra,
+  changeEditingExtraName,
+  changeEditingExtraType,
+  upsertEditingExtra,
+  clearEditingExtra,
 } from './extra-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
 
@@ -30,14 +30,14 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
   const typeInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(editFocusedExtraName(event.target.value));
+    dispatch(changeEditingExtraName(event.target.value));
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(editFocusedExtraType(event.target.value));
+    dispatch(changeEditingExtraType(event.target.value));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(upsertFocusedExtra());
-    dispatch(clearFocusedExtra());
+    dispatch(upsertEditingExtra());
+    dispatch(clearEditingExtra());
   };
 
   return (

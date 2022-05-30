@@ -13,9 +13,9 @@ import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { Context } from './context';
 import {
-  editFocusedContextName,
-  editFocusedContextType,
-  upsertFocusedContext,
+  changeEditingContextName,
+  changeEditingContextType,
+  upsertEditingContext,
 } from './context-reducers';
 import { ContextType } from './context-types';
 
@@ -25,13 +25,13 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const typeInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(editFocusedContextName(event.target.value));
+    dispatch(changeEditingContextName(event.target.value));
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(editFocusedContextType(event.target.value));
+    dispatch(changeEditingContextType(event.target.value));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(upsertFocusedContext());
+    dispatch(upsertEditingContext());
   };
 
   return (

@@ -1,15 +1,31 @@
-import { abstractCreateExtra, ApiKeyed, Ided, Identifiable, Named, Typed } from "../../../domain";
+import { ApiKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
+import { Selected } from '../../selector/selector';
 import { VariableType } from '../extra-types';
 
-export interface Range extends ApiKeyed, Named, Ided, Typed {
+interface RangeCompatible extends ApiKeyed, Named, Ided, Typed {}
+const BEGIN_INCLUSIVE_DEFAULT = 0;
+const END_INCLUSIVE_DEFAULT = 9;
+
+export interface Range extends ApiKeyed, Named, Ided, Typed, Selected {
     beginInclusive: number,
     endInclusive: number
 }
 
-export const createRange = (beginInclusive: number, endInclusive: number, from:Identifiable=null):Range => {
+export const createRange = ():Range => {
     return {
-        ...abstractCreateExtra(VariableType.RANGE, from),
-        beginInclusive: beginInclusive,
-        endInclusive: endInclusive
+        ...createVariable(VariableType.RANGE),
+        beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
+        endInclusive: END_INCLUSIVE_DEFAULT,
+        selectorIds: []
     };
+}
+
+export const copyIntoRange = (variable:RangeCompatible):Range => {
+    return {
+        ...copyVariable(variable),
+        type: VariableType.RANGE,
+        beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
+        endInclusive: END_INCLUSIVE_DEFAULT,
+        selectorIds: []
+    }
 }

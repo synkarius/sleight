@@ -5,54 +5,59 @@ import {
 } from "./context";
 
 type Contexts = {
-    contexts: Context[]
-    focused: Context | null
+    saved: Context[]
+    editing: Context | null
 }
 
 const initialState: Contexts = {
-    contexts: [],
-    focused: null
+    saved: [],
+    editing: null
 }
 
 const contextsSlice = createSlice({
     name: "contexts",
     initialState,
     reducers: {
-        createNewContext: (state) => {
-            state.focused = createContext('');
+        createNewEditingContext: (state) => {
+            state.editing = createContext();
         },
         selectContext: (state, action:PayloadAction<string>) => {
-            state.focused = state.contexts.find(context => context.id === action.payload) as Context;
+            state.editing = state.saved.find(context => context.id === action.payload) as Context;
         },
-        clearFocusedContext: (state) => {
-            state.focused = null;
+        clearEditingContext: (state) => {
+            state.editing = null;
         },
-        editFocusedContextName: (state, action: PayloadAction<string>) => {
-            if (state.focused) {
-                state.focused.name = action.payload;
+        changeEditingContextName: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.name = action.payload;
             }
         },
-        editFocusedContextType: (state, action: PayloadAction<string>) => {
-            if (state.focused) {
-                state.focused.type = action.payload;
+        changeEditingContextType: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.type = action.payload;
             }
         },
-        upsertFocusedContext: (state) => {
-            if (state.focused) {
+        changeEditingContextMatcher: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.matcher = action.payload;
+            }
+        },
+        upsertEditingContext: (state) => {
+            if (state.editing) {
                 // TODO: validation
-                state.contexts = upsertIded(state.contexts, state.focused as Context);
-                state.focused = null;
+                state.saved = upsertIded(state.saved, state.editing as Context);
+                state.editing = null;
             }
         }
     }
 });
 
 export const { 
-    createNewContext,
+    createNewEditingContext,
     selectContext,
-    clearFocusedContext,
-    editFocusedContextName, 
-    editFocusedContextType, 
-    upsertFocusedContext
+    clearEditingContext,
+    changeEditingContextName, 
+    changeEditingContextType, 
+    upsertEditingContext
 } = contextsSlice.actions;
 export const contextReducer = contextsSlice.reducer;

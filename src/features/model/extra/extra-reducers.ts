@@ -1,104 +1,102 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { upsertIded } from '../../domain';
-import { createSelector, createSelectorItem } from '../selector/selector';
 import { 
     Choice, 
     ChoiceItem, 
-    createChoice, 
     createChoiceItem, 
     RemoveChoiceItemPayload, 
     EditChoiceItemSelectorPayload, 
-    EditChoiceItemValuePayload 
+    EditChoiceItemValuePayload, 
+    copyIntoChoice
 } from "./choice/choice";
 import { Extra } from "./extra";
 import { VariableType } from './extra-types';
-import { Range, createRange } from './range/range';
-import { createText, Text } from './text/text';
+import { Range, copyIntoRange } from './range/range';
+import { copyIntoText } from './text/text';
 
 type Extras = {
-    extras: Extra[]
-    focused: Extra | null
+    saved: Extra[]
+    editing: Extra | null
 }
 
 const initialState: Extras = {
-    extras: [],
-    focused: null
+    saved: [],
+    editing: null
 }
 
 const extrasSlice = createSlice({
     name: "extras",
     initialState,
     reducers: {
-        createNewExtra: (state) => {
-            const selector = createSelector([createSelectorItem()]);
-            state.focused = createText(selector);
+        createNewEditingExtra: (state, action:PayloadAction<Extra>) => {
+            state.editing = action.payload;
         },
         selectExtra: (state, action:PayloadAction<string>) => {
-            state.focused = state.extras.find(extra => extra.id === action.payload) as Extra;
+            state.editing = state.saved.find(extra => extra.id === action.payload) as Extra;
         },
-        clearFocusedExtra: (state) => {
-            state.focused = null;
+        clearEditingExtra: (state) => {
+            state.editing = null;
         },
-        editFocusedExtraName: (state, action: PayloadAction<string>) => {
-            if (state.focused) {
-                state.focused.name = action.payload;
+        changeEditingExtraName: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.name = action.payload;
             }
         },
-        editFocusedExtraType: (state, action: PayloadAction<string>) => {
+        changeEditingExtraType: (state, action: PayloadAction<string>) => {
+            // casting here to non-null b/c should not ever be null while editing
+            const variable = state.editing as Extra;
             switch (action.payload) {
                 case VariableType.TEXT:
-                    // casting here to non-null b/c should not ever be null while editing
-                    const text = state.focused as Text;
-                    state.focused = createText(text.selector, text);
+                    state.editing = copyIntoText(variable);
                     break;
                 case VariableType.RANGE:
-                    state.focused = createRange(0, 9, state.focused);
+                    state.editing = copyIntoRange(variable);
                     break;
                 case VariableType.CHOICE:
-                    state.focused = createChoice([createChoiceItem()], state.focused)
+                    state.editing = copyIntoChoice(variable);
                     break;
                 default:
                     throw new Error("invalid extra type: " + action.payload);
             }
         },
-        upsertFocusedExtra: (state) => {
-            if (state.focused) {
+        upsertEditingExtra: (state) => {
+            if (state.editing) {
                 // TODO: validation
-                state.extras = upsertIded(state.extras, state.focused);
+                state.saved = upsertIded(state.saved, state.editing);
             }
         },
         editRangeMin: (state, action: PayloadAction<number>) => {
-            const range = state.focused as Range;
+            const range = state.editing as Range;
             range.beginInclusive = action.payload;
         },
         editRangeMax: (state, action: PayloadAction<number>) => {
-            const range = state.focused as Range;
+            const range = state.editing as Range;
             range.endInclusive = action.payload;
         },
         addChoiceItem: (state) => {
-            if (state.focused) {
-                (state.focused as Choice).items.push(createChoiceItem());
+            if (state.editing) {
+                (state.editing as Choice).items.push(createChoiceItem());
             }
         },
         editChoiceItemSelector: (state, action:PayloadAction<EditChoiceItemSelectorPayload>) => {
             // TODO: validation
-            if (state.focused) {
-                const choice = state.focused as Choice;
+            if (state.editing) {
+                const choice = state.editing as Choice;
                 const choiceItem = choice.items.find(i => i.id === action.payload.choiceItemId) as ChoiceItem;
                 choiceItem.selector = action.payload.selector;    
             }
         },
         editChoiceItemValue: (state, action:PayloadAction<EditChoiceItemValuePayload>) => {
             // TODO: validation
-            if (state.focused) {
-                const choice = state.focused as Choice;
+            if (state.editing) {
+                const choice = state.editing as Choice;
                 const choiceItem = choice.items.find(i => i.id === action.payload.choiceItemId) as ChoiceItem;
                 choiceItem.value = action.payload.value;
             }
         },
         removeChoiceItem: (state, action:PayloadAction<RemoveChoiceItemPayload>) => {
-            if (state.focused) {
-                const choice = state.focused as Choice;
+            if (state.editing) {
+                const choice = state.editing as Choice;
                 choice.items = choice.items.filter(item => item.id !== action.payload.choiceItemId);
             }
         }
@@ -106,12 +104,12 @@ const extrasSlice = createSlice({
 });
 
 export const { 
-    createNewExtra,
+    createNewEditingExtra,
     selectExtra,
-    clearFocusedExtra,
-    editFocusedExtraName, 
-    editFocusedExtraType, 
-    upsertFocusedExtra, 
+    clearEditingExtra,
+    changeEditingExtraName, 
+    changeEditingExtraType, 
+    upsertEditingExtra, 
     editRangeMin, 
     editRangeMax, 
     addChoiceItem, 

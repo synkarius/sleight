@@ -20,15 +20,21 @@ interface IdentifyingFields extends ApiKeyed, Named, Ided {}
 
 export type Identifiable = IdentifyingFields | null;
 
-export const abstractCreateExtra = (type:string, from:Identifiable=null):BasicFields => {
-    const apiKey = from !== null ? from.apiKey : null;
-    const id = from !== null ? from.id : crypto.randomUUID();
-    const name = from !== null ? from.name : '';
+export const createVariable = (type:string):BasicFields => {
     return {
-        apiKey: apiKey,
-        id: id,
-        name: name,
+        apiKey: null,
+        id: crypto.randomUUID(),
+        name: '',
         type: type
+    };
+}
+
+export const copyVariable = (variable:BasicFields):BasicFields => {
+    return {
+        apiKey: variable.apiKey,
+        id: variable.id,
+        name: variable.name,
+        type: variable.type
     };
 }
 

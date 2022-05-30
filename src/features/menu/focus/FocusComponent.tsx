@@ -6,8 +6,8 @@ import { ExtraComponent } from '../../model/extra/ExtraComponent';
 
 export const FocusComponent: React.FC<{}> = () => {
   const elementType = useAppSelector((state) => state.focus.elementType);
-  const context = useAppSelector((state) => state.context.focused);
-  const variable = useAppSelector((state) => state.extra.focused);
+  const context = useAppSelector((state) => state.context.editing);
+  const variable = useAppSelector((state) => state.extra.editing);
 
   return (
     <>

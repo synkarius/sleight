@@ -1,5 +1,8 @@
-import { abstractCreateExtra, ApiKeyed, Ided, Identifiable, Named, Typed } from "../../../domain";
+import { ApiKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
+import { Selected } from '../../selector/selector';
 import { VariableType } from '../extra-types';
+
+interface ChoiceCompatible extends ApiKeyed, Named, Ided, Typed {}
 
 export interface ChoiceItem extends ApiKeyed, Ided {
     selector: string,
@@ -15,15 +18,25 @@ export const createChoiceItem = ():ChoiceItem => {
     };
 }
 
-export interface Choice extends ApiKeyed, Named, Ided, Typed {
+export interface Choice extends ApiKeyed, Named, Ided, Typed, Selected {
     items: ChoiceItem[]
 }
 
-export const createChoice = (items:ChoiceItem[], from:Identifiable=null):Choice => {
+export const createChoice = ():Choice => {
     return {
-        ...abstractCreateExtra(VariableType.CHOICE, from),
-        items: items
+        ...createVariable(VariableType.CHOICE),
+        items: [createChoiceItem()],
+        selectorIds: []
     };
+}
+
+export const copyIntoChoice = (variable:ChoiceCompatible):Choice => {
+    return {
+        ...copyVariable(variable),
+        type: VariableType.CHOICE,
+        items: [createChoiceItem()],
+        selectorIds: []
+    }
 }
 
 export type EditChoiceItemSelectorPayload = {

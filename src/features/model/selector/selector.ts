@@ -11,7 +11,7 @@ export interface Selector extends ApiKeyed, Ided {
 }
 
 export interface Selected {
-    selector: Selector
+    selectorIds: string[]
 }
 
 export const createSelectorItem = ():SelectorItem => {
@@ -22,9 +22,10 @@ export const createSelectorItem = ():SelectorItem => {
     };
 }
 
-export const createSelector = (items:SelectorItem[], from:BasicIded|null=null):Selector => {
+export const createSelector = (fromItems:SelectorItem[]|null=null, from:BasicIded|null=null):Selector => {
     const apiKey = from !== null ? from.apiKey : null;
     const id = from !== null ? from.id : crypto.randomUUID();
+    const items = fromItems !== null ? fromItems : [createSelectorItem()];
     return {
         apiKey: apiKey,
         id: id,
