@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   FormControl,
   FormGroup,
@@ -19,13 +19,30 @@ import { RangeComponent } from './range/RangeComponent';
 import {
   changeEditingExtraName,
   changeEditingExtraType,
-  upsertEditingExtra,
+  saveEditingExtra,
   clearEditingExtra,
 } from './extra-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
+import { SelectorComponent } from '../selector/SelectorComponent';
+import { Selector } from '../selector/selector';
+import { ReduxFriendlyStringMap } from '../../../util/structures';
+
+const getSelector = (
+  variable: Extra,
+  selectors: ReduxFriendlyStringMap<Selector>
+): Selector | undefined => {
+  switch (variable.type) {
+    case VariableType.TEXT:
+    case VariableType.RANGE:
+      return selectors[variable.selectorIds[0]];
+    default:
+      return undefined;
+  }
+};
 
 export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
   const dispatch = useAppDispatch();
+  const selectors = useAppSelector((state) => state.selector.saved);
   const nameInputId = useId();
   const typeInputId = useId();
 
@@ -36,9 +53,11 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
     dispatch(changeEditingExtraType(event.target.value));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(upsertEditingExtra());
+    dispatch(saveEditingExtra());
     dispatch(clearEditingExtra());
   };
+
+  const selector = getSelector(props.extra, selectors);
 
   return (
     <PanelComponent>
@@ -74,6 +93,7 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <FormText className="text-muted">kind of variable</FormText>
         </Col>
       </FormGroup>
+      {selector && <SelectorComponent selector={selector} />}
       {props.extra.type === VariableType.RANGE && (
         <RangeComponent range={props.extra as Range} />
       )}

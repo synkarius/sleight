@@ -14,10 +14,7 @@ import {
 } from '../model/extra/extra-reducers';
 import { createText } from '../model/extra/text/text';
 import { createSelector } from '../model/selector/selector';
-import {
-  clearEditingSelectors,
-  createNewEditingSelector,
-} from '../model/selector/selector-reducers';
+import { createNewSelector } from '../model/selector/selector-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 
 interface Item extends Named, Ided {}
@@ -80,19 +77,15 @@ export const SidebarComponent = () => {
         const text = createText();
         const selector = createSelector();
         text.selectorIds.push(selector.id);
-        dispatch(createNewEditingSelector(selector));
+        dispatch(createNewSelector(selector));
         dispatch(createNewEditingExtra(text));
       },
       selectFn: (variableId) => dispatch(selectExtra(variableId)),
-      clearFn: () => {
-        dispatch(clearEditingExtra());
-        dispatch(clearEditingSelectors());
-      },
+      clearFn: () => dispatch(clearEditingExtra()),
     },
   ];
 
   const clearAllWorkspaces = () => groups.forEach((group) => group.clearFn());
-  const clearFns = groups.map((group) => group.clearFn);
 
   return (
     <Accordion defaultActiveKey={['2']} flush alwaysOpen>

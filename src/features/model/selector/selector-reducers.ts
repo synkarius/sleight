@@ -1,22 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getOrThrow } from '../../../util/functions';
+import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { createSelectorItem, DeleteSelectorItemPayload, EditSelectorItemPayload, Selector } from './selector';
 
 type Selectors = {
-    saved: Map<string, Selector>
-    editing: Map<string, Selector>
+    /*
+     * allowing for orphaned selectors so as to not have to deal with the complication of 
+     * a separate "editing" map
+    */
+    saved: ReduxFriendlyStringMap<Selector>
+}
+
+const findSelector = (state:Selectors, id:string):Selector => {
+    const selector = state.saved[id];
+    if (selector) {
+        return selector;
+    }
+    throw new Error("selector id not found: " + id);
 }
 
 const initialState: Selectors = {
-    saved: new Map<string, Selector>(),
-    editing: new Map<string, Selector>()
-}
-
-const findSelector = (state:Selectors, selectorId:string) => {
-    return getOrThrow([
-        () => state.editing.get(selectorId),
-        () => state.saved.get(selectorId)],
-        () => new Error("selector id not found: " + selectorId));
+    saved: {}
 }
 
 const selectorsSlice = createSlice({
@@ -29,28 +32,19 @@ const selectorsSlice = createSlice({
          * instead, it is added to the "editing" group and saved to the "saved" group
          * later.
         */
-        createNewEditingSelector: (state, action:PayloadAction<Selector>) => {
+        createNewSelector: (state, action:PayloadAction<Selector>) => {
             const selector = action.payload;
             // TODO: move this validation somewhere else, but call it here
-            if (state.editing.has(selector.id) || state.saved.has(selector.id)) {
+            if (state.saved[selector.id]) {
                 throw new Error("selector id already used");
-            }
-            state.editing.set(selector.id, selector);
-        },
-        saveEditingSelector: (state, action:PayloadAction<string>) => {
-            const selectorId = action.payload;
-            const selector = state.editing.get(selectorId);
-            if (selector) {
-                state.editing.delete(selectorId);
-                state.saved.set(selectorId, selector);
-            }
-        },
-        clearEditingSelectors: (state) => {
-            state.editing.clear();
+            } 
+            state.saved[selector.id] = selector;
+            // state.saved.set(selector.id, selector);
         },
         deleteSelector: (state, action:PayloadAction<string>) => {
             const selectorId = action.payload;
-            state.saved.delete(selectorId);
+            delete state.saved[selectorId];
+            // state.saved.delete(selectorId);
         },
         createNewSelectorItem: (state, action:PayloadAction<string>) => {
             const selector = findSelector(state, action.payload);
@@ -73,9 +67,7 @@ const selectorsSlice = createSlice({
 });
 
 export const { 
-    createNewEditingSelector,
-    saveEditingSelector,
-    clearEditingSelectors,
+    createNewSelector,
     deleteSelector,
     createNewSelectorItem,
     editSelectorItem,

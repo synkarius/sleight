@@ -34,6 +34,13 @@ const extrasSlice = createSlice({
         selectExtra: (state, action:PayloadAction<string>) => {
             state.editing = state.saved.find(extra => extra.id === action.payload) as Extra;
         },
+        saveEditingExtra: (state) => {
+            if (state.editing) {
+                // TODO: validation
+                state.saved = upsertIded(state.saved, state.editing);
+            }
+        },
+
         clearEditingExtra: (state) => {
             state.editing = null;
         },
@@ -57,12 +64,6 @@ const extrasSlice = createSlice({
                     break;
                 default:
                     throw new Error("invalid extra type: " + action.payload);
-            }
-        },
-        upsertEditingExtra: (state) => {
-            if (state.editing) {
-                // TODO: validation
-                state.saved = upsertIded(state.saved, state.editing);
             }
         },
         editRangeMin: (state, action: PayloadAction<number>) => {
@@ -109,7 +110,7 @@ export const {
     clearEditingExtra,
     changeEditingExtraName, 
     changeEditingExtraType, 
-    upsertEditingExtra, 
+    saveEditingExtra, 
     editRangeMin, 
     editRangeMax, 
     addChoiceItem, 
