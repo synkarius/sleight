@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { Context } from './context';
 import {
+  changeEditingContextMatcher,
   changeEditingContextName,
   changeEditingContextType,
   upsertEditingContext,
@@ -23,6 +24,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const dispatch = useAppDispatch();
   const nameInputId = useId();
   const typeInputId = useId();
+  const matcherInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeEditingContextName(event.target.value));
@@ -30,9 +32,19 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeEditingContextType(event.target.value));
   };
+  const matcherChangedHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(changeEditingContextMatcher(event.target.value));
+  };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(upsertEditingContext());
   };
+
+  const matcherHelpText =
+    props.context.type === ContextType.EXECUTABLE_NAME
+      ? 'executable to match'
+      : 'window title to match';
 
   return (
     <PanelComponent>
@@ -66,6 +78,19 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
             ))}
           </Form.Select>
           <FormText className="text-muted">kind of variable</FormText>
+        </Col>
+      </FormGroup>
+      <FormGroup as={Row} className="mb-3" controlId={matcherInputId}>
+        <FormLabel column sm="2">
+          Matcher
+        </FormLabel>
+        <Col sm="6">
+          <FormControl
+            type="text"
+            onChange={matcherChangedHandler}
+            value={props.context.matcher}
+          ></FormControl>
+          <FormText className="text-muted">{matcherHelpText}</FormText>
         </Col>
       </FormGroup>
       <Button onClick={submitHandler} variant="primary" size="lg">

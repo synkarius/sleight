@@ -57,7 +57,8 @@ export const {
     selectContext,
     clearEditingContext,
     changeEditingContextName, 
-    changeEditingContextType, 
+    changeEditingContextType,
+    changeEditingContextMatcher,
     upsertEditingContext
 } = contextsSlice.actions;
 export const contextReducer = contextsSlice.reducer;
