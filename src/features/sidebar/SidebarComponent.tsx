@@ -73,13 +73,7 @@ export const SidebarComponent = () => {
     {
       type: ElementType.VARIABLE,
       items: variablesSaved,
-      createFn: () => {
-        const text = createText();
-        const selector = createSelector();
-        text.selectorIds.push(selector.id);
-        dispatch(createNewSelector(selector));
-        dispatch(createNewEditingExtra(text));
-      },
+      createFn: () => dispatch(createNewEditingExtra(createText())),
       selectFn: (variableId) => dispatch(selectExtra(variableId)),
       clearFn: () => dispatch(clearEditingExtra()),
     },

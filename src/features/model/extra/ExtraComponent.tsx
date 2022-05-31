@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
 import {
   FormControl,
   FormGroup,
@@ -23,26 +23,11 @@ import {
   clearEditingExtra,
 } from './extra-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
-import { SelectorComponent } from '../selector/SelectorComponent';
-import { Selector } from '../selector/selector';
-import { ReduxFriendlyStringMap } from '../../../util/structures';
-
-const getSelector = (
-  variable: Extra,
-  selectors: ReduxFriendlyStringMap<Selector>
-): Selector | undefined => {
-  switch (variable.type) {
-    case VariableType.TEXT:
-    case VariableType.RANGE:
-      return selectors[variable.selectorIds[0]];
-    default:
-      return undefined;
-  }
-};
+import { createSelector } from '../selector/selector';
+import { createNewSelector } from '../selector/selector-reducers';
 
 export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
   const dispatch = useAppDispatch();
-  const selectors = useAppSelector((state) => state.selector.saved);
   const nameInputId = useId();
   const typeInputId = useId();
 
@@ -50,14 +35,24 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
     dispatch(changeEditingExtraName(event.target.value));
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeEditingExtraType(event.target.value));
+    const newVariableType = event.target.value;
+    let selectorId: string | null = null;
+    if (newVariableType === VariableType.CHOICE) {
+      const selector = createSelector();
+      selectorId = selector.id;
+      dispatch(createNewSelector(selector));
+    }
+    dispatch(
+      changeEditingExtraType({
+        variableType: newVariableType,
+        selectorId: selectorId,
+      })
+    );
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(saveEditingExtra());
     dispatch(clearEditingExtra());
   };
-
-  const selector = getSelector(props.extra, selectors);
 
   return (
     <PanelComponent>
@@ -93,7 +88,6 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <FormText className="text-muted">kind of variable</FormText>
         </Col>
       </FormGroup>
-      {selector && <SelectorComponent selector={selector} />}
       {props.extra.type === VariableType.RANGE && (
         <RangeComponent range={props.extra as Range} />
       )}

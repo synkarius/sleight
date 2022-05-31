@@ -1,23 +1,40 @@
 import React, { useId } from 'react';
 import { FormGroup, FormLabel, FormText, Row } from 'react-bootstrap';
-import { ArrayPositionType } from '../../../util/bootstrap-util';
 import { Selector } from './selector';
-import { SelectorItemComponent } from './SelectorItemComponent';
+import {
+  SelectorButtonType,
+  SelectorItemComponent,
+  SelectorPositionData,
+} from './SelectorItemComponent';
 
-export const SelectorComponent: React.FC<{ selector: Selector }> = (props) => {
+const getSelectorPositionData = (
+  index: number,
+  length: number
+): SelectorPositionData => {
+  return {
+    selectorButtonType:
+      index === 0 ? SelectorButtonType.ADD_NEW : SelectorButtonType.REMOVE,
+    isLast: index === length - 1,
+  };
+};
+
+export const SelectorComponent: React.FC<{
+  selector: Selector;
+  showLabel: boolean;
+}> = (props) => {
   const selectorFormGroupId = useId();
 
   return (
     <FormGroup as={Row} className="mb-3" controlId={selectorFormGroupId}>
-      <FormLabel>Selector</FormLabel>
+      {props.showLabel && <FormLabel>Selector</FormLabel>}
       {props.selector.items.map((selectorItem, index) => (
         <SelectorItemComponent
           key={selectorItem.id}
           selectorId={props.selector.id}
           selectorItem={selectorItem}
-          arrayPositionType={ArrayPositionType.getArrayPositionType(
-            props.selector.items.length,
-            index
+          selectorPositionData={getSelectorPositionData(
+            index,
+            props.selector.items.length
           )}
         />
       ))}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, FormControl, InputGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
-import { ArrayPositionType } from '../../../util/bootstrap-util';
 import { SelectorItem } from './selector';
 import {
   createNewSelectorItem,
@@ -9,11 +8,21 @@ import {
   editSelectorItem,
 } from './selector-reducers';
 
+export class SelectorButtonType {
+  static readonly ADD_NEW = 'Add New';
+  static readonly REMOVE = 'Remove';
+}
+
+export type SelectorPositionData = {
+  selectorButtonType: string;
+  isLast: boolean;
+};
+
 export const SelectorItemComponent: React.FC<{
   selectorId: string;
   selectorItem: SelectorItem;
   key: string;
-  arrayPositionType: string;
+  selectorPositionData: SelectorPositionData;
 }> = (props) => {
   const dispatch = useAppDispatch();
 
@@ -38,8 +47,7 @@ export const SelectorItemComponent: React.FC<{
     );
   };
 
-  const marginBottom =
-    props.arrayPositionType === ArrayPositionType.LAST ? 'mb-0' : 'mb-3';
+  const marginBottom = props.selectorPositionData.isLast ? 'mb-0' : 'mb-3';
 
   return (
     <InputGroup className={marginBottom}>
@@ -48,12 +56,14 @@ export const SelectorItemComponent: React.FC<{
         onChange={changedHandler}
         value={props.selectorItem.value}
       />
-      {props.arrayPositionType === ArrayPositionType.FIRST && (
+      {props.selectorPositionData.selectorButtonType ===
+        SelectorButtonType.ADD_NEW && (
         <Button variant="outline-primary" onClick={addHandler}>
           Add Alternate
         </Button>
       )}
-      {props.arrayPositionType !== ArrayPositionType.FIRST && (
+      {props.selectorPositionData.selectorButtonType ===
+        SelectorButtonType.REMOVE && (
         <Button variant="outline-secondary" onClick={deleteHandler}>
           Remove
         </Button>

@@ -5,9 +5,9 @@ import {
     ChoiceItem, 
     createChoiceItem, 
     RemoveChoiceItemPayload, 
-    EditChoiceItemSelectorPayload, 
     EditChoiceItemValuePayload, 
-    copyIntoChoice
+    copyIntoChoice,
+    ChangeVariableTypePayload
 } from "./choice/choice";
 import { Extra } from "./extra";
 import { VariableType } from './extra-types';
@@ -49,10 +49,10 @@ const extrasSlice = createSlice({
                 state.editing.name = action.payload;
             }
         },
-        changeEditingExtraType: (state, action: PayloadAction<string>) => {
+        changeEditingExtraType: (state, action: PayloadAction<ChangeVariableTypePayload>) => {
             // casting here to non-null b/c should not ever be null while editing
             const variable = state.editing as Extra;
-            switch (action.payload) {
+            switch (action.payload.variableType) {
                 case VariableType.TEXT:
                     state.editing = copyIntoText(variable);
                     break;
@@ -60,7 +60,8 @@ const extrasSlice = createSlice({
                     state.editing = copyIntoRange(variable);
                     break;
                 case VariableType.CHOICE:
-                    state.editing = copyIntoChoice(variable);
+                    const selectorId = action.payload.selectorId as string;
+                    state.editing = copyIntoChoice(variable, selectorId);
                     break;
                 default:
                     throw new Error("invalid extra type: " + action.payload);
@@ -74,17 +75,10 @@ const extrasSlice = createSlice({
             const range = state.editing as Range;
             range.endInclusive = action.payload;
         },
-        addChoiceItem: (state) => {
+        addChoiceItem: (state, action: PayloadAction<string>) => {
             if (state.editing) {
-                (state.editing as Choice).items.push(createChoiceItem());
-            }
-        },
-        editChoiceItemSelector: (state, action:PayloadAction<EditChoiceItemSelectorPayload>) => {
-            // TODO: validation
-            if (state.editing) {
-                const choice = state.editing as Choice;
-                const choiceItem = choice.items.find(i => i.id === action.payload.choiceItemId) as ChoiceItem;
-                choiceItem.selector = action.payload.selector;    
+                const selectorId = action.payload;
+                (state.editing as Choice).items.push(createChoiceItem(selectorId));
             }
         },
         editChoiceItemValue: (state, action:PayloadAction<EditChoiceItemValuePayload>) => {
@@ -114,7 +108,6 @@ export const {
     editRangeMin, 
     editRangeMax, 
     addChoiceItem, 
-    editChoiceItemSelector,
     editChoiceItemValue,
     removeChoiceItem
 } = extrasSlice.actions;

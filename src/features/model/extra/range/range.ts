@@ -1,12 +1,11 @@
 import { ApiKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
-import { Selected } from '../../selector/selector';
 import { VariableType } from '../extra-types';
 
 interface RangeCompatible extends ApiKeyed, Named, Ided, Typed {}
 const BEGIN_INCLUSIVE_DEFAULT = 0;
 const END_INCLUSIVE_DEFAULT = 9;
 
-export interface Range extends ApiKeyed, Named, Ided, Typed, Selected {
+export interface Range extends ApiKeyed, Named, Ided, Typed {
     beginInclusive: number,
     endInclusive: number
 }
@@ -15,8 +14,7 @@ export const createRange = ():Range => {
     return {
         ...createVariable(VariableType.RANGE),
         beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
-        endInclusive: END_INCLUSIVE_DEFAULT,
-        selectorIds: []
+        endInclusive: END_INCLUSIVE_DEFAULT
     };
 }
 
@@ -25,7 +23,6 @@ export const copyIntoRange = (variable:RangeCompatible):Range => {
         ...copyVariable(variable),
         type: VariableType.RANGE,
         beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
-        endInclusive: END_INCLUSIVE_DEFAULT,
-        selectorIds: []
+        endInclusive: END_INCLUSIVE_DEFAULT
     }
 }

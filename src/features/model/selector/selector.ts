@@ -10,10 +10,6 @@ export interface Selector extends ApiKeyed, Ided {
     items: SelectorItem[]
 }
 
-export interface Selected {
-    selectorIds: string[]
-}
-
 export const createSelectorItem = ():SelectorItem => {
     return {
         apiKey: null,

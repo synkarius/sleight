@@ -1,27 +1,17 @@
 import { Button, Col, FormControl, FormText, Row } from 'react-bootstrap';
-import { useAppDispatch } from '../../../../app/hooks';
-import {
-  editChoiceItemSelector,
-  editChoiceItemValue,
-  removeChoiceItem,
-} from '../extra-reducers';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { SelectorComponent } from '../../selector/SelectorComponent';
+import { editChoiceItemValue, removeChoiceItem } from '../extra-reducers';
 import { ChoiceItem } from './choice';
 
 export const ChoiceItemComponent: React.FC<{ choiceItem: ChoiceItem }> = (
   props
 ) => {
   const dispatch = useAppDispatch();
+  const selectors = useAppSelector((state) => state.selector.saved);
 
   const removeHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(removeChoiceItem({ choiceItemId: props.choiceItem.id }));
-  };
-  const selectorChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      editChoiceItemSelector({
-        choiceItemId: props.choiceItem.id,
-        selector: e.target.value,
-      })
-    );
   };
   const valueChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -32,15 +22,12 @@ export const ChoiceItemComponent: React.FC<{ choiceItem: ChoiceItem }> = (
     );
   };
 
+  const selector = selectors[props.choiceItem.selectorId];
+
   return (
     <Row className="mb-3">
       <Col sm="5">
-        <FormControl
-          type="text"
-          onChange={selectorChangedHandler}
-          value={props.choiceItem.selector}
-        ></FormControl>
-        <FormText className="text-muted">selector (what to say)</FormText>
+        <SelectorComponent selector={selector} showLabel={false} />
       </Col>
       <Col sm="5">
         <FormControl
