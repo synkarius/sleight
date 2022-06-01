@@ -1,11 +1,11 @@
-import { ApiKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
+import { RoleKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
 import { VariableType } from '../extra-types';
 
-interface RangeCompatible extends ApiKeyed, Named, Ided, Typed {}
+interface RangeCompatible extends RoleKeyed, Named, Ided, Typed {}
 const BEGIN_INCLUSIVE_DEFAULT = 0;
 const END_INCLUSIVE_DEFAULT = 9;
 
-export interface Range extends ApiKeyed, Named, Ided, Typed {
+export interface Range extends RoleKeyed, Named, Ided, Typed {
     beginInclusive: number,
     endInclusive: number
 }

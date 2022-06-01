@@ -3,6 +3,7 @@ import counterReducer from '../features/counter/counterSlice';
 import { focusReducer } from '../features/menu/focus/focus-reducers';
 import { contextReducer } from '../features/model/context/context-reducers';
 import { extraReducer } from '../features/model/extra/extra-reducers';
+import { roleKeyReducer } from '../features/model/role-key/role-key-reducers';
 import { selectorReducer } from '../features/model/selector/selector-reducers';
 
 export const store = configureStore({
@@ -11,7 +12,8 @@ export const store = configureStore({
     extra: extraReducer,
     context: contextReducer,
     focus: focusReducer,
-    selector: selectorReducer
+    selector: selectorReducer,
+    roleKey: roleKeyReducer
   },
 });
 

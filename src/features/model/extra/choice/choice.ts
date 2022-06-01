@@ -1,23 +1,23 @@
-import { ApiKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
+import { RoleKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
 import { VariableType } from '../extra-types';
 
-interface ChoiceCompatible extends ApiKeyed, Named, Ided, Typed {}
+interface ChoiceCompatible extends RoleKeyed, Named, Ided, Typed {}
 
-export interface ChoiceItem extends ApiKeyed, Ided {
+export interface ChoiceItem extends RoleKeyed, Ided {
     selectorId: string,
     value: string
 }
 
 export const createChoiceItem = (selectorId:string):ChoiceItem => {
     return {
-        apiKey: null,
+        roleKey: null,
         id: crypto.randomUUID(),
         selectorId: selectorId,
         value: ''
     };
 }
 
-export interface Choice extends ApiKeyed, Named, Ided, Typed {
+export interface Choice extends RoleKeyed, Named, Ided, Typed {
     items: ChoiceItem[]
 }
 

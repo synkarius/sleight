@@ -1,5 +1,5 @@
-export interface ApiKeyed {
-    apiKey: string | null
+export interface RoleKeyed {
+    roleKey: string | null
 }
 
 export interface Ided {
@@ -14,15 +14,15 @@ export interface Typed {
     type: string
 }
 
-interface BasicFields extends ApiKeyed, Ided, Named, Typed {}
+interface BasicFields extends RoleKeyed, Ided, Named, Typed {}
 
-interface IdentifyingFields extends ApiKeyed, Named, Ided {}
+interface IdentifyingFields extends RoleKeyed, Named, Ided {}
 
 export type Identifiable = IdentifyingFields | null;
 
 export const createVariable = (type:string):BasicFields => {
     return {
-        apiKey: null,
+        roleKey: null,
         id: crypto.randomUUID(),
         name: '',
         type: type
@@ -31,7 +31,7 @@ export const createVariable = (type:string):BasicFields => {
 
 export const copyVariable = (variable:BasicFields):BasicFields => {
     return {
-        apiKey: variable.apiKey,
+        roleKey: variable.roleKey,
         id: variable.id,
         name: variable.name,
         type: variable.type

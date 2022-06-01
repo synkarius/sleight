@@ -1,6 +1,6 @@
-import { ApiKeyed, Named } from "../../domain";
+import { RoleKeyed, Named } from "../../domain";
 import { Extra } from "../extra/extra";
 
-export interface Action extends ApiKeyed, Named {
+export interface Action extends RoleKeyed, Named {
     extras: Extra[]
 }

@@ -1,29 +1,29 @@
-import { ApiKeyed, Ided } from '../../domain';
+import { RoleKeyed, Ided } from '../../domain';
 
-interface BasicIded extends ApiKeyed, Ided {}
+interface BasicIded extends RoleKeyed, Ided {}
 
-export interface SelectorItem extends ApiKeyed, Ided {
+export interface SelectorItem extends RoleKeyed, Ided {
     value: string
 }
 
-export interface Selector extends ApiKeyed, Ided {
+export interface Selector extends RoleKeyed, Ided {
     items: SelectorItem[]
 }
 
 export const createSelectorItem = ():SelectorItem => {
     return {
-        apiKey: null,
+        roleKey: null,
         id: crypto.randomUUID(),
         value: ''
     };
 }
 
 export const createSelector = (fromItems:SelectorItem[]|null=null, from:BasicIded|null=null):Selector => {
-    const apiKey = from !== null ? from.apiKey : null;
+    const roleKey = from !== null ? from.roleKey : null;
     const id = from !== null ? from.id : crypto.randomUUID();
     const items = fromItems !== null ? fromItems : [createSelectorItem()];
     return {
-        apiKey: apiKey,
+        roleKey: roleKey,
         id: id,
         items: items
     };

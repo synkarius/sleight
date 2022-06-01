@@ -13,6 +13,11 @@ import {
   selectExtra,
 } from '../model/extra/extra-reducers';
 import { createText } from '../model/extra/text/text';
+import {
+  clearEditingRoleKey,
+  createNewEditingRoleKey,
+  selectRoleKey,
+} from '../model/role-key/role-key-reducers';
 import { createSelector } from '../model/selector/selector';
 import { createNewSelector } from '../model/selector/selector-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
@@ -30,8 +35,11 @@ export interface ItemGroup {
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
   const contextsSaved = useAppSelector((state) => state.context.saved);
+  const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
+  const roleKeysNamed = Object.values(roleKeysSaved).map((rk) => {
+    return { id: rk.id, name: rk.value };
+  });
   const variablesSaved = useAppSelector((state) => state.extra.saved);
-  const variableEditing = useAppSelector((state) => state.extra.editing);
 
   // TODO: move these elsewhere & restructure
   const groups: ItemGroup[] = [
@@ -58,10 +66,10 @@ export const SidebarComponent = () => {
     },
     {
       type: ElementType.KEY,
-      items: [],
-      createFn: () => {},
-      selectFn: (id) => {},
-      clearFn: () => {},
+      items: roleKeysNamed,
+      createFn: () => dispatch(createNewEditingRoleKey()),
+      selectFn: (id) => dispatch(selectRoleKey(id)),
+      clearFn: () => dispatch(clearEditingRoleKey()),
     },
     {
       type: ElementType.SPEC,

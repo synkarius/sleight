@@ -1,5 +1,5 @@
 import { 
-    ApiKeyed, 
+    RoleKeyed, 
     copyVariable, 
     createVariable, 
     Ided, 
@@ -7,10 +7,10 @@ import {
     Typed } from "../../../domain";
 import { VariableType } from '../extra-types';
 
-export interface Text extends ApiKeyed, Named, Ided, Typed {
+export interface Text extends RoleKeyed, Named, Ided, Typed {
 }
 
-interface TextCompatible extends ApiKeyed, Named, Ided, Typed {}
+interface TextCompatible extends RoleKeyed, Named, Ided, Typed {}
 
 export const createText = ():Text => {
     return {
