@@ -1,5 +1,7 @@
+import { getRandomId } from '../util/functions';
+
 export interface RoleKeyed {
-    roleKey: string | null
+    roleKeyId: string | null
 }
 
 export interface Ided {
@@ -22,8 +24,8 @@ export type Identifiable = IdentifyingFields | null;
 
 export const createVariable = (type:string):BasicFields => {
     return {
-        roleKey: null,
-        id: crypto.randomUUID(),
+        roleKeyId: null,
+        id: getRandomId(),
         name: '',
         type: type
     };
@@ -31,7 +33,7 @@ export const createVariable = (type:string):BasicFields => {
 
 export const copyVariable = (variable:BasicFields):BasicFields => {
     return {
-        roleKey: variable.roleKey,
+        roleKeyId: variable.roleKeyId,
         id: variable.id,
         name: variable.name,
         type: variable.type

@@ -1,3 +1,4 @@
+import { getRandomId } from '../../../util/functions';
 import { RoleKeyed, Ided } from '../../domain';
 
 interface BasicIded extends RoleKeyed, Ided {}
@@ -12,18 +13,18 @@ export interface Selector extends RoleKeyed, Ided {
 
 export const createSelectorItem = ():SelectorItem => {
     return {
-        roleKey: null,
-        id: crypto.randomUUID(),
+        roleKeyId: null,
+        id: getRandomId(),
         value: ''
     };
 }
 
 export const createSelector = (fromItems:SelectorItem[]|null=null, from:BasicIded|null=null):Selector => {
-    const roleKey = from !== null ? from.roleKey : null;
-    const id = from !== null ? from.id : crypto.randomUUID();
+    const roleKeyId = from !== null ? from.roleKeyId : null;
+    const id = from !== null ? from.id : getRandomId();
     const items = fromItems !== null ? fromItems : [createSelectorItem()];
     return {
-        roleKey: roleKey,
+        roleKeyId: roleKeyId,
         id: id,
         items: items
     };

@@ -1,3 +1,4 @@
+import { getRandomId } from '../../../../util/functions';
 import { RoleKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
 import { VariableType } from '../extra-types';
 
@@ -10,8 +11,8 @@ export interface ChoiceItem extends RoleKeyed, Ided {
 
 export const createChoiceItem = (selectorId:string):ChoiceItem => {
     return {
-        roleKey: null,
-        id: crypto.randomUUID(),
+        roleKeyId: null,
+        id: getRandomId(),
         selectorId: selectorId,
         value: ''
     };

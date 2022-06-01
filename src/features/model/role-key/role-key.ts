@@ -1,3 +1,4 @@
+import { getRandomId } from '../../../util/functions'
 import { Ided } from '../../domain'
 
 export interface RoleKey extends Ided {
@@ -6,7 +7,7 @@ export interface RoleKey extends Ided {
 
 export const createRoleKey = ():RoleKey => {
     return {
-        id: crypto.randomUUID(),
+        id: getRandomId(),
         value: ''
     }
 }

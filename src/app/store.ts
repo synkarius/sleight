@@ -5,6 +5,7 @@ import { contextReducer } from '../features/model/context/context-reducers';
 import { extraReducer } from '../features/model/extra/extra-reducers';
 import { roleKeyReducer } from '../features/model/role-key/role-key-reducers';
 import { selectorReducer } from '../features/model/selector/selector-reducers';
+import { specReducer } from '../features/model/spec/spec-reducers';
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     context: contextReducer,
     focus: focusReducer,
     selector: selectorReducer,
-    roleKey: roleKeyReducer
+    roleKey: roleKeyReducer,
+    spec: specReducer
   },
 });
 

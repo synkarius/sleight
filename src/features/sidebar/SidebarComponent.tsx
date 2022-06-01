@@ -20,6 +20,12 @@ import {
 } from '../model/role-key/role-key-reducers';
 import { createSelector } from '../model/selector/selector';
 import { createNewSelector } from '../model/selector/selector-reducers';
+import { createSpec } from '../model/spec/spec';
+import {
+  clearEditingSpec,
+  createNewEditingSpec,
+  selectSpec,
+} from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 
 interface Item extends Named, Ided {}
@@ -39,6 +45,8 @@ export const SidebarComponent = () => {
   const roleKeysNamed = Object.values(roleKeysSaved).map((rk) => {
     return { id: rk.id, name: rk.value };
   });
+  const specsSaved = useAppSelector((state) => state.spec.saved);
+  const specs = Object.values(specsSaved);
   const variablesSaved = useAppSelector((state) => state.extra.saved);
 
   // TODO: move these elsewhere & restructure
@@ -65,7 +73,7 @@ export const SidebarComponent = () => {
       clearFn: () => dispatch(clearEditingContext()),
     },
     {
-      type: ElementType.KEY,
+      type: ElementType.ROLE_KEY,
       items: roleKeysNamed,
       createFn: () => dispatch(createNewEditingRoleKey()),
       selectFn: (id) => dispatch(selectRoleKey(id)),
@@ -73,10 +81,16 @@ export const SidebarComponent = () => {
     },
     {
       type: ElementType.SPEC,
-      items: [],
-      createFn: () => {},
-      selectFn: (id) => {},
-      clearFn: () => {},
+      items: specs,
+      createFn: () => {
+        // TODO: this way creates orphan selectors - clean them up
+        const selector = createSelector();
+        const spec = createSpec(selector.id);
+        dispatch(createNewSelector(selector));
+        dispatch(createNewEditingSpec(spec));
+      },
+      selectFn: (id) => dispatch(selectSpec(id)),
+      clearFn: () => dispatch(clearEditingSpec()),
     },
     {
       type: ElementType.VARIABLE,

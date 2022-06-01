@@ -7,3 +7,5 @@ export const getOrThrow = <T,>(fns:(()=> T|undefined)[], err:()=>Error):T => {
     }
     throw err();
 }
+
+export const getRandomId = () => crypto.randomUUID();

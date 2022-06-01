@@ -1,3 +1,4 @@
+import { getRandomId } from '../../../util/functions';
 import { RoleKeyed, Ided, Named, Typed } from "../../domain";
 import { ContextType } from './context-types';
 
@@ -8,8 +9,8 @@ export interface Context extends RoleKeyed, Ided, Named, Typed {
 
 export const createContext = ():Context => {
     return {
-        roleKey: null,
-        id: crypto.randomUUID(),
+        roleKeyId: null,
+        id: getRandomId(),
         name: '',
         type: ContextType.EXECUTABLE_NAME,
         matcher: ''
