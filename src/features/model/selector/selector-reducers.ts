@@ -53,7 +53,7 @@ const selectorsSlice = createSlice({
         editSelectorItem: (state, action:PayloadAction<EditSelectorItemPayload>) => {
             const selector = findSelector(state, action.payload.selectorId);
             const selectorItem = selector.items.find(
-                selectorItem => selectorItem.id == action.payload.selectorItemId);
+                selectorItem => selectorItem.id === action.payload.selectorItemId);
             if (selectorItem) {
                 selectorItem.value = action.payload.value;
             }

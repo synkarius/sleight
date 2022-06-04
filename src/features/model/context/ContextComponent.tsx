@@ -16,7 +16,8 @@ import {
   changeEditingContextMatcher,
   changeEditingContextName,
   changeEditingContextType,
-  upsertEditingContext,
+  clearEditingContext,
+  saveEditingContext,
 } from './context-reducers';
 import { ContextType } from './context-types';
 
@@ -38,7 +39,8 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     dispatch(changeEditingContextMatcher(event.target.value));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(upsertEditingContext());
+    dispatch(saveEditingContext());
+    dispatch(clearEditingContext());
   };
 
   const matcherHelpText =

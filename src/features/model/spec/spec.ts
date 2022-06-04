@@ -32,3 +32,23 @@ export const createSpec = (selectorId:string) => {
         items: [createSpecItem(selectorId, SpecItemType.SELECTOR)]
     }
 }
+
+export type AddSpecItemPayload = {
+    specItem: SpecItem
+}
+
+export type ChangeSpecItemTypePayload = {
+    specItemId: string,
+    specItemItemId: string,
+    specItemItemType: string
+}
+
+export type ChangeSpecItemVariableId = {
+    specItemId: string,
+    variableId: string
+}
+
+export type ChangeSpecItemOrderPayload = {
+    specItemId: string,
+    moveDirection: string    
+}

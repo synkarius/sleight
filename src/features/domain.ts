@@ -39,9 +39,3 @@ export const copyVariable = (variable:BasicFields):BasicFields => {
         type: variable.type
     };
 }
-
-export const upsertIded = <T extends Ided>(arr:T[], item:T) => {
-    return arr.findIndex(t => t.id === item.id) !== -1
-        ? arr.map(i => i.id === item.id ? {...item} : i)
-        : [...arr, {...item}];
-}

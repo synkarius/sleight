@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { upsertIded } from '../../domain';
+import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { 
     Context, createContext
 } from "./context";
 
 type Contexts = {
-    saved: Context[]
+    saved: ReduxFriendlyStringMap<Context>,
     editing: Context | null
 }
 
 const initialState: Contexts = {
-    saved: [],
+    saved: {},
     editing: null
 }
 
@@ -22,7 +22,7 @@ const contextsSlice = createSlice({
             state.editing = createContext();
         },
         selectContext: (state, action:PayloadAction<string>) => {
-            state.editing = state.saved.find(context => context.id === action.payload) as Context;
+            state.editing = state.saved[action.payload];
         },
         clearEditingContext: (state) => {
             state.editing = null;
@@ -42,11 +42,10 @@ const contextsSlice = createSlice({
                 state.editing.matcher = action.payload;
             }
         },
-        upsertEditingContext: (state) => {
+        saveEditingContext: (state) => {
             if (state.editing) {
                 // TODO: validation
-                state.saved = upsertIded(state.saved, state.editing as Context);
-                state.editing = null;
+                state.saved[state.editing.id] = state.editing;
             }
         }
     }
@@ -59,6 +58,6 @@ export const {
     changeEditingContextName, 
     changeEditingContextType,
     changeEditingContextMatcher,
-    upsertEditingContext
+    saveEditingContext
 } = contextsSlice.actions;
 export const contextReducer = contextsSlice.reducer;

@@ -42,12 +42,15 @@ export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
   const contextsSaved = useAppSelector((state) => state.context.saved);
   const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
-  const roleKeysNamed = Object.values(roleKeysSaved).map((rk) => {
+  const specsSaved = useAppSelector((state) => state.spec.saved);
+  const variablesSaved = useAppSelector((state) => state.extra.saved);
+
+  const contexts = Object.values(contextsSaved);
+  const specs = Object.values(specsSaved);
+  const roleKeys = Object.values(roleKeysSaved).map((rk) => {
     return { id: rk.id, name: rk.value };
   });
-  const specsSaved = useAppSelector((state) => state.spec.saved);
-  const specs = Object.values(specsSaved);
-  const variablesSaved = useAppSelector((state) => state.extra.saved);
+  const variables = Object.values(variablesSaved);
 
   // TODO: move these elsewhere & restructure
   const groups: ItemGroup[] = [
@@ -67,14 +70,14 @@ export const SidebarComponent = () => {
     },
     {
       type: ElementType.CONTEXT,
-      items: contextsSaved,
+      items: contexts,
       createFn: () => dispatch(createNewEditingContext()),
       selectFn: (id) => dispatch(selectContext(id)),
       clearFn: () => dispatch(clearEditingContext()),
     },
     {
       type: ElementType.ROLE_KEY,
-      items: roleKeysNamed,
+      items: roleKeys,
       createFn: () => dispatch(createNewEditingRoleKey()),
       selectFn: (id) => dispatch(selectRoleKey(id)),
       clearFn: () => dispatch(clearEditingRoleKey()),
@@ -94,7 +97,7 @@ export const SidebarComponent = () => {
     },
     {
       type: ElementType.VARIABLE,
-      items: variablesSaved,
+      items: variables,
       createFn: () => dispatch(createNewEditingExtra(createText())),
       selectFn: (variableId) => dispatch(selectExtra(variableId)),
       clearFn: () => dispatch(clearEditingExtra()),

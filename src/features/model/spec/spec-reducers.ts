@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { Spec } from './spec';
+import { MoveDirection } from '../common/move-direction';
+import { AddSpecItemPayload, ChangeSpecItemOrderPayload, ChangeSpecItemTypePayload, ChangeSpecItemVariableId, Spec, SpecItem, SpecItemType } from './spec';
 
 type Specs = {
     saved: ReduxFriendlyStringMap<Spec>
@@ -11,6 +12,8 @@ const initialState: Specs = {
     saved: {},
     editing: null
 }
+
+const specItemIdMatches:((specItemId:string) => ((specItem:SpecItem)=> boolean)) = (specItemId) => (specItem => specItem.id === specItemId);
 
 const specsSlice = createSlice({
     name: "specs",
@@ -42,17 +45,46 @@ const specsSlice = createSlice({
                 state.editing.roleKeyId = action.payload;
             }
         },
-        addSpecItem: (state) => {
-            // TODO
+        addSpecItem: (state, action:PayloadAction<SpecItem>) => {
+            if (state.editing) {
+                state.editing.items.push(action.payload);
+            }
         },
-        changeSpecItemType: (state) => {
-            // TODO
+        changeSpecItemType: (state, action:PayloadAction<ChangeSpecItemTypePayload>) => {
+            if (state.editing) {
+                const specItem = state.editing.items.find(specItem => specItem.id === action.payload.specItemId);
+                if (specItem) {
+                    specItem.itemId = action.payload.specItemItemId;
+                    specItem.itemType = action.payload.specItemItemType;
+                }
+            }
         },
-        changeSpecItemTypeId: (state) => {
-            // TODO
+        changeSpecItemVariableId: (state, action:PayloadAction<ChangeSpecItemVariableId>) => {
+            if (state.editing){ 
+                const specItem = state.editing.items.find(specItem => specItem.id === action.payload.specItemId && specItem.itemType === SpecItemType.VARIABLE);
+                if (specItem) {
+                    specItem.itemId = action.payload.variableId;
+                }
+            }
         },
-        deleteSpecItem: (state) => {
-            // TODO
+        changeSpecItemOrder: (state, action:PayloadAction<ChangeSpecItemOrderPayload>) => {
+            if (state.editing) {
+                const specItem = state.editing.items.find(specItemIdMatches(action.payload.specItemId));
+                const specItemIndex = state.editing.items.findIndex(specItemIdMatches(action.payload.specItemId));
+                if (specItem && specItemIndex) {
+                    const newIndex = action.payload.moveDirection === MoveDirection.UP ? specItemIndex - 1 : specItemIndex + 1;
+                    if (newIndex >= 0 && newIndex < state.editing.items.length) {
+                        const displaced = state.editing.items[newIndex];
+                        state.editing.items[newIndex] = specItem;
+                        state.editing.items[specItemIndex] = displaced;
+                    }
+                }
+            }
+        },
+        deleteSpecItem: (state, action: PayloadAction<string>) => {
+            if (state.editing && state.editing.items.length > 1) {
+                state.editing.items = state.editing.items.filter(specItem => specItem.id !== action.payload);
+            }
         }
     }
 });
@@ -66,7 +98,8 @@ export const {
     changeEditingSpecRoleKey,
     addSpecItem,
     changeSpecItemType,
-    changeSpecItemTypeId,
+    changeSpecItemVariableId,
+    changeSpecItemOrder,
     deleteSpecItem
 } = specsSlice.actions;
 export const specReducer = specsSlice.reducer;

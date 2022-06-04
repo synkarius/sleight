@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { upsertIded } from '../../domain';
+import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { 
     Choice, 
     ChoiceItem, 
@@ -15,12 +15,12 @@ import { Range, copyIntoRange } from './range/range';
 import { copyIntoText } from './text/text';
 
 type Extras = {
-    saved: Extra[]
+    saved: ReduxFriendlyStringMap<Extra>
     editing: Extra | null
 }
 
 const initialState: Extras = {
-    saved: [],
+    saved: {},
     editing: null
 }
 
@@ -32,12 +32,12 @@ const extrasSlice = createSlice({
             state.editing = action.payload;
         },
         selectExtra: (state, action:PayloadAction<string>) => {
-            state.editing = state.saved.find(extra => extra.id === action.payload) as Extra;
+            state.editing = state.saved[action.payload];
         },
         saveEditingExtra: (state) => {
             if (state.editing) {
                 // TODO: validation
-                state.saved = upsertIded(state.saved, state.editing);
+                state.saved[state.editing.id] = state.editing;
             }
         },
 
