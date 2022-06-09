@@ -71,7 +71,7 @@ const specsSlice = createSlice({
             if (state.editing) {
                 const specItem = state.editing.items.find(specItemIdMatches(action.payload.specItemId));
                 const specItemIndex = state.editing.items.findIndex(specItemIdMatches(action.payload.specItemId));
-                if (specItem && specItemIndex) {
+                if (specItem) {
                     const newIndex = action.payload.moveDirection === MoveDirection.UP ? specItemIndex - 1 : specItemIndex + 1;
                     if (newIndex >= 0 && newIndex < state.editing.items.length) {
                         const displaced = state.editing.items[newIndex];
