@@ -45,8 +45,16 @@ export const Navigation = () => {
                 Delete Selected Element
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/4.1">
+              <NavDropdown.Item href="#action/4.3">
                 Preferences
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="View" id="view-dropdown">
+              <NavDropdown.Item href="#action/6.1">
+                Editor Mode
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/6.2">
+                Wizard Mode
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Help" id="help-dropdown">
