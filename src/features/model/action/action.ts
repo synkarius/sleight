@@ -1,6 +1,7 @@
-import { RoleKeyed, Named } from "../../domain";
-import { Extra } from "../extra/extra";
+import { RoleKeyed, Named, Ided, Typed } from "../../domain";
 
-export interface Action extends RoleKeyed, Named {
-    extras: Extra[]
+export interface ActionItem extends Ided, Typed {}
+
+export interface Action extends Ided, Named, RoleKeyed {
+    items:ActionItem[]
 }

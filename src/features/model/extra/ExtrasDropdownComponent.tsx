@@ -5,6 +5,8 @@ import { changeSpecItemVariableId } from '../spec/spec-reducers';
 /*
  * TODO: this needs fixed: this should be able to be used for
  * specs AND actions, but right now, it's only set up for specs
+ *
+ * -- also, add an optional filter to this to filter by extra type
  */
 export const ExtrasDropdownComponent: React.FC<{
   specItemId: string;
