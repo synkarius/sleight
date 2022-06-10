@@ -24,9 +24,7 @@ export const RangeComponent: React.FC<{ range: Range }> = (props) => {
 
   return (
     <FormGroup as={Row} className="mb-3" controlId={numberInputId}>
-      <FormLabel column sm="2">
-        Number Range
-      </FormLabel>
+      <FormLabel column sm="2"></FormLabel>
       <Col sm="4">
         <FormControl
           type="number"

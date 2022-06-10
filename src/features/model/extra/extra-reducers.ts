@@ -40,13 +40,17 @@ const extrasSlice = createSlice({
                 state.saved[state.editing.id] = state.editing;
             }
         },
-
         clearEditingExtra: (state) => {
             state.editing = null;
         },
         changeEditingExtraName: (state, action: PayloadAction<string>) => {
             if (state.editing) {
                 state.editing.name = action.payload;
+            }
+        },
+        changeEditingExtraRoleKey: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.roleKeyId = action.payload;
             }
         },
         changeEditingExtraType: (state, action: PayloadAction<ChangeVariableTypePayload>) => {
@@ -103,6 +107,7 @@ export const {
     selectExtra,
     clearEditingExtra,
     changeEditingExtraName, 
+    changeEditingExtraRoleKey,
     changeEditingExtraType, 
     saveEditingExtra, 
     editRangeMin, 

@@ -32,6 +32,11 @@ const contextsSlice = createSlice({
                 state.editing.name = action.payload;
             }
         },
+        changeEditingContextRoleKey: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.roleKeyId = action.payload;
+            }
+        },
         changeEditingContextType: (state, action: PayloadAction<string>) => {
             if (state.editing) {
                 state.editing.type = action.payload;
@@ -56,6 +61,7 @@ export const {
     selectContext,
     clearEditingContext,
     changeEditingContextName, 
+    changeEditingContextRoleKey,
     changeEditingContextType,
     changeEditingContextMatcher,
     saveEditingContext

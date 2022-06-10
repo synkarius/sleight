@@ -21,14 +21,17 @@ import {
   changeEditingExtraType,
   saveEditingExtra,
   clearEditingExtra,
+  changeEditingExtraRoleKey,
 } from './extra-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
+import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 
 export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
   const dispatch = useAppDispatch();
   const nameInputId = useId();
+  const roleKeyId = useId();
   const typeInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +70,18 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
             value={props.extra.name}
           ></FormControl>
           <FormText className="text-muted">name of variable</FormText>
+        </Col>
+      </FormGroup>
+      <FormGroup as={Row} className="mb-3" controlId={roleKeyId}>
+        <FormLabel column sm="2">
+          Role Key
+        </FormLabel>
+        <Col sm="6">
+          <RoleKeyDropdownComponent
+            roleKeyId={props.extra.roleKeyId}
+            payloadFn={(id) => changeEditingExtraRoleKey(id)}
+          />
+          <FormText className="text-muted">role of variable</FormText>
         </Col>
       </FormGroup>
       <FormGroup as={Row} className="mb-3" controlId={typeInputId}>

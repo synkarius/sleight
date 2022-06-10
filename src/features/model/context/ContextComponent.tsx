@@ -11,10 +11,12 @@ import {
 } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
+import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
 import {
   changeEditingContextMatcher,
   changeEditingContextName,
+  changeEditingContextRoleKey,
   changeEditingContextType,
   clearEditingContext,
   saveEditingContext,
@@ -24,6 +26,7 @@ import { ContextType } from './context-types';
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const dispatch = useAppDispatch();
   const nameInputId = useId();
+  const roleKeyId = useId();
   const typeInputId = useId();
   const matcherInputId = useId();
 
@@ -61,6 +64,18 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
             value={props.context.name}
           ></FormControl>
           <FormText className="text-muted">name of context</FormText>
+        </Col>
+      </FormGroup>
+      <FormGroup as={Row} className="mb-3" controlId={roleKeyId}>
+        <FormLabel column sm="2">
+          Role Key
+        </FormLabel>
+        <Col sm="6">
+          <RoleKeyDropdownComponent
+            roleKeyId={props.context.roleKeyId}
+            payloadFn={(id) => changeEditingContextRoleKey(id)}
+          />
+          <FormText className="text-muted">role of variable</FormText>
         </Col>
       </FormGroup>
       <FormGroup as={Row} className="mb-3" controlId={typeInputId}>

@@ -11,6 +11,7 @@ import {
 import {
   addSpecItem,
   changeEditingSpecName,
+  changeEditingSpecRoleKey,
   clearEditingSpec,
   saveEditingSpec,
 } from './spec-reducers';
@@ -20,10 +21,12 @@ import { createSpecItem, Spec, SpecItemType } from './spec';
 import { SpecItemComponent } from './SpecItemComponent';
 import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
+import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const dispatch = useAppDispatch();
   const nameInputId = useId();
+  const roleKeyId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeEditingSpecName(event.target.value));
@@ -53,6 +56,18 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
             value={props.spec.name}
           ></FormControl>
           <FormText className="text-muted">name of spec</FormText>
+        </Col>
+      </FormGroup>
+      <FormGroup as={Row} className="mb-3" controlId={roleKeyId}>
+        <FormLabel column sm="2">
+          Role Key
+        </FormLabel>
+        <Col sm="6">
+          <RoleKeyDropdownComponent
+            roleKeyId={props.spec.roleKeyId}
+            payloadFn={(id) => changeEditingSpecRoleKey(id)}
+          />
+          <FormText className="text-muted">role of variable</FormText>
         </Col>
       </FormGroup>
       {props.spec.items.map((specItem) => (
