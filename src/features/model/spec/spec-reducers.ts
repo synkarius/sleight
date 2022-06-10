@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { MoveDirection } from '../common/move-direction';
-import { AddSpecItemPayload, ChangeSpecItemOrderPayload, ChangeSpecItemTypePayload, ChangeSpecItemVariableId, Spec, SpecItem, SpecItemType } from './spec';
+import { ChangeSpecItemOrderPayload, ChangeSpecItemTypePayload, ChangeSpecItemVariableIdPayload, Spec, SpecItem, SpecItemType } from './spec';
 
 type Specs = {
     saved: ReduxFriendlyStringMap<Spec>
@@ -59,7 +59,7 @@ const specsSlice = createSlice({
                 }
             }
         },
-        changeSpecItemVariableId: (state, action:PayloadAction<ChangeSpecItemVariableId>) => {
+        changeSpecItemVariableId: (state, action:PayloadAction<ChangeSpecItemVariableIdPayload>) => {
             if (state.editing){ 
                 const specItem = state.editing.items.find(specItem => specItem.id === action.payload.specItemId && specItem.itemType === SpecItemType.VARIABLE);
                 if (specItem) {

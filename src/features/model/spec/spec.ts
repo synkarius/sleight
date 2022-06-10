@@ -43,7 +43,7 @@ export type ChangeSpecItemTypePayload = {
     specItemItemType: string
 }
 
-export type ChangeSpecItemVariableId = {
+export type ChangeSpecItemVariableIdPayload = {
     specItemId: string,
     variableId: string
 }

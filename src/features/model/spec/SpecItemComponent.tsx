@@ -18,10 +18,15 @@ import { ExtrasDropdownComponent } from '../extra/ExtrasDropdownComponent';
 import { createSelector, Selector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { SelectorComponent } from '../selector/SelectorComponent';
-import { SpecItem, SpecItemType } from './spec';
+import {
+  ChangeSpecItemVariableIdPayload,
+  SpecItem,
+  SpecItemType,
+} from './spec';
 import {
   changeSpecItemOrder,
   changeSpecItemType,
+  changeSpecItemVariableId,
   deleteSpecItem,
 } from './spec-reducers';
 
@@ -67,6 +72,12 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
   const deleteHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(deleteSpecItem(props.specItem.id));
   };
+  const changeSpecItemVariableIdActionCreator = (newVariableId: string) => {
+    return changeSpecItemVariableId({
+      specItemId: props.specItem.id,
+      variableId: newVariableId,
+    });
+  };
 
   const selector: Selector | undefined =
     props.specItem.itemType === SpecItemType.SELECTOR
@@ -105,9 +116,10 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
               <SelectorComponent showLabel={false} selector={selector} />
             )}
             {variable && (
-              <ExtrasDropdownComponent
-                specItemId={props.specItem.id}
+              <ExtrasDropdownComponent<ChangeSpecItemVariableIdPayload>
                 selectedVariableId={variable.id}
+                payloadFn={changeSpecItemVariableIdActionCreator}
+                variableTypeFilter={null}
               />
             )}
           </Col>

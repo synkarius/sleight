@@ -1,34 +1,34 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { FormSelect } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { changeSpecItemVariableId } from '../spec/spec-reducers';
 
-/*
- * TODO: this needs fixed: this should be able to be used for
- * specs AND actions, but right now, it's only set up for specs
- *
- * -- also, add an optional filter to this to filter by extra type
- */
-export const ExtrasDropdownComponent: React.FC<{
-  specItemId: string;
+// "EDC" = Extra Dropdown Component
+
+// type of custom (generic) props
+type EDCProps<T> = {
+  payloadFn: (selectedVariableId: string) => PayloadAction<T>;
+  variableTypeFilter: string[] | null;
   selectedVariableId: string;
-}> = (props) => {
+};
+
+// type of react component (it's a function which takes an EDCProps<T>-typed props)
+type CustomGenericPropsComponent = <T>(
+  props: EDCProps<T>
+) => React.ReactElement<EDCProps<T>>;
+
+export const ExtrasDropdownComponent: CustomGenericPropsComponent = (props) => {
   const dispatch = useAppDispatch();
   const variables = useAppSelector((state) => state.extra.saved);
 
   const selectedChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    dispatch(
-      changeSpecItemVariableId({
-        specItemId: props.specItemId,
-        variableId: event.target.value,
-      })
-    );
+    dispatch(props.payloadFn(event.target.value));
   };
 
   return (
     <FormSelect
-      aria-label="Spec item variable selection"
+      aria-label="spec item variable selection"
       onChange={selectedChangedHandler}
       value={props.selectedVariableId}
     >
