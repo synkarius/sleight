@@ -1,4 +1,4 @@
-export class ActionItemType {
+export class ActionType {
     static readonly PAUSE = "Pause";
     static readonly SEND_KEY = "Send Key";
     static readonly SEND_TEXT = "Send Text";
@@ -8,13 +8,13 @@ export class ActionItemType {
     static readonly CALL_FUNCTION = "Call Function";
     static readonly MIMIC = "Mimic";
     static readonly values = () => [
-        ActionItemType.PAUSE, 
-        ActionItemType.SEND_KEY, 
-        ActionItemType.SEND_TEXT, 
-        ActionItemType.MOUSE_CLICK, 
-        ActionItemType.BRING_APP, 
-        ActionItemType.WAIT_FOR_WINDOW, 
-        ActionItemType.CALL_FUNCTION, 
-        ActionItemType.MIMIC
+        ActionType.PAUSE, 
+        ActionType.SEND_KEY, 
+        ActionType.SEND_TEXT, 
+        ActionType.MOUSE_CLICK, 
+        ActionType.BRING_APP, 
+        ActionType.WAIT_FOR_WINDOW, 
+        ActionType.CALL_FUNCTION, 
+        ActionType.MIMIC
     ];
 };

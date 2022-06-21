@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import { focusReducer } from '../features/menu/focus/focus-reducers';
+import { actionReducer } from '../features/model/action/action-reducers';
 import { contextReducer } from '../features/model/context/context-reducers';
 import { extraReducer } from '../features/model/extra/extra-reducers';
 import { roleKeyReducer } from '../features/model/role-key/role-key-reducers';
@@ -9,12 +10,13 @@ import { specReducer } from '../features/model/spec/spec-reducers';
 
 export const store = configureStore({
   reducer: {
+    action: actionReducer,
+    context: contextReducer,
     counter: counterReducer,
     extra: extraReducer,
-    context: contextReducer,
     focus: focusReducer,
-    selector: selectorReducer,
     roleKey: roleKeyReducer,
+    selector: selectorReducer,
     spec: specReducer
   },
 });

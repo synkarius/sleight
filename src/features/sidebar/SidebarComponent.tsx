@@ -1,6 +1,12 @@
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Ided, Named } from '../domain';
+import {
+  clearEditingAction,
+  createNewEditingAction,
+  selectAction,
+} from '../model/action/action-reducers';
+import { createSendKeyPressAction } from '../model/action/send-key/send-key';
 import { ElementType } from '../model/common/element-types';
 import {
   clearEditingContext,
@@ -57,9 +63,10 @@ export const SidebarComponent = () => {
     {
       type: ElementType.ACTION,
       items: [],
-      createFn: () => {},
-      selectFn: (id) => {},
-      clearFn: () => {},
+      createFn: () =>
+        dispatch(createNewEditingAction(createSendKeyPressAction())),
+      selectFn: (id) => dispatch(selectAction(id)),
+      clearFn: () => dispatch(clearEditingAction()),
     },
     {
       type: ElementType.COMMAND,
