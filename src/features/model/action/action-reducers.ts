@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { Action, ChangeActionTypePayload } from './action';
+import { Action, ChangeActionTypePayload, ChangeSendKeyModePayload } from './action';
 
 type Actions = {
     saved: ReduxFriendlyStringMap<Action>
@@ -60,6 +60,9 @@ const actionsSlice = createSlice({
             //     default:
             //         throw new Error("invalid action type: " + action.payload);
             // }
+        },
+        changeEditingSendKeyMode: (state, action:PayloadAction<ChangeSendKeyModePayload>) => {
+            // TODO
         }
     }
 });
@@ -71,6 +74,7 @@ export const {
     changeEditingActionName, 
     changeEditingActionRoleKey,
     changeEditingActionType, 
-    saveEditingAction
+    saveEditingAction,
+    changeEditingSendKeyMode
 } = actionsSlice.actions;
 export const actionReducer = actionsSlice.reducer;

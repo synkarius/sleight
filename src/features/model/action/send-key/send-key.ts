@@ -1,5 +1,5 @@
 import { Action } from '../action';
-import { ChoiceValue, createChoiceValue, createRangeValue, RangeValue } from '../action-value';
+import { ChoiceValue, createChoiceValue, createRangeValue, RangeValue } from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../util/functions';
 import { ActionType } from '../action-types';

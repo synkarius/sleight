@@ -46,11 +46,13 @@ export interface ItemGroup {
 
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
+  const actionsSaved = useAppSelector((state) => state.action.saved);
   const contextsSaved = useAppSelector((state) => state.context.saved);
   const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
   const specsSaved = useAppSelector((state) => state.spec.saved);
   const variablesSaved = useAppSelector((state) => state.extra.saved);
 
+  const actions = Object.values(actionsSaved);
   const contexts = Object.values(contextsSaved);
   const specs = Object.values(specsSaved);
   const roleKeys = Object.values(roleKeysSaved).map((rk) => {
@@ -62,7 +64,7 @@ export const SidebarComponent = () => {
   const groups: ItemGroup[] = [
     {
       type: ElementType.ACTION,
-      items: [],
+      items: actions,
       createFn: () =>
         dispatch(createNewEditingAction(createSendKeyPressAction())),
       selectFn: (id) => dispatch(selectAction(id)),

@@ -1,13 +1,13 @@
-import { Typed } from '../../domain'
-import { VariableType } from '../extra/extra-types'
+import { Typed } from '../../../domain'
+import { VariableType } from '../../extra/extra-types'
 
 // indicates whether a value should refer to an id or a hardcoded value
 // type is a Variable type
-interface MaybeIded extends Typed {
+interface ActionValue extends Typed {
     ided:boolean
 }
 
-export interface TextValue extends MaybeIded {
+export interface TextValue extends ActionValue {
     textVariableId:string|null,
     value:string|null
 }
@@ -21,7 +21,7 @@ export const createTextValue = ():TextValue => {
     };
 }
 
-export interface RangeValue extends MaybeIded {
+export interface RangeValue extends ActionValue {
     rangeVariableId:string|null,
     value:number|null
 }
@@ -35,7 +35,7 @@ export const createRangeValue = ():RangeValue => {
     }
 }
 
-export interface ChoiceValue extends MaybeIded {
+export interface ChoiceValue extends ActionValue {
     choiceVariableId:string|null,
     value:string|null
 }
