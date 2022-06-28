@@ -32,11 +32,17 @@ export const ExtrasDropdownComponent: CustomGenericPropsComponent = (props) => {
       onChange={selectedChangedHandler}
       value={props.selectedVariableId}
     >
-      {Object.values(variables).map((variable) => (
-        <option key={variable.id} value={variable.id}>
-          {variable.name}
-        </option>
-      ))}
+      {Object.values(variables)
+        .filter(
+          (variable) =>
+            !props.variableTypeFilter ||
+            props.variableTypeFilter.includes(variable.type)
+        )
+        .map((variable) => (
+          <option key={variable.id} value={variable.id}>
+            {variable.name}
+          </option>
+        ))}
     </FormSelect>
   );
 };

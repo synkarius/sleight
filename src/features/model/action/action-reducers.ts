@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { Action, ChangeActionTypePayload, ChangeSendKeyModePayload } from './action';
+import { SendKeyHoldReleaseAction, SendKeyPressAction } from './send-key/send-key';
 
 type Actions = {
     saved: ReduxFriendlyStringMap<Action>
@@ -63,6 +64,60 @@ const actionsSlice = createSlice({
         },
         changeEditingSendKeyMode: (state, action:PayloadAction<ChangeSendKeyModePayload>) => {
             // TODO
+        },
+        toggleOuterPauseIded: (state) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.outerPause.ided = !sendKeyPressAction.outerPause.ided;
+            }
+        },
+        changeOuterPauseValue: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.outerPause.value = +action.payload;
+            }
+        },
+        changeOuterPauseVariableId: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.outerPause.rangeVariableId = action.payload;
+            }
+        },
+        toggleInnerPauseIded: (state) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.innerPause.ided = !sendKeyPressAction.innerPause.ided;
+            }
+        },
+        changeInnerPauseValue: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.innerPause.value = +action.payload;
+            }
+        },
+        changeInnerPauseVariableId: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.innerPause.rangeVariableId = action.payload;
+            }
+        },
+        toggleRepeatIded: (state) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.repeat.ided = !sendKeyPressAction.repeat.ided;
+            }
+        },
+        changeRepeatValue: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.repeat.value = +action.payload;
+            }
+        },
+        changeRepeatVariableId: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                const sendKeyPressAction = state.editing as SendKeyPressAction;
+                sendKeyPressAction.repeat.rangeVariableId = action.payload;
+            }
         }
     }
 });
@@ -75,6 +130,18 @@ export const {
     changeEditingActionRoleKey,
     changeEditingActionType, 
     saveEditingAction,
-    changeEditingSendKeyMode
+    changeEditingSendKeyMode,
+    // outer pause
+    toggleOuterPauseIded,
+    changeOuterPauseValue,
+    changeOuterPauseVariableId,
+    // inner pause
+    toggleInnerPauseIded,
+    changeInnerPauseValue,
+    changeInnerPauseVariableId,
+    // repeat
+    toggleRepeatIded,
+    changeRepeatValue,
+    changeRepeatVariableId
 } = actionsSlice.actions;
 export const actionReducer = actionsSlice.reducer;

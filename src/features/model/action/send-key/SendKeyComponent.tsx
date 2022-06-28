@@ -1,19 +1,23 @@
 import React, { useId } from 'react';
-import {
-  Col,
-  Form,
-  FormGroup,
-  FormLabel,
-  FormText,
-  Row,
-} from 'react-bootstrap';
+import { Form, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../../app/hooks';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
-import { changeEditingSendKeyMode } from '../action-reducers';
+import {
+  changeEditingSendKeyMode,
+  changeOuterPauseValue,
+  changeOuterPauseVariableId,
+  toggleOuterPauseIded,
+} from '../action-reducers';
 import { ChoiceValueComponent } from '../action-value/ChoiceValueComponent';
 import { RangeValueComponent } from '../action-value/RangeValueComponent';
-import { SendKeyAction } from './send-key';
+import {
+  SendKeyAction,
+  SendKeyPressAction,
+  SendKeyHoldReleaseAction,
+} from './send-key';
 import { SendKeyMode } from './send-key-modes';
+import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
+import { SendKeyPressComponent } from './SendKeyPressComponent';
 
 export const SendKeyComponent: React.FC<{
   sendKeyAction: SendKeyAction;
@@ -77,7 +81,22 @@ export const SendKeyComponent: React.FC<{
       <RangeValueComponent
         labelText="Outer Pause"
         rangeValue={props.sendKeyAction.outerPause}
+        idedChangedFn={(_e) => dispatch(toggleOuterPauseIded())}
+        valueChangedFn={(e) => dispatch(changeOuterPauseValue(e.target.value))}
+        variableIdChangedFn={(id) => changeOuterPauseVariableId(id)}
       />
+      {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
+        <SendKeyPressComponent
+          sendKeyPressAction={props.sendKeyAction as SendKeyPressAction}
+        />
+      )}
+      {props.sendKeyAction.sendKeyMode === SendKeyMode.HOLD_RELEASE && (
+        <SendKeyHoldReleaseComponent
+          sendKeyHoldReleaseAction={
+            props.sendKeyAction as SendKeyHoldReleaseAction
+          }
+        />
+      )}
     </>
   );
 };
