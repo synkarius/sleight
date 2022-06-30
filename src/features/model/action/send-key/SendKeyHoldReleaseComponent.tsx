@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChoiceValueComponent } from '../action-value/ChoiceValueComponent';
+import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import { SendKeyHoldReleaseAction } from './send-key';
 
 export const SendKeyHoldReleaseComponent: React.FC<{
@@ -7,10 +7,14 @@ export const SendKeyHoldReleaseComponent: React.FC<{
 }> = (props) => {
   return (
     <>
-      <ChoiceValueComponent
+      {/* <ActionValueComponent
         labelText="Direction"
-        choiceValue={props.sendKeyHoldReleaseAction.direction}
-      />
+        actionValue={props.sendKeyHoldReleaseAction.direction}
+        actionValueTypeChangedFn={}
+        valueChangedFn={}
+        variableIdChangedFn={}
+        roleKeyIdChangedFn={}
+      /> */}
     </>
   );
 };

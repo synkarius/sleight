@@ -4,12 +4,16 @@ import { useAppDispatch } from '../../../../app/hooks';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import {
   changeEditingSendKeyMode,
+  changeKeyToSendActionValueType,
+  changeKeyToSendRoleKeyId,
+  changeKeyToSendValue,
+  changeKeyToSendVariableId,
+  changeOuterPauseActionValueType,
+  changeOuterPauseRoleKeyId,
   changeOuterPauseValue,
   changeOuterPauseVariableId,
-  toggleOuterPauseIded,
 } from '../action-reducers';
-import { ChoiceValueComponent } from '../action-value/ChoiceValueComponent';
-import { RangeValueComponent } from '../action-value/RangeValueComponent';
+import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import {
   SendKeyAction,
   SendKeyPressAction,
@@ -74,16 +78,25 @@ export const SendKeyComponent: React.FC<{
           checked={props.sendKeyAction.modifiers.windows}
         />
       </FormGroupRowComponent>
-      <ChoiceValueComponent
+      <ActionValueComponent
         labelText="Key to Send"
-        choiceValue={props.sendKeyAction.sendKey}
+        actionValue={props.sendKeyAction.sendKey}
+        actionValueTypeChangedFn={(type) =>
+          changeKeyToSendActionValueType(type)
+        }
+        valueChangedFn={(value) => changeKeyToSendValue(value)}
+        variableIdChangedFn={(id) => changeKeyToSendVariableId(id)}
+        roleKeyIdChangedFn={(id) => changeKeyToSendRoleKeyId(id)}
       />
-      <RangeValueComponent
+      <ActionValueComponent
         labelText="Outer Pause"
-        rangeValue={props.sendKeyAction.outerPause}
-        idedChangedFn={(_e) => dispatch(toggleOuterPauseIded())}
-        valueChangedFn={(e) => dispatch(changeOuterPauseValue(e.target.value))}
+        actionValue={props.sendKeyAction.outerPause}
+        actionValueTypeChangedFn={(type) =>
+          changeOuterPauseActionValueType(type)
+        }
+        valueChangedFn={(value) => changeOuterPauseValue(value)}
         variableIdChangedFn={(id) => changeOuterPauseVariableId(id)}
+        roleKeyIdChangedFn={(id) => changeOuterPauseRoleKeyId(id)}
       />
       {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
         <SendKeyPressComponent

@@ -1,7 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { Action, ChangeActionTypePayload, ChangeSendKeyModePayload } from './action';
+import { ChoiceValue, RangeValue, TextValue } from './action-value/action-value';
+import { ActionValueOperation } from './action-value/action-value-operation';
 import { SendKeyHoldReleaseAction, SendKeyPressAction } from './send-key/send-key';
+import { SendKeyField } from './send-key/send-key-payloads';
 
 type Actions = {
     saved: ReduxFriendlyStringMap<Action>
@@ -11,6 +14,58 @@ type Actions = {
 const initialState: Actions = {
     saved: {},
     editing: null
+}
+
+type SomeTextValuedActionValue = TextValue | ChoiceValue;
+type SomeActionValue = SomeTextValuedActionValue | RangeValue;
+
+const getActionValue = (state:Draft<Actions>, field:SendKeyField):SomeActionValue => {
+    if (state.editing) {
+        switch(field) {
+            case SendKeyField.KEY_TO_SEND:
+                return (state.editing as SendKeyPressAction).sendKey;
+            case SendKeyField.OUTER_PAUSE:
+                return (state.editing as SendKeyPressAction).outerPause;
+            case SendKeyField.INNER_PAUSE:
+                return (state.editing as SendKeyPressAction).innerPause;
+            case SendKeyField.REPEAT:
+                return (state.editing as SendKeyPressAction).repeat;
+            default:
+                throw Error("invalid send-key field: " + field);
+        }
+    }
+    throw Error("not editing an action");
+}
+
+const performOperation = (actionValue:SomeActionValue, action:PayloadAction<string>, operation:ActionValueOperation) => {
+    const eventTargetValue = action.payload;
+    switch(operation) {
+        case ActionValueOperation.CHANGE_TYPE:
+            actionValue.actionValueType = eventTargetValue;
+            break;
+        case ActionValueOperation.CHANGE_VALUE_STRING:
+            const textBasedValue = actionValue as SomeTextValuedActionValue;
+            textBasedValue.value = eventTargetValue;
+            break;
+        case ActionValueOperation.CHANGE_VALUE_NUMBER:
+            const rangeValue = actionValue as RangeValue;
+            rangeValue.value = +eventTargetValue;
+            break;
+        case ActionValueOperation.CHANGE_VARIABLE_ID:
+            actionValue.variableId = eventTargetValue;
+            break;
+        case ActionValueOperation.CHANGE_ROLE_KEY_ID:
+            actionValue.roleKeyId = eventTargetValue;
+            break;
+        default:
+            throw Error("invalid operation: " + operation);
+    }
+}
+
+const updateActionValue = (state:Draft<Actions>, action:PayloadAction<string>, 
+        field:SendKeyField, operation:ActionValueOperation) => {
+    const actionValue = getActionValue(state, field);
+    performOperation(actionValue, action, operation);
 }
 
 const actionsSlice = createSlice({
@@ -65,59 +120,73 @@ const actionsSlice = createSlice({
         changeEditingSendKeyMode: (state, action:PayloadAction<ChangeSendKeyModePayload>) => {
             // TODO
         },
-        toggleOuterPauseIded: (state) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.outerPause.ided = !sendKeyPressAction.outerPause.ided;
-            }
+        // key to send
+        changeKeyToSendActionValueType: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.KEY_TO_SEND, ActionValueOperation.CHANGE_TYPE);
+        },
+        changeKeyToSendValue: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.KEY_TO_SEND, ActionValueOperation.CHANGE_VALUE_STRING);
+        },
+        changeKeyToSendVariableId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.KEY_TO_SEND, ActionValueOperation.CHANGE_VARIABLE_ID);
+        },
+        changeKeyToSendRoleKeyId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.KEY_TO_SEND, ActionValueOperation.CHANGE_ROLE_KEY_ID);
+        },
+        // outer pause
+        changeOuterPauseActionValueType: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.OUTER_PAUSE, ActionValueOperation.CHANGE_TYPE);
         },
         changeOuterPauseValue: (state, action:PayloadAction<string>) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.outerPause.value = +action.payload;
-            }
+            updateActionValue(state, action, 
+                SendKeyField.OUTER_PAUSE, ActionValueOperation.CHANGE_VALUE_NUMBER);
         },
         changeOuterPauseVariableId: (state, action:PayloadAction<string>) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.outerPause.rangeVariableId = action.payload;
-            }
+            updateActionValue(state, action, 
+                SendKeyField.OUTER_PAUSE, ActionValueOperation.CHANGE_VARIABLE_ID);
         },
-        toggleInnerPauseIded: (state) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.innerPause.ided = !sendKeyPressAction.innerPause.ided;
-            }
+        changeOuterPauseRoleKeyId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.OUTER_PAUSE, ActionValueOperation.CHANGE_ROLE_KEY_ID);
+        },
+        // inner pause
+        changeInnerPauseActionValueType: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.INNER_PAUSE, ActionValueOperation.CHANGE_TYPE);
         },
         changeInnerPauseValue: (state, action:PayloadAction<string>) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.innerPause.value = +action.payload;
-            }
+            updateActionValue(state, action, 
+                SendKeyField.INNER_PAUSE, ActionValueOperation.CHANGE_VALUE_NUMBER);
         },
         changeInnerPauseVariableId: (state, action:PayloadAction<string>) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.innerPause.rangeVariableId = action.payload;
-            }
+            updateActionValue(state, action, 
+                SendKeyField.INNER_PAUSE, ActionValueOperation.CHANGE_VARIABLE_ID);
         },
-        toggleRepeatIded: (state) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.repeat.ided = !sendKeyPressAction.repeat.ided;
-            }
+        changeInnerPauseRoleKeyId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.INNER_PAUSE, ActionValueOperation.CHANGE_ROLE_KEY_ID);
+        },
+        // repeat
+        changeRepeatActionValueType: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.REPEAT, ActionValueOperation.CHANGE_TYPE);
         },
         changeRepeatValue: (state, action:PayloadAction<string>) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.repeat.value = +action.payload;
-            }
+            updateActionValue(state, action, 
+                SendKeyField.REPEAT, ActionValueOperation.CHANGE_VALUE_NUMBER);
         },
         changeRepeatVariableId: (state, action:PayloadAction<string>) => {
-            if (state.editing) {
-                const sendKeyPressAction = state.editing as SendKeyPressAction;
-                sendKeyPressAction.repeat.rangeVariableId = action.payload;
-            }
+            updateActionValue(state, action, 
+                SendKeyField.REPEAT, ActionValueOperation.CHANGE_VARIABLE_ID);
+        },
+        changeRepeatRoleKeyId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.REPEAT, ActionValueOperation.CHANGE_ROLE_KEY_ID);
         }
     }
 });
@@ -131,17 +200,25 @@ export const {
     changeEditingActionType, 
     saveEditingAction,
     changeEditingSendKeyMode,
-    // outer pause
-    toggleOuterPauseIded,
+    // send-key key to send
+    changeKeyToSendActionValueType,
+    changeKeyToSendValue,
+    changeKeyToSendVariableId,
+    changeKeyToSendRoleKeyId,
+    // send-key outer pause
+    changeOuterPauseActionValueType,
     changeOuterPauseValue,
     changeOuterPauseVariableId,
-    // inner pause
-    toggleInnerPauseIded,
+    changeOuterPauseRoleKeyId,
+    // send-key inner pause
+    changeInnerPauseActionValueType,
     changeInnerPauseValue,
     changeInnerPauseVariableId,
-    // repeat
-    toggleRepeatIded,
+    changeInnerPauseRoleKeyId,
+    // send-key repeat
+    changeRepeatActionValueType,
     changeRepeatValue,
-    changeRepeatVariableId
+    changeRepeatVariableId,
+    changeRepeatRoleKeyId
 } = actionsSlice.actions;
 export const actionReducer = actionsSlice.reducer;

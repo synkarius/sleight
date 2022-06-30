@@ -1,50 +1,63 @@
-import { Typed } from '../../../domain'
 import { VariableType } from '../../extra/extra-types'
+import { ActionValueType } from './action-value-type'
 
-// indicates whether a value should refer to an id or a hardcoded value
-// type is a Variable type
-interface ActionValue extends Typed {
-    ided:boolean
+export interface ActionValue {
+    /* this is how the user specifies the value in an action:
+     * a value of ActionValueType
+     */
+    actionValueType:string
 }
 
-export interface TextValue extends ActionValue {
-    textVariableId:string|null,
+interface VariableActionValue {
+    // if the user has chosen variable binding, this is the variable type
+    variableType: string
+    // if the user has chosen variable binding, this is the variable id
+    variableId: string|null
+}
+
+interface RoleKeyActionValue {
+    // if the user has chosen role key binding, this is the role key id
+    roleKeyId: string|null
+}
+
+export interface TextValue extends ActionValue, VariableActionValue, RoleKeyActionValue {
     value:string|null
 }
 
 export const createTextValue = ():TextValue => {
     return {
-        type: VariableType.TEXT,
-        ided: false,
-        textVariableId: null,
+        actionValueType: ActionValueType.ENTER_VALUE,
+        variableType: VariableType.TEXT,
+        variableId: null,
+        roleKeyId: null,
         value: ""
     };
 }
 
-export interface RangeValue extends ActionValue {
-    rangeVariableId:string|null,
+export interface RangeValue extends ActionValue, VariableActionValue, RoleKeyActionValue {
     value:number|null
 }
 
 export const createRangeValue = ():RangeValue => {
     return {
-        type: VariableType.RANGE,
-        ided: false,
-        rangeVariableId: null,
+        actionValueType: ActionValueType.ENTER_VALUE,
+        variableType: VariableType.RANGE,
+        variableId: null,
+        roleKeyId: null,
         value: 0
-    }
+    };
 }
 
-export interface ChoiceValue extends ActionValue {
-    choiceVariableId:string|null,
+export interface ChoiceValue extends ActionValue, VariableActionValue, RoleKeyActionValue {
     value:string|null
 }
 
 export const createChoiceValue = ():ChoiceValue => {
     return {
-        type: VariableType.CHOICE,
-        ided: false,
-        choiceVariableId: null,
+        actionValueType: ActionValueType.ENTER_VALUE,
+        variableType: VariableType.CHOICE,
+        variableId: null,
+        roleKeyId: null,
         value: ""
     };
 }

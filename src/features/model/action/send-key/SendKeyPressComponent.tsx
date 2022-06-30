@@ -1,36 +1,39 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import {
+  changeInnerPauseActionValueType,
+  changeInnerPauseRoleKeyId,
   changeInnerPauseValue,
   changeInnerPauseVariableId,
+  changeRepeatActionValueType,
+  changeRepeatRoleKeyId,
   changeRepeatValue,
   changeRepeatVariableId,
-  toggleInnerPauseIded,
-  toggleRepeatIded,
 } from '../action-reducers';
-import { RangeValueComponent } from '../action-value/RangeValueComponent';
+import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import { SendKeyPressAction } from './send-key';
 
 export const SendKeyPressComponent: React.FC<{
   sendKeyPressAction: SendKeyPressAction;
 }> = (props) => {
-  const dispatch = useDispatch();
-
   return (
     <>
-      <RangeValueComponent
+      <ActionValueComponent
         labelText="Inner Pause"
-        rangeValue={props.sendKeyPressAction.innerPause}
-        idedChangedFn={(_e) => dispatch(toggleInnerPauseIded())}
-        valueChangedFn={(e) => dispatch(changeInnerPauseValue(e.target.value))}
+        actionValue={props.sendKeyPressAction.innerPause}
+        actionValueTypeChangedFn={(type) =>
+          changeInnerPauseActionValueType(type)
+        }
+        valueChangedFn={(value) => changeInnerPauseValue(value)}
         variableIdChangedFn={(id) => changeInnerPauseVariableId(id)}
+        roleKeyIdChangedFn={(id) => changeInnerPauseRoleKeyId(id)}
       />
-      <RangeValueComponent
+      <ActionValueComponent
         labelText="Repeat"
-        rangeValue={props.sendKeyPressAction.repeat}
-        idedChangedFn={(_e) => dispatch(toggleRepeatIded())}
-        valueChangedFn={(e) => dispatch(changeRepeatValue(e.target.value))}
+        actionValue={props.sendKeyPressAction.repeat}
+        actionValueTypeChangedFn={(type) => changeRepeatActionValueType(type)}
+        valueChangedFn={(value) => changeRepeatValue(value)}
         variableIdChangedFn={(id) => changeRepeatVariableId(id)}
+        roleKeyIdChangedFn={(id) => changeRepeatRoleKeyId(id)}
       />
     </>
   );
