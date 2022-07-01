@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { Form, FormText } from 'react-bootstrap';
+import { Form, FormCheck, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../../app/hooks';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import {
@@ -12,6 +12,7 @@ import {
   changeOuterPauseRoleKeyId,
   changeOuterPauseValue,
   changeOuterPauseVariableId,
+  toggleModifier,
 } from '../action-reducers';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import {
@@ -20,6 +21,7 @@ import {
   SendKeyHoldReleaseAction,
 } from './send-key';
 import { SendKeyMode } from './send-key-modes';
+import { SendKeyModifiers } from './send-key-modifiers';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
 import { SendKeyPressComponent } from './SendKeyPressComponent';
 
@@ -34,6 +36,9 @@ export const SendKeyComponent: React.FC<{
 
   const modeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeEditingSendKeyMode({ sendKeyMode: event.target.value }));
+  };
+  const modifierToggledHandler = (modifier: SendKeyModifiers) => {
+    dispatch(toggleModifier(modifier));
   };
 
   return (
@@ -53,29 +58,33 @@ export const SendKeyComponent: React.FC<{
         <FormText className="text-muted">send-key mode</FormText>
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Modifier Keys">
-        <Form.Check
+        <FormCheck
           type="switch"
           id={controlModifierCheckboxId}
           label="Control/Command"
           checked={props.sendKeyAction.modifiers.control}
+          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.CONTROL)}
         />
-        <Form.Check
+        <FormCheck
           type="switch"
           id={shiftModifierCheckboxId}
           label="Shift"
           checked={props.sendKeyAction.modifiers.shift}
+          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.SHIFT)}
         />
-        <Form.Check
+        <FormCheck
           type="switch"
           id={altModifierCheckboxId}
           label="Alt"
           checked={props.sendKeyAction.modifiers.alt}
+          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.ALT)}
         />
-        <Form.Check
+        <FormCheck
           type="switch"
           id={windowsModifierCheckboxId}
           label="Windows"
           checked={props.sendKeyAction.modifiers.windows}
+          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.WINDOWS)}
         />
       </FormGroupRowComponent>
       <ActionValueComponent

@@ -1,5 +1,6 @@
 import React, { useId } from 'react';
 import {
+  Button,
   Col,
   Form,
   FormControl,
@@ -17,6 +18,8 @@ import {
   changeEditingActionName,
   changeEditingActionRoleKey,
   changeEditingActionType,
+  clearEditingAction,
+  saveEditingAction,
 } from './action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
 import { SendKeyAction } from './send-key/send-key';
@@ -32,6 +35,10 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(changeEditingActionType({ actionType: event.target.value }));
+  };
+  const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
+    dispatch(saveEditingAction());
+    dispatch(clearEditingAction());
   };
 
   return (
@@ -83,6 +90,9 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       {props.action.type === ActionType.SEND_KEY && (
         <SendKeyComponent sendKeyAction={props.action as SendKeyAction} />
       )}
+      <Button onClick={submitHandler} variant="primary" size="lg">
+        Save
+      </Button>
     </PanelComponent>
   );
 };

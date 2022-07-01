@@ -1,4 +1,4 @@
-import { Action } from '../action';
+import { Action, copyAction } from '../action';
 import { ChoiceValue, createChoiceValue, createRangeValue, RangeValue } from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../util/functions';
@@ -35,9 +35,28 @@ export interface SendKeyAction extends Action {
     outerPause:RangeValue
 }
 
+export const copySendKeyAction = (sendKeyAction:SendKeyAction):SendKeyAction => {
+    return {
+        ...copyAction(sendKeyAction),
+        sendKeyMode: sendKeyAction.sendKeyMode,
+        modifiers: sendKeyAction.modifiers,
+        sendKey: sendKeyAction.sendKey,
+        outerPause: sendKeyAction.outerPause
+    }
+}
+
 export interface SendKeyPressAction extends SendKeyAction {
     innerPause:RangeValue,
     repeat:RangeValue
+}
+
+export const copyIntoSendKeyPressAction = (sendKeyAction:SendKeyAction):SendKeyPressAction => {
+    return {
+        ...copySendKeyAction(sendKeyAction),
+        sendKeyMode: SendKeyMode.PRESS,
+        innerPause: createRangeValue(),
+        repeat: createRangeValue()
+    }
 }
 
 export const createSendKeyPressAction = ():SendKeyPressAction => {
@@ -71,4 +90,12 @@ export const createSendKeyHoldReleaseAction = ():SendKeyHoldReleaseAction => {
         outerPause: createRangeValue(),
         direction: createChoiceValue()
     };
+}
+
+export const copyIntoSendKeyHoldReleaseAction = (sendKeyAction:SendKeyAction):SendKeyHoldReleaseAction => {
+    return {
+        ...copySendKeyAction(sendKeyAction),
+        sendKeyMode: SendKeyMode.HOLD_RELEASE,
+        direction: createChoiceValue()
+    }
 }

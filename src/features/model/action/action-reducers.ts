@@ -3,7 +3,9 @@ import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { Action, ChangeActionTypePayload, ChangeSendKeyModePayload } from './action';
 import { ChoiceValue, RangeValue, TextValue } from './action-value/action-value';
 import { ActionValueOperation } from './action-value/action-value-operation';
-import { SendKeyHoldReleaseAction, SendKeyPressAction } from './send-key/send-key';
+import { copyIntoSendKeyHoldReleaseAction, copyIntoSendKeyPressAction, SendKeyAction, SendKeyHoldReleaseAction, SendKeyPressAction } from './send-key/send-key';
+import { SendKeyMode } from './send-key/send-key-modes';
+import { SendKeyModifiers } from './send-key/send-key-modifiers';
 import { SendKeyField } from './send-key/send-key-payloads';
 
 type Actions = {
@@ -31,10 +33,10 @@ const getActionValue = (state:Draft<Actions>, field:SendKeyField):SomeActionValu
             case SendKeyField.REPEAT:
                 return (state.editing as SendKeyPressAction).repeat;
             default:
-                throw Error("invalid send-key field: " + field);
+                throw new Error("invalid send-key field: " + field);
         }
     }
-    throw Error("not editing an action");
+    throw new Error("not editing an action");
 }
 
 const performOperation = (actionValue:SomeActionValue, action:PayloadAction<string>, operation:ActionValueOperation) => {
@@ -58,7 +60,7 @@ const performOperation = (actionValue:SomeActionValue, action:PayloadAction<stri
             actionValue.roleKeyId = eventTargetValue;
             break;
         default:
-            throw Error("invalid operation: " + operation);
+            throw new Error("invalid operation: " + operation);
     }
 }
 
@@ -118,7 +120,41 @@ const actionsSlice = createSlice({
             // }
         },
         changeEditingSendKeyMode: (state, action:PayloadAction<ChangeSendKeyModePayload>) => {
-            // TODO
+            if (state.editing) {
+                const sendKeyAction = state.editing as SendKeyAction;
+                switch(action.payload.sendKeyMode) {
+                    case SendKeyMode.PRESS:
+                        state.editing = copyIntoSendKeyPressAction(sendKeyAction);
+                        break;
+                    case SendKeyMode.HOLD_RELEASE:
+                        state.editing = copyIntoSendKeyHoldReleaseAction(sendKeyAction);
+                        break;
+                    default:
+                        throw new Error("unhandled SendKeyMode: " + action.payload.sendKeyMode);
+                }
+            }
+        },
+        //
+        toggleModifier: (state, action:PayloadAction<SendKeyModifiers>) => {
+            if (state.editing) {
+                const sendKeyAction = state.editing as SendKeyAction;
+                switch(action.payload) {
+                    case SendKeyModifiers.CONTROL:
+                        sendKeyAction.modifiers.control = !sendKeyAction.modifiers.control;
+                        break;
+                    case SendKeyModifiers.ALT:
+                        sendKeyAction.modifiers.alt = !sendKeyAction.modifiers.alt;
+                        break;
+                    case SendKeyModifiers.SHIFT:
+                        sendKeyAction.modifiers.shift = !sendKeyAction.modifiers.shift;
+                        break;
+                    case SendKeyModifiers.WINDOWS:
+                        sendKeyAction.modifiers.windows = !sendKeyAction.modifiers.windows;
+                        break;
+                    default:
+                        throw new Error("unhandled modifier type: " + action.payload);
+                }
+            }
         },
         // key to send
         changeKeyToSendActionValueType: (state, action:PayloadAction<string>) => {
@@ -187,7 +223,24 @@ const actionsSlice = createSlice({
         changeRepeatRoleKeyId: (state, action:PayloadAction<string>) => {
             updateActionValue(state, action, 
                 SendKeyField.REPEAT, ActionValueOperation.CHANGE_ROLE_KEY_ID);
-        }
+        },
+        // direction
+        changeDirectionActionValueType: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.DIRECTION, ActionValueOperation.CHANGE_TYPE);
+        },
+        changeDirectionValue: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.DIRECTION, ActionValueOperation.CHANGE_VALUE_STRING);
+        },
+        changeDirectionVariableId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.DIRECTION, ActionValueOperation.CHANGE_VARIABLE_ID);
+        },
+        changeDirectionRoleKeyId: (state, action:PayloadAction<string>) => {
+            updateActionValue(state, action, 
+                SendKeyField.DIRECTION, ActionValueOperation.CHANGE_ROLE_KEY_ID);
+        },
     }
 });
 
@@ -205,6 +258,8 @@ export const {
     changeKeyToSendValue,
     changeKeyToSendVariableId,
     changeKeyToSendRoleKeyId,
+    // send-key modifiers
+    toggleModifier,
     // send-key outer pause
     changeOuterPauseActionValueType,
     changeOuterPauseValue,
@@ -219,6 +274,11 @@ export const {
     changeRepeatActionValueType,
     changeRepeatValue,
     changeRepeatVariableId,
-    changeRepeatRoleKeyId
+    changeRepeatRoleKeyId,
+    // send-key direction
+    changeDirectionActionValueType,
+    changeDirectionValue,
+    changeDirectionVariableId,
+    changeDirectionRoleKeyId
 } = actionsSlice.actions;
 export const actionReducer = actionsSlice.reducer;
