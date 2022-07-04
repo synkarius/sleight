@@ -29,6 +29,7 @@ import {
   changeSpecItemVariableId,
   deleteSpecItem,
 } from './spec-reducers';
+import { UnhandledSpecItemTypeError } from '../../../error/UnhandledSpecItemTypeError';
 
 export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
         newSpecItemId = Object.values(variables)[0].id;
         break;
       default:
-        throw new Error('invalid spec item type: ' + newSpecItemType);
+        throw new UnhandledSpecItemTypeError(newSpecItemType);
     }
     dispatch(
       changeSpecItemType({

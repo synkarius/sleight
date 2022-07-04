@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SelectorIdDuplicateError } from '../../../error/SelectorIdDuplicateError';
+import { SelectorNotFoundError } from '../../../error/SelectorNotFoundError';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { createSelectorItem, DeleteSelectorItemPayload, EditSelectorItemPayload, Selector } from './selector';
 
@@ -15,7 +17,7 @@ const findSelector = (state:Selectors, id:string):Selector => {
     if (selector) {
         return selector;
     }
-    throw new Error("selector id not found: " + id);
+    throw new SelectorNotFoundError(id);
 }
 
 const initialState: Selectors = {
@@ -36,15 +38,13 @@ const selectorsSlice = createSlice({
             const selector = action.payload;
             // TODO: move this validation somewhere else, but call it here
             if (state.saved[selector.id]) {
-                throw new Error("selector id already used");
+                throw new SelectorIdDuplicateError(selector.id);
             } 
             state.saved[selector.id] = selector;
-            // state.saved.set(selector.id, selector);
         },
         deleteSelector: (state, action:PayloadAction<string>) => {
             const selectorId = action.payload;
             delete state.saved[selectorId];
-            // state.saved.delete(selectorId);
         },
         createNewSelectorItem: (state, action:PayloadAction<string>) => {
             const selector = findSelector(state, action.payload);

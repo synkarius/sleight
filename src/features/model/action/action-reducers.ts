@@ -1,4 +1,9 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import { CurrentActionNotFoundError } from '../../../error/CurrentActionNotFoundError';
+import { UnhandledActionValueOperationError } from '../../../error/UnhandledActionValueOperationError';
+import { UnhandledSendKeyFieldError } from '../../../error/UnhandledSendKeyFieldError';
+import { UnhandledSendKeyModeError } from '../../../error/UnhandledSendKeyModeError';
+import { UnhandledSendKeyModifierTypeError } from '../../../error/UnhandledSendKeyModifierTypeError';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { Action, ChangeActionTypePayload, ChangeSendKeyModePayload } from './action';
 import { ChoiceValue, RangeValue, TextValue } from './action-value/action-value';
@@ -33,10 +38,10 @@ const getActionValue = (state:Draft<Actions>, field:SendKeyField):SomeActionValu
             case SendKeyField.REPEAT:
                 return (state.editing as SendKeyPressAction).repeat;
             default:
-                throw new Error("invalid send-key field: " + field);
+                throw new UnhandledSendKeyFieldError(field);
         }
     }
-    throw new Error("not editing an action");
+    throw new CurrentActionNotFoundError();
 }
 
 const performOperation = (actionValue:SomeActionValue, action:PayloadAction<string>, operation:ActionValueOperation) => {
@@ -60,7 +65,7 @@ const performOperation = (actionValue:SomeActionValue, action:PayloadAction<stri
             actionValue.roleKeyId = eventTargetValue;
             break;
         default:
-            throw new Error("invalid operation: " + operation);
+            throw new UnhandledActionValueOperationError(operation);
     }
 }
 
@@ -116,7 +121,7 @@ const actionsSlice = createSlice({
             //         state.editing = copyIntoChoice(variable, selectorId);
             //         break;
             //     default:
-            //         throw new Error("invalid action type: " + action.payload);
+            //         throw new InvalidActionTypeError("invalid action type: " + action.payload);
             // }
         },
         changeEditingSendKeyMode: (state, action:PayloadAction<ChangeSendKeyModePayload>) => {
@@ -130,7 +135,7 @@ const actionsSlice = createSlice({
                         state.editing = copyIntoSendKeyHoldReleaseAction(sendKeyAction);
                         break;
                     default:
-                        throw new Error("unhandled SendKeyMode: " + action.payload.sendKeyMode);
+                        throw new UnhandledSendKeyModeError(action.payload.sendKeyMode);
                 }
             }
         },
@@ -152,7 +157,7 @@ const actionsSlice = createSlice({
                         sendKeyAction.modifiers.windows = !sendKeyAction.modifiers.windows;
                         break;
                     default:
-                        throw new Error("unhandled modifier type: " + action.payload);
+                        throw new UnhandledSendKeyModifierTypeError(action.payload);
                 }
             }
         },

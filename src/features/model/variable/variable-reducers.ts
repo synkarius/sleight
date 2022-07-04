@@ -13,6 +13,7 @@ import { Variable } from "./variable";
 import { VariableType } from './variable-types';
 import { Range, copyIntoRange } from './range/range';
 import { copyIntoText } from './text/text';
+import { UnhandledVariableTypeError } from '../../../error/UnhandledVariableTypeError';
 
 type Variables = {
     saved: ReduxFriendlyStringMap<Variable>
@@ -68,7 +69,7 @@ const variablesSlice = createSlice({
                     state.editing = copyIntoChoice(variable, selectorId);
                     break;
                 default:
-                    throw new Error("invalid variable type: " + action.payload);
+                    throw new UnhandledVariableTypeError(action.payload.variableType);
             }
         },
         editRangeMin: (state, action: PayloadAction<number>) => {
