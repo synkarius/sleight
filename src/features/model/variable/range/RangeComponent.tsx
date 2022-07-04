@@ -9,7 +9,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { Range } from './range';
-import { editRangeMax, editRangeMin } from '../extra-reducers';
+import { editRangeMax, editRangeMin } from '../variable-reducers';
 
 export const RangeComponent: React.FC<{ range: Range }> = (props) => {
   const dispatch = useAppDispatch();

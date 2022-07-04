@@ -3,7 +3,7 @@ import { Button, FormGroup, Row } from 'react-bootstrap';
 import { useAppDispatch } from '../../../../app/hooks';
 import { createSelector } from '../../selector/selector';
 import { createNewSelector } from '../../selector/selector-reducers';
-import { addChoiceItem } from '../extra-reducers';
+import { addChoiceItem } from '../variable-reducers';
 import { Choice } from './choice';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
 

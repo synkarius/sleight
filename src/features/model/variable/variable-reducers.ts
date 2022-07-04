@@ -9,53 +9,53 @@ import {
     copyIntoChoice,
     ChangeVariableTypePayload
 } from "./choice/choice";
-import { Extra } from "./extra";
-import { VariableType } from './extra-types';
+import { Variable } from "./variable";
+import { VariableType } from './variable-types';
 import { Range, copyIntoRange } from './range/range';
 import { copyIntoText } from './text/text';
 
-type Extras = {
-    saved: ReduxFriendlyStringMap<Extra>
-    editing: Extra | null
+type Variables = {
+    saved: ReduxFriendlyStringMap<Variable>
+    editing: Variable | null
 }
 
-const initialState: Extras = {
+const initialState: Variables = {
     saved: {},
     editing: null
 }
 
-const extrasSlice = createSlice({
-    name: "extras",
+const variablesSlice = createSlice({
+    name: "variables",
     initialState,
     reducers: {
-        createNewEditingExtra: (state, action:PayloadAction<Extra>) => {
+        createNewEditingVariable: (state, action:PayloadAction<Variable>) => {
             state.editing = action.payload;
         },
-        selectExtra: (state, action:PayloadAction<string>) => {
+        selectVariable: (state, action:PayloadAction<string>) => {
             state.editing = state.saved[action.payload];
         },
-        saveEditingExtra: (state) => {
+        saveEditingVariable: (state) => {
             if (state.editing) {
                 // TODO: validation
                 state.saved[state.editing.id] = state.editing;
             }
         },
-        clearEditingExtra: (state) => {
+        clearEditingVariable: (state) => {
             state.editing = null;
         },
-        changeEditingExtraName: (state, action: PayloadAction<string>) => {
+        changeEditingVariableName: (state, action: PayloadAction<string>) => {
             if (state.editing) {
                 state.editing.name = action.payload;
             }
         },
-        changeEditingExtraRoleKey: (state, action: PayloadAction<string>) => {
+        changeEditingVariableRoleKey: (state, action: PayloadAction<string>) => {
             if (state.editing) {
                 state.editing.roleKeyId = action.payload;
             }
         },
-        changeEditingExtraType: (state, action: PayloadAction<ChangeVariableTypePayload>) => {
+        changeEditingVariableType: (state, action: PayloadAction<ChangeVariableTypePayload>) => {
             // casting here to non-null b/c should not ever be null while editing
-            const variable = state.editing as Extra;
+            const variable = state.editing as Variable;
             switch (action.payload.variableType) {
                 case VariableType.TEXT:
                     state.editing = copyIntoText(variable);
@@ -68,7 +68,7 @@ const extrasSlice = createSlice({
                     state.editing = copyIntoChoice(variable, selectorId);
                     break;
                 default:
-                    throw new Error("invalid extra type: " + action.payload);
+                    throw new Error("invalid variable type: " + action.payload);
             }
         },
         editRangeMin: (state, action: PayloadAction<number>) => {
@@ -103,17 +103,17 @@ const extrasSlice = createSlice({
 });
 
 export const { 
-    createNewEditingExtra,
-    selectExtra,
-    clearEditingExtra,
-    changeEditingExtraName, 
-    changeEditingExtraRoleKey,
-    changeEditingExtraType, 
-    saveEditingExtra, 
+    createNewEditingVariable,
+    selectVariable,
+    clearEditingVariable,
+    changeEditingVariableName, 
+    changeEditingVariableRoleKey,
+    changeEditingVariableType, 
+    saveEditingVariable, 
     editRangeMin, 
     editRangeMax, 
     addChoiceItem, 
     editChoiceItemValue,
     removeChoiceItem
-} = extrasSlice.actions;
-export const extraReducer = extrasSlice.reducer;
+} = variablesSlice.actions;
+export const variableReducer = variablesSlice.reducer;

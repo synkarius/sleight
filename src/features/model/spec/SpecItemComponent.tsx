@@ -13,8 +13,8 @@ import { ArrowDown, ArrowUp } from 'react-bootstrap-icons';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { MoveDirection } from '../common/move-direction';
-import { Extra } from '../extra/extra';
-import { ExtrasDropdownComponent } from '../extra/ExtrasDropdownComponent';
+import { Variable } from '../variable/variable';
+import { VariablesDropdownComponent } from '../variable/VariablesDropdownComponent';
 import { createSelector, Selector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { SelectorComponent } from '../selector/SelectorComponent';
@@ -34,7 +34,7 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
   const dispatch = useAppDispatch();
   const typeInputId = useId();
   const selectors = useAppSelector((state) => state.selector.saved);
-  const variables = useAppSelector((state) => state.extra.saved);
+  const variables = useAppSelector((state) => state.variable.saved);
 
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     let newSpecItemId: string | undefined;
@@ -83,7 +83,7 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
     props.specItem.itemType === SpecItemType.SELECTOR
       ? selectors[props.specItem.itemId]
       : undefined;
-  const variable: Extra | undefined =
+  const variable: Variable | undefined =
     props.specItem.itemType === SpecItemType.VARIABLE
       ? variables[props.specItem.itemId]
       : undefined;
@@ -116,7 +116,7 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
               <SelectorComponent showLabel={false} selector={selector} />
             )}
             {variable && (
-              <ExtrasDropdownComponent<ChangeSpecItemVariableIdPayload>
+              <VariablesDropdownComponent<ChangeSpecItemVariableIdPayload>
                 selectedVariableId={variable.id}
                 payloadFn={changeSpecItemVariableIdActionCreator}
                 variableTypeFilter={null}

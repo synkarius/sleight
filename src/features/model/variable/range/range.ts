@@ -1,5 +1,5 @@
 import { RoleKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
-import { VariableType } from '../extra-types';
+import { VariableType } from '../variable-types';
 
 interface RangeCompatible extends RoleKeyed, Named, Ided, Typed {}
 const BEGIN_INCLUSIVE_DEFAULT = 0;

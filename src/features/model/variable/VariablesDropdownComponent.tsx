@@ -2,10 +2,10 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { FormSelect } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
-// "EDC" = Extra Dropdown Component
+// "VDC" = Variable Dropdown Component
 
 // type of custom (generic) props
-type EDCProps<T> = {
+type VDCProps<T> = {
   payloadFn: (selectedVariableId: string) => PayloadAction<T>;
   variableTypeFilter: string[] | null;
   selectedVariableId: string;
@@ -13,12 +13,14 @@ type EDCProps<T> = {
 
 // type of react component (it's a function which takes an EDCProps<T>-typed props)
 type CustomGenericPropsComponent = <T>(
-  props: EDCProps<T>
-) => React.ReactElement<EDCProps<T>>;
+  props: VDCProps<T>
+) => React.ReactElement<VDCProps<T>>;
 
-export const ExtrasDropdownComponent: CustomGenericPropsComponent = (props) => {
+export const VariablesDropdownComponent: CustomGenericPropsComponent = (
+  props
+) => {
   const dispatch = useAppDispatch();
-  const variables = useAppSelector((state) => state.extra.saved);
+  const variables = useAppSelector((state) => state.variable.saved);
 
   const selectedChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>

@@ -1,6 +1,6 @@
 import { getRandomId } from '../../../../util/functions';
 import { RoleKeyed, copyVariable, createVariable, Ided, Named, Typed } from "../../../domain";
-import { VariableType } from '../extra-types';
+import { VariableType } from '../variable-types';
 
 interface ChoiceCompatible extends RoleKeyed, Named, Ided, Typed {}
 

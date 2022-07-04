@@ -1,4 +1,4 @@
-import { VariableType } from '../../extra/extra-types'
+import { VariableType } from '../../variable/variable-types'
 import { ActionValueType } from './action-value-type'
 
 export interface ActionValue {

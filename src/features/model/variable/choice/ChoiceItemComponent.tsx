@@ -1,7 +1,7 @@
 import { Button, Col, FormControl, FormText, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { SelectorComponent } from '../../selector/SelectorComponent';
-import { editChoiceItemValue, removeChoiceItem } from '../extra-reducers';
+import { editChoiceItemValue, removeChoiceItem } from '../variable-reducers';
 import { ChoiceItem } from './choice';
 
 export const ChoiceItemComponent: React.FC<{ choiceItem: ChoiceItem }> = (

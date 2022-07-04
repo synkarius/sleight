@@ -3,8 +3,8 @@ import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { useAppDispatch } from '../../../../app/hooks';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
-import { VariableType } from '../../extra/extra-types';
-import { ExtrasDropdownComponent } from '../../extra/ExtrasDropdownComponent';
+import { VariableType } from '../../variable/variable-types';
+import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
 import { RoleKeyDropdownComponent } from '../../role-key/RoleKeyDropdownComponent';
 import { ChoiceValue, RangeValue, TextValue } from './action-value';
 import { ActionValueType } from './action-value-type';
@@ -54,7 +54,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       {props.actionValue.actionValueType === ActionValueType.ENTER_VALUE &&
         enterValue}
       {props.actionValue.actionValueType === ActionValueType.USE_VARIABLE && (
-        <ExtrasDropdownComponent<string>
+        <VariablesDropdownComponent<string>
           selectedVariableId={props.actionValue.variableId as string}
           payloadFn={props.variableIdChangedFn}
           variableTypeFilter={[props.actionValue.variableType]}

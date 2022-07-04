@@ -4,7 +4,7 @@ import { ActionComponent } from '../../model/action/ActionComponent';
 import { CommandComponent } from '../../model/command/CommandComponent';
 import { ElementType } from '../../model/common/element-types';
 import { ContextComponent } from '../../model/context/ContextComponent';
-import { ExtraComponent } from '../../model/extra/ExtraComponent';
+import { VariableComponent } from '../../model/variable/VariableComponent';
 import { RoleKeyComponent } from '../../model/role-key/RoleKeyComponent';
 import { SpecComponent } from '../../model/spec/SpecComponent';
 
@@ -15,7 +15,7 @@ export const FocusComponent: React.FC<{}> = () => {
   const context = useAppSelector((state) => state.context.editing);
   const roleKey = useAppSelector((state) => state.roleKey.editing);
   const spec = useAppSelector((state) => state.spec.editing);
-  const variable = useAppSelector((state) => state.extra.editing);
+  const variable = useAppSelector((state) => state.variable.editing);
 
   return (
     <>
@@ -35,7 +35,7 @@ export const FocusComponent: React.FC<{}> = () => {
         <SpecComponent spec={spec} />
       )}
       {elementType === ElementType.VARIABLE && variable && (
-        <ExtraComponent extra={variable} />
+        <VariableComponent variable={variable} />
       )}
     </>
   );

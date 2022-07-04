@@ -19,11 +19,11 @@ import {
   selectContext,
 } from '../model/context/context-reducers';
 import {
-  clearEditingExtra,
-  createNewEditingExtra,
-  selectExtra,
-} from '../model/extra/extra-reducers';
-import { createText } from '../model/extra/text/text';
+  clearEditingVariable,
+  createNewEditingVariable,
+  selectVariable,
+} from '../model/variable/variable-reducers';
+import { createText } from '../model/variable/text/text';
 import {
   clearEditingRoleKey,
   createNewEditingRoleKey,
@@ -56,7 +56,7 @@ export const SidebarComponent = () => {
   const contextsSaved = useAppSelector((state) => state.context.saved);
   const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
   const specsSaved = useAppSelector((state) => state.spec.saved);
-  const variablesSaved = useAppSelector((state) => state.extra.saved);
+  const variablesSaved = useAppSelector((state) => state.variable.saved);
 
   const actions = Object.values(actionsSaved);
   const commands = Object.values(commandsSaved);
@@ -114,9 +114,9 @@ export const SidebarComponent = () => {
     {
       type: ElementType.VARIABLE,
       items: variables,
-      createFn: () => dispatch(createNewEditingExtra(createText())),
-      selectFn: (variableId) => dispatch(selectExtra(variableId)),
-      clearFn: () => dispatch(clearEditingExtra()),
+      createFn: () => dispatch(createNewEditingVariable(createText())),
+      selectFn: (variableId) => dispatch(selectVariable(variableId)),
+      clearFn: () => dispatch(clearEditingVariable()),
     },
   ];
 

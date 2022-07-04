@@ -11,31 +11,31 @@ import {
   Col,
 } from 'react-bootstrap';
 import { ChoiceComponent } from './choice/ChoiceComponent';
-import { Extra } from './extra';
+import { Variable } from './variable';
 import { Range } from './range/range';
 import { Choice } from './choice/choice';
-import { VariableType } from './extra-types';
+import { VariableType } from './variable-types';
 import { RangeComponent } from './range/RangeComponent';
 import {
-  changeEditingExtraName,
-  changeEditingExtraType,
-  saveEditingExtra,
-  clearEditingExtra,
-  changeEditingExtraRoleKey,
-} from './extra-reducers';
+  changeEditingVariableName,
+  changeEditingVariableType,
+  saveEditingVariable,
+  clearEditingVariable,
+  changeEditingVariableRoleKey,
+} from './variable-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 
-export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
+export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const dispatch = useAppDispatch();
   const nameInputId = useId();
   const roleKeyId = useId();
   const typeInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeEditingExtraName(event.target.value));
+    dispatch(changeEditingVariableName(event.target.value));
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariableType = event.target.value;
@@ -46,15 +46,15 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
       dispatch(createNewSelector(selector));
     }
     dispatch(
-      changeEditingExtraType({
+      changeEditingVariableType({
         variableType: newVariableType,
         selectorId: selectorId,
       })
     );
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(saveEditingExtra());
-    dispatch(clearEditingExtra());
+    dispatch(saveEditingVariable());
+    dispatch(clearEditingVariable());
   };
 
   return (
@@ -67,7 +67,7 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <FormControl
             type="text"
             onChange={nameChangedHandler}
-            value={props.extra.name}
+            value={props.variable.name}
           ></FormControl>
           <FormText className="text-muted">name of variable</FormText>
         </Col>
@@ -78,8 +78,8 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
         </FormLabel>
         <Col sm="6">
           <RoleKeyDropdownComponent
-            roleKeyId={props.extra.roleKeyId}
-            payloadFn={(id) => changeEditingExtraRoleKey(id)}
+            roleKeyId={props.variable.roleKeyId}
+            payloadFn={(id) => changeEditingVariableRoleKey(id)}
           />
           <FormText className="text-muted">role of variable</FormText>
         </Col>
@@ -92,7 +92,7 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <Form.Select
             aria-label="Variable type selection"
             onChange={typeChangedHandler}
-            value={props.extra.type}
+            value={props.variable.type}
           >
             {VariableType.values().map((vt) => (
               <option key={vt} value={vt}>
@@ -103,11 +103,11 @@ export const ExtraComponent: React.FC<{ extra: Extra }> = (props) => {
           <FormText className="text-muted">kind of variable</FormText>
         </Col>
       </FormGroup>
-      {props.extra.type === VariableType.RANGE && (
-        <RangeComponent range={props.extra as Range} />
+      {props.variable.type === VariableType.RANGE && (
+        <RangeComponent range={props.variable as Range} />
       )}
-      {props.extra.type === VariableType.CHOICE && (
-        <ChoiceComponent choice={props.extra as Choice} />
+      {props.variable.type === VariableType.CHOICE && (
+        <ChoiceComponent choice={props.variable as Choice} />
       )}
       <Button onClick={submitHandler} variant="primary" size="lg">
         Save

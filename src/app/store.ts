@@ -4,7 +4,7 @@ import { focusReducer } from '../features/menu/focus/focus-reducers';
 import { actionReducer } from '../features/model/action/action-reducers';
 import { commandReducer } from '../features/model/command/command-reducers';
 import { contextReducer } from '../features/model/context/context-reducers';
-import { extraReducer } from '../features/model/extra/extra-reducers';
+import { variableReducer } from '../features/model/variable/variable-reducers';
 import { roleKeyReducer } from '../features/model/role-key/role-key-reducers';
 import { selectorReducer } from '../features/model/selector/selector-reducers';
 import { specReducer } from '../features/model/spec/spec-reducers';
@@ -15,11 +15,11 @@ export const store = configureStore({
     command: commandReducer,
     context: contextReducer,
     counter: counterReducer,
-    extra: extraReducer,
     focus: focusReducer,
     roleKey: roleKeyReducer,
     selector: selectorReducer,
-    spec: specReducer
+    spec: specReducer,
+    variable: variableReducer,
   },
 });
 

@@ -3,5 +3,9 @@ export class VariableType {
     static readonly TEXT = "Text";
     static readonly RANGE = "Range";
     static readonly CHOICE = "Choice";
-    static readonly values = () => [VariableType.TEXT, VariableType.RANGE, VariableType.CHOICE];
+    static readonly values = () => [
+        VariableType.TEXT, 
+        VariableType.RANGE, 
+        VariableType.CHOICE
+    ];
 };

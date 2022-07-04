@@ -5,7 +5,7 @@ import {
     Ided, 
     Named, 
     Typed } from "../../../domain";
-import { VariableType } from '../extra-types';
+import { VariableType } from '../variable-types';
 
 export interface Text extends RoleKeyed, Named, Ided, Typed {
 }
