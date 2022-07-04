@@ -1,5 +1,6 @@
 import { getRandomId } from '../../../util/functions';
 import { RoleKeyed, Named, Ided } from "../../domain";
+import { MoveDirection } from '../common/move-direction';
 import { CommandSpecType } from './command-spec-type';
 
 export interface Command extends Ided, Named, RoleKeyed {
@@ -24,4 +25,9 @@ export const createCommand = ():Command => {
 export type ChangeActionIdPayload = {
     index:number;
     newActionId:string
+}
+
+export type MoveCommandActionPayload = {
+    index: number;
+    direction: MoveDirection
 }

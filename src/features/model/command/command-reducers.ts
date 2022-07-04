@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { ChangeActionIdPayload, Command } from './command';
+import { ChangeActionIdPayload, Command, MoveCommandActionPayload } from './command';
 
 type Commands = {
     saved: ReduxFriendlyStringMap<Command>
@@ -66,11 +66,14 @@ const commandsSlice = createSlice({
                 state.editing.actionIds[action.payload.index] = action.payload.newActionId;
             }
         },
+        moveEditingCommandAction: (state, action:PayloadAction<MoveCommandActionPayload>) => {
+            // TODO
+        },
         deleteEditingCommandAction: (state, action:PayloadAction<number>) => {
             if (state.editing) {
                 delete state.editing.actionIds[action.payload];
             }
-        }
+        },
     }
 });
 
@@ -86,6 +89,7 @@ export const {
     changeEditingCommandSpecRoleKeyId,
     addActionToEditingCommand,
     changeEditingCommandActionId,
+    moveEditingCommandAction,
     deleteEditingCommandAction,
 } = commandsSlice.actions;
 export const commandReducer = commandsSlice.reducer;

@@ -3,10 +3,11 @@ import { Button, FormControl, FormGroup, FormText, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
+import { VerticalMoveableComponent } from '../../ui/VerticalMoveableComponent';
 import { ActionDropdownComponent } from '../action/ActionDropdownComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { SpecDropdownComponent } from '../spec/SpecDropdownComponent';
-import { Command } from './command';
+import { Command, MoveCommandActionPayload } from './command';
 import {
   addActionToEditingCommand,
   changeEditingCommandActionId,
@@ -15,7 +16,10 @@ import {
   changeEditingCommandSpecRoleKeyId,
   changeEditingCommandSpecSpecId,
   changeEditingCommandSpecType,
+  clearEditingCommand,
   deleteEditingCommandAction,
+  moveEditingCommandAction,
+  saveEditingCommand,
 } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
@@ -33,6 +37,10 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     if (actions.length > 0) {
       dispatch(addActionToEditingCommand(actions[0].id));
     }
+  };
+  const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
+    dispatch(saveEditingCommand());
+    dispatch(clearEditingCommand());
   };
 
   return (
@@ -78,10 +86,16 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       >
         Add Action
       </Button>
-      <FormGroup as={Row} className="mb-3" controlId={actionsId}>
-        {props.command.actionIds.map((actionId, index) => (
+
+      {props.command.actionIds.map((actionId, index) => (
+        <VerticalMoveableComponent<MoveCommandActionPayload, number>
+          moveFn={(direction) =>
+            moveEditingCommandAction({ index: index, direction: direction })
+          }
+          deleteFn={() => deleteEditingCommandAction(index)}
+          key={actionId + '-' + index}
+        >
           <ActionDropdownComponent
-            key={actionId + '-' + index}
             actionId={actionId}
             selectedChangedFn={(newActionId) =>
               changeEditingCommandActionId({
@@ -89,10 +103,12 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
                 newActionId: newActionId,
               })
             }
-            deletedFn={() => deleteEditingCommandAction(index)}
           />
-        ))}
-      </FormGroup>
+        </VerticalMoveableComponent>
+      ))}
+      <Button onClick={submitHandler} variant="primary" size="lg">
+        Save
+      </Button>
     </PanelComponent>
   );
 };

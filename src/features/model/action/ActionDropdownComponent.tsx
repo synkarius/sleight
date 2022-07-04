@@ -9,7 +9,6 @@ export const ActionDropdownComponent: React.FC<{
   selectedChangedFn: (
     selectedActionId: string
   ) => PayloadAction<ChangeActionIdPayload>;
-  deletedFn: () => PayloadAction<number>;
 }> = (props) => {
   const dispatch = useAppDispatch();
   const actions = useAppSelector((state) => state.action.saved);
@@ -18,9 +17,6 @@ export const ActionDropdownComponent: React.FC<{
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     dispatch(props.selectedChangedFn(event.target.value));
-  };
-  const deletedHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(props.deletedFn());
   };
 
   return (

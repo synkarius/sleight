@@ -1,24 +1,20 @@
 import React, { useId } from 'react';
 import {
-  Button,
   Col,
-  Container,
   FormGroup,
   FormLabel,
   FormSelect,
   FormText,
   Row,
 } from 'react-bootstrap';
-import { ArrowDown, ArrowUp } from 'react-bootstrap-icons';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { PanelComponent } from '../../ui/PanelComponent';
-import { MoveDirection } from '../common/move-direction';
 import { Variable } from '../variable/variable';
 import { VariablesDropdownComponent } from '../variable/VariablesDropdownComponent';
 import { createSelector, Selector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { SelectorComponent } from '../selector/SelectorComponent';
 import {
+  ChangeSpecItemOrderPayload,
   ChangeSpecItemVariableIdPayload,
   SpecItem,
   SpecItemType,
@@ -30,6 +26,7 @@ import {
   deleteSpecItem,
 } from './spec-reducers';
 import { UnhandledSpecItemTypeError } from '../../../error/UnhandledSpecItemTypeError';
+import { VerticalMoveableComponent } from '../../ui/VerticalMoveableComponent';
 
 export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
   const dispatch = useAppDispatch();
@@ -62,17 +59,6 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
       })
     );
   };
-  const moveHandler = (specItemId: string, moveDirection: MoveDirection) => {
-    dispatch(
-      changeSpecItemOrder({
-        specItemId: specItemId,
-        moveDirection: moveDirection,
-      })
-    );
-  };
-  const deleteHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(deleteSpecItem(props.specItem.id));
-  };
   const changeSpecItemVariableIdActionCreator = (newVariableId: string) => {
     return changeSpecItemVariableId({
       specItemId: props.specItem.id,
@@ -90,73 +76,42 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
       : undefined;
 
   return (
-    <PanelComponent>
-      <Container>
-        <Row>
-          <Col sm="10">
-            <FormGroup as={Row} className="mb-3" controlId={typeInputId}>
-              <FormLabel column sm="2">
-                Type
-              </FormLabel>
-              <Col sm="10">
-                <FormSelect
-                  aria-label="Spec item type selection"
-                  onChange={typeChangedHandler}
-                  value={props.specItem.itemType}
-                >
-                  {SpecItemType.values().map((sit) => (
-                    <option key={sit} value={sit}>
-                      {sit}
-                    </option>
-                  ))}
-                </FormSelect>
-                <FormText className="text-muted">kind of spec item</FormText>
-              </Col>
-            </FormGroup>
-            {selector && (
-              <SelectorComponent showLabel={false} selector={selector} />
-            )}
-            {variable && (
-              <VariablesDropdownComponent<ChangeSpecItemVariableIdPayload>
-                selectedVariableId={variable.id}
-                payloadFn={changeSpecItemVariableIdActionCreator}
-                variableTypeFilter={null}
-              />
-            )}
-          </Col>
-          <Col sm="2">
-            <Row>
-              <Button
-                className="mb-3"
-                onClick={(_e) =>
-                  moveHandler(props.specItem.id, MoveDirection.UP)
-                }
-              >
-                Move <ArrowUp />{' '}
-              </Button>
-            </Row>
-            <Row>
-              <Button
-                className="mb-3"
-                variant="warning"
-                onClick={deleteHandler}
-              >
-                Delete
-              </Button>
-            </Row>
-            <Row>
-              <Button
-                className="mb-3"
-                onClick={(_e) =>
-                  moveHandler(props.specItem.id, MoveDirection.DOWN)
-                }
-              >
-                Move <ArrowDown />
-              </Button>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </PanelComponent>
+    <VerticalMoveableComponent<ChangeSpecItemOrderPayload, string>
+      moveFn={(direction) =>
+        changeSpecItemOrder({
+          specItemId: props.specItem.id,
+          moveDirection: direction,
+        })
+      }
+      deleteFn={() => deleteSpecItem(props.specItem.id)}
+    >
+      <FormGroup as={Row} className="mb-3" controlId={typeInputId}>
+        <FormLabel column sm="2">
+          Type
+        </FormLabel>
+        <Col sm="10">
+          <FormSelect
+            aria-label="Spec item type selection"
+            onChange={typeChangedHandler}
+            value={props.specItem.itemType}
+          >
+            {SpecItemType.values().map((sit) => (
+              <option key={sit} value={sit}>
+                {sit}
+              </option>
+            ))}
+          </FormSelect>
+          <FormText className="text-muted">kind of spec item</FormText>
+        </Col>
+      </FormGroup>
+      {selector && <SelectorComponent showLabel={false} selector={selector} />}
+      {variable && (
+        <VariablesDropdownComponent<ChangeSpecItemVariableIdPayload>
+          selectedVariableId={variable.id}
+          payloadFn={changeSpecItemVariableIdActionCreator}
+          variableTypeFilter={null}
+        />
+      )}
+    </VerticalMoveableComponent>
   );
 };
