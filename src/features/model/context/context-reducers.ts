@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { 
-    Context, createContext
-} from "./context";
+import { Context } from "./context";
 
 type Contexts = {
     saved: ReduxFriendlyStringMap<Context>,
@@ -18,8 +16,8 @@ const contextsSlice = createSlice({
     name: "contexts",
     initialState,
     reducers: {
-        createNewEditingContext: (state) => {
-            state.editing = createContext();
+        createNewEditingContext: (state, action:PayloadAction<Context>) => {
+            state.editing = action.payload;
         },
         selectContext: (state, action:PayloadAction<string>) => {
             state.editing = state.saved[action.payload];

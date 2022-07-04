@@ -16,8 +16,8 @@ const roleKeysSlice = createSlice({
     name: "roleKeys",
     initialState,
     reducers: {
-        createNewEditingRoleKey: (state) => {
-            state.editing = createRoleKey();
+        createNewEditingRoleKey: (state, action:PayloadAction<RoleKey>) => {
+            state.editing = action.payload;
         },
         selectRoleKey: (state, action:PayloadAction<string>) => {
             const roleKeyId = action.payload;

@@ -38,6 +38,8 @@ import {
   selectSpec,
 } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
+import { createContext } from '../model/context/context';
+import { createRoleKey } from '../model/role-key/role-key';
 
 interface Item extends Named, Ided {}
 
@@ -87,14 +89,14 @@ export const SidebarComponent = () => {
     {
       type: ElementType.CONTEXT,
       items: contexts,
-      createFn: () => dispatch(createNewEditingContext()),
+      createFn: () => dispatch(createNewEditingContext(createContext())),
       selectFn: (id) => dispatch(selectContext(id)),
       clearFn: () => dispatch(clearEditingContext()),
     },
     {
       type: ElementType.ROLE_KEY,
       items: roleKeys,
-      createFn: () => dispatch(createNewEditingRoleKey()),
+      createFn: () => dispatch(createNewEditingRoleKey(createRoleKey())),
       selectFn: (id) => dispatch(selectRoleKey(id)),
       clearFn: () => dispatch(clearEditingRoleKey()),
     },
