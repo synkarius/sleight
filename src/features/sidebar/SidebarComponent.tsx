@@ -54,7 +54,7 @@ export interface ItemGroup {
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
   const actionsSaved = useAppSelector((state) => state.action.saved);
-  const commandsSaved = useAppSelector((state) => state.context.saved);
+  const commandsSaved = useAppSelector((state) => state.command.saved);
   const contextsSaved = useAppSelector((state) => state.context.saved);
   const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
   const specsSaved = useAppSelector((state) => state.spec.saved);
