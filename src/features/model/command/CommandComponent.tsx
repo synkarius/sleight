@@ -79,13 +79,15 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           />
         )}
       </FormGroupRowComponent>
-      <Button
-        className="mb-3"
-        onClick={addActionHandler}
-        variant="outline-primary"
-      >
-        Add Action
-      </Button>
+      <div>
+        <Button
+          className="mb-3"
+          onClick={addActionHandler}
+          variant="outline-primary"
+        >
+          Add Action
+        </Button>
+      </div>
 
       {props.command.actionIds.map((actionId, index) => (
         <VerticalMoveableComponent<MoveCommandActionPayload, number>

@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { actionReducer } from '../action/action-reducers';
+import { MoveDirection } from '../common/move-direction';
 import { ChangeActionIdPayload, Command, MoveCommandActionPayload } from './command';
 
 type Commands = {
@@ -67,11 +69,21 @@ const commandsSlice = createSlice({
             }
         },
         moveEditingCommandAction: (state, action:PayloadAction<MoveCommandActionPayload>) => {
-            // TODO
+            if (state.editing) {
+                const commandActionId = state.editing.actionIds[action.payload.index];
+                if (commandActionId) {
+                    const newIndex = action.payload.direction === MoveDirection.UP ? action.payload.index - 1 : action.payload.index + 1;
+                    if (newIndex >= 0 && newIndex < state.editing.actionIds.length) {
+                        const displaced = state.editing.actionIds[newIndex];
+                        state.editing.actionIds[newIndex] = commandActionId;
+                        state.editing.actionIds[action.payload.index] = displaced;
+                    }
+                }
+            }
         },
         deleteEditingCommandAction: (state, action:PayloadAction<number>) => {
             if (state.editing) {
-                delete state.editing.actionIds[action.payload];
+                state.editing.actionIds.splice(action.payload, 1);
             }
         },
     }
