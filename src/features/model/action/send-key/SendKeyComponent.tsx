@@ -1,6 +1,7 @@
 import React, { useId } from 'react';
 import { Form, FormCheck, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../../app/hooks';
+import { ExpandCollapseComponent } from '../../../ui/ExpandCollapseComponent';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import {
   changeEditingSendKeyMode,
@@ -57,36 +58,6 @@ export const SendKeyComponent: React.FC<{
         </Form.Select>
         <FormText className="text-muted">send-key mode</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Modifier Keys">
-        <FormCheck
-          type="switch"
-          id={controlModifierCheckboxId}
-          label="Control/Command"
-          checked={props.sendKeyAction.modifiers.control}
-          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.CONTROL)}
-        />
-        <FormCheck
-          type="switch"
-          id={shiftModifierCheckboxId}
-          label="Shift"
-          checked={props.sendKeyAction.modifiers.shift}
-          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.SHIFT)}
-        />
-        <FormCheck
-          type="switch"
-          id={altModifierCheckboxId}
-          label="Alt"
-          checked={props.sendKeyAction.modifiers.alt}
-          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.ALT)}
-        />
-        <FormCheck
-          type="switch"
-          id={windowsModifierCheckboxId}
-          label="Windows"
-          checked={props.sendKeyAction.modifiers.windows}
-          onChange={(_e) => modifierToggledHandler(SendKeyModifiers.WINDOWS)}
-        />
-      </FormGroupRowComponent>
       <ActionValueComponent
         labelText="Key to Send"
         actionValue={props.sendKeyAction.sendKey}
@@ -97,28 +68,60 @@ export const SendKeyComponent: React.FC<{
         variableIdChangedFn={(id) => changeKeyToSendVariableId(id)}
         roleKeyIdChangedFn={(id) => changeKeyToSendRoleKeyId(id)}
       />
-      <ActionValueComponent
-        labelText="Outer Pause"
-        actionValue={props.sendKeyAction.outerPause}
-        actionValueTypeChangedFn={(type) =>
-          changeOuterPauseActionValueType(type)
-        }
-        valueChangedFn={(value) => changeOuterPauseValue(value)}
-        variableIdChangedFn={(id) => changeOuterPauseVariableId(id)}
-        roleKeyIdChangedFn={(id) => changeOuterPauseRoleKeyId(id)}
-      />
-      {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
-        <SendKeyPressComponent
-          sendKeyPressAction={props.sendKeyAction as SendKeyPressAction}
-        />
-      )}
-      {props.sendKeyAction.sendKeyMode === SendKeyMode.HOLD_RELEASE && (
-        <SendKeyHoldReleaseComponent
-          sendKeyHoldReleaseAction={
-            props.sendKeyAction as SendKeyHoldReleaseAction
+      <ExpandCollapseComponent buttonText="More Options">
+        <FormGroupRowComponent labelText="Modifier Keys">
+          <FormCheck
+            type="switch"
+            id={controlModifierCheckboxId}
+            label="Control/Command"
+            checked={props.sendKeyAction.modifiers.control}
+            onChange={(_e) => modifierToggledHandler(SendKeyModifiers.CONTROL)}
+          />
+          <FormCheck
+            type="switch"
+            id={shiftModifierCheckboxId}
+            label="Shift"
+            checked={props.sendKeyAction.modifiers.shift}
+            onChange={(_e) => modifierToggledHandler(SendKeyModifiers.SHIFT)}
+          />
+          <FormCheck
+            type="switch"
+            id={altModifierCheckboxId}
+            label="Alt"
+            checked={props.sendKeyAction.modifiers.alt}
+            onChange={(_e) => modifierToggledHandler(SendKeyModifiers.ALT)}
+          />
+          <FormCheck
+            type="switch"
+            id={windowsModifierCheckboxId}
+            label="Windows"
+            checked={props.sendKeyAction.modifiers.windows}
+            onChange={(_e) => modifierToggledHandler(SendKeyModifiers.WINDOWS)}
+          />
+        </FormGroupRowComponent>
+        <ActionValueComponent
+          labelText="Outer Pause"
+          actionValue={props.sendKeyAction.outerPause}
+          actionValueTypeChangedFn={(type) =>
+            changeOuterPauseActionValueType(type)
           }
+          valueChangedFn={(value) => changeOuterPauseValue(value)}
+          variableIdChangedFn={(id) => changeOuterPauseVariableId(id)}
+          roleKeyIdChangedFn={(id) => changeOuterPauseRoleKeyId(id)}
         />
-      )}
+        {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
+          <SendKeyPressComponent
+            sendKeyPressAction={props.sendKeyAction as SendKeyPressAction}
+          />
+        )}
+        {props.sendKeyAction.sendKeyMode === SendKeyMode.HOLD_RELEASE && (
+          <SendKeyHoldReleaseComponent
+            sendKeyHoldReleaseAction={
+              props.sendKeyAction as SendKeyHoldReleaseAction
+            }
+          />
+        )}
+      </ExpandCollapseComponent>
     </>
   );
 };
