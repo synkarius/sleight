@@ -1,10 +1,22 @@
-import { RoleKeyed, Named } from "../../domain";
-import { Action } from "../action/action";
-import { Context } from "../context/context";
-import { Spec } from "../spec/spec";
+import { getRandomId } from '../../../util/functions';
+import { RoleKeyed, Named, Ided } from "../../domain";
+import { CommandSpecType } from './command-spec-type';
 
-export interface Command extends RoleKeyed, Named {
-    spec: Spec,
-    actions: Action[],
-    contexts: Context[]
+export interface Command extends Ided, Named, RoleKeyed {
+    specId: string|null;
+    specRoleKeyId: string|null;
+    commandSpecType: string;
+    actionIds:string[]
+}
+
+export const createCommand = ():Command => {
+    return {
+        id: getRandomId(),
+        name: "",
+        roleKeyId: null,
+        specId: null,
+        specRoleKeyId: null,
+        commandSpecType: CommandSpecType.SPEC,
+        actionIds: []
+    }
 }

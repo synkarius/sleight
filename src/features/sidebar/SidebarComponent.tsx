@@ -7,6 +7,11 @@ import {
   selectAction,
 } from '../model/action/action-reducers';
 import { createSendKeyPressAction } from '../model/action/send-key/send-key';
+import { createCommand } from '../model/command/command';
+import {
+  createNewEditingCommand,
+  selectCommand,
+} from '../model/command/command-reducers';
 import { ElementType } from '../model/common/element-types';
 import {
   clearEditingContext,
@@ -47,12 +52,14 @@ export interface ItemGroup {
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
   const actionsSaved = useAppSelector((state) => state.action.saved);
+  const commandsSaved = useAppSelector((state) => state.context.saved);
   const contextsSaved = useAppSelector((state) => state.context.saved);
   const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
   const specsSaved = useAppSelector((state) => state.spec.saved);
   const variablesSaved = useAppSelector((state) => state.extra.saved);
 
   const actions = Object.values(actionsSaved);
+  const commands = Object.values(commandsSaved);
   const contexts = Object.values(contextsSaved);
   const specs = Object.values(specsSaved);
   const roleKeys = Object.values(roleKeysSaved).map((rk) => {
@@ -72,10 +79,10 @@ export const SidebarComponent = () => {
     },
     {
       type: ElementType.COMMAND,
-      items: [],
-      createFn: () => {},
-      selectFn: (id) => {},
-      clearFn: () => {},
+      items: commands,
+      createFn: () => dispatch(createNewEditingCommand(createCommand())),
+      selectFn: (id) => dispatch(selectCommand(id)),
+      clearFn: () => dispatch(clearEditingContext()),
     },
     {
       type: ElementType.CONTEXT,
