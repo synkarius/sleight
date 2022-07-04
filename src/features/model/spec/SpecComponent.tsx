@@ -22,6 +22,7 @@ import { SpecItemComponent } from './SpecItemComponent';
 import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
+import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const dispatch = useAppDispatch();
@@ -45,31 +46,21 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
 
   return (
     <PanelComponent>
-      <FormGroup as={Row} className="mb-3" controlId={nameInputId}>
-        <FormLabel column sm="2">
-          Name
-        </FormLabel>
-        <Col sm="6">
-          <FormControl
-            type="text"
-            onChange={nameChangedHandler}
-            value={props.spec.name}
-          ></FormControl>
-          <FormText className="text-muted">name of spec</FormText>
-        </Col>
-      </FormGroup>
-      <FormGroup as={Row} className="mb-3" controlId={roleKeyId}>
-        <FormLabel column sm="2">
-          Role Key
-        </FormLabel>
-        <Col sm="6">
-          <RoleKeyDropdownComponent
-            roleKeyId={props.spec.roleKeyId}
-            payloadFn={(id) => changeEditingSpecRoleKey(id)}
-          />
-          <FormText className="text-muted">role of variable</FormText>
-        </Col>
-      </FormGroup>
+      <FormGroupRowComponent labelText="Name">
+        <FormControl
+          type="text"
+          onChange={nameChangedHandler}
+          value={props.spec.name}
+        />
+        <FormText className="text-muted">name of spec</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Role Key">
+        <RoleKeyDropdownComponent
+          roleKeyId={props.spec.roleKeyId}
+          payloadFn={(id) => changeEditingSpecRoleKey(id)}
+        />
+        <FormText className="text-muted">role of variable</FormText>
+      </FormGroupRowComponent>
       {props.spec.items.map((specItem) => (
         <SpecItemComponent key={specItem.id} specItem={specItem} />
       ))}

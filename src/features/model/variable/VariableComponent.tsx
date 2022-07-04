@@ -1,15 +1,6 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
-import {
-  FormControl,
-  FormGroup,
-  FormLabel,
-  FormText,
-  Button,
-  Form,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import { FormControl, FormText, Button, FormSelect } from 'react-bootstrap';
 import { ChoiceComponent } from './choice/ChoiceComponent';
 import { Variable } from './variable';
 import { Range } from './range/range';
@@ -27,12 +18,10 @@ import { PanelComponent } from '../../ui/PanelComponent';
 import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
+import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const dispatch = useAppDispatch();
-  const nameInputId = useId();
-  const roleKeyId = useId();
-  const typeInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeEditingVariableName(event.target.value));
@@ -59,50 +48,35 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
 
   return (
     <PanelComponent>
-      <FormGroup as={Row} className="mb-3" controlId={nameInputId}>
-        <FormLabel column sm="2">
-          Name
-        </FormLabel>
-        <Col sm="6">
-          <FormControl
-            type="text"
-            onChange={nameChangedHandler}
-            value={props.variable.name}
-          ></FormControl>
-          <FormText className="text-muted">name of variable</FormText>
-        </Col>
-      </FormGroup>
-      <FormGroup as={Row} className="mb-3" controlId={roleKeyId}>
-        <FormLabel column sm="2">
-          Role Key
-        </FormLabel>
-        <Col sm="6">
-          <RoleKeyDropdownComponent
-            roleKeyId={props.variable.roleKeyId}
-            payloadFn={(id) => changeEditingVariableRoleKey(id)}
-          />
-          <FormText className="text-muted">role of variable</FormText>
-        </Col>
-      </FormGroup>
-      <FormGroup as={Row} className="mb-3" controlId={typeInputId}>
-        <FormLabel column sm="2">
-          Type
-        </FormLabel>
-        <Col sm="6">
-          <Form.Select
-            aria-label="Variable type selection"
-            onChange={typeChangedHandler}
-            value={props.variable.type}
-          >
-            {VariableType.values().map((vt) => (
-              <option key={vt} value={vt}>
-                {vt}
-              </option>
-            ))}
-          </Form.Select>
-          <FormText className="text-muted">kind of variable</FormText>
-        </Col>
-      </FormGroup>
+      <FormGroupRowComponent labelText="Name">
+        <FormControl
+          type="text"
+          onChange={nameChangedHandler}
+          value={props.variable.name}
+        />
+        <FormText className="text-muted">name of variable</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Role Key">
+        <RoleKeyDropdownComponent
+          roleKeyId={props.variable.roleKeyId}
+          payloadFn={(id) => changeEditingVariableRoleKey(id)}
+        />
+        <FormText className="text-muted">role of variable</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Type">
+        <FormSelect
+          aria-label="Variable type selection"
+          onChange={typeChangedHandler}
+          value={props.variable.type}
+        >
+          {VariableType.values().map((vt) => (
+            <option key={vt} value={vt}>
+              {vt}
+            </option>
+          ))}
+        </FormSelect>
+        <FormText className="text-muted">kind of variable</FormText>
+      </FormGroupRowComponent>
       {props.variable.type === VariableType.RANGE && (
         <RangeComponent range={props.variable as Range} />
       )}

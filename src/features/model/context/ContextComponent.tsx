@@ -1,15 +1,7 @@
-import React, { useId } from 'react';
-import {
-  Button,
-  Col,
-  Form,
-  FormControl,
-  FormGroup,
-  FormLabel,
-  FormText,
-  Row,
-} from 'react-bootstrap';
+import React from 'react';
+import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
+import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
@@ -25,10 +17,6 @@ import { ContextType } from './context-types';
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const dispatch = useAppDispatch();
-  const nameInputId = useId();
-  const roleKeyId = useId();
-  const typeInputId = useId();
-  const matcherInputId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeEditingContextName(event.target.value));
@@ -53,63 +41,43 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
 
   return (
     <PanelComponent>
-      <FormGroup as={Row} className="mb-3" controlId={nameInputId}>
-        <FormLabel column sm="2">
-          Name
-        </FormLabel>
-        <Col sm="6">
-          <FormControl
-            type="text"
-            onChange={nameChangedHandler}
-            value={props.context.name}
-          ></FormControl>
-          <FormText className="text-muted">name of context</FormText>
-        </Col>
-      </FormGroup>
-      <FormGroup as={Row} className="mb-3" controlId={roleKeyId}>
-        <FormLabel column sm="2">
-          Role Key
-        </FormLabel>
-        <Col sm="6">
-          <RoleKeyDropdownComponent
-            roleKeyId={props.context.roleKeyId}
-            payloadFn={(id) => changeEditingContextRoleKey(id)}
-          />
-          <FormText className="text-muted">role of variable</FormText>
-        </Col>
-      </FormGroup>
-      <FormGroup as={Row} className="mb-3" controlId={typeInputId}>
-        <FormLabel column sm="2">
-          Type
-        </FormLabel>
-        <Col sm="6">
-          <Form.Select
-            aria-label="Variable type selection"
-            onChange={typeChangedHandler}
-            value={props.context.type}
-          >
-            {ContextType.values().map((ct) => (
-              <option key={ct} value={ct}>
-                {ct}
-              </option>
-            ))}
-          </Form.Select>
-          <FormText className="text-muted">kind of variable</FormText>
-        </Col>
-      </FormGroup>
-      <FormGroup as={Row} className="mb-3" controlId={matcherInputId}>
-        <FormLabel column sm="2">
-          Matcher
-        </FormLabel>
-        <Col sm="6">
-          <FormControl
-            type="text"
-            onChange={matcherChangedHandler}
-            value={props.context.matcher}
-          ></FormControl>
-          <FormText className="text-muted">{matcherHelpText}</FormText>
-        </Col>
-      </FormGroup>
+      <FormGroupRowComponent labelText="Name">
+        <FormControl
+          type="text"
+          onChange={nameChangedHandler}
+          value={props.context.name}
+        />
+        <FormText className="text-muted">name of context</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Role Key">
+        <RoleKeyDropdownComponent
+          roleKeyId={props.context.roleKeyId}
+          payloadFn={(id) => changeEditingContextRoleKey(id)}
+        />
+        <FormText className="text-muted">role of variable</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Type">
+        <FormSelect
+          aria-label="Variable type selection"
+          onChange={typeChangedHandler}
+          value={props.context.type}
+        >
+          {ContextType.values().map((ct) => (
+            <option key={ct} value={ct}>
+              {ct}
+            </option>
+          ))}
+        </FormSelect>
+        <FormText className="text-muted">kind of variable</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Matcher">
+        <FormControl
+          type="text"
+          onChange={matcherChangedHandler}
+          value={props.context.matcher}
+        />
+        <FormText className="text-muted">{matcherHelpText}</FormText>
+      </FormGroupRowComponent>
       <Button onClick={submitHandler} variant="primary" size="lg">
         Save
       </Button>
