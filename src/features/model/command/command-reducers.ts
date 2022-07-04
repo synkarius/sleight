@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { Command } from './command';
+import { ChangeActionIdPayload, Command } from './command';
 
 type Commands = {
     saved: ReduxFriendlyStringMap<Command>
@@ -45,6 +45,31 @@ const commandsSlice = createSlice({
             if (state.editing) {
                 state.editing.commandSpecType = action.payload;
             }
+        },
+        changeEditingCommandSpecSpecId: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.specId = action.payload;
+            }
+        },
+        changeEditingCommandSpecRoleKeyId: (state, action: PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.specRoleKeyId = action.payload;
+            }
+        },
+        addActionToEditingCommand: (state, action:PayloadAction<string>) => {
+            if (state.editing) {
+                state.editing.actionIds.push(action.payload);
+            }
+        },
+        changeEditingCommandActionId: (state, action:PayloadAction<ChangeActionIdPayload>) => {
+            if (state.editing) {
+                state.editing.actionIds[action.payload.index] = action.payload.newActionId;
+            }
+        },
+        deleteEditingCommandAction: (state, action:PayloadAction<number>) => {
+            if (state.editing) {
+                delete state.editing.actionIds[action.payload];
+            }
         }
     }
 });
@@ -57,5 +82,10 @@ export const {
     changeEditingCommandName,
     changeEditingCommandRoleKey, 
     changeEditingCommandSpecType,
+    changeEditingCommandSpecSpecId,
+    changeEditingCommandSpecRoleKeyId,
+    addActionToEditingCommand,
+    changeEditingCommandActionId,
+    deleteEditingCommandAction,
 } = commandsSlice.actions;
 export const commandReducer = commandsSlice.reducer;

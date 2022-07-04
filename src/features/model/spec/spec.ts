@@ -1,5 +1,6 @@
 import { getRandomId } from '../../../util/functions';
 import { Ided, Named, RoleKeyed, Typed } from "../../domain";
+import { MoveDirection } from '../common/move-direction';
 
 export class SpecItemType {
     static readonly SELECTOR = "Selector";
@@ -50,5 +51,5 @@ export type ChangeSpecItemVariableIdPayload = {
 
 export type ChangeSpecItemOrderPayload = {
     specItemId: string,
-    moveDirection: string    
+    moveDirection: MoveDirection    
 }

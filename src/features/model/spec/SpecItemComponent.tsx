@@ -62,7 +62,7 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
       })
     );
   };
-  const moveHandler = (specItemId: string, moveDirection: string) => {
+  const moveHandler = (specItemId: string, moveDirection: MoveDirection) => {
     dispatch(
       changeSpecItemOrder({
         specItemId: specItemId,

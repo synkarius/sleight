@@ -11,7 +11,7 @@ export const ExpandCollapseComponent: React.FC<{
     <div>
       <Button
         className="mb-3"
-        variant="primary"
+        variant="outline-primary"
         size="lg"
         onClick={() => setOpen(!open)}
         aria-controls={collapseDivId}
