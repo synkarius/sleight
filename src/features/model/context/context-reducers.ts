@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { Context } from "./context";
 
-type Contexts = {
+export interface Contexts {
     saved: ReduxFriendlyStringMap<Context>,
     editing: Context | null
 }
