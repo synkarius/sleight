@@ -4,6 +4,7 @@ import { SelectorNotFoundError } from '../../../error/SelectorNotFoundError';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import {
   createSelectorItem,
+  CreateSelectorItemPayload,
   DeleteSelectorItemPayload,
   EditSelectorItemPayload,
   Selector,
@@ -51,9 +52,12 @@ const selectorsSlice = createSlice({
       const selectorId = action.payload;
       delete state.saved[selectorId];
     },
-    createNewSelectorItem: (state, action: PayloadAction<string>) => {
-      const selector = findSelector(state, action.payload);
-      selector.items = [...selector.items, createSelectorItem()];
+    createNewSelectorItem: (
+      state,
+      action: PayloadAction<CreateSelectorItemPayload>
+    ) => {
+      const selector = findSelector(state, action.payload.selectorId);
+      selector.items = [...selector.items, action.payload.selectorItem];
     },
     editSelectorItem: (
       state,

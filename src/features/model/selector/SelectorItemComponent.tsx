@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, FormControl, InputGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
-import { SelectorItem } from './selector';
+import { createSelectorItem, SelectorItem } from './selector';
 import {
   createNewSelectorItem,
   deleteSelectorItem,
@@ -27,7 +27,12 @@ export const SelectorItemComponent: React.FC<{
   const dispatch = useAppDispatch();
 
   const addHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(createNewSelectorItem(props.selectorId));
+    dispatch(
+      createNewSelectorItem({
+        selectorId: props.selectorId,
+        selectorItem: createSelectorItem(),
+      })
+    );
   };
   const changedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(

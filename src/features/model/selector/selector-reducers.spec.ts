@@ -1,5 +1,5 @@
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { createSelector, Selector } from './selector';
+import { createSelector, createSelectorItem, Selector } from './selector';
 import {
   Selectors,
   createNewSelector,
@@ -58,6 +58,9 @@ describe('role key reducer', () => {
   it('should handle create new selector item', () => {
     const newSelector1 = createSelector();
     const newSelector2 = createSelector();
+    const newSelectorItem1 = createSelectorItem();
+    newSelectorItem1.roleKeyId = 'some-rk-id';
+    newSelectorItem1.value = 'some-value';
 
     const createdState1 = selectorReducer(
       initialState,
@@ -69,7 +72,10 @@ describe('role key reducer', () => {
     );
     const actual = selectorReducer(
       createdState2,
-      createNewSelectorItem(newSelector1.id)
+      createNewSelectorItem({
+        selectorId: newSelector1.id,
+        selectorItem: newSelectorItem1,
+      })
     );
 
     const expected: ReduxFriendlyStringMap<Selector> = {};
@@ -83,9 +89,9 @@ describe('role key reducer', () => {
           value: '',
         },
         {
-          roleKeyId: null,
+          roleKeyId: 'some-rk-id',
           id: expect.any(String),
-          value: '',
+          value: 'some-value',
         },
       ],
     };
