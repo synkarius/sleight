@@ -1,16 +1,8 @@
-import {
-  RoleKeyed,
-  copyVariable,
-  createVariable,
-  Ided,
-  Named,
-  Typed,
-} from '../../../domain';
+import { RoleKeyed, Ided, Named, Typed, BasicFields } from '../../../domain';
+import { copyVariable, createVariable } from '../variable';
 import { VariableType } from '../variable-types';
 
 export interface Text extends RoleKeyed, Named, Ided, Typed {}
-
-interface TextCompatible extends RoleKeyed, Named, Ided, Typed {}
 
 export const createText = (): Text => {
   return {
@@ -18,7 +10,7 @@ export const createText = (): Text => {
   };
 };
 
-export const copyIntoText = (variable: TextCompatible): Text => {
+export const copyIntoText = (variable: BasicFields): Text => {
   return {
     ...copyVariable(variable),
     type: VariableType.TEXT,

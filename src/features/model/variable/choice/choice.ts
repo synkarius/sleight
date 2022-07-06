@@ -1,15 +1,7 @@
 import { getRandomId } from '../../../../util/functions';
-import {
-  RoleKeyed,
-  copyVariable,
-  createVariable,
-  Ided,
-  Named,
-  Typed,
-} from '../../../domain';
+import { RoleKeyed, Ided, Named, Typed, BasicFields } from '../../../domain';
+import { copyVariable, createVariable } from '../variable';
 import { VariableType } from '../variable-types';
-
-interface ChoiceCompatible extends RoleKeyed, Named, Ided, Typed {}
 
 export interface ChoiceItem extends RoleKeyed, Ided {
   selectorId: string;
@@ -37,7 +29,7 @@ export const createChoice = (selectorId: string): Choice => {
 };
 
 export const copyIntoChoice = (
-  variable: ChoiceCompatible,
+  variable: BasicFields,
   selectorId: string
 ): Choice => {
   return {

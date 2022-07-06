@@ -1,11 +1,5 @@
-import {
-  RoleKeyed,
-  copyVariable,
-  createVariable,
-  Ided,
-  Named,
-  Typed,
-} from '../../../domain';
+import { RoleKeyed, Ided, Named, Typed, BasicFields } from '../../../domain';
+import { copyVariable, createVariable } from '../variable';
 import { VariableType } from '../variable-types';
 
 const BEGIN_INCLUSIVE_DEFAULT = 0;
@@ -16,8 +10,6 @@ export interface Range extends RoleKeyed, Named, Ided, Typed {
   endInclusive: number;
 }
 
-interface RangeCompatible extends RoleKeyed, Named, Ided, Typed {}
-
 export const createRange = (): Range => {
   return {
     ...createVariable(VariableType.RANGE),
@@ -26,7 +18,7 @@ export const createRange = (): Range => {
   };
 };
 
-export const copyIntoRange = (variable: RangeCompatible): Range => {
+export const copyIntoRange = (variable: BasicFields): Range => {
   return {
     ...copyVariable(variable),
     type: VariableType.RANGE,
