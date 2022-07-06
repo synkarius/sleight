@@ -1,7 +1,7 @@
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { createSelector, createSelectorItem, Selector } from './selector';
 import {
-  Selectors,
+  SelectorsState,
   createNewSelector,
   deleteSelector,
   createNewSelectorItem,
@@ -12,7 +12,7 @@ import {
 global.crypto = require('crypto');
 
 describe('role key reducer', () => {
-  const initialState: Selectors = {
+  const initialState: SelectorsState = {
     saved: {},
   };
   it('should handle initial state', () => {

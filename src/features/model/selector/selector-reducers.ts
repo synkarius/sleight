@@ -3,14 +3,13 @@ import { SelectorIdDuplicateError } from '../../../error/SelectorIdDuplicateErro
 import { SelectorNotFoundError } from '../../../error/SelectorNotFoundError';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import {
-  createSelectorItem,
   CreateSelectorItemPayload,
   DeleteSelectorItemPayload,
   EditSelectorItemPayload,
   Selector,
 } from './selector';
 
-export type Selectors = {
+export type SelectorsState = {
   /*
    * allowing for orphaned selectors so as to not have to deal with the complication of
    * a separate "editing" map
@@ -18,7 +17,7 @@ export type Selectors = {
   saved: ReduxFriendlyStringMap<Selector>;
 };
 
-const findSelector = (state: Selectors, id: string): Selector => {
+const findSelector = (state: SelectorsState, id: string): Selector => {
   const selector = state.saved[id];
   if (selector) {
     return selector;
@@ -26,7 +25,7 @@ const findSelector = (state: Selectors, id: string): Selector => {
   throw new SelectorNotFoundError(id);
 };
 
-const initialState: Selectors = {
+const initialState: SelectorsState = {
   saved: {},
 };
 

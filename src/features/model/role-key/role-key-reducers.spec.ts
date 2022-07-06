@@ -1,7 +1,7 @@
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { createRoleKey, RoleKey } from './role-key';
 import {
-  RoleKeys,
+  RoleKeysState,
   createNewEditingRoleKey,
   selectRoleKey,
   clearEditingRoleKey,
@@ -13,7 +13,7 @@ import {
 global.crypto = require('crypto');
 
 describe('role key reducer', () => {
-  const initialState: RoleKeys = {
+  const initialState: RoleKeysState = {
     saved: {},
     editing: null,
   };
@@ -64,8 +64,9 @@ describe('role key reducer', () => {
       createNewEditingRoleKey(newObject)
     );
     const savedState = roleKeyReducer(createdState, saveEditingRoleKey());
+    const clearedState = roleKeyReducer(savedState, clearEditingRoleKey());
 
-    const actual = roleKeyReducer(savedState, selectRoleKey(newObject.id));
+    const actual = roleKeyReducer(clearedState, selectRoleKey(newObject.id));
     expect(actual.editing).toEqual({
       id: newObject.id,
       value: '',
@@ -73,12 +74,12 @@ describe('role key reducer', () => {
   });
 
   it('should handle clear', () => {
-    const newObject = roleKeyReducer(
+    const createdState = roleKeyReducer(
       initialState,
       createNewEditingRoleKey(createRoleKey())
     );
 
-    const actual = roleKeyReducer(newObject, clearEditingRoleKey());
+    const actual = roleKeyReducer(createdState, clearEditingRoleKey());
 
     expect(actual.editing).toBeNull();
   });

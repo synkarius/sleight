@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
 import { RoleKey } from './role-key';
 
-export type RoleKeys = {
+export type RoleKeysState = {
   saved: ReduxFriendlyStringMap<RoleKey>;
   editing: RoleKey | null;
 };
 
-const initialState: RoleKeys = {
+const initialState: RoleKeysState = {
   saved: {},
   editing: null,
 };

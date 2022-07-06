@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../../../app/hooks';
 import { createSelector } from '../../selector/selector';
 import { createNewSelector } from '../../selector/selector-reducers';
 import { addChoiceItem } from '../variable-reducers';
-import { Choice } from './choice';
+import { Choice, createChoiceItem } from './choice';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
 
 export const ChoiceComponent: React.FC<{ choice: Choice }> = (props) => {
@@ -15,7 +15,7 @@ export const ChoiceComponent: React.FC<{ choice: Choice }> = (props) => {
     const selector = createSelector();
     // TODO: this way creates orphans -- process them out somewhere
     dispatch(createNewSelector(selector));
-    dispatch(addChoiceItem(selector.id));
+    dispatch(addChoiceItem(createChoiceItem(selector.id)));
   };
 
   return (

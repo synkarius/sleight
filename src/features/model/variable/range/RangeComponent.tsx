@@ -9,17 +9,17 @@ import {
   Row,
 } from 'react-bootstrap';
 import { Range } from './range';
-import { editRangeMax, editRangeMin } from '../variable-reducers';
+import { changeRangeMax, changeRangeMin } from '../variable-reducers';
 
 export const RangeComponent: React.FC<{ range: Range }> = (props) => {
   const dispatch = useAppDispatch();
   const numberInputId = useId();
 
   const fromChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(editRangeMin(+event.target.value));
+    dispatch(changeRangeMin(+event.target.value));
   };
   const toChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(editRangeMax(+event.target.value));
+    dispatch(changeRangeMax(+event.target.value));
   };
 
   return (

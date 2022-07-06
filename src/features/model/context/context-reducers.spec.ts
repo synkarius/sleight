@@ -1,6 +1,6 @@
 import { Context, createContext } from './context';
 import {
-  Contexts,
+  ContextsState,
   createNewEditingContext,
   selectContext,
   clearEditingContext,
@@ -16,7 +16,7 @@ import { ReduxFriendlyStringMap } from '../../../util/structures';
 global.crypto = require('crypto');
 
 describe('context reducer', () => {
-  const initialState: Contexts = {
+  const initialState: ContextsState = {
     saved: {},
     editing: null,
   };
@@ -73,8 +73,9 @@ describe('context reducer', () => {
       createNewEditingContext(newContext)
     );
     const savedState = contextReducer(createdState, saveEditingContext());
+    const clearedState = contextReducer(savedState, clearEditingContext());
 
-    const actual = contextReducer(savedState, selectContext(newContext.id));
+    const actual = contextReducer(clearedState, selectContext(newContext.id));
     expect(actual.editing).toEqual({
       roleKeyId: null,
       id: newContext.id,
