@@ -13,12 +13,7 @@ import {
 } from './context-reducers';
 import { ContextType } from './context-types';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
-
-Object.defineProperty(global, 'crypto', {
-  value: {
-    randomUUID: () => 'asdf',
-  },
-});
+global.crypto = require('crypto');
 
 describe('context reducer', () => {
   const initialState: Contexts = {

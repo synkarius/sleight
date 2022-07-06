@@ -39,7 +39,7 @@
   "scripts": {
     "react-start": "react-scripts start",
     "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
+    "react-test": "react-scripts test --env=jsdom --watchAll",
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "release": "npm run build && electron-builder --linux --win --mac --x64 --ia32 --publish=never",

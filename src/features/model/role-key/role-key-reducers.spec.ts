@@ -10,12 +10,7 @@ import {
   deleteEditingRoleKey,
   roleKeyReducer,
 } from './role-key-reducers';
-
-Object.defineProperty(global, 'crypto', {
-  value: {
-    randomUUID: () => 'asdf',
-  },
-});
+global.crypto = require('crypto');
 
 describe('role key reducer', () => {
   const initialState: RoleKeys = {
