@@ -1,4 +1,4 @@
 export enum MoveDirection {
-    UP,
-    DOWN,
-};
+  UP,
+  DOWN,
+}

@@ -1,6 +1,6 @@
 export enum SendKeyModifiers {
-    CONTROL,
-    ALT,
-    SHIFT,
-    WINDOWS
+  CONTROL,
+  ALT,
+  SHIFT,
+  WINDOWS,
 }

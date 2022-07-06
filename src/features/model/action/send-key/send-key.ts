@@ -1,24 +1,29 @@
 import { Action, copyAction } from '../action';
-import { ChoiceValue, createChoiceValue, createRangeValue, RangeValue } from '../action-value/action-value';
+import {
+  ChoiceValue,
+  createChoiceValue,
+  createRangeValue,
+  RangeValue,
+} from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../util/functions';
 import { ActionType } from '../action-types';
 
 export interface Modifiers {
-    control:boolean,
-    alt:boolean,
-    shift:boolean,
-    windows:boolean
+  control: boolean;
+  alt: boolean;
+  shift: boolean;
+  windows: boolean;
 }
 
-export const createModifiers = ():Modifiers => {
-    return {
-        control: false,
-        alt: false,
-        shift: false,
-        windows: false
-    };
-}
+export const createModifiers = (): Modifiers => {
+  return {
+    control: false,
+    alt: false,
+    shift: false,
+    windows: false,
+  };
+};
 
 /*
  * Note:
@@ -27,75 +32,81 @@ export const createModifiers = ():Modifiers => {
  */
 
 export interface SendKeyAction extends Action {
-    // see send-key-modes.ts for options -- whether a press or a hold/release
-    sendKeyMode:string,
-    modifiers:Modifiers,
-    // TODO: enforce that this has roleKey:alphabet if using a choice var??
-    sendKey:ChoiceValue,
-    outerPause:RangeValue
+  // see send-key-modes.ts for options -- whether a press or a hold/release
+  sendKeyMode: string;
+  modifiers: Modifiers;
+  // TODO: enforce that this has roleKey:alphabet if using a choice var??
+  sendKey: ChoiceValue;
+  outerPause: RangeValue;
 }
 
-export const copySendKeyAction = (sendKeyAction:SendKeyAction):SendKeyAction => {
-    return {
-        ...copyAction(sendKeyAction),
-        sendKeyMode: sendKeyAction.sendKeyMode,
-        modifiers: sendKeyAction.modifiers,
-        sendKey: sendKeyAction.sendKey,
-        outerPause: sendKeyAction.outerPause
-    }
-}
+export const copySendKeyAction = (
+  sendKeyAction: SendKeyAction
+): SendKeyAction => {
+  return {
+    ...copyAction(sendKeyAction),
+    sendKeyMode: sendKeyAction.sendKeyMode,
+    modifiers: sendKeyAction.modifiers,
+    sendKey: sendKeyAction.sendKey,
+    outerPause: sendKeyAction.outerPause,
+  };
+};
 
 export interface SendKeyPressAction extends SendKeyAction {
-    innerPause:RangeValue,
-    repeat:RangeValue
+  innerPause: RangeValue;
+  repeat: RangeValue;
 }
 
-export const copyIntoSendKeyPressAction = (sendKeyAction:SendKeyAction):SendKeyPressAction => {
-    return {
-        ...copySendKeyAction(sendKeyAction),
-        sendKeyMode: SendKeyMode.PRESS,
-        innerPause: createRangeValue(),
-        repeat: createRangeValue()
-    }
-}
+export const copyIntoSendKeyPressAction = (
+  sendKeyAction: SendKeyAction
+): SendKeyPressAction => {
+  return {
+    ...copySendKeyAction(sendKeyAction),
+    sendKeyMode: SendKeyMode.PRESS,
+    innerPause: createRangeValue(),
+    repeat: createRangeValue(),
+  };
+};
 
-export const createSendKeyPressAction = ():SendKeyPressAction => {
-    return {
-        id: getRandomId(),
-        name: "",
-        type: ActionType.SEND_KEY,
-        roleKeyId: null,
-        sendKeyMode: SendKeyMode.PRESS,
-        modifiers: createModifiers(),
-        sendKey: createChoiceValue(),
-        outerPause: createRangeValue(),
-        innerPause: createRangeValue(),
-        repeat: createRangeValue()
-    };
-}
+export const createSendKeyPressAction = (): SendKeyPressAction => {
+  return {
+    id: getRandomId(),
+    name: '',
+    type: ActionType.SEND_KEY,
+    roleKeyId: null,
+    sendKeyMode: SendKeyMode.PRESS,
+    modifiers: createModifiers(),
+    sendKey: createChoiceValue(),
+    outerPause: createRangeValue(),
+    innerPause: createRangeValue(),
+    repeat: createRangeValue(),
+  };
+};
 
 export interface SendKeyHoldReleaseAction extends SendKeyAction {
-    direction:ChoiceValue
+  direction: ChoiceValue;
 }
 
-export const createSendKeyHoldReleaseAction = ():SendKeyHoldReleaseAction => {
-    return {
-        id: getRandomId(),
-        name: "",
-        type: ActionType.SEND_KEY,
-        roleKeyId: null,
-        sendKeyMode: SendKeyMode.HOLD_RELEASE,
-        modifiers: createModifiers(),
-        sendKey: createChoiceValue(),
-        outerPause: createRangeValue(),
-        direction: createChoiceValue()
-    };
-}
+export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
+  return {
+    id: getRandomId(),
+    name: '',
+    type: ActionType.SEND_KEY,
+    roleKeyId: null,
+    sendKeyMode: SendKeyMode.HOLD_RELEASE,
+    modifiers: createModifiers(),
+    sendKey: createChoiceValue(),
+    outerPause: createRangeValue(),
+    direction: createChoiceValue(),
+  };
+};
 
-export const copyIntoSendKeyHoldReleaseAction = (sendKeyAction:SendKeyAction):SendKeyHoldReleaseAction => {
-    return {
-        ...copySendKeyAction(sendKeyAction),
-        sendKeyMode: SendKeyMode.HOLD_RELEASE,
-        direction: createChoiceValue()
-    }
-}
+export const copyIntoSendKeyHoldReleaseAction = (
+  sendKeyAction: SendKeyAction
+): SendKeyHoldReleaseAction => {
+  return {
+    ...copySendKeyAction(sendKeyAction),
+    sendKeyMode: SendKeyMode.HOLD_RELEASE,
+    direction: createChoiceValue(),
+  };
+};

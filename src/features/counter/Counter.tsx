@@ -41,7 +41,7 @@ export function Counter() {
       </div>
       <div className={styles.row}>
         <FormControl
-          style={{maxWidth:"3em", textAlign:"center", marginInline:"1em"}}
+          style={{ maxWidth: '3em', textAlign: 'center', marginInline: '1em' }}
           aria-label="Set increment amount"
           value={incrementAmount}
           onChange={(e) => setIncrementAmount(e.target.value)}
