@@ -23,6 +23,7 @@ import {
   copyIntoSendKeyHoldReleaseAction,
   copyIntoSendKeyPressAction,
   SendKeyAction,
+  SendKeyHoldReleaseAction,
   SendKeyPressAction,
 } from './send-key/send-key';
 import { SendKeyMode } from './send-key/send-key-modes';
@@ -56,6 +57,8 @@ const getActionValue = (
         return (state.editing as SendKeyPressAction).innerPause;
       case SendKeyField.REPEAT:
         return (state.editing as SendKeyPressAction).repeat;
+      case SendKeyField.DIRECTION:
+        return (state.editing as SendKeyHoldReleaseAction).direction;
       default:
         throw new UnhandledSendKeyFieldError(field);
     }

@@ -45,12 +45,12 @@ export interface SendKeyPressAction extends SendKeyAction {
   repeat: RangeValue;
 }
 
-export const copyIntoSendKeyPressAction = (
-  action: Action
-): SendKeyPressAction => {
+export const createSendKeyPressAction = (): SendKeyPressAction => {
   return {
-    ...copyAction(action),
+    id: getRandomId(),
+    name: '',
     type: ActionType.SEND_KEY,
+    roleKeyId: null,
     sendKeyMode: SendKeyMode.PRESS,
     modifiers: createModifiers(),
     sendKey: createChoiceValue(),
@@ -60,12 +60,12 @@ export const copyIntoSendKeyPressAction = (
   };
 };
 
-export const createSendKeyPressAction = (): SendKeyPressAction => {
+export const copyIntoSendKeyPressAction = (
+  action: Action
+): SendKeyPressAction => {
   return {
-    id: getRandomId(),
-    name: '',
+    ...copyAction(action),
     type: ActionType.SEND_KEY,
-    roleKeyId: null,
     sendKeyMode: SendKeyMode.PRESS,
     modifiers: createModifiers(),
     sendKey: createChoiceValue(),
