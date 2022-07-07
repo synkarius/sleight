@@ -16,7 +16,7 @@ export interface Modifiers {
   windows: boolean;
 }
 
-export const createModifiers = (): Modifiers => {
+const createModifiers = (): Modifiers => {
   return {
     control: false,
     alt: false,
@@ -40,29 +40,21 @@ export interface SendKeyAction extends Action {
   outerPause: RangeValue;
 }
 
-export const copySendKeyAction = (
-  sendKeyAction: SendKeyAction
-): SendKeyAction => {
-  return {
-    ...copyAction(sendKeyAction),
-    sendKeyMode: sendKeyAction.sendKeyMode,
-    modifiers: sendKeyAction.modifiers,
-    sendKey: sendKeyAction.sendKey,
-    outerPause: sendKeyAction.outerPause,
-  };
-};
-
 export interface SendKeyPressAction extends SendKeyAction {
   innerPause: RangeValue;
   repeat: RangeValue;
 }
 
 export const copyIntoSendKeyPressAction = (
-  sendKeyAction: SendKeyAction
+  action: Action
 ): SendKeyPressAction => {
   return {
-    ...copySendKeyAction(sendKeyAction),
+    ...copyAction(action),
+    type: ActionType.SEND_KEY,
     sendKeyMode: SendKeyMode.PRESS,
+    modifiers: createModifiers(),
+    sendKey: createChoiceValue(),
+    outerPause: createRangeValue(),
     innerPause: createRangeValue(),
     repeat: createRangeValue(),
   };
@@ -102,11 +94,15 @@ export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
 };
 
 export const copyIntoSendKeyHoldReleaseAction = (
-  sendKeyAction: SendKeyAction
+  action: Action
 ): SendKeyHoldReleaseAction => {
   return {
-    ...copySendKeyAction(sendKeyAction),
+    ...copyAction(action),
+    type: ActionType.SEND_KEY,
     sendKeyMode: SendKeyMode.HOLD_RELEASE,
+    modifiers: createModifiers(),
+    sendKey: createChoiceValue(),
+    outerPause: createRangeValue(),
     direction: createChoiceValue(),
   };
 };

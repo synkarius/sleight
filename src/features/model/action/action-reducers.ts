@@ -1,5 +1,6 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import { CurrentActionNotFoundError } from '../../../error/CurrentActionNotFoundError';
+import { UnhandledActionTypeError } from '../../../error/UnhandledActionTypeError';
 import { UnhandledActionValueOperationError } from '../../../error/UnhandledActionValueOperationError';
 import { UnhandledSendKeyFieldError } from '../../../error/UnhandledSendKeyFieldError';
 import { UnhandledSendKeyModeError } from '../../../error/UnhandledSendKeyModeError';
@@ -10,12 +11,14 @@ import {
   ChangeActionTypePayload,
   ChangeSendKeyModePayload,
 } from './action';
+import { ActionType } from './action-types';
 import {
   ChoiceValue,
   RangeValue,
   TextValue,
 } from './action-value/action-value';
 import { ActionValueOperation } from './action-value/action-value-operation';
+import { copyIntoPauseAction } from './pause/pause';
 import {
   copyIntoSendKeyHoldReleaseAction,
   copyIntoSendKeyPressAction,
@@ -134,22 +137,16 @@ const actionsSlice = createSlice({
     ) => {
       // casting here to non-null b/c should not ever be null while editing
       const editing = state.editing as Action;
-      // TODO
-
-      // switch (action.payload.variableType) {
-      //     case VariableType.TEXT:
-      //         state.editing = copyIntoText(variable);
-      //         break;
-      //     case VariableType.RANGE:
-      //         state.editing = copyIntoRange(variable);
-      //         break;
-      //     case VariableType.CHOICE:
-      //         const selectorId = action.payload.selectorId as string;
-      //         state.editing = copyIntoChoice(variable, selectorId);
-      //         break;
-      //     default:
-      //         throw new InvalidActionTypeError("invalid action type: " + action.payload);
-      // }
+      switch (action.payload.actionType) {
+        case ActionType.PAUSE:
+          state.editing = copyIntoPauseAction(editing);
+          break;
+        case ActionType.SEND_KEY:
+          state.editing = copyIntoSendKeyPressAction(editing);
+          break;
+        default:
+          throw new UnhandledActionTypeError(action.payload.actionType);
+      }
     },
     changeEditingSendKeyMode: (
       state,
@@ -367,6 +364,7 @@ export const {
   changeEditingActionRoleKey,
   changeEditingActionType,
   saveEditingAction,
+  // send-key
   changeEditingSendKeyMode,
   // send-key key to send
   changeKeyToSendActionValueType,

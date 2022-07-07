@@ -10,6 +10,7 @@ import {
   changeEditingActionRoleKey,
   changeEditingActionType,
   saveEditingAction,
+  // send-key
   changeEditingSendKeyMode,
   // send-key key to send
   changeKeyToSendActionValueType,
@@ -40,7 +41,25 @@ import {
   changeDirectionRoleKeyId,
   actionReducer,
 } from './action-reducers';
+import { createPauseAction, PauseAction } from './pause/pause';
+import { getRandomId } from '../../../util/functions';
+import { ActionType } from './action-types';
+import {
+  createChoiceValue,
+  createRangeValue,
+} from './action-value/action-value';
+import { SendKeyMode } from './send-key/send-key-modes';
 global.crypto = require('crypto');
+
+const createTestAction = (id: string): PauseAction => {
+  return {
+    id: id,
+    name: '',
+    type: ActionType.PAUSE,
+    roleKeyId: null,
+    centiseconds: createRangeValue(),
+  };
+};
 
 describe('action reducer', () => {
   const initialState: ActionsState = {
@@ -54,81 +73,139 @@ describe('action reducer', () => {
     });
   });
 
-  // it('should handle create new', () => {
-  //   const newObject = createSendKeyPressAction();
+  it('should handle create new', () => {
+    const newObject = createPauseAction();
 
-  //   const actual = actionReducer(
-  //     initialState,
-  //     createNewEditingAction(newObject)
-  //   );
+    const actual = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
 
-  //   expect(actual.editing).toEqual({
-  //     id: newObject.id,
-  //     value: '',
-  //   });
-  // });
+    expect(actual.editing).toEqual(createTestAction(newObject.id));
+  });
 
-  // it('should handle save', () => {
-  //   const newObject = createSendKeyPressAction();
+  it('should handle save', () => {
+    const newObject = createPauseAction();
 
-  //   const createdState = actionReducer(
-  //     initialState,
-  //     createNewEditingAction(newObject)
-  //   );
-  //   const actual = actionReducer(createdState, saveEditingAction());
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
+    const actual = actionReducer(createdState, saveEditingAction());
 
-  //   const expected: ReduxFriendlyStringMap<Action> = {};
-  //   expected[newObject.id] = {
-  //     id: newObject.id,
-  //     value: '',
-  //   };
+    const expected: ReduxFriendlyStringMap<Action> = {};
+    expected[newObject.id] = createTestAction(newObject.id);
 
-  //   expect(actual.saved).toEqual(expected);
-  // });
+    expect(actual.saved).toEqual(expected);
+  });
 
-  // it('should handle select', () => {
-  //   const newObject = createRoleKey();
+  it('should handle select', () => {
+    const newObject = createPauseAction();
 
-  //   const createdState = actionReducer(
-  //     initialState,
-  //     createNewEditingRoleKey(newObject)
-  //   );
-  //   const savedState = actionReducer(createdState, saveEditingRoleKey());
-  //   const clearedState = actionReducer(savedState, clearEditingRoleKey());
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
+    const savedState = actionReducer(createdState, saveEditingAction());
+    const clearedState = actionReducer(savedState, clearEditingAction());
 
-  //   const actual = actionReducer(clearedState, selectRoleKey(newObject.id));
-  //   expect(actual.editing).toEqual({
-  //     id: newObject.id,
-  //     value: '',
-  //   });
-  // });
+    const actual = actionReducer(clearedState, selectAction(newObject.id));
+    expect(actual.editing).toEqual(createTestAction(newObject.id));
+  });
 
-  // it('should handle clear', () => {
-  //   const createdState = actionReducer(
-  //     initialState,
-  //     createNewEditingRoleKey(createRoleKey())
-  //   );
+  it('should handle clear', () => {
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(createPauseAction())
+    );
 
-  //   const actual = actionReducer(createdState, clearEditingRoleKey());
+    const actual = actionReducer(createdState, clearEditingAction());
 
-  //   expect(actual.editing).toBeNull();
-  // });
+    expect(actual.editing).toBeNull();
+  });
 
-  // it('should handle change value', () => {
-  //   const newObject = createRoleKey();
+  it('should handle change name', () => {
+    const newObject = createPauseAction();
 
-  //   const createdState = actionReducer(
-  //     initialState,
-  //     createNewEditingRoleKey(newObject)
-  //   );
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
 
-  //   const actual = actionReducer(
-  //     createdState,
-  //     changeEditingRoleKeyValue('asdf')
-  //   );
-  //   expect(actual.editing).toEqual({
-  //     id: newObject.id,
-  //     value: 'asdf',
-  //   });
-  // });
+    const actual = actionReducer(createdState, changeEditingActionName('asdf'));
+    expect(actual.editing).toEqual({
+      ...createTestAction(newObject.id),
+      name: 'asdf',
+    });
+  });
+
+  it('should handle change role key', () => {
+    const newObject = createPauseAction();
+
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
+
+    const actual = actionReducer(
+      createdState,
+      changeEditingActionRoleKey('asdf')
+    );
+    expect(actual.editing).toEqual({
+      ...createTestAction(newObject.id),
+      roleKeyId: 'asdf',
+    });
+  });
+
+  it('should handle change type to send key', () => {
+    const newObject = createPauseAction();
+
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
+
+    const actual = actionReducer(
+      createdState,
+      changeEditingActionType({ actionType: ActionType.SEND_KEY })
+    );
+    expect(actual.editing).toEqual({
+      id: newObject.id,
+      name: '',
+      type: ActionType.SEND_KEY,
+      roleKeyId: null,
+      sendKeyMode: SendKeyMode.PRESS,
+      modifiers: {
+        control: false,
+        alt: false,
+        shift: false,
+        windows: false,
+      },
+      sendKey: createChoiceValue(),
+      outerPause: createRangeValue(),
+      innerPause: createRangeValue(),
+      repeat: createRangeValue(),
+    });
+  });
+
+  it('should handle change type to pause', () => {
+    const newObject = createSendKeyPressAction();
+
+    const createdState = actionReducer(
+      initialState,
+      createNewEditingAction(newObject)
+    );
+
+    const actual = actionReducer(
+      createdState,
+      changeEditingActionType({ actionType: ActionType.PAUSE })
+    );
+    expect(actual.editing).toEqual({
+      id: newObject.id,
+      name: '',
+      type: ActionType.PAUSE,
+      roleKeyId: null,
+      centiseconds: createRangeValue(),
+    });
+  });
 });
