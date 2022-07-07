@@ -272,7 +272,7 @@ describe('action reducer', () => {
   });
 
   it('should handle sendKey toggle modifiers', () => {
-    const newObject = createSendKeyHoldReleaseAction();
+    const newObject = createSendKeyPressAction();
 
     const createdState = actionReducer(
       initialState,
@@ -291,7 +291,7 @@ describe('action reducer', () => {
       toggleModifier(SendKeyModifiers.SHIFT)
     );
     const actual = actionReducer(
-      altToggledState,
+      shiftToggledState,
       toggleModifier(SendKeyModifiers.WINDOWS)
     );
 
