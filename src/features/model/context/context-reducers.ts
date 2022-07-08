@@ -1,15 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { validate } from '../../../validation/validator';
 import { Context } from './context';
+import {
+  contextMatcherValidator,
+  ContextValidationError,
+} from './context-validation';
 
 export interface ContextsState {
   saved: ReduxFriendlyStringMap<Context>;
   editing: Context | null;
+  validationErrors: ContextValidationError[];
 }
 
 const initialState: ContextsState = {
   saved: {},
   editing: null,
+  validationErrors: [],
 };
 
 const contextsSlice = createSlice({
@@ -21,6 +28,12 @@ const contextsSlice = createSlice({
     },
     selectContext: (state, action: PayloadAction<string>) => {
       state.editing = state.saved[action.payload];
+    },
+    saveAndClearEditingContext: (state) => {
+      if (state.editing && state.validationErrors.length === 0) {
+        state.saved[state.editing.id] = state.editing;
+        state.editing = null;
+      }
     },
     clearEditingContext: (state) => {
       state.editing = null;
@@ -45,10 +58,13 @@ const contextsSlice = createSlice({
         state.editing.matcher = action.payload;
       }
     },
-    saveEditingContext: (state) => {
+    validateEditingContextMatcher: (state) => {
       if (state.editing) {
-        // TODO: validation
-        state.saved[state.editing.id] = state.editing;
+        validate(
+          state.editing.matcher,
+          contextMatcherValidator,
+          state.validationErrors
+        );
       }
     },
   },
@@ -62,6 +78,7 @@ export const {
   changeEditingContextRoleKey,
   changeEditingContextType,
   changeEditingContextMatcher,
-  saveEditingContext,
+  validateEditingContextMatcher,
+  saveAndClearEditingContext,
 } = contextsSlice.actions;
 export const contextReducer = contextsSlice.reducer;

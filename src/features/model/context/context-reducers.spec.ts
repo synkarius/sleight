@@ -8,22 +8,26 @@ import {
   changeEditingContextRoleKey,
   changeEditingContextType,
   changeEditingContextMatcher,
-  saveEditingContext,
+  saveAndClearEditingContext,
   contextReducer,
+  validateEditingContextMatcher,
 } from './context-reducers';
 import { ContextType } from './context-types';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ContextValidationError } from './context-validation';
 global.crypto = require('crypto');
 
 describe('context reducer', () => {
   const initialState: ContextsState = {
     saved: {},
     editing: null,
+    validationErrors: [],
   };
   it('should handle initial state', () => {
     expect(contextReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
       editing: null,
+      validationErrors: [],
     });
   });
 
@@ -51,7 +55,7 @@ describe('context reducer', () => {
       initialState,
       createNewEditingContext(newContext)
     );
-    const actual = contextReducer(createdState, saveEditingContext());
+    const actual = contextReducer(createdState, saveAndClearEditingContext());
 
     const expected: ReduxFriendlyStringMap<Context> = {};
     expected[newContext.id] = {
@@ -62,7 +66,34 @@ describe('context reducer', () => {
       matcher: '',
     };
 
+    expect(actual.editing).toBeNull();
     expect(actual.saved).toEqual(expected);
+  });
+
+  it('should not save if errors exist', () => {
+    const newContext = createContext();
+
+    const createdState = contextReducer(
+      initialState,
+      createNewEditingContext(newContext)
+    );
+    const validatedState = contextReducer(
+      createdState,
+      validateEditingContextMatcher()
+    );
+    // there will be errors because matcher is blank
+    const actual = contextReducer(validatedState, saveAndClearEditingContext());
+
+    const expectedEditing = {
+      roleKeyId: null,
+      id: newContext.id,
+      name: '',
+      type: ContextType.EXECUTABLE_NAME,
+      matcher: '',
+    };
+
+    expect(actual.editing).toEqual(expectedEditing);
+    expect(actual.saved).toEqual({});
   });
 
   it('should handle select', () => {
@@ -72,7 +103,10 @@ describe('context reducer', () => {
       initialState,
       createNewEditingContext(newContext)
     );
-    const savedState = contextReducer(createdState, saveEditingContext());
+    const savedState = contextReducer(
+      createdState,
+      saveAndClearEditingContext()
+    );
     const clearedState = contextReducer(savedState, clearEditingContext());
 
     const actual = contextReducer(clearedState, selectContext(newContext.id));
@@ -178,5 +212,41 @@ describe('context reducer', () => {
       type: ContextType.EXECUTABLE_NAME,
       matcher: 'asdf',
     });
+  });
+
+  it('should invalidate blank matcher', () => {
+    const newContext = createContext();
+
+    const createdState = contextReducer(
+      initialState,
+      createNewEditingContext(newContext)
+    );
+
+    const validateBlankMatcherState = contextReducer(
+      createdState,
+      validateEditingContextMatcher()
+    );
+    expect(validateBlankMatcherState.validationErrors).toEqual([
+      ContextValidationError.MATCHER_IS_BLANK,
+    ]);
+  });
+
+  it('should validate non-blank matcher', () => {
+    const newContext = createContext();
+
+    const createdState = contextReducer(
+      initialState,
+      createNewEditingContext(newContext)
+    );
+
+    const nonBlankMatcherState = contextReducer(
+      createdState,
+      changeEditingContextMatcher('asdf')
+    );
+    const validateNonBlankMatcherState = contextReducer(
+      nonBlankMatcherState,
+      validateEditingContextMatcher()
+    );
+    expect(validateNonBlankMatcherState.validationErrors).toEqual([]);
   });
 });

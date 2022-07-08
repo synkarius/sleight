@@ -1,6 +1,12 @@
 import React from 'react';
-import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
-import { useAppDispatch } from '../../../app/hooks';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormSelect,
+  FormText,
+} from 'react-bootstrap';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
@@ -11,11 +17,16 @@ import {
   changeEditingContextRoleKey,
   changeEditingContextType,
   clearEditingContext,
-  saveEditingContext,
+  saveAndClearEditingContext,
+  validateEditingContextMatcher,
 } from './context-reducers';
 import { ContextType } from './context-types';
+import { ContextValidationError } from './context-validation';
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
+  const validationErrors = useAppSelector(
+    (state) => state.context.validationErrors
+  );
   const dispatch = useAppDispatch();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,10 +39,11 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     dispatch(changeEditingContextMatcher(event.target.value));
+    dispatch(validateEditingContextMatcher());
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(saveEditingContext());
-    dispatch(clearEditingContext());
+    dispatch(validateEditingContextMatcher());
+    dispatch(saveAndClearEditingContext());
   };
 
   const matcherHelpText =
@@ -74,11 +86,23 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         <FormControl
           type="text"
           onChange={matcherChangedHandler}
+          onBlur={(_e) => dispatch(validateEditingContextMatcher())}
           value={props.context.matcher}
+          isInvalid={validationErrors.includes(
+            ContextValidationError.MATCHER_IS_BLANK
+          )}
         />
         <FormText className="text-muted">{matcherHelpText}</FormText>
+        <Form.Control.Feedback type="invalid">
+          {ContextValidationError.MATCHER_IS_BLANK.toString()}
+        </Form.Control.Feedback>
       </FormGroupRowComponent>
-      <Button onClick={submitHandler} variant="primary" size="lg">
+      <Button
+        onClick={submitHandler}
+        variant="primary"
+        size="lg"
+        disabled={validationErrors.length > 0}
+      >
         Save
       </Button>
     </PanelComponent>
