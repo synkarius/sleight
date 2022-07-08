@@ -227,7 +227,7 @@ describe('context reducer', () => {
       validateEditingContextMatcher()
     );
     expect(validateBlankMatcherState.validationErrors).toEqual([
-      ContextValidationError.MATCHER_IS_BLANK,
+      ContextValidationError.MATCHER_IS_EMPTY,
     ]);
   });
 

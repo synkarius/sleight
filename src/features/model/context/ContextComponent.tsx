@@ -16,7 +16,6 @@ import {
   changeEditingContextName,
   changeEditingContextRoleKey,
   changeEditingContextType,
-  clearEditingContext,
   saveAndClearEditingContext,
   validateEditingContextMatcher,
 } from './context-reducers';
@@ -89,12 +88,12 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
           onBlur={(_e) => dispatch(validateEditingContextMatcher())}
           value={props.context.matcher}
           isInvalid={validationErrors.includes(
-            ContextValidationError.MATCHER_IS_BLANK
+            ContextValidationError.MATCHER_IS_EMPTY
           )}
         />
         <FormText className="text-muted">{matcherHelpText}</FormText>
         <Form.Control.Feedback type="invalid">
-          {ContextValidationError.MATCHER_IS_BLANK.toString()}
+          {ContextValidationError.MATCHER_IS_EMPTY.toString()}
         </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button

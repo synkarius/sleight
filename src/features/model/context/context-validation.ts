@@ -1,7 +1,7 @@
 import { Validator } from '../../../validation/validator';
 
 export enum ContextValidationError {
-  MATCHER_IS_BLANK = "matcher can't be blank",
+  MATCHER_IS_EMPTY = "matcher can't be empty",
 }
 
 export const contextMatcherValidator: Validator<
@@ -9,5 +9,5 @@ export const contextMatcherValidator: Validator<
   ContextValidationError
 > = {
   test: (matcher) => matcher.trim().length > 0,
-  error: ContextValidationError.MATCHER_IS_BLANK,
+  error: ContextValidationError.MATCHER_IS_EMPTY,
 };

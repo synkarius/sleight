@@ -1,15 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { validate } from '../../../validation/validator';
 import { RoleKey } from './role-key';
+import {
+  roleKeyTextValidator,
+  RoleKeyValidationError,
+} from './role-key-validation';
 
 export type RoleKeysState = {
   saved: ReduxFriendlyStringMap<RoleKey>;
   editing: RoleKey | null;
+  validationErrors: RoleKeyValidationError[];
 };
 
 const initialState: RoleKeysState = {
   saved: {},
   editing: null,
+  validationErrors: [],
 };
 
 const roleKeysSlice = createSlice({
@@ -23,19 +30,27 @@ const roleKeysSlice = createSlice({
       const roleKeyId = action.payload;
       state.editing = state.saved[roleKeyId];
     },
+    saveAndClearEditingRoleKey: (state) => {
+      if (state.editing && state.validationErrors.length === 0) {
+        state.saved[state.editing.id] = state.editing;
+        state.editing = null;
+      }
+    },
     clearEditingRoleKey: (state) => {
       state.editing = null;
+    },
+    validateRoleKeyText: (state) => {
+      if (state.editing) {
+        validate(
+          state.editing.value,
+          roleKeyTextValidator,
+          state.validationErrors
+        );
+      }
     },
     changeEditingRoleKeyValue: (state, action: PayloadAction<string>) => {
       if (state.editing) {
         state.editing.value = action.payload;
-      }
-    },
-    saveEditingRoleKey: (state) => {
-      if (state.editing) {
-        // TODO: validation
-        state.saved[state.editing.id] = state.editing;
-        state.editing = null;
       }
     },
     deleteEditingRoleKey: (state, action: PayloadAction<string>) => {
@@ -50,7 +65,8 @@ export const {
   selectRoleKey,
   clearEditingRoleKey,
   changeEditingRoleKeyValue,
-  saveEditingRoleKey,
+  saveAndClearEditingRoleKey,
   deleteEditingRoleKey,
+  validateRoleKeyText,
 } = roleKeysSlice.actions;
 export const roleKeyReducer = roleKeysSlice.reducer;

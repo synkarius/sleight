@@ -6,21 +6,25 @@ import {
   selectRoleKey,
   clearEditingRoleKey,
   changeEditingRoleKeyValue,
-  saveEditingRoleKey,
+  saveAndClearEditingRoleKey,
   deleteEditingRoleKey,
   roleKeyReducer,
+  validateRoleKeyText,
 } from './role-key-reducers';
+import { RoleKeyValidationError } from './role-key-validation';
 global.crypto = require('crypto');
 
 describe('role key reducer', () => {
   const initialState: RoleKeysState = {
     saved: {},
     editing: null,
+    validationErrors: [],
   };
   it('should handle initial state', () => {
     expect(roleKeyReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
       editing: null,
+      validationErrors: [],
     });
   });
 
@@ -45,7 +49,7 @@ describe('role key reducer', () => {
       initialState,
       createNewEditingRoleKey(newObject)
     );
-    const actual = roleKeyReducer(createdState, saveEditingRoleKey());
+    const actual = roleKeyReducer(createdState, saveAndClearEditingRoleKey());
 
     const expected: ReduxFriendlyStringMap<RoleKey> = {};
     expected[newObject.id] = {
@@ -53,7 +57,27 @@ describe('role key reducer', () => {
       value: '',
     };
 
+    expect(actual.editing).toBeNull();
     expect(actual.saved).toEqual(expected);
+  });
+
+  it('should not save if validation errors', () => {
+    const newObject = createRoleKey();
+
+    const createdState = roleKeyReducer(
+      initialState,
+      createNewEditingRoleKey(newObject)
+    );
+    const validatedState = roleKeyReducer(createdState, validateRoleKeyText());
+    const actual = roleKeyReducer(validatedState, saveAndClearEditingRoleKey());
+
+    const expected: RoleKey = {
+      id: newObject.id,
+      value: '',
+    };
+
+    expect(actual.editing).toEqual(expected);
+    expect(actual.saved).toEqual({});
   });
 
   it('should handle select', () => {
@@ -63,7 +87,10 @@ describe('role key reducer', () => {
       initialState,
       createNewEditingRoleKey(newObject)
     );
-    const savedState = roleKeyReducer(createdState, saveEditingRoleKey());
+    const savedState = roleKeyReducer(
+      createdState,
+      saveAndClearEditingRoleKey()
+    );
     const clearedState = roleKeyReducer(savedState, clearEditingRoleKey());
 
     const actual = roleKeyReducer(clearedState, selectRoleKey(newObject.id));
@@ -100,5 +127,41 @@ describe('role key reducer', () => {
       id: newObject.id,
       value: 'asdf',
     });
+  });
+
+  it('should invalidate empty role key', () => {
+    const newObject = createRoleKey();
+
+    const createdState = roleKeyReducer(
+      initialState,
+      createNewEditingRoleKey(newObject)
+    );
+
+    const validateEmptyState = roleKeyReducer(
+      createdState,
+      validateRoleKeyText()
+    );
+    expect(validateEmptyState.validationErrors).toEqual([
+      RoleKeyValidationError.ROLE_KEY_IS_EMPTY,
+    ]);
+  });
+
+  it('should validate non-empty role key', () => {
+    const newObject = createRoleKey();
+
+    const createdState = roleKeyReducer(
+      initialState,
+      createNewEditingRoleKey(newObject)
+    );
+
+    const nonEmptyState = roleKeyReducer(
+      createdState,
+      changeEditingRoleKeyValue('asdf')
+    );
+    const validateNonEmptyState = roleKeyReducer(
+      nonEmptyState,
+      validateRoleKeyText()
+    );
+    expect(validateNonEmptyState.validationErrors).toEqual([]);
   });
 });
