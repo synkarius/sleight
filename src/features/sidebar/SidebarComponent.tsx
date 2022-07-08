@@ -1,6 +1,5 @@
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Ided, Named } from '../domain';
 import {
   clearEditingAction,
   createNewEditingAction,
@@ -9,6 +8,7 @@ import {
 import { createSendKeyPressAction } from '../model/action/send-key/send-key';
 import { createCommand } from '../model/command/command';
 import {
+  clearEditingCommand,
   createNewEditingCommand,
   selectCommand,
 } from '../model/command/command-reducers';
@@ -40,16 +40,7 @@ import {
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { createContext } from '../model/context/context';
 import { createRoleKey } from '../model/role-key/role-key';
-
-interface Item extends Named, Ided {}
-
-export interface ItemGroup {
-  type: string;
-  items: Item[];
-  createFn: () => void;
-  selectFn: (variableId: string) => void;
-  clearFn: () => void;
-}
+import { SidebarSection } from './sidebar';
 
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
@@ -60,78 +51,75 @@ export const SidebarComponent = () => {
   const specsSaved = useAppSelector((state) => state.spec.saved);
   const variablesSaved = useAppSelector((state) => state.variable.saved);
 
-  const actions = Object.values(actionsSaved);
-  const commands = Object.values(commandsSaved);
-  const contexts = Object.values(contextsSaved);
-  const specs = Object.values(specsSaved);
-  const roleKeys = Object.values(roleKeysSaved).map((rk) => {
-    return { id: rk.id, name: rk.value };
-  });
-  const variables = Object.values(variablesSaved);
+  const actionSection: SidebarSection = {
+    type: ElementType.ACTION,
+    items: Object.values(actionsSaved),
+    createFn: () =>
+      dispatch(createNewEditingAction(createSendKeyPressAction())),
+    selectFn: (id) => dispatch(selectAction(id)),
+    clearFn: () => dispatch(clearEditingAction()),
+  };
+  const commandSection: SidebarSection = {
+    type: ElementType.COMMAND,
+    items: Object.values(commandsSaved),
+    createFn: () => dispatch(createNewEditingCommand(createCommand())),
+    selectFn: (id) => dispatch(selectCommand(id)),
+    clearFn: () => dispatch(clearEditingCommand()),
+  };
+  const contextSection: SidebarSection = {
+    type: ElementType.CONTEXT,
+    items: Object.values(contextsSaved),
+    createFn: () => dispatch(createNewEditingContext(createContext())),
+    selectFn: (id) => dispatch(selectContext(id)),
+    clearFn: () => dispatch(clearEditingContext()),
+  };
+  const roleKeySection: SidebarSection = {
+    type: ElementType.ROLE_KEY,
+    items: Object.values(roleKeysSaved).map((rk) => {
+      return { id: rk.id, name: rk.value };
+    }),
+    createFn: () => dispatch(createNewEditingRoleKey(createRoleKey())),
+    selectFn: (id) => dispatch(selectRoleKey(id)),
+    clearFn: () => dispatch(clearEditingRoleKey()),
+  };
+  const specSection: SidebarSection = {
+    type: ElementType.SPEC,
+    items: Object.values(specsSaved),
+    createFn: () => {
+      // TODO: this way creates orphan selectors - clean them up
+      const selector = createSelector();
+      const spec = createSpec(selector.id);
+      dispatch(createNewSelector(selector));
+      dispatch(createNewEditingSpec(spec));
+    },
+    selectFn: (id) => dispatch(selectSpec(id)),
+    clearFn: () => dispatch(clearEditingSpec()),
+  };
+  const variableSection: SidebarSection = {
+    type: ElementType.VARIABLE,
+    items: Object.values(variablesSaved),
+    createFn: () => dispatch(createNewEditingVariable(createText())),
+    selectFn: (variableId) => dispatch(selectVariable(variableId)),
+    clearFn: () => dispatch(clearEditingVariable()),
+  };
 
-  // TODO: move these elsewhere & restructure
-  const groups: ItemGroup[] = [
-    {
-      type: ElementType.ACTION,
-      items: actions,
-      createFn: () =>
-        dispatch(createNewEditingAction(createSendKeyPressAction())),
-      selectFn: (id) => dispatch(selectAction(id)),
-      clearFn: () => dispatch(clearEditingAction()),
-    },
-    {
-      type: ElementType.COMMAND,
-      items: commands,
-      createFn: () => dispatch(createNewEditingCommand(createCommand())),
-      selectFn: (id) => dispatch(selectCommand(id)),
-      clearFn: () => dispatch(clearEditingContext()),
-    },
-    {
-      type: ElementType.CONTEXT,
-      items: contexts,
-      createFn: () => dispatch(createNewEditingContext(createContext())),
-      selectFn: (id) => dispatch(selectContext(id)),
-      clearFn: () => dispatch(clearEditingContext()),
-    },
-    {
-      type: ElementType.ROLE_KEY,
-      items: roleKeys,
-      createFn: () => dispatch(createNewEditingRoleKey(createRoleKey())),
-      selectFn: (id) => dispatch(selectRoleKey(id)),
-      clearFn: () => dispatch(clearEditingRoleKey()),
-    },
-    {
-      type: ElementType.SPEC,
-      items: specs,
-      createFn: () => {
-        // TODO: this way creates orphan selectors - clean them up
-        const selector = createSelector();
-        const spec = createSpec(selector.id);
-        dispatch(createNewSelector(selector));
-        dispatch(createNewEditingSpec(spec));
-      },
-      selectFn: (id) => dispatch(selectSpec(id)),
-      clearFn: () => dispatch(clearEditingSpec()),
-    },
-    {
-      type: ElementType.VARIABLE,
-      items: variables,
-      createFn: () => dispatch(createNewEditingVariable(createText())),
-      selectFn: (variableId) => dispatch(selectVariable(variableId)),
-      clearFn: () => dispatch(clearEditingVariable()),
-    },
+  const groups: SidebarSection[] = [
+    actionSection,
+    commandSection,
+    contextSection,
+    roleKeySection,
+    specSection,
+    variableSection,
   ];
 
-  const clearAllWorkspaces = () => groups.forEach((group) => group.clearFn());
-
   return (
-    <Accordion defaultActiveKey={['2']} flush alwaysOpen>
+    <Accordion /*defaultActiveKey={['2']}*/ flush alwaysOpen>
       {groups.map((group, index) => (
         <SideBarGroupComponent
           key={group.type}
           eventKey={'' + index}
           group={group}
-          clearAllFn={clearAllWorkspaces}
+          clearAllFn={() => groups.forEach((group) => group.clearFn())}
         />
       ))}
     </Accordion>

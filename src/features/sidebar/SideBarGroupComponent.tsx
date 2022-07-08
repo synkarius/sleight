@@ -2,11 +2,11 @@ import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../app/hooks';
 import { setFocus } from '../menu/focus/focus-reducers';
-import { ItemGroup } from './SidebarComponent';
+import { SidebarSection } from './sidebar';
 
 export const SideBarGroupComponent: React.FC<{
   key: string | number;
-  group: ItemGroup;
+  group: SidebarSection;
   eventKey: string;
   clearAllFn: () => void;
 }> = (props) => {
