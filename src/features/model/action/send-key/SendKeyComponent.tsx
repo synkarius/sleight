@@ -68,7 +68,10 @@ export const SendKeyComponent: React.FC<{
         variableIdChangedFn={(id) => changeKeyToSendVariableId(id)}
         roleKeyIdChangedFn={(id) => changeKeyToSendRoleKeyId(id)}
       />
-      <ExpandCollapseComponent buttonText="More Options">
+      <ExpandCollapseComponent
+        buttonTextOpen="Less Options"
+        buttonTextClosed="More Options"
+      >
         <FormGroupRowComponent labelText="Modifier Keys">
           <FormCheck
             type="switch"

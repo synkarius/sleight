@@ -85,24 +85,20 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
       }
       deleteFn={() => deleteSpecItem(props.specItem.id)}
     >
-      <FormGroup as={Row} className="mb-3" controlId={typeInputId}>
-        <FormLabel column sm="2">
-          Type
-        </FormLabel>
-        <Col sm="10">
-          <FormSelect
-            aria-label="Spec item type selection"
-            onChange={typeChangedHandler}
-            value={props.specItem.itemType}
-          >
-            {SpecItemType.values().map((sit) => (
-              <option key={sit} value={sit}>
-                {sit}
-              </option>
-            ))}
-          </FormSelect>
-          <FormText className="text-muted">kind of spec item</FormText>
-        </Col>
+      <FormGroup className="mb-3" controlId={typeInputId}>
+        <FormLabel>Spec Item Type</FormLabel>
+        <FormSelect
+          aria-label="Spec item type selection"
+          onChange={typeChangedHandler}
+          value={props.specItem.itemType}
+        >
+          {SpecItemType.values().map((sit) => (
+            <option key={sit} value={sit}>
+              {sit}
+            </option>
+          ))}
+        </FormSelect>
+        <FormText className="text-muted">kind of spec item</FormText>
       </FormGroup>
       {selector && <SelectorComponent showLabel={false} selector={selector} />}
       {variable && (

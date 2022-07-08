@@ -1,8 +1,17 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
+import CardHeader from 'react-bootstrap/esm/CardHeader';
 
-export const PanelComponent: React.FC<{ children: React.ReactNode }> = (
-  props
-) => {
-  return <div className="border rounded m-2 p-2">{props.children}</div>;
+interface PanelComponentProps {
+  header?: string;
+  children: React.ReactNode;
+}
+
+export const PanelComponent: React.FC<PanelComponentProps> = (props) => {
+  return (
+    <Card className="m-2">
+      {props.header && <CardHeader>{props.header}</CardHeader>}
+      <div className="m-2">{props.children}</div>
+    </Card>
+  );
 };

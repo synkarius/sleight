@@ -31,7 +31,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   };
 
   return (
-    <PanelComponent>
+    <PanelComponent header="Create/Edit Action">
       <FormGroupRowComponent labelText="Name">
         <FormControl
           type="text"

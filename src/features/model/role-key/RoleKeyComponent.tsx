@@ -27,7 +27,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
   };
 
   return (
-    <PanelComponent>
+    <PanelComponent header="Create/Edit Role Key">
       <FormGroupRowComponent labelText="Role">
         <FormControl
           type="text"

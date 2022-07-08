@@ -2,7 +2,8 @@ import React, { useId, useState } from 'react';
 import { Button, Collapse } from 'react-bootstrap';
 
 export const ExpandCollapseComponent: React.FC<{
-  buttonText: string;
+  buttonTextOpen: string;
+  buttonTextClosed: string;
   children: React.ReactNode;
 }> = (props) => {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ export const ExpandCollapseComponent: React.FC<{
         aria-controls={collapseDivId}
         aria-expanded={open}
       >
-        {props.buttonText}
+        {open ? props.buttonTextOpen : props.buttonTextClosed}
       </Button>
       <Collapse in={open}>
         <div id={collapseDivId}>{props.children}</div>

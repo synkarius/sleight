@@ -45,7 +45,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   };
 
   return (
-    <PanelComponent>
+    <PanelComponent header="Create/Edit Spec">
       <FormGroupRowComponent labelText="Name">
         <FormControl
           type="text"
@@ -66,16 +66,16 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       ))}
       <Col sm="12" className="my-3">
         <Button
-          className="mx-3"
           variant="outline-primary"
           onClick={addSpecItemHandler}
+          size="lg"
         >
           Add New Spec Item
         </Button>
       </Col>
-      <Col sm="12" className="mb-3">
-        <Button className="mx-3" variant="primary" onClick={saveSpecHandler}>
-          Save Spec
+      <Col sm="12" className="mb-1">
+        <Button variant="primary" size="lg" onClick={saveSpecHandler}>
+          Save
         </Button>
       </Col>
     </PanelComponent>

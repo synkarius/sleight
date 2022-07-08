@@ -44,7 +44,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   };
 
   return (
-    <PanelComponent>
+    <PanelComponent header="Create/Edit Command">
       <FormGroupRowComponent labelText="Name">
         <FormControl
           type="text"
@@ -84,6 +84,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           className="mb-3"
           onClick={addActionHandler}
           variant="outline-primary"
+          size="lg"
         >
           Add Action
         </Button>

@@ -47,7 +47,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   };
 
   return (
-    <PanelComponent>
+    <PanelComponent header="Create/Edit Variable">
       <FormGroupRowComponent labelText="Name">
         <FormControl
           type="text"
