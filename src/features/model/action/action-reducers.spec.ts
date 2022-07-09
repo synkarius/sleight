@@ -15,7 +15,7 @@ import {
   changeEditingActionName,
   changeEditingActionRoleKey,
   changeEditingActionType,
-  saveEditingAction,
+  saveAndClearEditingAction,
   // send-key
   changeEditingSendKeyMode,
   // send-key key to send
@@ -143,7 +143,7 @@ describe('action reducer', () => {
       initialState,
       createNewEditingAction(newObject)
     );
-    const actual = actionReducer(createdState, saveEditingAction());
+    const actual = actionReducer(createdState, saveAndClearEditingAction());
 
     const expected: ReduxFriendlyStringMap<Action> = {};
     expected[newObject.id] = createTestPauseAction(newObject.id);
@@ -158,7 +158,7 @@ describe('action reducer', () => {
       initialState,
       createNewEditingAction(newObject)
     );
-    const savedState = actionReducer(createdState, saveEditingAction());
+    const savedState = actionReducer(createdState, saveAndClearEditingAction());
     const clearedState = actionReducer(savedState, clearEditingAction());
 
     const actual = actionReducer(clearedState, selectAction(newObject.id));

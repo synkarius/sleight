@@ -19,6 +19,7 @@ export const SendKeyPressComponent: React.FC<{
     <>
       <ActionValueComponent
         labelText="Inner Pause"
+        descriptionText="time to pause between repetitions of keystroke, in centiseconds"
         actionValue={props.sendKeyPressAction.innerPause}
         actionValueTypeChangedFn={(type) =>
           changeInnerPauseActionValueType(type)
@@ -29,6 +30,7 @@ export const SendKeyPressComponent: React.FC<{
       />
       <ActionValueComponent
         labelText="Repeat"
+        descriptionText="times to repeat keystroke"
         actionValue={props.sendKeyPressAction.repeat}
         actionValueTypeChangedFn={(type) => changeRepeatActionValueType(type)}
         valueChangedFn={(value) => changeRepeatValue(value)}

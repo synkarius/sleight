@@ -3,10 +3,11 @@ import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 type VariablesDropdownComponentProps = {
-  variableTypeFilter?: string[];
   selectedVariableId: string;
+  variableTypeFilter?: string[];
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  isInvalid?: boolean;
 };
 
 export const VariablesDropdownComponent: React.FC<
@@ -20,6 +21,7 @@ export const VariablesDropdownComponent: React.FC<
       onChange={props.onChange}
       onBlur={props.onBlur}
       value={props.selectedVariableId}
+      isInvalid={props.isInvalid}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(variablesSaved)

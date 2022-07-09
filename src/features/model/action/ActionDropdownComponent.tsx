@@ -7,6 +7,7 @@ type ActionDropdownComponentProps = {
   actionId: string | null;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  isInvalid?: boolean;
 };
 
 export const ActionDropdownComponent: React.FC<ActionDropdownComponentProps> = (
@@ -16,10 +17,11 @@ export const ActionDropdownComponent: React.FC<ActionDropdownComponentProps> = (
 
   return (
     <FormSelect
+      value={props.actionId || SELECT_DEFAULT_VALUE}
       aria-label="action selection"
       onChange={props.onChange}
       onBlur={props.onBlur}
-      value={props.actionId || SELECT_DEFAULT_VALUE}
+      isInvalid={props.isInvalid}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(actions).map((action) => (

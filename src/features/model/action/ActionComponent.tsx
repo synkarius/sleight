@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Action } from './action';
@@ -9,8 +9,8 @@ import {
   changeEditingActionName,
   changeEditingActionRoleKey,
   changeEditingActionType,
-  clearEditingAction,
-  saveEditingAction,
+  saveAndClearEditingAction,
+  validateKeyToSend,
 } from './action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
 import { SendKeyAction } from './send-key/send-key';
@@ -18,6 +18,9 @@ import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const dispatch = useAppDispatch();
+  const validationErrors = useAppSelector(
+    (state) => state.action.validationErrors
+  );
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeEditingActionName(event.target.value));
@@ -26,8 +29,8 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     dispatch(changeEditingActionType({ actionType: event.target.value }));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(saveEditingAction());
-    dispatch(clearEditingAction());
+    [validateKeyToSend].forEach((validation) => dispatch(validation()));
+    dispatch(saveAndClearEditingAction());
   };
 
   return (
@@ -47,7 +50,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         />
         <FormText className="text-muted">role of action</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Type">
+      <FormGroupRowComponent labelText="Type" descriptionText="type of action">
         <FormSelect
           aria-label="action type selection"
           onChange={typeChangedHandler}
@@ -64,7 +67,12 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       {props.action.type === ActionType.SEND_KEY && (
         <SendKeyComponent sendKeyAction={props.action as SendKeyAction} />
       )}
-      <Button onClick={submitHandler} variant="primary" size="lg">
+      <Button
+        onClick={submitHandler}
+        variant="primary"
+        size="lg"
+        disabled={validationErrors.length > 0}
+      >
         Save
       </Button>
     </PanelComponent>

@@ -15,6 +15,7 @@ export const SendKeyHoldReleaseComponent: React.FC<{
     <>
       <ActionValueComponent
         labelText="Direction"
+        descriptionText="up or down"
         actionValue={props.sendKeyHoldReleaseAction.direction}
         actionValueTypeChangedFn={(type) =>
           changeDirectionActionValueType(type)

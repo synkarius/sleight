@@ -123,10 +123,10 @@ const actionsSlice = createSlice({
     selectAction: (state, action: PayloadAction<string>) => {
       state.editing = state.saved[action.payload];
     },
-    saveEditingAction: (state) => {
-      if (state.editing) {
-        // TODO: validation
+    saveAndClearEditingAction: (state) => {
+      if (state.editing && state.validationErrors.length === 0) {
         state.saved[state.editing.id] = state.editing;
+        state.editing = null;
       }
     },
     clearEditingAction: (state) => {
@@ -365,7 +365,7 @@ const actionsSlice = createSlice({
       );
     },
     validateKeyToSend: (state) => {
-      if (state.editing) {
+      if (state.editing && state.editing.type === ActionType.SEND_KEY) {
         const sendKeyAction = state.editing as SendKeyAction;
         [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey].forEach(
           (validator) =>
@@ -383,9 +383,10 @@ export const {
   changeEditingActionName,
   changeEditingActionRoleKey,
   changeEditingActionType,
-  saveEditingAction,
+  saveAndClearEditingAction,
   // send-key
   changeEditingSendKeyMode,
+  validateKeyToSend,
   // send-key key to send
   changeKeyToSendActionValueType,
   changeKeyToSendValue,

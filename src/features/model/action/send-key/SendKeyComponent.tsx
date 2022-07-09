@@ -14,7 +14,13 @@ import {
   changeOuterPauseValue,
   changeOuterPauseVariableId,
   toggleModifier,
+  validateKeyToSend,
 } from '../action-reducers';
+import {
+  keyToSendNotEmpty,
+  keyToSendVariable,
+  keyToSendRoleKey,
+} from '../action-validation';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import {
   SendKeyAction,
@@ -44,7 +50,10 @@ export const SendKeyComponent: React.FC<{
 
   return (
     <>
-      <FormGroupRowComponent labelText="Send Key Mode">
+      <FormGroupRowComponent
+        labelText="Send Key Mode"
+        descriptionText="press or hold/release"
+      >
         <Form.Select
           aria-label="send-key mode selection"
           onChange={modeChangedHandler}
@@ -59,14 +68,21 @@ export const SendKeyComponent: React.FC<{
         <FormText className="text-muted">send-key mode</FormText>
       </FormGroupRowComponent>
       <ActionValueComponent
-        labelText="Key to Send"
         actionValue={props.sendKeyAction.sendKey}
+        labelText="Send Key"
+        descriptionText="key to send"
+        //
         actionValueTypeChangedFn={(type) =>
           changeKeyToSendActionValueType(type)
         }
         valueChangedFn={(value) => changeKeyToSendValue(value)}
         variableIdChangedFn={(id) => changeKeyToSendVariableId(id)}
         roleKeyIdChangedFn={(id) => changeKeyToSendRoleKeyId(id)}
+        validationFn={() => validateKeyToSend()}
+        //
+        enterValueValidator={keyToSendNotEmpty}
+        variableValidator={keyToSendVariable}
+        roleKeyValidator={keyToSendRoleKey}
       />
       <ExpandCollapseComponent
         buttonTextOpen="Less Options"
@@ -104,6 +120,7 @@ export const SendKeyComponent: React.FC<{
         </FormGroupRowComponent>
         <ActionValueComponent
           labelText="Outer Pause"
+          descriptionText="time to pause after keystroke, in centiseconds"
           actionValue={props.sendKeyAction.outerPause}
           actionValueTypeChangedFn={(type) =>
             changeOuterPauseActionValueType(type)

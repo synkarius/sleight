@@ -9,8 +9,8 @@ import {
 } from './action-value/action-value';
 import { ActionValueType } from './action-value/action-value-type';
 
-type TextValued = TextValue | ChoiceValue;
-type IdValued = TextValued | RangeValue;
+export type TextValued = TextValue | ChoiceValue;
+export type IdValued = TextValued | RangeValue;
 
 const getNotEmptyValidator = (fieldName: string): Validator<TextValued> => {
   return {

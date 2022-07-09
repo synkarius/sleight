@@ -7,6 +7,7 @@ type RoleKeyDropdownComponentProps = {
   roleKeyId: string | null;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  isInvalid?: boolean;
 };
 
 export const RoleKeyDropdownComponent: React.FC<
@@ -16,10 +17,11 @@ export const RoleKeyDropdownComponent: React.FC<
 
   return (
     <FormSelect
+      value={props.roleKeyId || SELECT_DEFAULT_VALUE}
       aria-label="role key selection"
       onChange={props.onChange}
       onBlur={props.onBlur}
-      value={props.roleKeyId || SELECT_DEFAULT_VALUE}
+      isInvalid={props.isInvalid}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(roleKeys).map((roleKey) => (

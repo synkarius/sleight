@@ -63,3 +63,25 @@ export const validate = <T>(
     }
   }
 };
+
+/**
+ * To be used in tsx files to get the error message where
+ * multiple validators apply.
+ * @param allErrors
+ * @param validators
+ * @returns
+ */
+export const getRelevantErrorMessage = (
+  allErrors: ValidationError[],
+  validators: (Validator<any> | undefined)[]
+): string | undefined => {
+  for (let i = 0; i < validators.length; i++) {
+    if (validators[i]) {
+      const validator = validators[i] as Validator<any>;
+      if (allErrors.includes(validator.error)) {
+        return validator.error.message;
+      }
+    }
+  }
+  return undefined;
+};
