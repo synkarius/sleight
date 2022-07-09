@@ -1,26 +1,25 @@
-import { PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { FormSelect } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
-export const RoleKeyDropdownComponent: React.FC<{
+type RoleKeyDropdownComponentProps = {
   roleKeyId: string | null;
-  payloadFn: (selectedRoleKeyId: string) => PayloadAction<string>;
-}> = (props) => {
-  const dispatch = useAppDispatch();
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+};
+
+export const RoleKeyDropdownComponent: React.FC<
+  RoleKeyDropdownComponentProps
+> = (props) => {
   const roleKeys = useAppSelector((state) => state.roleKey.saved);
 
-  const selectedChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    dispatch(props.payloadFn(event.target.value));
-  };
   return (
     <FormSelect
       aria-label="role key selection"
-      onChange={selectedChangedHandler}
-      value={props.roleKeyId || ''}
+      onChange={props.onChange}
+      onBlur={props.onBlur}
+      value={props.roleKeyId || SELECT_DEFAULT_VALUE}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(roleKeys).map((roleKey) => (

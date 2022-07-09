@@ -59,7 +59,9 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
           roleKeyId={props.variable.roleKeyId}
-          payloadFn={(id) => changeEditingVariableRoleKey(id)}
+          onChange={(e) =>
+            dispatch(changeEditingVariableRoleKey(e.target.value))
+          }
         />
         <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>

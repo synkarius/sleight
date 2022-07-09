@@ -1,29 +1,33 @@
-import { PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { FormSelect } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
-export const SpecDropdownComponent: React.FC<{
+type SpecDropdownComponentProps = {
   specId: string | null;
-  payloadFn: (selectedSpecId: string) => PayloadAction<string>;
-}> = (props) => {
-  const dispatch = useAppDispatch();
-  const specs = useAppSelector((state) => state.spec.saved);
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+};
 
-  const selectedChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    dispatch(props.payloadFn(event.target.value));
-  };
+export const SpecDropdownComponent: React.FC<SpecDropdownComponentProps> = (
+  props
+) => {
+  const specsSaved = useAppSelector((state) => state.spec.saved);
+
+  // const selectedChangedHandler = (
+  //   event: React.ChangeEvent<HTMLSelectElement>
+  // ) => {
+  //   dispatch(props.payloadFn(event.target.value));
+  // };
   return (
     <FormSelect
       aria-label="spec selection"
-      onChange={selectedChangedHandler}
-      value={props.specId || ''}
+      onChange={props.onChange}
+      onBlur={props.onBlur}
+      value={props.specId || SELECT_DEFAULT_VALUE}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
-      {Object.values(specs).map((spec) => (
+      {Object.values(specsSaved).map((spec) => (
         <option key={spec.id} value={spec.id}>
           {spec.name}
         </option>

@@ -1,30 +1,25 @@
-import { PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { FormSelect } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { ChangeActionIdPayload } from '../command/command';
+import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
-export const ActionDropdownComponent: React.FC<{
+type ActionDropdownComponentProps = {
   actionId: string | null;
-  selectedChangedFn: (
-    selectedActionId: string
-  ) => PayloadAction<ChangeActionIdPayload>;
-}> = (props) => {
-  const dispatch = useAppDispatch();
-  const actions = useAppSelector((state) => state.action.saved);
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+};
 
-  const selectedChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    dispatch(props.selectedChangedFn(event.target.value));
-  };
+export const ActionDropdownComponent: React.FC<ActionDropdownComponentProps> = (
+  props
+) => {
+  const actions = useAppSelector((state) => state.action.saved);
 
   return (
     <FormSelect
       aria-label="action selection"
-      onChange={selectedChangedHandler}
-      value={props.actionId || ''}
+      onChange={props.onChange}
+      onBlur={props.onBlur}
+      value={props.actionId || SELECT_DEFAULT_VALUE}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(actions).map((action) => (

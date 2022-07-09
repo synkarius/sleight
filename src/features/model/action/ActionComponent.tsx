@@ -15,7 +15,6 @@ import {
 import { SendKeyComponent } from './send-key/SendKeyComponent';
 import { SendKeyAction } from './send-key/send-key';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const dispatch = useAppDispatch();
@@ -44,7 +43,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
           roleKeyId={props.action.roleKeyId}
-          payloadFn={(id) => changeEditingActionRoleKey(id)}
+          onChange={(e) => dispatch(changeEditingActionRoleKey(e.target.value))}
         />
         <FormText className="text-muted">role of action</FormText>
       </FormGroupRowComponent>

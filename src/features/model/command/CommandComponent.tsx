@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import { Button, FormControl, FormGroup, FormText, Row } from 'react-bootstrap';
+import { Button, FormControl, FormText } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
@@ -56,7 +56,9 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
           roleKeyId={props.command.roleKeyId}
-          payloadFn={(id) => changeEditingCommandRoleKey(id)}
+          onChange={(e) =>
+            dispatch(changeEditingCommandRoleKey(e.target.value))
+          }
         />
         <FormText className="text-muted">role of command</FormText>
       </FormGroupRowComponent>
@@ -69,13 +71,17 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         {props.command.commandSpecType === CommandSpecType.SPEC && (
           <SpecDropdownComponent
             specId={props.command.specId}
-            payloadFn={(id) => changeEditingCommandSpecSpecId(id)}
+            onChange={(e) =>
+              dispatch(changeEditingCommandSpecSpecId(e.target.value))
+            }
           />
         )}
         {props.command.commandSpecType === CommandSpecType.ROLE_KEY && (
           <RoleKeyDropdownComponent
             roleKeyId={props.command.roleKeyId}
-            payloadFn={(id) => changeEditingCommandSpecRoleKeyId(id)}
+            onChange={(e) =>
+              dispatch(changeEditingCommandSpecRoleKeyId(e.target.value))
+            }
           />
         )}
       </FormGroupRowComponent>
@@ -100,11 +106,13 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         >
           <ActionDropdownComponent
             actionId={actionId}
-            selectedChangedFn={(newActionId) =>
-              changeEditingCommandActionId({
-                index: index,
-                newActionId: newActionId,
-              })
+            onChange={(e) =>
+              dispatch(
+                changeEditingCommandActionId({
+                  index: index,
+                  newActionId: e.target.value,
+                })
+              )
             }
           />
         </VerticalMoveableComponent>

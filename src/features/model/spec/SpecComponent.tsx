@@ -57,7 +57,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
           roleKeyId={props.spec.roleKeyId}
-          payloadFn={(id) => changeEditingSpecRoleKey(id)}
+          onChange={(e) => dispatch(changeEditingSpecRoleKey(e.target.value))}
         />
         <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>

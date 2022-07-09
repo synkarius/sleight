@@ -102,10 +102,11 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
       </FormGroup>
       {selector && <SelectorComponent showLabel={false} selector={selector} />}
       {variable && (
-        <VariablesDropdownComponent<ChangeSpecItemVariableIdPayload>
+        <VariablesDropdownComponent
           selectedVariableId={variable.id}
-          payloadFn={changeSpecItemVariableIdActionCreator}
-          variableTypeFilter={null}
+          onChange={(e) =>
+            dispatch(changeSpecItemVariableIdActionCreator(e.target.value))
+          }
         />
       )}
     </VerticalMoveableComponent>

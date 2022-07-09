@@ -54,16 +54,16 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       {props.actionValue.actionValueType === ActionValueType.ENTER_VALUE &&
         enterValue}
       {props.actionValue.actionValueType === ActionValueType.USE_VARIABLE && (
-        <VariablesDropdownComponent<string>
+        <VariablesDropdownComponent
           selectedVariableId={props.actionValue.variableId as string}
-          payloadFn={props.variableIdChangedFn}
+          onChange={(e) => dispatch(props.variableIdChangedFn(e.target.value))}
           variableTypeFilter={[props.actionValue.variableType]}
         />
       )}
       {props.actionValue.actionValueType === ActionValueType.USE_ROLE_KEY && (
         <RoleKeyDropdownComponent
           roleKeyId={props.actionValue.roleKeyId}
-          payloadFn={props.roleKeyIdChangedFn}
+          onChange={(e) => dispatch(props.roleKeyIdChangedFn(e.target.value))}
         />
       )}
     </FormGroupRowComponent>

@@ -1,42 +1,28 @@
-import { PayloadAction } from '@reduxjs/toolkit';
 import { FormSelect } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
-// "VDC" = Variable Dropdown Component
-
-// type of custom (generic) props
-type VDCProps<T> = {
-  payloadFn: (selectedVariableId: string) => PayloadAction<T>;
-  variableTypeFilter: string[] | null;
+type VariablesDropdownComponentProps = {
+  variableTypeFilter?: string[];
   selectedVariableId: string;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
 };
 
-// type of react component (it's a function which takes an EDCProps<T>-typed props)
-type CustomGenericPropsComponent = <T>(
-  props: VDCProps<T>
-) => React.ReactElement<VDCProps<T>>;
-
-export const VariablesDropdownComponent: CustomGenericPropsComponent = (
-  props
-) => {
-  const dispatch = useAppDispatch();
-  const variables = useAppSelector((state) => state.variable.saved);
-
-  const selectedChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    dispatch(props.payloadFn(event.target.value));
-  };
+export const VariablesDropdownComponent: React.FC<
+  VariablesDropdownComponentProps
+> = (props) => {
+  const variablesSaved = useAppSelector((state) => state.variable.saved);
 
   return (
     <FormSelect
       aria-label="spec item variable selection"
-      onChange={selectedChangedHandler}
+      onChange={props.onChange}
+      onBlur={props.onBlur}
       value={props.selectedVariableId}
     >
       <option value={SELECT_DEFAULT_VALUE}></option>
-      {Object.values(variables)
+      {Object.values(variablesSaved)
         .filter(
           (variable) =>
             !props.variableTypeFilter ||
