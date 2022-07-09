@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../../util/functions';
+import { getRandomId } from '../../../../util/random-id';
 import { RoleKeyed, Ided, Named, Typed, BasicFields } from '../../../domain';
 import { copyVariable, createVariable } from '../variable';
 import { VariableType } from '../variable-types';

@@ -6,7 +6,7 @@ import {
   RangeValue,
 } from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
-import { getRandomId } from '../../../../util/functions';
+import { getRandomId } from '../../../../util/random-id';
 import { ActionType } from '../action-types';
 
 export interface Modifiers {

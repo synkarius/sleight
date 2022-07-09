@@ -1,4 +1,4 @@
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from './command';
 import {

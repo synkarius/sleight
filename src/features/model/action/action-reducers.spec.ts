@@ -1,4 +1,4 @@
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Action } from './action';
 import {
   createSendKeyHoldReleaseAction,
@@ -115,11 +115,13 @@ describe('action reducer', () => {
   const initialState: ActionsState = {
     saved: {},
     editing: null,
+    validationErrors: [],
   };
   it('should handle initial state', () => {
     expect(actionReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
       editing: null,
+      validationErrors: [],
     });
   });
 

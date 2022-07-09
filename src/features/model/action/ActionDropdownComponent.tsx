@@ -3,6 +3,7 @@ import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ChangeActionIdPayload } from '../command/command';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 export const ActionDropdownComponent: React.FC<{
   actionId: string | null;
@@ -25,7 +26,7 @@ export const ActionDropdownComponent: React.FC<{
       onChange={selectedChangedHandler}
       value={props.actionId || ''}
     >
-      <option value="none"></option>
+      <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(actions).map((action) => (
         <option key={action.id} value={action.id}>
           {action.name}

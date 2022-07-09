@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { validate } from '../../../validation/validator';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
+import { validate, ValidationError } from '../../../validation/validator';
 import { Context } from './context';
-import {
-  contextMatcherValidator,
-  ContextValidationError,
-} from './context-validation';
+import { contextMatcherValidator } from './context-validation';
 
 export interface ContextsState {
   saved: ReduxFriendlyStringMap<Context>;
   editing: Context | null;
-  validationErrors: ContextValidationError[];
+  validationErrors: ValidationError[];
 }
 
 const initialState: ContextsState = {

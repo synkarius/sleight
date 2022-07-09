@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../util/functions';
+import { getRandomId } from '../../../util/random-id';
 import { RoleKeyed, Ided } from '../../domain';
 
 interface BasicIded extends RoleKeyed, Ided {}

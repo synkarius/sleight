@@ -2,7 +2,7 @@ import { Text } from './text/text';
 import { Range } from './range/range';
 import { Choice } from './choice/choice';
 import { BasicFields } from '../../domain';
-import { getRandomId } from '../../../util/functions';
+import { getRandomId } from '../../../util/random-id';
 
 export type Variable = Text | Range | Choice;
 

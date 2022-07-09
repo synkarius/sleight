@@ -15,6 +15,7 @@ import {
 import { SendKeyComponent } from './send-key/SendKeyComponent';
 import { SendKeyAction } from './send-key/send-key';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const dispatch = useAppDispatch();

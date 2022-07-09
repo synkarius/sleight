@@ -1,4 +1,4 @@
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { createSelector, createSelectorItem, Selector } from './selector';
 import {
   SelectorsState,

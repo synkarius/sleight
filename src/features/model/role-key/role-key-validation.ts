@@ -1,10 +1,10 @@
-import { Validator } from '../../../validation/validator';
+import { notEmpty } from '../../../validation/common-validations';
+import {
+  createValidationError,
+  Validator,
+} from '../../../validation/validator';
 
-export enum RoleKeyValidationError {
-  ROLE_KEY_IS_EMPTY = "role key can't be empty",
-}
-
-export const roleKeyTextValidator: Validator<string, RoleKeyValidationError> = {
-  test: (roleKeyText) => roleKeyText.trim().length > 0,
-  error: RoleKeyValidationError.ROLE_KEY_IS_EMPTY,
+export const roleKeyTextValidator: Validator<string> = {
+  test: notEmpty,
+  error: createValidationError("role key can't be empty"),
 };

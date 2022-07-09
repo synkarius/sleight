@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 export const SpecDropdownComponent: React.FC<{
   specId: string | null;
@@ -21,7 +22,7 @@ export const SpecDropdownComponent: React.FC<{
       onChange={selectedChangedHandler}
       value={props.specId || ''}
     >
-      <option value="none"></option>
+      <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(specs).map((spec) => (
         <option key={spec.id} value={spec.id}>
           {spec.name}

@@ -1,4 +1,4 @@
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { createRoleKey, RoleKey } from './role-key';
 import {
   RoleKeysState,
@@ -11,7 +11,7 @@ import {
   roleKeyReducer,
   validateRoleKeyText,
 } from './role-key-reducers';
-import { RoleKeyValidationError } from './role-key-validation';
+import { roleKeyTextValidator } from './role-key-validation';
 global.crypto = require('crypto');
 
 describe('role key reducer', () => {
@@ -142,7 +142,7 @@ describe('role key reducer', () => {
       validateRoleKeyText()
     );
     expect(validateEmptyState.validationErrors).toEqual([
-      RoleKeyValidationError.ROLE_KEY_IS_EMPTY,
+      roleKeyTextValidator.error,
     ]);
   });
 

@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 export const RoleKeyDropdownComponent: React.FC<{
   roleKeyId: string | null;
@@ -21,7 +22,7 @@ export const RoleKeyDropdownComponent: React.FC<{
       onChange={selectedChangedHandler}
       value={props.roleKeyId || ''}
     >
-      <option value="none"></option>
+      <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(roleKeys).map((roleKey) => (
         <option key={roleKey.id} value={roleKey.id}>
           {roleKey.value}

@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { validate } from '../../../validation/validator';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
+import { validate, ValidationError } from '../../../validation/validator';
 import { RoleKey } from './role-key';
-import {
-  roleKeyTextValidator,
-  RoleKeyValidationError,
-} from './role-key-validation';
+import { roleKeyTextValidator } from './role-key-validation';
 
 export type RoleKeysState = {
   saved: ReduxFriendlyStringMap<RoleKey>;
   editing: RoleKey | null;
-  validationErrors: RoleKeyValidationError[];
+  validationErrors: ValidationError[];
 };
 
 const initialState: RoleKeysState = {

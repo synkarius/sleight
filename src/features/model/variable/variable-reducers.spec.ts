@@ -1,4 +1,4 @@
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { createChoice, createChoiceItem } from './choice/choice';
 import { createRange } from './range/range';
 import { createText } from './text/text';

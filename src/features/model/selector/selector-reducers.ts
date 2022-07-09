@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SelectorIdDuplicateError } from '../../../error/SelectorIdDuplicateError';
 import { SelectorNotFoundError } from '../../../error/SelectorNotFoundError';
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   CreateSelectorItemPayload,
   DeleteSelectorItemPayload,

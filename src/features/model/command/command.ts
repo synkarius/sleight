@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../util/functions';
+import { getRandomId } from '../../../util/random-id';
 import { RoleKeyed, Named, Ided } from '../../domain';
 import { MoveDirection } from '../common/move-direction';
 import { CommandSpecType } from './command-spec-type';

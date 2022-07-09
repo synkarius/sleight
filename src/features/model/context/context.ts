@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../util/functions';
+import { getRandomId } from '../../../util/random-id';
 import { RoleKeyed, Ided, Named, Typed } from '../../domain';
 import { ContextType } from './context-types';
 

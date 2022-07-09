@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { FormSelect } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 // "VDC" = Variable Dropdown Component
 
@@ -34,6 +35,7 @@ export const VariablesDropdownComponent: CustomGenericPropsComponent = (
       onChange={selectedChangedHandler}
       value={props.selectedVariableId}
     >
+      <option value={SELECT_DEFAULT_VALUE}></option>
       {Object.values(variables)
         .filter(
           (variable) =>

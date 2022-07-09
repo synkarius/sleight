@@ -1,13 +1,10 @@
-import { Validator } from '../../../validation/validator';
+import { notEmpty } from '../../../validation/common-validations';
+import {
+  createValidationError,
+  Validator,
+} from '../../../validation/validator';
 
-export enum ContextValidationError {
-  MATCHER_IS_EMPTY = "matcher can't be empty",
-}
-
-export const contextMatcherValidator: Validator<
-  string,
-  ContextValidationError
-> = {
-  test: (matcher) => matcher.trim().length > 0,
-  error: ContextValidationError.MATCHER_IS_EMPTY,
+export const contextMatcherValidator: Validator<string> = {
+  test: notEmpty,
+  error: createValidationError("matcher can't be empty"),
 };

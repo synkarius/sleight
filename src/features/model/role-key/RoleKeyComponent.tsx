@@ -9,7 +9,7 @@ import {
   saveAndClearEditingRoleKey,
   validateRoleKeyText,
 } from './role-key-reducers';
-import { RoleKeyValidationError } from './role-key-validation';
+import { roleKeyTextValidator } from './role-key-validation';
 
 export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
   const dispatch = useAppDispatch();
@@ -34,15 +34,13 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
           onChange={valueChangedHandler}
           onBlur={(_e) => dispatch(validateRoleKeyText())}
           value={props.roleKey.value}
-          isInvalid={validationErrors.includes(
-            RoleKeyValidationError.ROLE_KEY_IS_EMPTY
-          )}
+          isInvalid={validationErrors.includes(roleKeyTextValidator.error)}
         />
         <FormText className="text-muted">
           what concept this key identifies
         </FormText>
         <Form.Control.Feedback type="invalid">
-          {RoleKeyValidationError.ROLE_KEY_IS_EMPTY.toString()}
+          {roleKeyTextValidator.error.message}
         </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button

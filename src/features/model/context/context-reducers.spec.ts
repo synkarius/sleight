@@ -13,8 +13,8 @@ import {
   validateEditingContextMatcher,
 } from './context-reducers';
 import { ContextType } from './context-types';
-import { ReduxFriendlyStringMap } from '../../../util/structures';
-import { ContextValidationError } from './context-validation';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
+import { contextMatcherValidator } from './context-validation';
 global.crypto = require('crypto');
 
 describe('context reducer', () => {
@@ -227,7 +227,7 @@ describe('context reducer', () => {
       validateEditingContextMatcher()
     );
     expect(validateBlankMatcherState.validationErrors).toEqual([
-      ContextValidationError.MATCHER_IS_EMPTY,
+      contextMatcherValidator.error,
     ]);
   });
 

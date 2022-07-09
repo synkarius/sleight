@@ -20,7 +20,7 @@ import {
   validateEditingContextMatcher,
 } from './context-reducers';
 import { ContextType } from './context-types';
-import { ContextValidationError } from './context-validation';
+import { contextMatcherValidator } from './context-validation';
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const validationErrors = useAppSelector(
@@ -87,13 +87,11 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
           onChange={matcherChangedHandler}
           onBlur={(_e) => dispatch(validateEditingContextMatcher())}
           value={props.context.matcher}
-          isInvalid={validationErrors.includes(
-            ContextValidationError.MATCHER_IS_EMPTY
-          )}
+          isInvalid={validationErrors.includes(contextMatcherValidator.error)}
         />
         <FormText className="text-muted">{matcherHelpText}</FormText>
         <Form.Control.Feedback type="invalid">
-          {ContextValidationError.MATCHER_IS_EMPTY.toString()}
+          {contextMatcherValidator.error.message}
         </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button

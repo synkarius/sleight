@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../util/functions';
+import { getRandomId } from '../../../util/random-id';
 import { Ided, Named, RoleKeyed, Typed } from '../../domain';
 import { MoveDirection } from '../common/move-direction';
 

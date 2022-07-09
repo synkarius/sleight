@@ -5,13 +5,19 @@ import { UnhandledActionValueOperationError } from '../../../error/UnhandledActi
 import { UnhandledSendKeyFieldError } from '../../../error/UnhandledSendKeyFieldError';
 import { UnhandledSendKeyModeError } from '../../../error/UnhandledSendKeyModeError';
 import { UnhandledSendKeyModifierTypeError } from '../../../error/UnhandledSendKeyModifierTypeError';
-import { ReduxFriendlyStringMap } from '../../../util/structures';
+import { ReduxFriendlyStringMap } from '../../../util/string-map';
+import { validate, ValidationError } from '../../../validation/validator';
 import {
   Action,
   ChangeActionTypePayload,
   ChangeSendKeyModePayload,
 } from './action';
 import { ActionType } from './action-types';
+import {
+  keyToSendNotEmpty,
+  keyToSendRoleKey,
+  keyToSendVariable,
+} from './action-validation';
 import {
   ChoiceValue,
   RangeValue,
@@ -33,11 +39,13 @@ import { SendKeyField } from './send-key/send-key-payloads';
 export type ActionsState = {
   saved: ReduxFriendlyStringMap<Action>;
   editing: Action | null;
+  validationErrors: ValidationError[];
 };
 
 const initialState: ActionsState = {
   saved: {},
   editing: null,
+  validationErrors: [],
 };
 
 type SomeTextValuedActionValue = TextValue | ChoiceValue;
@@ -355,6 +363,15 @@ const actionsSlice = createSlice({
         SendKeyField.DIRECTION,
         ActionValueOperation.CHANGE_ROLE_KEY_ID
       );
+    },
+    validateKeyToSend: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyAction;
+        [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey].forEach(
+          (validator) =>
+            validate(sendKeyAction.sendKey, validator, state.validationErrors)
+        );
+      }
     },
   },
 });
