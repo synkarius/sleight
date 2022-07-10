@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import CardHeader from 'react-bootstrap/esm/CardHeader';
 
 interface PanelComponentProps {
   header?: string;
@@ -10,7 +9,7 @@ interface PanelComponentProps {
 export const PanelComponent: React.FC<PanelComponentProps> = (props) => {
   return (
     <Card className="m-2">
-      {props.header && <CardHeader>{props.header}</CardHeader>}
+      {props.header && <Card.Header>{props.header}</Card.Header>}
       <div className="m-2">{props.children}</div>
     </Card>
   );
