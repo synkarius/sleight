@@ -22,6 +22,7 @@ import {
   directionNotEmpty,
   directionRoleKey,
   directionVariable,
+  IdValued,
   innerPauseRoleKey,
   innerPauseVariable,
   keyToSendNotEmpty,
@@ -31,6 +32,7 @@ import {
   outerPauseVariable,
   repeatRoleKey,
   repeatVariable,
+  TextValued,
 } from './action-validation';
 import {
   ChangeActionValuePayload,
@@ -63,13 +65,10 @@ const initialState: ActionsState = {
   validationErrors: [],
 };
 
-type SomeTextValuedActionValue = TextValue | ChoiceValue;
-type SomeActionValue = SomeTextValuedActionValue | RangeValue;
-
 const getActionValue = (
   state: Draft<ActionsState>,
   field: SendKeyField
-): SomeActionValue => {
+): IdValued => {
   if (state.editing) {
     switch (field) {
       case SendKeyField.KEY_TO_SEND:
@@ -90,7 +89,7 @@ const getActionValue = (
 };
 
 const performOperation = (
-  actionValue: SomeActionValue,
+  actionValue: IdValued,
   eventTargetValue: string,
   operation: ActionValueOperation
 ) => {
@@ -104,7 +103,7 @@ const performOperation = (
         const rangeValue = actionValue as RangeValue;
         rangeValue.value = +eventTargetValue;
       } else {
-        const textBasedValue = actionValue as SomeTextValuedActionValue;
+        const textBasedValue = actionValue as TextValued;
         textBasedValue.value = eventTargetValue;
       }
       break;
@@ -127,6 +126,18 @@ const updateActionValue = (
 ) => {
   const actionValue = getActionValue(state, field);
   performOperation(actionValue, eventTargetValue, operation);
+};
+
+const clearTextValued = (actionValue: TextValued) => {
+  actionValue.value = '';
+  actionValue.variableId = SELECT_DEFAULT_VALUE;
+  actionValue.roleKeyId = SELECT_DEFAULT_VALUE;
+};
+
+const clearNumericValued = (actionValue: RangeValue) => {
+  actionValue.value = 0;
+  actionValue.variableId = SELECT_DEFAULT_VALUE;
+  actionValue.roleKeyId = SELECT_DEFAULT_VALUE;
 };
 
 const actionsSlice = createSlice({
@@ -239,10 +250,7 @@ const actionsSlice = createSlice({
     },
     resetKeyToSend: (state) => {
       if (state.editing) {
-        const sendKeyAction = state.editing as SendKeyAction;
-        sendKeyAction.sendKey.value = '';
-        sendKeyAction.sendKey.variableId = SELECT_DEFAULT_VALUE;
-        sendKeyAction.sendKey.roleKeyId = SELECT_DEFAULT_VALUE;
+        clearTextValued((state.editing as SendKeyAction).sendKey);
         [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey]
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
@@ -251,10 +259,7 @@ const actionsSlice = createSlice({
     // outer pause
     resetOuterPause: (state) => {
       if (state.editing) {
-        const sendKeyAction = state.editing as SendKeyAction;
-        sendKeyAction.outerPause.value = 0;
-        sendKeyAction.outerPause.variableId = SELECT_DEFAULT_VALUE;
-        sendKeyAction.outerPause.roleKeyId = SELECT_DEFAULT_VALUE;
+        clearNumericValued((state.editing as SendKeyAction).outerPause);
         [outerPauseVariable, outerPauseRoleKey]
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
@@ -263,10 +268,7 @@ const actionsSlice = createSlice({
     // inner pause
     resetInnerPause: (state) => {
       if (state.editing) {
-        const sendKeyPressAction = state.editing as SendKeyPressAction;
-        sendKeyPressAction.innerPause.value = 0;
-        sendKeyPressAction.innerPause.variableId = SELECT_DEFAULT_VALUE;
-        sendKeyPressAction.innerPause.roleKeyId = SELECT_DEFAULT_VALUE;
+        clearNumericValued((state.editing as SendKeyPressAction).innerPause);
         [innerPauseVariable, innerPauseRoleKey]
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
@@ -275,10 +277,7 @@ const actionsSlice = createSlice({
     // repeat
     resetRepeat: (state) => {
       if (state.editing) {
-        const sendKeyPressAction = state.editing as SendKeyPressAction;
-        sendKeyPressAction.repeat.value = 0;
-        sendKeyPressAction.repeat.variableId = SELECT_DEFAULT_VALUE;
-        sendKeyPressAction.repeat.roleKeyId = SELECT_DEFAULT_VALUE;
+        clearNumericValued((state.editing as SendKeyPressAction).repeat);
         [repeatVariable, repeatRoleKey]
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
@@ -287,10 +286,7 @@ const actionsSlice = createSlice({
     // direction
     resetDirection: (state) => {
       if (state.editing) {
-        const action = state.editing as SendKeyHoldReleaseAction;
-        action.direction.value = '';
-        action.direction.variableId = SELECT_DEFAULT_VALUE;
-        action.direction.roleKeyId = SELECT_DEFAULT_VALUE;
+        clearTextValued((state.editing as SendKeyHoldReleaseAction).direction);
         [directionNotEmpty, directionVariable, directionRoleKey]
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
@@ -307,11 +303,9 @@ export const {
   changeEditingActionRoleKey,
   changeEditingActionType,
   saveAndClearEditingAction,
-
   // send-key
-  changeEditingSendKeyMode,
-  // send-key key to send
   changeSendKey,
+  changeEditingSendKeyMode,
   validateKeyToSend,
   resetKeyToSend,
   toggleModifier,
