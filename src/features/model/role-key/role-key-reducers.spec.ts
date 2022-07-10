@@ -12,7 +12,6 @@ import {
   validateRoleKeyText,
 } from './role-key-reducers';
 import { roleKeyTextValidator } from './role-key-validation';
-global.crypto = require('crypto');
 
 describe('role key reducer', () => {
   const initialState: RoleKeysState = {

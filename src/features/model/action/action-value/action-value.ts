@@ -1,4 +1,6 @@
+import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
+import { ActionValueOperation } from './action-value-operation';
 import { ActionValueType } from './action-value-type';
 
 export interface ActionValue {
@@ -31,8 +33,8 @@ export const createTextValue = (): TextValue => {
   return {
     actionValueType: ActionValueType.ENTER_VALUE,
     variableType: VariableType.TEXT,
-    variableId: null,
-    roleKeyId: null,
+    variableId: SELECT_DEFAULT_VALUE,
+    roleKeyId: SELECT_DEFAULT_VALUE,
     value: '',
   };
 };
@@ -48,8 +50,8 @@ export const createRangeValue = (): RangeValue => {
   return {
     actionValueType: ActionValueType.ENTER_VALUE,
     variableType: VariableType.RANGE,
-    variableId: null,
-    roleKeyId: null,
+    variableId: SELECT_DEFAULT_VALUE,
+    roleKeyId: SELECT_DEFAULT_VALUE,
     value: 0,
   };
 };
@@ -65,8 +67,14 @@ export const createChoiceValue = (): ChoiceValue => {
   return {
     actionValueType: ActionValueType.ENTER_VALUE,
     variableType: VariableType.CHOICE,
-    variableId: null,
-    roleKeyId: null,
+    variableId: SELECT_DEFAULT_VALUE,
+    roleKeyId: SELECT_DEFAULT_VALUE,
     value: '',
   };
+};
+
+export type ChangeActionValuePayload<T> = {
+  eventTargetValue: string;
+  field: T;
+  operation: ActionValueOperation;
 };

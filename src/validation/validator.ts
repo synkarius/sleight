@@ -23,7 +23,7 @@ export interface Validator<T> {
  * @param error
  * @returns
  */
-const indexOfError = (
+export const indexOfError = (
   errors: ValidationError[],
   error: ValidationError
 ): number => {
@@ -35,8 +35,29 @@ const indexOfError = (
   return -1;
 };
 
+/**
+ * Works with redux-toolkit proxies.
+ * @param errors
+ * @param error
+ * @returns
+ */
 const includesError = (errors: ValidationError[], error: ValidationError) => {
   return indexOfError(errors, error) != -1;
+};
+
+/**
+ * Works with redux-toolkit proxies.
+ * @param errors
+ * @param error
+ */
+export const removeError = (
+  errors: ValidationError[],
+  error: ValidationError
+) => {
+  while (includesError(errors, error)) {
+    const index = indexOfError(errors, error);
+    errors.splice(index, 1);
+  }
 };
 
 /**
@@ -53,10 +74,7 @@ export const validate = <T>(
   errors: ValidationError[]
 ): void => {
   if (validator.test(t)) {
-    while (includesError(errors, validator.error)) {
-      const index = indexOfError(errors, validator.error);
-      errors.splice(index, 1);
-    }
+    removeError(errors, validator.error);
   } else {
     if (!includesError(errors, validator.error)) {
       errors.push(validator.error);

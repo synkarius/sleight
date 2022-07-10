@@ -9,7 +9,6 @@ import {
   deleteSelectorItem,
   selectorReducer,
 } from './selector-reducers';
-global.crypto = require('crypto');
 
 describe('role key reducer', () => {
   const initialState: SelectorsState = {

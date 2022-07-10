@@ -54,10 +54,21 @@ const getRoleKeyNotSelectedValidator = (
   };
 };
 
-export const keyToSendNotEmpty = getNotEmptyValidator(ActionType.SEND_KEY);
-export const keyToSendVariable = getVariableNotSelectedValidator(
-  ActionType.SEND_KEY
-);
-export const keyToSendRoleKey = getRoleKeyNotSelectedValidator(
-  ActionType.SEND_KEY
-);
+const KEY_TO_SEND = 'key to send';
+export const keyToSendNotEmpty = getNotEmptyValidator(KEY_TO_SEND);
+export const keyToSendVariable = getVariableNotSelectedValidator(KEY_TO_SEND);
+export const keyToSendRoleKey = getRoleKeyNotSelectedValidator(KEY_TO_SEND);
+const OUTER_PAUSE = 'outer pause';
+export const outerPauseVariable = getVariableNotSelectedValidator(OUTER_PAUSE);
+export const outerPauseRoleKey = getRoleKeyNotSelectedValidator(OUTER_PAUSE);
+const INNER_PAUSE = 'outer pause';
+export const innerPauseVariable = getVariableNotSelectedValidator(INNER_PAUSE);
+export const innerPauseRoleKey = getRoleKeyNotSelectedValidator(INNER_PAUSE);
+const REPEAT = 'repeat';
+export const repeatVariable = getVariableNotSelectedValidator(REPEAT);
+export const repeatRoleKey = getRoleKeyNotSelectedValidator(REPEAT);
+const DIRECTION = 'direction';
+// TODO: validate this differently so it can only be "up" or "down"
+export const directionNotEmpty = getNotEmptyValidator(DIRECTION);
+export const directionVariable = getVariableNotSelectedValidator(DIRECTION);
+export const directionRoleKey = getRoleKeyNotSelectedValidator(DIRECTION);

@@ -6,7 +6,12 @@ import { UnhandledSendKeyFieldError } from '../../../error/UnhandledSendKeyField
 import { UnhandledSendKeyModeError } from '../../../error/UnhandledSendKeyModeError';
 import { UnhandledSendKeyModifierTypeError } from '../../../error/UnhandledSendKeyModifierTypeError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { validate, ValidationError } from '../../../validation/validator';
+import {
+  removeError,
+  validate,
+  ValidationError,
+} from '../../../validation/validator';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import {
   Action,
   ChangeActionTypePayload,
@@ -14,11 +19,21 @@ import {
 } from './action';
 import { ActionType } from './action-types';
 import {
+  directionNotEmpty,
+  directionRoleKey,
+  directionVariable,
+  innerPauseRoleKey,
+  innerPauseVariable,
   keyToSendNotEmpty,
   keyToSendRoleKey,
   keyToSendVariable,
+  outerPauseRoleKey,
+  outerPauseVariable,
+  repeatRoleKey,
+  repeatVariable,
 } from './action-validation';
 import {
+  ChangeActionValuePayload,
   ChoiceValue,
   RangeValue,
   TextValue,
@@ -76,21 +91,22 @@ const getActionValue = (
 
 const performOperation = (
   actionValue: SomeActionValue,
-  action: PayloadAction<string>,
+  eventTargetValue: string,
   operation: ActionValueOperation
 ) => {
-  const eventTargetValue = action.payload;
   switch (operation) {
     case ActionValueOperation.CHANGE_TYPE:
       actionValue.actionValueType = eventTargetValue;
       break;
-    case ActionValueOperation.CHANGE_VALUE_STRING:
-      const textBasedValue = actionValue as SomeTextValuedActionValue;
-      textBasedValue.value = eventTargetValue;
-      break;
-    case ActionValueOperation.CHANGE_VALUE_NUMBER:
-      const rangeValue = actionValue as RangeValue;
-      rangeValue.value = +eventTargetValue;
+    case ActionValueOperation.CHANGE_ENTERED_VALUE:
+      // TODO: do this check better
+      if (typeof actionValue.value === 'number') {
+        const rangeValue = actionValue as RangeValue;
+        rangeValue.value = +eventTargetValue;
+      } else {
+        const textBasedValue = actionValue as SomeTextValuedActionValue;
+        textBasedValue.value = eventTargetValue;
+      }
       break;
     case ActionValueOperation.CHANGE_VARIABLE_ID:
       actionValue.variableId = eventTargetValue;
@@ -105,12 +121,12 @@ const performOperation = (
 
 const updateActionValue = (
   state: Draft<ActionsState>,
-  action: PayloadAction<string>,
+  eventTargetValue: string,
   field: SendKeyField,
   operation: ActionValueOperation
 ) => {
   const actionValue = getActionValue(state, field);
-  performOperation(actionValue, action, operation);
+  performOperation(actionValue, eventTargetValue, operation);
 };
 
 const actionsSlice = createSlice({
@@ -199,178 +215,85 @@ const actionsSlice = createSlice({
         }
       }
     },
+    changeSendKey: (
+      state,
+      action: PayloadAction<ChangeActionValuePayload<SendKeyField>>
+    ) => {
+      const payload = action.payload;
+      updateActionValue(
+        state,
+        payload.eventTargetValue,
+        payload.field,
+        payload.operation
+      );
+    },
     // key to send
-    changeKeyToSendActionValueType: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.KEY_TO_SEND,
-        ActionValueOperation.CHANGE_TYPE
-      );
-    },
-    changeKeyToSendValue: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.KEY_TO_SEND,
-        ActionValueOperation.CHANGE_VALUE_STRING
-      );
-    },
-    changeKeyToSendVariableId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.KEY_TO_SEND,
-        ActionValueOperation.CHANGE_VARIABLE_ID
-      );
-    },
-    changeKeyToSendRoleKeyId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.KEY_TO_SEND,
-        ActionValueOperation.CHANGE_ROLE_KEY_ID
-      );
-    },
-    // outer pause
-    changeOuterPauseActionValueType: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.OUTER_PAUSE,
-        ActionValueOperation.CHANGE_TYPE
-      );
-    },
-    changeOuterPauseValue: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.OUTER_PAUSE,
-        ActionValueOperation.CHANGE_VALUE_NUMBER
-      );
-    },
-    changeOuterPauseVariableId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.OUTER_PAUSE,
-        ActionValueOperation.CHANGE_VARIABLE_ID
-      );
-    },
-    changeOuterPauseRoleKeyId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.OUTER_PAUSE,
-        ActionValueOperation.CHANGE_ROLE_KEY_ID
-      );
-    },
-    // inner pause
-    changeInnerPauseActionValueType: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.INNER_PAUSE,
-        ActionValueOperation.CHANGE_TYPE
-      );
-    },
-    changeInnerPauseValue: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.INNER_PAUSE,
-        ActionValueOperation.CHANGE_VALUE_NUMBER
-      );
-    },
-    changeInnerPauseVariableId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.INNER_PAUSE,
-        ActionValueOperation.CHANGE_VARIABLE_ID
-      );
-    },
-    changeInnerPauseRoleKeyId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.INNER_PAUSE,
-        ActionValueOperation.CHANGE_ROLE_KEY_ID
-      );
-    },
-    // repeat
-    changeRepeatActionValueType: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.REPEAT,
-        ActionValueOperation.CHANGE_TYPE
-      );
-    },
-    changeRepeatValue: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.REPEAT,
-        ActionValueOperation.CHANGE_VALUE_NUMBER
-      );
-    },
-    changeRepeatVariableId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.REPEAT,
-        ActionValueOperation.CHANGE_VARIABLE_ID
-      );
-    },
-    changeRepeatRoleKeyId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.REPEAT,
-        ActionValueOperation.CHANGE_ROLE_KEY_ID
-      );
-    },
-    // direction
-    changeDirectionActionValueType: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.DIRECTION,
-        ActionValueOperation.CHANGE_TYPE
-      );
-    },
-    changeDirectionValue: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.DIRECTION,
-        ActionValueOperation.CHANGE_VALUE_STRING
-      );
-    },
-    changeDirectionVariableId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.DIRECTION,
-        ActionValueOperation.CHANGE_VARIABLE_ID
-      );
-    },
-    changeDirectionRoleKeyId: (state, action: PayloadAction<string>) => {
-      updateActionValue(
-        state,
-        action,
-        SendKeyField.DIRECTION,
-        ActionValueOperation.CHANGE_ROLE_KEY_ID
-      );
-    },
     validateKeyToSend: (state) => {
-      if (state.editing && state.editing.type === ActionType.SEND_KEY) {
+      if (state.editing) {
         const sendKeyAction = state.editing as SendKeyAction;
         [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey].forEach(
           (validator) =>
             validate(sendKeyAction.sendKey, validator, state.validationErrors)
         );
+      }
+    },
+    resetKeyToSend: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyAction;
+        sendKeyAction.sendKey.value = '';
+        sendKeyAction.sendKey.variableId = SELECT_DEFAULT_VALUE;
+        sendKeyAction.sendKey.roleKeyId = SELECT_DEFAULT_VALUE;
+        [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey]
+          .map((v) => v.error)
+          .forEach((error) => removeError(state.validationErrors, error));
+      }
+    },
+    // outer pause
+    resetOuterPause: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyAction;
+        sendKeyAction.outerPause.value = 0;
+        sendKeyAction.outerPause.variableId = SELECT_DEFAULT_VALUE;
+        sendKeyAction.outerPause.roleKeyId = SELECT_DEFAULT_VALUE;
+        [outerPauseVariable, outerPauseRoleKey]
+          .map((v) => v.error)
+          .forEach((error) => removeError(state.validationErrors, error));
+      }
+    },
+    // inner pause
+    resetInnerPause: (state) => {
+      if (state.editing) {
+        const sendKeyPressAction = state.editing as SendKeyPressAction;
+        sendKeyPressAction.innerPause.value = 0;
+        sendKeyPressAction.innerPause.variableId = SELECT_DEFAULT_VALUE;
+        sendKeyPressAction.innerPause.roleKeyId = SELECT_DEFAULT_VALUE;
+        [innerPauseVariable, innerPauseRoleKey]
+          .map((v) => v.error)
+          .forEach((error) => removeError(state.validationErrors, error));
+      }
+    },
+    // repeat
+    resetRepeat: (state) => {
+      if (state.editing) {
+        const sendKeyPressAction = state.editing as SendKeyPressAction;
+        sendKeyPressAction.repeat.value = 0;
+        sendKeyPressAction.repeat.variableId = SELECT_DEFAULT_VALUE;
+        sendKeyPressAction.repeat.roleKeyId = SELECT_DEFAULT_VALUE;
+        [repeatVariable, repeatRoleKey]
+          .map((v) => v.error)
+          .forEach((error) => removeError(state.validationErrors, error));
+      }
+    },
+    // direction
+    resetDirection: (state) => {
+      if (state.editing) {
+        const action = state.editing as SendKeyHoldReleaseAction;
+        action.direction.value = '';
+        action.direction.variableId = SELECT_DEFAULT_VALUE;
+        action.direction.roleKeyId = SELECT_DEFAULT_VALUE;
+        [directionNotEmpty, directionVariable, directionRoleKey]
+          .map((v) => v.error)
+          .forEach((error) => removeError(state.validationErrors, error));
       }
     },
   },
@@ -384,35 +307,17 @@ export const {
   changeEditingActionRoleKey,
   changeEditingActionType,
   saveAndClearEditingAction,
+
   // send-key
   changeEditingSendKeyMode,
-  validateKeyToSend,
   // send-key key to send
-  changeKeyToSendActionValueType,
-  changeKeyToSendValue,
-  changeKeyToSendVariableId,
-  changeKeyToSendRoleKeyId,
-  // send-key modifiers
+  changeSendKey,
+  validateKeyToSend,
+  resetKeyToSend,
   toggleModifier,
-  // send-key outer pause
-  changeOuterPauseActionValueType,
-  changeOuterPauseValue,
-  changeOuterPauseVariableId,
-  changeOuterPauseRoleKeyId,
-  // send-key inner pause
-  changeInnerPauseActionValueType,
-  changeInnerPauseValue,
-  changeInnerPauseVariableId,
-  changeInnerPauseRoleKeyId,
-  // send-key repeat
-  changeRepeatActionValueType,
-  changeRepeatValue,
-  changeRepeatVariableId,
-  changeRepeatRoleKeyId,
-  // send-key direction
-  changeDirectionActionValueType,
-  changeDirectionValue,
-  changeDirectionVariableId,
-  changeDirectionRoleKeyId,
+  resetOuterPause,
+  resetInnerPause,
+  resetRepeat,
+  resetDirection,
 } = actionsSlice.actions;
 export const actionReducer = actionsSlice.reducer;

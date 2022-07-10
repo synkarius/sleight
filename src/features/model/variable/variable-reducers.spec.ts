@@ -20,7 +20,6 @@ import {
   variableReducer,
 } from './variable-reducers';
 import { VariableType } from './variable-types';
-global.crypto = require('crypto');
 
 const createTestVariable = (id: string): Variable => {
   return {

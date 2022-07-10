@@ -19,7 +19,6 @@ import {
   commandReducer,
 } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
-global.crypto = require('crypto');
 
 const createTestCommand = (id: string): Command => {
   return {

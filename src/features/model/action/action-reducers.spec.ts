@@ -16,47 +16,24 @@ import {
   changeEditingActionRoleKey,
   changeEditingActionType,
   saveAndClearEditingAction,
-  // send-key
   changeEditingSendKeyMode,
-  // send-key key to send
-  changeKeyToSendActionValueType,
-  changeKeyToSendValue,
-  changeKeyToSendVariableId,
-  changeKeyToSendRoleKeyId,
-  // send-key modifiers
   toggleModifier,
-  // send-key outer pause
-  changeOuterPauseActionValueType,
-  changeOuterPauseValue,
-  changeOuterPauseVariableId,
-  changeOuterPauseRoleKeyId,
-  // send-key inner pause
-  changeInnerPauseActionValueType,
-  changeInnerPauseValue,
-  changeInnerPauseVariableId,
-  changeInnerPauseRoleKeyId,
-  // send-key repeat
-  changeRepeatActionValueType,
-  changeRepeatValue,
-  changeRepeatVariableId,
-  changeRepeatRoleKeyId,
-  // send-key direction
-  changeDirectionActionValueType,
-  changeDirectionValue,
-  changeDirectionVariableId,
-  changeDirectionRoleKeyId,
   actionReducer,
+  changeSendKey,
 } from './action-reducers';
 import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionType } from './action-types';
 import {
+  ChangeActionValuePayload,
   createChoiceValue,
   createRangeValue,
 } from './action-value/action-value';
 import { SendKeyMode } from './send-key/send-key-modes';
 import { ActionValueType } from './action-value/action-value-type';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
-global.crypto = require('crypto');
+import { ActionValueOperation } from './action-value/action-value-operation';
+import { SendKeyField } from './send-key/send-key-payloads';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 const createTestAction = (id: string): Action => {
   return {
@@ -109,6 +86,18 @@ const createTestSendKeyHoldReleaseAction = (
     ...createTestSendKeyAction(id, SendKeyMode.HOLD_RELEASE),
     direction: createChoiceValue(),
   };
+};
+
+const createSendKeyReduxAction = (
+  eventTargetValue: string,
+  operation: ActionValueOperation,
+  field: SendKeyField
+): PayloadAction<ChangeActionValuePayload<SendKeyField>> => {
+  return changeSendKey({
+    eventTargetValue: eventTargetValue,
+    operation: operation,
+    field: field,
+  });
 };
 
 describe('action reducer', () => {
@@ -320,7 +309,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeKeyToSendActionValueType(ActionValueType.ENTER_VALUE)
+      createSendKeyReduxAction(
+        ActionValueType.ENTER_VALUE,
+        ActionValueOperation.CHANGE_TYPE,
+        SendKeyField.KEY_TO_SEND
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -338,7 +331,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeKeyToSendValue('asdf'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ENTERED_VALUE,
+        SendKeyField.KEY_TO_SEND
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
       sendKey: {
@@ -357,7 +357,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeKeyToSendVariableId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_VARIABLE_ID,
+        SendKeyField.KEY_TO_SEND
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -377,7 +381,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeKeyToSendRoleKeyId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ROLE_KEY_ID,
+        SendKeyField.KEY_TO_SEND
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -400,7 +408,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeOuterPauseActionValueType(ActionValueType.ENTER_VALUE)
+      createSendKeyReduxAction(
+        ActionValueType.ENTER_VALUE,
+        ActionValueOperation.CHANGE_TYPE,
+        SendKeyField.OUTER_PAUSE
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -418,7 +430,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeOuterPauseValue('123'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        '123',
+        ActionValueOperation.CHANGE_ENTERED_VALUE,
+        SendKeyField.OUTER_PAUSE
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
       outerPause: {
@@ -437,7 +456,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeOuterPauseVariableId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_VARIABLE_ID,
+        SendKeyField.OUTER_PAUSE
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -457,7 +480,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeOuterPauseRoleKeyId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ROLE_KEY_ID,
+        SendKeyField.OUTER_PAUSE
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -480,7 +507,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeInnerPauseActionValueType(ActionValueType.ENTER_VALUE)
+      createSendKeyReduxAction(
+        ActionValueType.ENTER_VALUE,
+        ActionValueOperation.CHANGE_TYPE,
+        SendKeyField.INNER_PAUSE
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -498,7 +529,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeInnerPauseValue('123'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        '123',
+        ActionValueOperation.CHANGE_ENTERED_VALUE,
+        SendKeyField.INNER_PAUSE
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
       innerPause: {
@@ -517,7 +555,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeInnerPauseVariableId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_VARIABLE_ID,
+        SendKeyField.INNER_PAUSE
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -537,7 +579,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeInnerPauseRoleKeyId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ROLE_KEY_ID,
+        SendKeyField.INNER_PAUSE
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -560,7 +606,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeRepeatActionValueType(ActionValueType.ENTER_VALUE)
+      createSendKeyReduxAction(
+        ActionValueType.ENTER_VALUE,
+        ActionValueOperation.CHANGE_TYPE,
+        SendKeyField.REPEAT
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
@@ -578,7 +628,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeRepeatValue('123'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        '123',
+        ActionValueOperation.CHANGE_ENTERED_VALUE,
+        SendKeyField.REPEAT
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
       repeat: {
@@ -595,7 +652,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeRepeatVariableId('asdf'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_VARIABLE_ID,
+        SendKeyField.REPEAT
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
       repeat: {
@@ -612,7 +676,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeRepeatRoleKeyId('asdf'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ROLE_KEY_ID,
+        SendKeyField.REPEAT
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyPressAction(newObject.id),
       repeat: {
@@ -634,7 +705,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeDirectionActionValueType(ActionValueType.ENTER_VALUE)
+      createSendKeyReduxAction(
+        ActionValueType.ENTER_VALUE,
+        ActionValueOperation.CHANGE_TYPE,
+        SendKeyField.DIRECTION
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyHoldReleaseAction(newObject.id),
@@ -652,7 +727,14 @@ describe('action reducer', () => {
       createNewEditingAction(newObject)
     );
 
-    const actual = actionReducer(createdState, changeDirectionValue('asdf'));
+    const actual = actionReducer(
+      createdState,
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ENTERED_VALUE,
+        SendKeyField.DIRECTION
+      )
+    );
     expect(actual.editing).toEqual({
       ...createTestSendKeyHoldReleaseAction(newObject.id),
       direction: {
@@ -671,7 +753,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeDirectionVariableId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_VARIABLE_ID,
+        SendKeyField.DIRECTION
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyHoldReleaseAction(newObject.id),
@@ -691,7 +777,11 @@ describe('action reducer', () => {
 
     const actual = actionReducer(
       createdState,
-      changeDirectionRoleKeyId('asdf')
+      createSendKeyReduxAction(
+        'asdf',
+        ActionValueOperation.CHANGE_ROLE_KEY_ID,
+        SendKeyField.DIRECTION
+      )
     );
     expect(actual.editing).toEqual({
       ...createTestSendKeyHoldReleaseAction(newObject.id),

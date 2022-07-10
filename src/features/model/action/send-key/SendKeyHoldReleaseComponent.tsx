@@ -1,28 +1,26 @@
 import React from 'react';
-import {
-  changeDirectionActionValueType,
-  changeDirectionRoleKeyId,
-  changeDirectionValue,
-  changeDirectionVariableId,
-} from '../action-reducers';
+import { changeSendKey, resetDirection } from '../action-reducers';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import { SendKeyHoldReleaseAction } from './send-key';
+import { SendKeyField } from './send-key-payloads';
 
 export const SendKeyHoldReleaseComponent: React.FC<{
   sendKeyHoldReleaseAction: SendKeyHoldReleaseAction;
 }> = (props) => {
   return (
     <>
-      <ActionValueComponent
+      <ActionValueComponent<SendKeyField>
         labelText="Direction"
         descriptionText="up or down"
         actionValue={props.sendKeyHoldReleaseAction.direction}
-        actionValueTypeChangedFn={(type) =>
-          changeDirectionActionValueType(type)
+        changeFn={(eventTargetValue, op) =>
+          changeSendKey({
+            eventTargetValue: eventTargetValue,
+            operation: op,
+            field: SendKeyField.DIRECTION,
+          })
         }
-        valueChangedFn={(value) => changeDirectionValue(value)}
-        variableIdChangedFn={(id) => changeDirectionVariableId(id)}
-        roleKeyIdChangedFn={(id) => changeDirectionRoleKeyId(id)}
+        resetFn={() => resetDirection()}
       />
     </>
   );

@@ -16,7 +16,6 @@ import {
   deleteSpecItem,
   specReducer,
 } from './spec-reducers';
-global.crypto = require('crypto');
 
 const createTestSpec = (
   id: string,

@@ -15,7 +15,6 @@ import {
 import { ContextType } from './context-types';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { contextMatcherValidator } from './context-validation';
-global.crypto = require('crypto');
 
 describe('context reducer', () => {
   const initialState: ContextsState = {

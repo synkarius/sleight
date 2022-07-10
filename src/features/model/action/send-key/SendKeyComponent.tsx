@@ -5,14 +5,9 @@ import { ExpandCollapseComponent } from '../../../ui/ExpandCollapseComponent';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import {
   changeEditingSendKeyMode,
-  changeKeyToSendActionValueType,
-  changeKeyToSendRoleKeyId,
-  changeKeyToSendValue,
-  changeKeyToSendVariableId,
-  changeOuterPauseActionValueType,
-  changeOuterPauseRoleKeyId,
-  changeOuterPauseValue,
-  changeOuterPauseVariableId,
+  changeSendKey,
+  resetKeyToSend,
+  resetOuterPause,
   toggleModifier,
   validateKeyToSend,
 } from '../action-reducers';
@@ -29,6 +24,7 @@ import {
 } from './send-key';
 import { SendKeyMode } from './send-key-modes';
 import { SendKeyModifiers } from './send-key-modifiers';
+import { SendKeyField } from './send-key-payloads';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
 import { SendKeyPressComponent } from './SendKeyPressComponent';
 
@@ -67,17 +63,19 @@ export const SendKeyComponent: React.FC<{
         </Form.Select>
         <FormText className="text-muted">send-key mode</FormText>
       </FormGroupRowComponent>
-      <ActionValueComponent
+      <ActionValueComponent<SendKeyField>
         actionValue={props.sendKeyAction.sendKey}
         labelText="Send Key"
         descriptionText="key to send"
         //
-        actionValueTypeChangedFn={(type) =>
-          changeKeyToSendActionValueType(type)
+        changeFn={(eventTargetValue, op) =>
+          changeSendKey({
+            eventTargetValue: eventTargetValue,
+            operation: op,
+            field: SendKeyField.KEY_TO_SEND,
+          })
         }
-        valueChangedFn={(value) => changeKeyToSendValue(value)}
-        variableIdChangedFn={(id) => changeKeyToSendVariableId(id)}
-        roleKeyIdChangedFn={(id) => changeKeyToSendRoleKeyId(id)}
+        resetFn={() => resetKeyToSend()}
         validationFn={() => validateKeyToSend()}
         //
         enterValueValidator={keyToSendNotEmpty}
@@ -118,16 +116,18 @@ export const SendKeyComponent: React.FC<{
             onChange={(_e) => modifierToggledHandler(SendKeyModifiers.WINDOWS)}
           />
         </FormGroupRowComponent>
-        <ActionValueComponent
+        <ActionValueComponent<SendKeyField>
+          actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
           descriptionText="time to pause after keystroke, in centiseconds"
-          actionValue={props.sendKeyAction.outerPause}
-          actionValueTypeChangedFn={(type) =>
-            changeOuterPauseActionValueType(type)
+          changeFn={(eventTargetValue, op) =>
+            changeSendKey({
+              eventTargetValue: eventTargetValue,
+              operation: op,
+              field: SendKeyField.OUTER_PAUSE,
+            })
           }
-          valueChangedFn={(value) => changeOuterPauseValue(value)}
-          variableIdChangedFn={(id) => changeOuterPauseVariableId(id)}
-          roleKeyIdChangedFn={(id) => changeOuterPauseRoleKeyId(id)}
+          resetFn={() => resetOuterPause()}
         />
         {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
           <SendKeyPressComponent
