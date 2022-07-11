@@ -257,6 +257,14 @@ const actionsSlice = createSlice({
       }
     },
     // outer pause
+    validateOuterPause: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyAction;
+        [outerPauseVariable, outerPauseRoleKey].forEach((validator) =>
+          validate(sendKeyAction.outerPause, validator, state.validationErrors)
+        );
+      }
+    },
     resetOuterPause: (state) => {
       if (state.editing) {
         clearNumericValued((state.editing as SendKeyAction).outerPause);
@@ -266,6 +274,14 @@ const actionsSlice = createSlice({
       }
     },
     // inner pause
+    validateInnerPause: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyPressAction;
+        [innerPauseVariable, innerPauseRoleKey].forEach((validator) =>
+          validate(sendKeyAction.innerPause, validator, state.validationErrors)
+        );
+      }
+    },
     resetInnerPause: (state) => {
       if (state.editing) {
         clearNumericValued((state.editing as SendKeyPressAction).innerPause);
@@ -275,6 +291,14 @@ const actionsSlice = createSlice({
       }
     },
     // repeat
+    validateRepeat: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyPressAction;
+        [repeatVariable, repeatRoleKey].forEach((validator) =>
+          validate(sendKeyAction.repeat, validator, state.validationErrors)
+        );
+      }
+    },
     resetRepeat: (state) => {
       if (state.editing) {
         clearNumericValued((state.editing as SendKeyPressAction).repeat);
@@ -292,6 +316,15 @@ const actionsSlice = createSlice({
           .forEach((error) => removeError(state.validationErrors, error));
       }
     },
+    validateDirection: (state) => {
+      if (state.editing) {
+        const sendKeyAction = state.editing as SendKeyHoldReleaseAction;
+        [directionNotEmpty, directionVariable, directionRoleKey].forEach(
+          (validator) =>
+            validate(sendKeyAction.direction, validator, state.validationErrors)
+        );
+      }
+    },
   },
 });
 
@@ -306,12 +339,16 @@ export const {
   // send-key
   changeSendKey,
   changeEditingSendKeyMode,
+  toggleModifier,
   validateKeyToSend,
   resetKeyToSend,
-  toggleModifier,
+  validateOuterPause,
   resetOuterPause,
+  validateInnerPause,
   resetInnerPause,
+  validateRepeat,
   resetRepeat,
+  validateDirection,
   resetDirection,
 } = actionsSlice.actions;
 export const actionReducer = actionsSlice.reducer;

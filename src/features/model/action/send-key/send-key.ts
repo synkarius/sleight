@@ -8,8 +8,6 @@ import {
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../util/random-id';
 import { ActionType } from '../action-types';
-import { SendKeyField } from './send-key-payloads';
-import { ActionValueOperation } from '../action-value/action-value-operation';
 
 export interface Modifiers {
   control: boolean;
