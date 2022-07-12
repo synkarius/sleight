@@ -10,11 +10,11 @@ import {
   resetOuterPause,
   toggleModifier,
   validateKeyToSend,
+  validateOuterPause,
 } from '../action-reducers';
 import {
-  keyToSendNotEmpty,
-  keyToSendVariable,
-  keyToSendRoleKey,
+  keyToSendValidators,
+  outerPauseValidators,
 } from '../action-validation';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import {
@@ -75,12 +75,12 @@ export const SendKeyComponent: React.FC<{
             field: SendKeyField.KEY_TO_SEND,
           })
         }
-        resetFn={() => resetKeyToSend()}
-        validationFn={() => validateKeyToSend()}
+        resetFn={resetKeyToSend}
+        validationFn={validateKeyToSend}
         //
-        enterValueValidator={keyToSendNotEmpty}
-        variableValidator={keyToSendVariable}
-        roleKeyValidator={keyToSendRoleKey}
+        enterValueValidator={keyToSendValidators.value}
+        variableValidator={keyToSendValidators.variable}
+        roleKeyValidator={keyToSendValidators.roleKey}
       />
       <ExpandCollapseComponent
         buttonTextOpen="Less Options"
@@ -127,7 +127,10 @@ export const SendKeyComponent: React.FC<{
               field: SendKeyField.OUTER_PAUSE,
             })
           }
-          resetFn={() => resetOuterPause()}
+          resetFn={resetOuterPause}
+          validationFn={validateOuterPause}
+          variableValidator={outerPauseValidators.variable}
+          roleKeyValidator={outerPauseValidators.roleKey}
         />
         {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
           <SendKeyPressComponent

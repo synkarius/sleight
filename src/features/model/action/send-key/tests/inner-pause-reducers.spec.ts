@@ -8,7 +8,7 @@ import {
 import { ActionValueType } from '../../action-value/action-value-type';
 import { ActionValueOperation } from '../../action-value/action-value-operation';
 import { SendKeyField } from '../send-key-payloads';
-import { innerPauseVariable, innerPauseRoleKey } from '../../action-validation';
+import { innerPauseValidators } from '../../action-validation';
 import {
   createSendKeyReduxAction,
   createTestSendKeyPressAction,
@@ -130,7 +130,9 @@ describe('action reducer: action.innerPause', () => {
     };
 
     const actual = actionReducer(preReducerState, validateInnerPause());
-    expect(actual.validationErrors).toEqual([innerPauseVariable.error]);
+    expect(actual.validationErrors).toEqual([
+      innerPauseValidators.variable.error,
+    ]);
   });
 
   it('should handle action.innerPause.variableId validation', () => {
@@ -157,7 +159,9 @@ describe('action reducer: action.innerPause', () => {
     };
 
     const actual = actionReducer(preReducerState, validateInnerPause());
-    expect(actual.validationErrors).toEqual([innerPauseRoleKey.error]);
+    expect(actual.validationErrors).toEqual([
+      innerPauseValidators.roleKey.error,
+    ]);
   });
 
   it('should handle action.innerPause.roleKeyId validation', () => {
@@ -189,7 +193,7 @@ describe('action reducer: action.innerPause', () => {
     const preReducerState: ActionsState = {
       saved: {},
       editing: obj,
-      validationErrors: [innerPauseVariable.error, innerPauseRoleKey.error],
+      validationErrors: Object.values(innerPauseValidators).map((v) => v.error),
     };
 
     const actual = actionReducer(preReducerState, resetInnerPause());

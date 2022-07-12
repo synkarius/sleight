@@ -8,11 +8,7 @@ import {
 import { ActionValueType } from '../../action-value/action-value-type';
 import { ActionValueOperation } from '../../action-value/action-value-operation';
 import { SendKeyField } from '../send-key-payloads';
-import {
-  keyToSendVariable,
-  keyToSendRoleKey,
-  keyToSendNotEmpty,
-} from '../../action-validation';
+import { keyToSendValidators } from '../../action-validation';
 import {
   createSendKeyReduxAction,
   createTestSendKeyPressAction,
@@ -135,7 +131,7 @@ describe('action reducer: action.sendKey', () => {
     };
 
     const actual1 = actionReducer(preReducerState1, validateKeyToSend());
-    expect(actual1.validationErrors).toEqual([keyToSendNotEmpty.error]);
+    expect(actual1.validationErrors).toEqual([keyToSendValidators.value.error]);
 
     // blank string
     const obj2 = createSendKeyPressAction();
@@ -147,7 +143,7 @@ describe('action reducer: action.sendKey', () => {
     };
 
     const actual2 = actionReducer(preReducerState2, validateKeyToSend());
-    expect(actual2.validationErrors).toEqual([keyToSendNotEmpty.error]);
+    expect(actual2.validationErrors).toEqual([keyToSendValidators.value.error]);
   });
 
   it('should handle change action.sendKey.value validation', () => {
@@ -174,7 +170,9 @@ describe('action reducer: action.sendKey', () => {
     };
 
     const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([keyToSendVariable.error]);
+    expect(actual.validationErrors).toEqual([
+      keyToSendValidators.variable.error,
+    ]);
   });
 
   it('should handle change action.sendKey.variableId validation', () => {
@@ -201,7 +199,9 @@ describe('action reducer: action.sendKey', () => {
     };
 
     const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([keyToSendRoleKey.error]);
+    expect(actual.validationErrors).toEqual([
+      keyToSendValidators.roleKey.error,
+    ]);
   });
 
   it('should handle change action.sendKey.roleKeyId validation', () => {
@@ -233,11 +233,7 @@ describe('action reducer: action.sendKey', () => {
     const preReducerState: ActionsState = {
       saved: {},
       editing: newObject,
-      validationErrors: [
-        keyToSendNotEmpty.error,
-        keyToSendVariable.error,
-        keyToSendRoleKey.error,
-      ],
+      validationErrors: Object.values(keyToSendValidators).map((v) => v.error),
     };
 
     const actual = actionReducer(preReducerState, resetKeyToSend());

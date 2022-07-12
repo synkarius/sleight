@@ -8,7 +8,7 @@ import {
 import { ActionValueType } from '../../action-value/action-value-type';
 import { ActionValueOperation } from '../../action-value/action-value-operation';
 import { SendKeyField } from '../send-key-payloads';
-import { repeatVariable, repeatRoleKey } from '../../action-validation';
+import { repeatValidators } from '../../action-validation';
 import {
   createSendKeyReduxAction,
   createTestSendKeyPressAction,
@@ -130,7 +130,7 @@ describe('action reducer: action.repeat', () => {
     };
 
     const actual = actionReducer(preReducerState, validateRepeat());
-    expect(actual.validationErrors).toEqual([repeatVariable.error]);
+    expect(actual.validationErrors).toEqual([repeatValidators.variable.error]);
   });
 
   it('should handle action.repeat.variableId validation', () => {
@@ -157,7 +157,7 @@ describe('action reducer: action.repeat', () => {
     };
 
     const actual = actionReducer(preReducerState, validateRepeat());
-    expect(actual.validationErrors).toEqual([repeatRoleKey.error]);
+    expect(actual.validationErrors).toEqual([repeatValidators.roleKey.error]);
   });
 
   it('should handle action.repeat.roleKeyId validation', () => {
@@ -189,7 +189,7 @@ describe('action reducer: action.repeat', () => {
     const preReducerState: ActionsState = {
       saved: {},
       editing: obj,
-      validationErrors: [repeatVariable.error, repeatRoleKey.error],
+      validationErrors: Object.values(repeatValidators).map((v) => v.error),
     };
 
     const actual = actionReducer(preReducerState, resetRepeat());

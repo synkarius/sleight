@@ -8,7 +8,7 @@ import {
 import { ActionValueType } from '../../action-value/action-value-type';
 import { ActionValueOperation } from '../../action-value/action-value-operation';
 import { SendKeyField } from '../send-key-payloads';
-import { outerPauseVariable, outerPauseRoleKey } from '../../action-validation';
+import { outerPauseValidators } from '../../action-validation';
 import {
   createSendKeyReduxAction,
   createTestSendKeyPressAction,
@@ -130,7 +130,9 @@ describe('action reducer: action.outerPause', () => {
     };
 
     const actual = actionReducer(preReducerState, validateOuterPause());
-    expect(actual.validationErrors).toEqual([outerPauseVariable.error]);
+    expect(actual.validationErrors).toEqual([
+      outerPauseValidators.variable.error,
+    ]);
   });
 
   it('should handle action.outerPause.variableId validation', () => {
@@ -157,7 +159,9 @@ describe('action reducer: action.outerPause', () => {
     };
 
     const actual = actionReducer(preReducerState, validateOuterPause());
-    expect(actual.validationErrors).toEqual([outerPauseRoleKey.error]);
+    expect(actual.validationErrors).toEqual([
+      outerPauseValidators.roleKey.error,
+    ]);
   });
 
   it('should handle action.outerPause.roleKeyId validation', () => {
@@ -189,7 +193,7 @@ describe('action reducer: action.outerPause', () => {
     const preReducerState: ActionsState = {
       saved: {},
       editing: obj,
-      validationErrors: [outerPauseVariable.error, outerPauseRoleKey.error],
+      validationErrors: Object.values(outerPauseValidators).map((v) => v.error),
     };
 
     const actual = actionReducer(preReducerState, resetOuterPause());

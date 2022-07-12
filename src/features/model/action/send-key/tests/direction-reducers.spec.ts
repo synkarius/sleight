@@ -8,11 +8,7 @@ import {
 import { ActionValueType } from '../../action-value/action-value-type';
 import { ActionValueOperation } from '../../action-value/action-value-operation';
 import { SendKeyField } from '../send-key-payloads';
-import {
-  directionVariable,
-  directionRoleKey,
-  directionNotEmpty,
-} from '../../action-validation';
+import { directionValidators } from '../../action-validation';
 import {
   createSendKeyReduxAction,
   createTestSendKeyHoldReleaseAction,
@@ -135,7 +131,7 @@ describe('action reducer: action.direction', () => {
     };
 
     const actual1 = actionReducer(preReducerState1, validateDirection());
-    expect(actual1.validationErrors).toEqual([directionNotEmpty.error]);
+    expect(actual1.validationErrors).toEqual([directionValidators.value.error]);
 
     // blank string
     const obj2 = createSendKeyHoldReleaseAction();
@@ -147,7 +143,7 @@ describe('action reducer: action.direction', () => {
     };
 
     const actual2 = actionReducer(preReducerState2, validateDirection());
-    expect(actual2.validationErrors).toEqual([directionNotEmpty.error]);
+    expect(actual2.validationErrors).toEqual([directionValidators.value.error]);
   });
 
   it('should handle change action.direction.value validation', () => {
@@ -174,7 +170,9 @@ describe('action reducer: action.direction', () => {
     };
 
     const actual = actionReducer(preReducerState, validateDirection());
-    expect(actual.validationErrors).toEqual([directionVariable.error]);
+    expect(actual.validationErrors).toEqual([
+      directionValidators.variable.error,
+    ]);
   });
 
   it('should handle change action.direction.variableId validation', () => {
@@ -201,7 +199,9 @@ describe('action reducer: action.direction', () => {
     };
 
     const actual = actionReducer(preReducerState, validateDirection());
-    expect(actual.validationErrors).toEqual([directionRoleKey.error]);
+    expect(actual.validationErrors).toEqual([
+      directionValidators.roleKey.error,
+    ]);
   });
 
   it('should handle change action.direction.roleKeyId validation', () => {
@@ -233,11 +233,7 @@ describe('action reducer: action.direction', () => {
     const preReducerState: ActionsState = {
       saved: {},
       editing: newObject,
-      validationErrors: [
-        directionNotEmpty.error,
-        directionVariable.error,
-        directionRoleKey.error,
-      ],
+      validationErrors: Object.values(directionValidators).map((v) => v.error),
     };
 
     const actual = actionReducer(preReducerState, resetDirection());

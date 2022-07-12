@@ -54,21 +54,40 @@ const getRoleKeyNotSelectedValidator = (
   };
 };
 
+export interface IdedValidators {
+  variable: Validator<IdValued>;
+  roleKey: Validator<IdValued>;
+}
+
+export interface TextValidators extends IdedValidators {
+  value: Validator<TextValued>;
+}
+
 const KEY_TO_SEND = 'key to send';
-export const keyToSendNotEmpty = getNotEmptyValidator(KEY_TO_SEND);
-export const keyToSendVariable = getVariableNotSelectedValidator(KEY_TO_SEND);
-export const keyToSendRoleKey = getRoleKeyNotSelectedValidator(KEY_TO_SEND);
+export const keyToSendValidators: TextValidators = {
+  value: getNotEmptyValidator(KEY_TO_SEND),
+  variable: getVariableNotSelectedValidator(KEY_TO_SEND),
+  roleKey: getRoleKeyNotSelectedValidator(KEY_TO_SEND),
+};
 const OUTER_PAUSE = 'outer pause';
-export const outerPauseVariable = getVariableNotSelectedValidator(OUTER_PAUSE);
-export const outerPauseRoleKey = getRoleKeyNotSelectedValidator(OUTER_PAUSE);
+export const outerPauseValidators: IdedValidators = {
+  variable: getVariableNotSelectedValidator(OUTER_PAUSE),
+  roleKey: getRoleKeyNotSelectedValidator(OUTER_PAUSE),
+};
 const INNER_PAUSE = 'outer pause';
-export const innerPauseVariable = getVariableNotSelectedValidator(INNER_PAUSE);
-export const innerPauseRoleKey = getRoleKeyNotSelectedValidator(INNER_PAUSE);
+export const innerPauseValidators: IdedValidators = {
+  variable: getVariableNotSelectedValidator(INNER_PAUSE),
+  roleKey: getRoleKeyNotSelectedValidator(INNER_PAUSE),
+};
 const REPEAT = 'repeat';
-export const repeatVariable = getVariableNotSelectedValidator(REPEAT);
-export const repeatRoleKey = getRoleKeyNotSelectedValidator(REPEAT);
+export const repeatValidators: IdedValidators = {
+  variable: getVariableNotSelectedValidator(REPEAT),
+  roleKey: getRoleKeyNotSelectedValidator(REPEAT),
+};
 const DIRECTION = 'direction';
 // TODO: validate this differently so it can only be "up" or "down"
-export const directionNotEmpty = getNotEmptyValidator(DIRECTION);
-export const directionVariable = getVariableNotSelectedValidator(DIRECTION);
-export const directionRoleKey = getRoleKeyNotSelectedValidator(DIRECTION);
+export const directionValidators: TextValidators = {
+  value: getNotEmptyValidator(DIRECTION),
+  variable: getVariableNotSelectedValidator(DIRECTION),
+  roleKey: getRoleKeyNotSelectedValidator(DIRECTION),
+};

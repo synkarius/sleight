@@ -3,7 +3,10 @@ import {
   changeSendKey,
   resetInnerPause,
   resetRepeat,
+  validateInnerPause,
+  validateRepeat,
 } from '../action-reducers';
+import { innerPauseValidators, repeatValidators } from '../action-validation';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import { SendKeyPressAction } from './send-key';
 import { SendKeyField } from './send-key-payloads';
@@ -24,7 +27,10 @@ export const SendKeyPressComponent: React.FC<{
             field: SendKeyField.INNER_PAUSE,
           })
         }
-        resetFn={() => resetInnerPause()}
+        resetFn={resetInnerPause}
+        validationFn={validateInnerPause}
+        variableValidator={innerPauseValidators.variable}
+        roleKeyValidator={innerPauseValidators.roleKey}
       />
       <ActionValueComponent<SendKeyField>
         actionValue={props.sendKeyPressAction.repeat}
@@ -37,7 +43,10 @@ export const SendKeyPressComponent: React.FC<{
             field: SendKeyField.REPEAT,
           })
         }
-        resetFn={() => resetRepeat()}
+        resetFn={resetRepeat}
+        validationFn={validateRepeat}
+        variableValidator={repeatValidators.variable}
+        roleKeyValidator={repeatValidators.roleKey}
       />
     </>
   );

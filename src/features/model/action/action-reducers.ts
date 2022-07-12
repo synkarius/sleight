@@ -19,20 +19,13 @@ import {
 } from './action';
 import { ActionType } from './action-types';
 import {
-  directionNotEmpty,
-  directionRoleKey,
-  directionVariable,
-  IdValued,
-  innerPauseRoleKey,
-  innerPauseVariable,
-  keyToSendNotEmpty,
-  keyToSendRoleKey,
-  keyToSendVariable,
-  outerPauseRoleKey,
-  outerPauseVariable,
-  repeatRoleKey,
-  repeatVariable,
+  keyToSendValidators,
+  outerPauseValidators,
+  innerPauseValidators,
+  repeatValidators,
+  directionValidators,
   TextValued,
+  IdValued,
 } from './action-validation';
 import {
   ChangeActionValuePayload,
@@ -242,16 +235,15 @@ const actionsSlice = createSlice({
     validateKeyToSend: (state) => {
       if (state.editing) {
         const sendKeyAction = state.editing as SendKeyAction;
-        [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey].forEach(
-          (validator) =>
-            validate(sendKeyAction.sendKey, validator, state.validationErrors)
+        Object.values(keyToSendValidators).forEach((validator) =>
+          validate(sendKeyAction.sendKey, validator, state.validationErrors)
         );
       }
     },
     resetKeyToSend: (state) => {
       if (state.editing) {
         clearTextValued((state.editing as SendKeyAction).sendKey);
-        [keyToSendNotEmpty, keyToSendVariable, keyToSendRoleKey]
+        Object.values(keyToSendValidators)
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
       }
@@ -260,7 +252,7 @@ const actionsSlice = createSlice({
     validateOuterPause: (state) => {
       if (state.editing) {
         const sendKeyAction = state.editing as SendKeyAction;
-        [outerPauseVariable, outerPauseRoleKey].forEach((validator) =>
+        Object.values(outerPauseValidators).forEach((validator) =>
           validate(sendKeyAction.outerPause, validator, state.validationErrors)
         );
       }
@@ -268,7 +260,7 @@ const actionsSlice = createSlice({
     resetOuterPause: (state) => {
       if (state.editing) {
         clearNumericValued((state.editing as SendKeyAction).outerPause);
-        [outerPauseVariable, outerPauseRoleKey]
+        Object.values(outerPauseValidators)
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
       }
@@ -277,7 +269,7 @@ const actionsSlice = createSlice({
     validateInnerPause: (state) => {
       if (state.editing) {
         const sendKeyAction = state.editing as SendKeyPressAction;
-        [innerPauseVariable, innerPauseRoleKey].forEach((validator) =>
+        Object.values(innerPauseValidators).forEach((validator) =>
           validate(sendKeyAction.innerPause, validator, state.validationErrors)
         );
       }
@@ -285,7 +277,7 @@ const actionsSlice = createSlice({
     resetInnerPause: (state) => {
       if (state.editing) {
         clearNumericValued((state.editing as SendKeyPressAction).innerPause);
-        [innerPauseVariable, innerPauseRoleKey]
+        Object.values(innerPauseValidators)
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
       }
@@ -294,7 +286,7 @@ const actionsSlice = createSlice({
     validateRepeat: (state) => {
       if (state.editing) {
         const sendKeyAction = state.editing as SendKeyPressAction;
-        [repeatVariable, repeatRoleKey].forEach((validator) =>
+        Object.values(repeatValidators).forEach((validator) =>
           validate(sendKeyAction.repeat, validator, state.validationErrors)
         );
       }
@@ -302,7 +294,7 @@ const actionsSlice = createSlice({
     resetRepeat: (state) => {
       if (state.editing) {
         clearNumericValued((state.editing as SendKeyPressAction).repeat);
-        [repeatVariable, repeatRoleKey]
+        Object.values(repeatValidators)
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
       }
@@ -311,7 +303,7 @@ const actionsSlice = createSlice({
     resetDirection: (state) => {
       if (state.editing) {
         clearTextValued((state.editing as SendKeyHoldReleaseAction).direction);
-        [directionNotEmpty, directionVariable, directionRoleKey]
+        Object.values(directionValidators)
           .map((v) => v.error)
           .forEach((error) => removeError(state.validationErrors, error));
       }
@@ -319,9 +311,8 @@ const actionsSlice = createSlice({
     validateDirection: (state) => {
       if (state.editing) {
         const sendKeyAction = state.editing as SendKeyHoldReleaseAction;
-        [directionNotEmpty, directionVariable, directionRoleKey].forEach(
-          (validator) =>
-            validate(sendKeyAction.direction, validator, state.validationErrors)
+        Object.values(directionValidators).forEach((validator) =>
+          validate(sendKeyAction.direction, validator, state.validationErrors)
         );
       }
     },
