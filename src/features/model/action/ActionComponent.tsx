@@ -9,6 +9,7 @@ import {
   changeEditingActionName,
   changeEditingActionRoleKey,
   changeEditingActionType,
+  clearEditingAction,
   saveAndClearEditingAction,
   validateKeyToSend,
 } from './action-reducers';
@@ -78,6 +79,14 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         disabled={validationErrors.length > 0}
       >
         Save
+      </Button>
+      <Button
+        onClick={(_e) => dispatch(clearEditingAction())}
+        className="mx-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
       </Button>
     </PanelComponent>
   );

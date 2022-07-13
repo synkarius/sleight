@@ -120,6 +120,14 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       <Button onClick={submitHandler} variant="primary" size="lg">
         Save
       </Button>
+      <Button
+        onClick={(_e) => dispatch(clearEditingCommand())}
+        className="mx-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
+      </Button>
     </PanelComponent>
   );
 };

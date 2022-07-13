@@ -6,6 +6,7 @@ import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKey } from './role-key';
 import {
   changeEditingRoleKeyValue,
+  clearEditingRoleKey,
   saveAndClearEditingRoleKey,
   validateRoleKeyText,
 } from './role-key-reducers';
@@ -51,6 +52,14 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
         disabled={validationErrors.length > 0}
       >
         Save
+      </Button>
+      <Button
+        onClick={(_e) => dispatch(clearEditingRoleKey())}
+        className="mx-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
       </Button>
     </PanelComponent>
   );

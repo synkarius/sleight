@@ -1,13 +1,5 @@
-import React, { useId } from 'react';
-import {
-  Button,
-  Col,
-  FormControl,
-  FormGroup,
-  FormLabel,
-  FormText,
-  Row,
-} from 'react-bootstrap';
+import React from 'react';
+import { Button, Col, FormControl } from 'react-bootstrap';
 import {
   addSpecItem,
   changeEditingSpecName,
@@ -81,6 +73,14 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       <Col sm="12" className="mb-1">
         <Button variant="primary" size="lg" onClick={saveSpecHandler}>
           Save
+        </Button>
+        <Button
+          onClick={(_e) => dispatch(clearEditingSpec())}
+          className="mx-3"
+          variant="warning"
+          size="lg"
+        >
+          Cancel
         </Button>
       </Col>
     </PanelComponent>

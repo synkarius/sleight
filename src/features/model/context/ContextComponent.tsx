@@ -16,6 +16,7 @@ import {
   changeEditingContextName,
   changeEditingContextRoleKey,
   changeEditingContextType,
+  clearEditingContext,
   saveAndClearEditingContext,
   validateEditingContextMatcher,
 } from './context-reducers';
@@ -106,6 +107,14 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         disabled={validationErrors.length > 0}
       >
         Save
+      </Button>
+      <Button
+        onClick={(_e) => dispatch(clearEditingContext())}
+        className="mx-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
       </Button>
     </PanelComponent>
   );

@@ -88,6 +88,14 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       <Button onClick={submitHandler} variant="primary" size="lg">
         Save
       </Button>
+      <Button
+        onClick={(_e) => dispatch(clearEditingVariable())}
+        className="mx-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
+      </Button>
     </PanelComponent>
   );
 };
