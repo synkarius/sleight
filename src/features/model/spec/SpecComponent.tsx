@@ -23,6 +23,7 @@ import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { SpecPreviewComponent } from './SpecPreviewComponent';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const dispatch = useAppDispatch();
@@ -60,6 +61,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           onChange={(e) => dispatch(changeEditingSpecRoleKey(e.target.value))}
         />
       </FormGroupRowComponent>
+      <SpecPreviewComponent />
       {props.spec.items.map((specItem, index) => (
         <SpecItemComponent
           key={specItem.id}
