@@ -1,12 +1,14 @@
 import { Button, Col, FormControl, FormText, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { RequiredAsteriskComponent } from '../../../ui/RequiredAsteriskComponent';
 import { SelectorComponent } from '../../selector/SelectorComponent';
 import { editChoiceItemValue, removeChoiceItem } from '../variable-reducers';
 import { ChoiceItem } from './choice';
 
-export const ChoiceItemComponent: React.FC<{ choiceItem: ChoiceItem }> = (
-  props
-) => {
+export const ChoiceItemComponent: React.FC<{
+  choiceItem: ChoiceItem;
+  required?: boolean;
+}> = (props) => {
   const dispatch = useAppDispatch();
   const selectors = useAppSelector((state) => state.selector.saved);
 
@@ -25,23 +27,33 @@ export const ChoiceItemComponent: React.FC<{ choiceItem: ChoiceItem }> = (
   const selector = selectors[props.choiceItem.selectorId];
 
   return (
-    <Row className="mb-3">
-      <Col sm="5">
-        <SelectorComponent selector={selector} showLabel={false} />
-      </Col>
-      <Col sm="5">
-        <FormControl
-          type="text"
-          onChange={valueChangedHandler}
-          value={props.choiceItem.value}
-        ></FormControl>
-        <FormText className="text-muted">value (what the action uses)</FormText>
-      </Col>
-      <Col sm="2">
-        <Button onClick={removeHandler} variant="primary" type="submit">
-          Remove
-        </Button>
-      </Col>
-    </Row>
+    <>
+      <Row className="mb-3">
+        <Col sm="12">
+          <span>Choice Item</span>
+          <RequiredAsteriskComponent required={!!props.required} />
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col sm="5">
+          <SelectorComponent selector={selector} showLabel={false} />
+        </Col>
+        <Col sm="5">
+          <FormControl
+            type="text"
+            onChange={valueChangedHandler}
+            value={props.choiceItem.value}
+          ></FormControl>
+          <FormText className="text-muted">
+            value (what the action uses)
+          </FormText>
+        </Col>
+        <Col sm="2">
+          <Button onClick={removeHandler} variant="warning" type="submit">
+            Delete
+          </Button>
+        </Col>
+      </Row>
+    </>
   );
 };

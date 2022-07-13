@@ -61,11 +61,10 @@ export const SendKeyComponent: React.FC<{
             </option>
           ))}
         </Form.Select>
-        <FormText className="text-muted">send-key mode</FormText>
       </FormGroupRowComponent>
       <ActionValueComponent<SendKeyField>
         actionValue={props.sendKeyAction.sendKey}
-        labelText="Send Key"
+        labelText="Key to Send"
         descriptionText="key to send"
         //
         changeFn={(eventTargetValue, op) =>
@@ -76,11 +75,12 @@ export const SendKeyComponent: React.FC<{
           })
         }
         resetFn={resetKeyToSend}
-        validationFn={validateKeyToSend}
         //
+        validationFn={validateKeyToSend}
         enterValueValidator={keyToSendValidators.value}
         variableValidator={keyToSendValidators.variable}
         roleKeyValidator={keyToSendValidators.roleKey}
+        required={true}
       />
       <ExpandCollapseComponent
         buttonTextOpen="Less Options"

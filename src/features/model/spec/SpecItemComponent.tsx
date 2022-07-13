@@ -27,8 +27,12 @@ import {
 } from './spec-reducers';
 import { UnhandledSpecItemTypeError } from '../../../error/UnhandledSpecItemTypeError';
 import { VerticalMoveableComponent } from '../../ui/VerticalMoveableComponent';
+import { RequiredAsteriskComponent } from '../../ui/RequiredAsteriskComponent';
 
-export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
+export const SpecItemComponent: React.FC<{
+  specItem: SpecItem;
+  required?: boolean;
+}> = (props) => {
   const dispatch = useAppDispatch();
   const typeInputId = useId();
   const selectors = useAppSelector((state) => state.selector.saved);
@@ -86,7 +90,10 @@ export const SpecItemComponent: React.FC<{ specItem: SpecItem }> = (props) => {
       deleteFn={() => deleteSpecItem(props.specItem.id)}
     >
       <FormGroup className="mb-3" controlId={typeInputId}>
-        <FormLabel>Spec Item Type</FormLabel>
+        <FormLabel>
+          <span>Spec Item Type</span>
+          <RequiredAsteriskComponent required={!!props.required} />
+        </FormLabel>
         <FormSelect
           aria-label="Spec item type selection"
           onChange={typeChangedHandler}

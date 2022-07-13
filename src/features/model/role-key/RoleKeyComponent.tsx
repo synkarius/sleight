@@ -28,7 +28,11 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Role Key">
-      <FormGroupRowComponent labelText="Role">
+      <FormGroupRowComponent
+        labelText="Role"
+        descriptionText="what concept this key identifies"
+        required={true}
+      >
         <FormControl
           type="text"
           onChange={valueChangedHandler}
@@ -36,9 +40,6 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
           value={props.roleKey.value}
           isInvalid={validationErrors.includes(roleKeyTextValidator.error)}
         />
-        <FormText className="text-muted">
-          what concept this key identifies
-        </FormText>
         <Form.Control.Feedback type="invalid">
           {roleKeyTextValidator.error.message}
         </Form.Control.Feedback>

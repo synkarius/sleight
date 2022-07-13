@@ -20,12 +20,21 @@ export const ChoiceComponent: React.FC<{ choice: Choice }> = (props) => {
 
   return (
     <>
-      <Button className="mb-3" onClick={addHandler} variant="primary">
-        Add Choice
+      <Button
+        className="mb-3"
+        onClick={addHandler}
+        variant="outline-primary"
+        size="lg"
+      >
+        Add Choice Item
       </Button>
       <FormGroup as={Row} className="mb-3" controlId={choicesId}>
-        {props.choice.items.map((choiceItem) => (
-          <ChoiceItemComponent key={choiceItem.id} choiceItem={choiceItem} />
+        {props.choice.items.map((choiceItem, index) => (
+          <ChoiceItemComponent
+            key={choiceItem.id}
+            choiceItem={choiceItem}
+            required={index === 0}
+          />
         ))}
       </FormGroup>
     </>

@@ -83,7 +83,11 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         </FormSelect>
         <FormText className="text-muted">kind of variable</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Matcher">
+      <FormGroupRowComponent
+        labelText="Matcher"
+        descriptionText={matcherHelpText}
+        required={true}
+      >
         <FormControl
           type="text"
           onChange={matcherChangedHandler}
@@ -91,7 +95,6 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
           value={props.context.matcher}
           isInvalid={validationErrors.includes(contextMatcherValidator.error)}
         />
-        <FormText className="text-muted">{matcherHelpText}</FormText>
         <Form.Control.Feedback type="invalid">
           {contextMatcherValidator.error.message}
         </Form.Control.Feedback>

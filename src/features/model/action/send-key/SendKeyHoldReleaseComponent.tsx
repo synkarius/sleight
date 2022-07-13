@@ -30,6 +30,7 @@ export const SendKeyHoldReleaseComponent: React.FC<{
         enterValueValidator={directionValidators.value}
         variableValidator={directionValidators.variable}
         roleKeyValidator={directionValidators.roleKey}
+        required={true}
       />
     </>
   );

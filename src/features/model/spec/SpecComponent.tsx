@@ -26,8 +26,6 @@ import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const dispatch = useAppDispatch();
-  const nameInputId = useId();
-  const roleKeyId = useId();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeEditingSpecName(event.target.value));
@@ -46,23 +44,28 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Spec">
-      <FormGroupRowComponent labelText="Name">
+      <FormGroupRowComponent labelText="Name" descriptionText="name of spec">
         <FormControl
           type="text"
           onChange={nameChangedHandler}
           value={props.spec.name}
         />
-        <FormText className="text-muted">name of spec</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Role Key">
+      <FormGroupRowComponent
+        labelText="Role Key"
+        descriptionText="role of variable"
+      >
         <RoleKeyDropdownComponent
           roleKeyId={props.spec.roleKeyId}
           onChange={(e) => dispatch(changeEditingSpecRoleKey(e.target.value))}
         />
-        <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>
-      {props.spec.items.map((specItem) => (
-        <SpecItemComponent key={specItem.id} specItem={specItem} />
+      {props.spec.items.map((specItem, index) => (
+        <SpecItemComponent
+          key={specItem.id}
+          specItem={specItem}
+          required={index === 0}
+        />
       ))}
       <Col sm="12" className="my-3">
         <Button

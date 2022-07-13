@@ -34,8 +34,9 @@ type AVCProps<T> = {
   ) => PayloadAction<ChangeActionValuePayload<T>>;
   //
   resetFn: () => PayloadAction<undefined>;
+  // validation
   validationFn?: () => PayloadAction<undefined>;
-  // validators
+  required?: boolean;
   enterValueValidator?: Validator<TextValued>;
   variableValidator?: Validator<IdValued>;
   roleKeyValidator?: Validator<IdValued>;
@@ -97,6 +98,7 @@ export const ActionValueComponent: CustomGenericPropsComponent = (props) => {
       labelText={props.labelText}
       descriptionText={props.descriptionText}
       errorMessage={errorMessage}
+      required={props.required}
     >
       <div className="action-value-component-radio">
         {ActionValueType.values().map((actionValueType) => (

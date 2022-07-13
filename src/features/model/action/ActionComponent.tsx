@@ -29,6 +29,11 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     dispatch(changeEditingActionType({ actionType: event.target.value }));
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
+    /*
+     * The problem here is that we want to be able to (A) know what's on the screen
+     * and (B) which errors correspond to those elements when either submitting
+     * or disabling the save button.
+     */
     [validateKeyToSend].forEach((validation) => dispatch(validation()));
     dispatch(saveAndClearEditingAction());
   };
@@ -62,7 +67,6 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
             </option>
           ))}
         </FormSelect>
-        <FormText className="text-muted">kind of action</FormText>
       </FormGroupRowComponent>
       {props.action.type === ActionType.SEND_KEY && (
         <SendKeyComponent sendKeyAction={props.action as SendKeyAction} />

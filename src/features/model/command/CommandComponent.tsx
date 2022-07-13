@@ -62,7 +62,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         />
         <FormText className="text-muted">role of command</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Spec Type">
+      <FormGroupRowComponent labelText="Spec Type" required={true}>
         <CommandSpecTypeRadioGroupComponent
           commandSpecType={props.command.commandSpecType}
           radioGroupName="Spec Type"
