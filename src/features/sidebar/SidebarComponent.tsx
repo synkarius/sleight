@@ -24,11 +24,7 @@ import {
   selectVariable,
 } from '../model/variable/variable-reducers';
 import { createText } from '../model/variable/text/text';
-import {
-  clearEditingRoleKey,
-  createNewEditingRoleKey,
-  selectRoleKey,
-} from '../model/role-key/role-key-reducers';
+import { selectRoleKey } from '../model/role-key/role-key-reducers';
 import { createSelector } from '../model/selector/selector';
 import { createNewSelector } from '../model/selector/selector-reducers';
 import { createSpec } from '../model/spec/spec';
@@ -39,8 +35,8 @@ import {
 } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { createContext } from '../model/context/context';
-import { createRoleKey } from '../model/role-key/role-key';
 import { SidebarSection } from './sidebar';
+import { setFocus } from '../menu/focus/focus-reducers';
 
 export const SidebarComponent = () => {
   const dispatch = useAppDispatch();
@@ -78,15 +74,18 @@ export const SidebarComponent = () => {
     items: Object.values(roleKeysSaved).map((rk) => {
       return { id: rk.id, name: rk.value };
     }),
-    createFn: () => dispatch(createNewEditingRoleKey(createRoleKey())),
-    selectFn: (id) => dispatch(selectRoleKey(id)),
-    clearFn: () => dispatch(clearEditingRoleKey()),
+    createFn: () => dispatch(setFocus(ElementType.ROLE_KEY)),
+    selectFn: (id) => {
+      dispatch(selectRoleKey(id));
+      dispatch(setFocus(ElementType.ROLE_KEY));
+    },
+    clearFn: () => dispatch(selectRoleKey(undefined)),
   };
   const specSection: SidebarSection = {
     type: ElementType.SPEC,
     items: Object.values(specsSaved),
     createFn: () => {
-      // TODO: this way creates orphan selectors - clean them up
+      // TODO: this way creates orphan selectors - clean them up --> will get cleaned up by new (local) validators
       const selector = createSelector();
       const spec = createSpec(selector.id);
       dispatch(createNewSelector(selector));
@@ -119,7 +118,10 @@ export const SidebarComponent = () => {
           key={group.type}
           eventKey={'' + index}
           group={group}
-          clearAllFn={() => groups.forEach((group) => group.clearFn())}
+          clearAllFn={() => {
+            dispatch(setFocus(undefined));
+            groups.forEach((group) => group.clearFn());
+          }}
         />
       ))}
     </Accordion>

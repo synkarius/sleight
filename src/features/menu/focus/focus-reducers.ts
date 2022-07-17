@@ -1,25 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type Focus = {
-  elementType: string | null;
+  elementType: string | undefined;
 };
 
 const initialState: Focus = {
-  elementType: null,
+  elementType: undefined,
 };
 
 const focusSlice = createSlice({
   name: 'focus',
   initialState,
   reducers: {
-    setFocus: (state, action: PayloadAction<string>) => {
+    setFocus: (state, action: PayloadAction<string | undefined>) => {
       state.elementType = action.payload;
-    },
-    clearFocus: (state) => {
-      state.elementType = null;
     },
   },
 });
 
-export const { setFocus, clearFocus } = focusSlice.actions;
+export const { setFocus } = focusSlice.actions;
 export const focusReducer = focusSlice.reducer;

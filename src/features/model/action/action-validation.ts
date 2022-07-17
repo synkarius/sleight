@@ -14,7 +14,7 @@ export type IdValued = TextValued | RangeValue;
 
 const getNotEmptyValidator = (fieldName: string): Validator<TextValued> => {
   return {
-    test: (actionValue: TextValued) => {
+    isValid: (actionValue: TextValued) => {
       return (
         ActionValueType.ENTER_VALUE !== actionValue.actionValueType ||
         (actionValue.value != null && actionValue.value.trim().length > 0)
@@ -28,7 +28,7 @@ const getVariableNotSelectedValidator = (
   fieldName: string
 ): Validator<IdValued> => {
   return {
-    test: (actionValue: IdValued) => {
+    isValid: (actionValue: IdValued) => {
       return (
         ActionValueType.USE_VARIABLE !== actionValue.actionValueType ||
         (actionValue.variableId != null &&
@@ -43,7 +43,7 @@ const getRoleKeyNotSelectedValidator = (
   fieldName: string
 ): Validator<IdValued> => {
   return {
-    test: (actionValue: IdValued) => {
+    isValid: (actionValue: IdValued) => {
       return (
         ActionValueType.USE_ROLE_KEY !== actionValue.actionValueType ||
         (actionValue.roleKeyId != null &&

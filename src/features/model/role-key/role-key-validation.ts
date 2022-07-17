@@ -1,10 +1,16 @@
-import { notEmpty } from '../../../validation/common-validations';
+import { alwaysTrue, notEmpty } from '../../../validation/common-validations';
 import {
-  createValidationError,
-  Validator,
-} from '../../../validation/validator';
+  createFieldValidator,
+  FieldValidator,
+} from '../../../validation/field-validator';
+import { Field } from '../../../validation/validation-field';
+import { createValidationError } from '../../../validation/validator';
+import { RoleKey } from './role-key';
 
-export const roleKeyTextValidator: Validator<string> = {
-  test: notEmpty,
-  error: createValidationError("role key can't be empty"),
-};
+export const roleKeyTextValidator: FieldValidator<RoleKey> =
+  createFieldValidator(
+    Field.RK_ROLE_KEY,
+    alwaysTrue,
+    (rk) => notEmpty(rk.value),
+    createValidationError("role key can't be empty")
+  );

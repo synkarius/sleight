@@ -1,32 +1,40 @@
-import React from 'react';
-import { Button, Form, FormControl, FormText } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import React, { useContext } from 'react';
+import { Button, Form, FormControl } from 'react-bootstrap';
+import { useAppDispatch } from '../../../app/hooks';
+import { ValidationContext } from '../../../validation/validation-context';
+import { Field } from '../../../validation/validation-field';
+import { setFocus } from '../../menu/focus/focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKey } from './role-key';
 import {
-  changeEditingRoleKeyValue,
-  clearEditingRoleKey,
-  saveAndClearEditingRoleKey,
-  validateRoleKeyText,
-} from './role-key-reducers';
+  RoleKeyActionType,
+  RoleKeyEditingContext,
+} from './role-key-editing-context';
+import { saveRoleKey } from './role-key-reducers';
 import { roleKeyTextValidator } from './role-key-validation';
 
 export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
-  const dispatch = useAppDispatch();
-  const validationErrors = useAppSelector(
-    (state) => state.roleKey.validationErrors
-  );
+  const reduxDispatch = useAppDispatch();
+  const validationContext = useContext(ValidationContext);
+  const editingContext = useContext(RoleKeyEditingContext);
 
   const valueChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeEditingRoleKeyValue(event.target.value));
-    dispatch(validateRoleKeyText());
+    editingContext.localDispatchFn({
+      type: RoleKeyActionType.CHANGE_VALUE,
+      payload: event.target.value,
+    });
+    validationContext.touch(Field.RK_ROLE_KEY);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(validateRoleKeyText());
-    dispatch(saveAndClearEditingRoleKey());
+    const formIsValid = validationContext.validateForm();
+    if (formIsValid) {
+      reduxDispatch(saveRoleKey(props.roleKey));
+      reduxDispatch(setFocus(undefined));
+    }
   };
 
+  const validationErrors = validationContext.getErrors();
   return (
     <PanelComponent header="Create/Edit Role Key">
       <FormGroupRowComponent
@@ -37,9 +45,10 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
         <FormControl
           type="text"
           onChange={valueChangedHandler}
-          onBlur={(_e) => dispatch(validateRoleKeyText())}
+          onBlur={(_e) => validationContext.touch(Field.RK_ROLE_KEY)}
           value={props.roleKey.value}
           isInvalid={validationErrors.includes(roleKeyTextValidator.error)}
+          name={Field[Field.RK_ROLE_KEY]}
         />
         <Form.Control.Feedback type="invalid">
           {roleKeyTextValidator.error.message}
@@ -54,7 +63,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => dispatch(clearEditingRoleKey())}
+        onClick={(_e) => reduxDispatch(setFocus(undefined))}
         className="mx-3"
         variant="warning"
         size="lg"

@@ -13,7 +13,7 @@ export const createValidationError = (message: string): ValidationError => {
 };
 
 export interface Validator<T> {
-  readonly test: (t: T) => boolean;
+  readonly isValid: (t: T) => boolean;
   readonly error: ValidationError;
 }
 
@@ -73,7 +73,7 @@ export const validate = <T>(
   validator: Validator<T>,
   errors: ValidationError[]
 ): void => {
-  if (validator.test(t)) {
+  if (validator.isValid(t)) {
     removeError(errors, validator.error);
   } else {
     if (!includesError(errors, validator.error)) {

@@ -1,4 +1,3 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navigation } from './features/menu/Navigation';
 import { SidebarComponent } from './features/sidebar/SidebarComponent';
