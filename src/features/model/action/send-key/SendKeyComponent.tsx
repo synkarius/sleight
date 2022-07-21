@@ -1,47 +1,45 @@
-import React, { useId } from 'react';
-import { Form, FormCheck, FormText } from 'react-bootstrap';
-import { useAppDispatch } from '../../../../app/hooks';
+import React, { useContext, useId } from 'react';
+import { Form, FormCheck } from 'react-bootstrap';
+import { Field } from '../../../../validation/validation-field';
 import { ExpandCollapseComponent } from '../../../ui/ExpandCollapseComponent';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import {
-  changeEditingSendKeyMode,
-  changeSendKey,
-  resetKeyToSend,
-  resetOuterPause,
-  toggleModifier,
-  validateKeyToSend,
-  validateOuterPause,
-} from '../action-reducers';
+  ActionEditingContext,
+  ActionReducerActionType,
+} from '../action-editing-context';
+import { ActionValueComponent } from '../action-value/ActionValueComponent';
+import { SendKeyAction } from './send-key';
+import { SendKeyMode } from './send-key-modes';
+import { SendKeyModifiers } from './send-key-modifiers';
 import {
   keyToSendValidators,
   outerPauseValidators,
-} from '../action-validation';
-import { ActionValueComponent } from '../action-value/ActionValueComponent';
-import {
-  SendKeyAction,
-  SendKeyPressAction,
-  SendKeyHoldReleaseAction,
-} from './send-key';
-import { SendKeyMode } from './send-key-modes';
-import { SendKeyModifiers } from './send-key-modifiers';
-import { SendKeyField } from './send-key-payloads';
+  toSendKeyHoldReleaseFM as KEY_HOLD_RELEASE,
+  toSendKeyPressFM as KEY_PRESS,
+} from './send-key-validators';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
 import { SendKeyPressComponent } from './SendKeyPressComponent';
 
 export const SendKeyComponent: React.FC<{
   sendKeyAction: SendKeyAction;
 }> = (props) => {
-  const dispatch = useAppDispatch();
   const controlModifierCheckboxId = useId();
   const shiftModifierCheckboxId = useId();
   const altModifierCheckboxId = useId();
   const windowsModifierCheckboxId = useId();
+  const editingContext = useContext(ActionEditingContext);
 
   const modeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeEditingSendKeyMode({ sendKeyMode: event.target.value }));
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_SEND_KEY_MODE,
+      payload: event.target.value,
+    });
   };
   const modifierToggledHandler = (modifier: SendKeyModifiers) => {
-    dispatch(toggleModifier(modifier));
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_MODIFIERS,
+      payload: modifier,
+    });
   };
 
   return (
@@ -62,21 +60,11 @@ export const SendKeyComponent: React.FC<{
           ))}
         </Form.Select>
       </FormGroupRowComponent>
-      <ActionValueComponent<SendKeyField>
-        actionValue={props.sendKeyAction.sendKey}
+      <ActionValueComponent
+        actionValue={props.sendKeyAction.keyToSend}
         labelText="Key to Send"
         descriptionText="key to send"
-        //
-        changeFn={(eventTargetValue, op) =>
-          changeSendKey({
-            eventTargetValue: eventTargetValue,
-            operation: op,
-            field: SendKeyField.KEY_TO_SEND,
-          })
-        }
-        resetFn={resetKeyToSend}
-        //
-        validationFn={validateKeyToSend}
+        field={Field.AC_KEY_TO_SEND_RADIO}
         enterValueValidator={keyToSendValidators.value}
         variableValidator={keyToSendValidators.variable}
         roleKeyValidator={keyToSendValidators.roleKey}
@@ -116,32 +104,26 @@ export const SendKeyComponent: React.FC<{
             onChange={(_e) => modifierToggledHandler(SendKeyModifiers.WINDOWS)}
           />
         </FormGroupRowComponent>
-        <ActionValueComponent<SendKeyField>
+        <ActionValueComponent
           actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
           descriptionText="time to pause after keystroke, in centiseconds"
-          changeFn={(eventTargetValue, op) =>
-            changeSendKey({
-              eventTargetValue: eventTargetValue,
-              operation: op,
-              field: SendKeyField.OUTER_PAUSE,
-            })
-          }
-          resetFn={resetOuterPause}
-          validationFn={validateOuterPause}
+          field={Field.AC_OUTER_PAUSE_RADIO}
           variableValidator={outerPauseValidators.variable}
           roleKeyValidator={outerPauseValidators.roleKey}
         />
-        {props.sendKeyAction.sendKeyMode === SendKeyMode.PRESS && (
+
+        {/* TODO: use the filter maps in components
+        like below EVERYWHERE -- then the logic is actually shared */}
+
+        {KEY_PRESS.filter(props.sendKeyAction) && (
           <SendKeyPressComponent
-            sendKeyPressAction={props.sendKeyAction as SendKeyPressAction}
+            sendKeyPressAction={KEY_PRESS.map(props.sendKeyAction)}
           />
         )}
-        {props.sendKeyAction.sendKeyMode === SendKeyMode.HOLD_RELEASE && (
+        {KEY_HOLD_RELEASE.filter(props.sendKeyAction) && (
           <SendKeyHoldReleaseComponent
-            sendKeyHoldReleaseAction={
-              props.sendKeyAction as SendKeyHoldReleaseAction
-            }
+            sendKeyHoldReleaseAction={KEY_HOLD_RELEASE.map(props.sendKeyAction)}
           />
         )}
       </ExpandCollapseComponent>

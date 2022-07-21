@@ -1,97 +1,113 @@
-import React from 'react';
-import { PayloadAction } from '@reduxjs/toolkit';
+import React, { useContext } from 'react';
 import { FormCheck, FormControl } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import { VariableType } from '../../variable/variable-types';
 import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
 import { RoleKeyDropdownComponent } from '../../role-key/RoleKeyDropdownComponent';
-import {
-  ChangeActionValuePayload,
-  ChoiceValue,
-  RangeValue,
-  TextValue,
-} from './action-value';
+import { ChoiceValue, RangeValue, TextValue } from './action-value';
 import { ActionValueType } from './action-value-type';
+import { getRelevantErrorMessage } from '../../../../validation/validator';
+import { noOpValidator } from './action-value-validation';
+import { ValidationContext } from '../../../../validation/validation-context';
+import { FieldValidator } from '../../../../validation/field-validator';
 import {
-  getRelevantErrorMessage,
-  Validator,
-} from '../../../../validation/validator';
-import { IdValued, TextValued } from '../action-validation';
-import { ActionValueOperation } from './action-value-operation';
+  ActionEditingContext,
+  ActionReducerActionType,
+} from '../action-editing-context';
+import { Field } from '../../../../validation/validation-field';
+import { Action } from '../action';
 
-// type of custom (generic) props
-type AVCProps<T> = {
+type AVCProps = {
   // value
   actionValue: TextValue | RangeValue | ChoiceValue;
   // display
   labelText: string;
   descriptionText: string;
-  // redux action creators
-  changeFn: (
-    eventTargetValue: string,
-    operation: ActionValueOperation
-  ) => PayloadAction<ChangeActionValuePayload<T>>;
-  //
-  resetFn: () => PayloadAction<undefined>;
   // validation
-  validationFn?: () => PayloadAction<undefined>;
+  field: Field;
   required?: boolean;
-  enterValueValidator?: Validator<TextValued>;
-  variableValidator?: Validator<IdValued>;
-  roleKeyValidator?: Validator<IdValued>;
+  enterValueValidator?: FieldValidator<Action>;
+  variableValidator?: FieldValidator<Action>;
+  roleKeyValidator?: FieldValidator<Action>;
 };
 
-// type of react component
-type CustomGenericPropsComponent = <T>(
-  props: AVCProps<T>
-) => React.ReactElement<AVCProps<T>>;
+export const ActionValueComponent: React.FC<AVCProps> = (props) => {
+  const validationContext = useContext(ValidationContext);
+  const editingContext = useContext(ActionEditingContext);
+  //
+  const valueValidator = props.enterValueValidator || noOpValidator;
+  const variableValidator = props.variableValidator || noOpValidator;
+  const roleKeyValidator = props.roleKeyValidator || noOpValidator;
 
-export const ActionValueComponent: CustomGenericPropsComponent = (props) => {
-  const dispatch = useAppDispatch();
-  const validationErrors = useAppSelector(
-    (state) => state.action.validationErrors
-  );
-
-  const validateActionValue = () => {
-    props.validationFn && dispatch(props.validationFn());
-  };
   const typeChangedFn = (type: string) => {
-    dispatch(props.changeFn(type, ActionValueOperation.CHANGE_TYPE));
-    dispatch(props.resetFn());
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
+      payload: {
+        field: props.field,
+        value: type,
+      },
+    });
   };
+  const touchEnteredValue = () => validationContext.touch(valueValidator.field);
   const enteredValueChangedFn = (value: string) => {
-    dispatch(props.changeFn(value, ActionValueOperation.CHANGE_ENTERED_VALUE));
-    validateActionValue();
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
+      payload: {
+        field: valueValidator.field,
+        value: value,
+      },
+    });
+    touchEnteredValue();
   };
+  const touchVariable = () => validationContext.touch(variableValidator.field);
   const variableIdChangedFn = (id: string) => {
-    dispatch(props.changeFn(id, ActionValueOperation.CHANGE_VARIABLE_ID));
-    validateActionValue();
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
+      payload: {
+        field: variableValidator.field,
+        value: id,
+      },
+    });
+    touchVariable();
   };
+  const touchRoleKey = () => validationContext.touch(roleKeyValidator.field);
   const roleKeyIdChangedFn = (id: string) => {
-    dispatch(props.changeFn(id, ActionValueOperation.CHANGE_ROLE_KEY_ID));
-    validateActionValue();
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
+      payload: {
+        field: roleKeyValidator.field,
+        value: id,
+      },
+    });
+    touchRoleKey();
   };
-  const enteredValueIsInvalid = !!(
-    props.enterValueValidator &&
-    validationErrors.includes(props.enterValueValidator.error)
-  );
-  const variableSelectionIsInvalid = !!(
-    props.variableValidator &&
-    validationErrors.includes(props.variableValidator.error)
-  );
-  const roleKeySelectionIsInvalid = !!(
-    props.roleKeyValidator &&
-    validationErrors.includes(props.roleKeyValidator.error)
-  );
+
+  const validationErrors = validationContext.getErrors();
+  const enteredValueIsInvalid = () =>
+    validationErrors.includes(valueValidator.error);
+  const variableSelectionIsInvalid = () =>
+    validationErrors.includes(variableValidator.error);
+  const roleKeySelectionIsInvalid = () =>
+    validationErrors.includes(roleKeyValidator.error);
+  const enteredValueFieldName =
+    (valueValidator !== noOpValidator && Field[valueValidator.field]) ||
+    undefined;
+  const variableFieldName =
+    (variableValidator !== noOpValidator && Field[variableValidator.field]) ||
+    undefined;
+  const roleKeyFieldName =
+    (roleKeyValidator !== noOpValidator && Field[roleKeyValidator.field]) ||
+    undefined;
   const variableTypeIsNumeric =
     props.actionValue.variableType === VariableType.RANGE;
-  const validators = [
+  const errorMessage = getRelevantErrorMessage(validationErrors, [
     props.enterValueValidator,
     props.variableValidator,
     props.roleKeyValidator,
-  ];
-  const errorMessage = getRelevantErrorMessage(validationErrors, validators);
+  ]);
+  const isChecked = (actionValueType: string): boolean => {
+    return props.actionValue.actionValueType === actionValueType;
+  };
 
   return (
     <FormGroupRowComponent
@@ -100,15 +116,17 @@ export const ActionValueComponent: CustomGenericPropsComponent = (props) => {
       errorMessage={errorMessage}
       required={props.required}
     >
-      <div className="action-value-component-radio">
+      <div role="radiogroup" aria-label={Field[props.field]}>
         {ActionValueType.values().map((actionValueType) => (
           <FormCheck
             inline
             label={actionValueType}
-            name={props.labelText + ' radio group'}
-            type="radio"
             key={actionValueType}
-            checked={props.actionValue.actionValueType === actionValueType}
+            type="radio"
+            role="radio"
+            checked={isChecked(actionValueType)}
+            aria-checked={isChecked(actionValueType)}
+            tabIndex={isChecked(actionValueType) ? 0 : -1}
             onChange={(_e) => typeChangedFn(actionValueType)}
           />
         ))}
@@ -119,8 +137,11 @@ export const ActionValueComponent: CustomGenericPropsComponent = (props) => {
             type="text"
             value={props.actionValue.value as string}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
-            onBlur={(_e) => validateActionValue()}
-            isInvalid={enteredValueIsInvalid}
+            onBlur={(_e) => touchEnteredValue()}
+            isInvalid={enteredValueIsInvalid()}
+            name={enteredValueFieldName}
+            role="textbox"
+            aria-label={enteredValueFieldName}
           />
         )}
       {props.actionValue.actionValueType === ActionValueType.ENTER_VALUE &&
@@ -130,25 +151,30 @@ export const ActionValueComponent: CustomGenericPropsComponent = (props) => {
             value={props.actionValue.value as number}
             min={0}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
-            onBlur={(_e) => validateActionValue()}
-            isInvalid={enteredValueIsInvalid}
+            onBlur={(_e) => touchEnteredValue()}
+            isInvalid={enteredValueIsInvalid()}
+            name={enteredValueFieldName}
+            role="input"
+            aria-label={enteredValueFieldName}
           />
         )}
       {props.actionValue.actionValueType === ActionValueType.USE_VARIABLE && (
         <VariablesDropdownComponent
           selectedVariableId={props.actionValue.variableId as string}
           onChange={(e) => variableIdChangedFn(e.target.value)}
-          onBlur={(_e) => validateActionValue()}
-          isInvalid={variableSelectionIsInvalid}
+          onBlur={(_e) => touchVariable()}
+          isInvalid={variableSelectionIsInvalid()}
           variableTypeFilter={[props.actionValue.variableType]}
+          name={variableFieldName}
         />
       )}
       {props.actionValue.actionValueType === ActionValueType.USE_ROLE_KEY && (
         <RoleKeyDropdownComponent
           roleKeyId={props.actionValue.roleKeyId}
           onChange={(e) => roleKeyIdChangedFn(e.target.value)}
-          onBlur={(_e) => validateActionValue()}
-          isInvalid={roleKeySelectionIsInvalid}
+          onBlur={(_e) => touchRoleKey()}
+          isInvalid={roleKeySelectionIsInvalid()}
+          name={roleKeyFieldName}
         />
       )}
     </FormGroupRowComponent>

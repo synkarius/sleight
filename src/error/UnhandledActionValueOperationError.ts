@@ -1,12 +1,12 @@
-import { ActionValueOperation } from '../features/model/action/action-value/action-value-operation';
+import { ActionReducerActionType } from '../features/model/action/action-editing-context';
 import { ErrorCode } from './error-codes';
 import { SleightError } from './SleightError';
 
 export class UnhandledActionValueOperationError extends SleightError {
-  constructor(operation: ActionValueOperation) {
+  constructor(operation: ActionReducerActionType) {
     super(
       ErrorCode.UNHANDLED_ACTION_VALUE_OPERATION,
-      'Unhandled action value operation: ' + operation
+      ActionReducerActionType[operation]
     );
   }
 }

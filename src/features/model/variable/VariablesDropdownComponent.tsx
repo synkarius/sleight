@@ -8,6 +8,7 @@ type VariablesDropdownComponentProps = {
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
   isInvalid?: boolean;
+  name?: string;
 };
 
 export const VariablesDropdownComponent: React.FC<
@@ -17,13 +18,14 @@ export const VariablesDropdownComponent: React.FC<
 
   return (
     <FormSelect
-      aria-label="spec item variable selection"
       onChange={props.onChange}
       onBlur={props.onBlur}
       value={props.selectedVariableId}
       isInvalid={props.isInvalid}
+      role="list"
+      aria-label={props.name}
     >
-      <option value={SELECT_DEFAULT_VALUE}></option>
+      <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
       {Object.values(variablesSaved)
         .filter(
           (variable) =>
@@ -31,7 +33,7 @@ export const VariablesDropdownComponent: React.FC<
             props.variableTypeFilter.includes(variable.type)
         )
         .map((variable) => (
-          <option key={variable.id} value={variable.id}>
+          <option key={variable.id} value={variable.id} role="listitem">
             {variable.name}
           </option>
         ))}

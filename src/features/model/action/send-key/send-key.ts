@@ -25,22 +25,16 @@ const createModifiers = (): Modifiers => {
   };
 };
 
-/*
- * Note:
- * - you should be able to EITHER hard code all the key properties or attach them to variables
- *  - except for modifiers
- */
-
-export interface SendKeyAction extends Action {
+interface AbstractSendKeyAction extends Action {
   // see send-key-modes.ts for options -- whether a press or a hold/release
   sendKeyMode: string;
   modifiers: Modifiers;
   // TODO: enforce that this has roleKey:alphabet if using a choice var??
-  sendKey: ChoiceValue;
+  keyToSend: ChoiceValue;
   outerPause: RangeValue;
 }
 
-export interface SendKeyPressAction extends SendKeyAction {
+export interface SendKeyPressAction extends AbstractSendKeyAction {
   innerPause: RangeValue;
   repeat: RangeValue;
 }
@@ -53,7 +47,7 @@ export const createSendKeyPressAction = (): SendKeyPressAction => {
     roleKeyId: null,
     sendKeyMode: SendKeyMode.PRESS,
     modifiers: createModifiers(),
-    sendKey: createChoiceValue(),
+    keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
     innerPause: createRangeValue(),
     repeat: createRangeValue(),
@@ -68,14 +62,14 @@ export const copyIntoSendKeyPressAction = (
     type: ActionType.SEND_KEY,
     sendKeyMode: SendKeyMode.PRESS,
     modifiers: createModifiers(),
-    sendKey: createChoiceValue(),
+    keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
     innerPause: createRangeValue(),
     repeat: createRangeValue(),
   };
 };
 
-export interface SendKeyHoldReleaseAction extends SendKeyAction {
+export interface SendKeyHoldReleaseAction extends AbstractSendKeyAction {
   direction: ChoiceValue;
 }
 
@@ -87,7 +81,7 @@ export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
     roleKeyId: null,
     sendKeyMode: SendKeyMode.HOLD_RELEASE,
     modifiers: createModifiers(),
-    sendKey: createChoiceValue(),
+    keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
     direction: createChoiceValue(),
   };
@@ -101,8 +95,10 @@ export const copyIntoSendKeyHoldReleaseAction = (
     type: ActionType.SEND_KEY,
     sendKeyMode: SendKeyMode.HOLD_RELEASE,
     modifiers: createModifiers(),
-    sendKey: createChoiceValue(),
+    keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
     direction: createChoiceValue(),
   };
 };
+
+export type SendKeyAction = SendKeyPressAction | SendKeyHoldReleaseAction;

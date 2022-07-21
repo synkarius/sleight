@@ -1,249 +1,92 @@
 import { createSendKeyPressAction } from '../send-key';
-import {
-  ActionsState,
-  actionReducer,
-  validateKeyToSend,
-  resetKeyToSend,
-} from '../../action-reducers';
+import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../action-value/action-value-type';
-import { ActionValueOperation } from '../../action-value/action-value-operation';
-import { SendKeyField } from '../send-key-payloads';
-import { keyToSendValidators } from '../../action-validation';
-import {
-  createSendKeyReduxAction,
-  createTestSendKeyPressAction,
-} from './test-utils';
+import { ActionReducerActionType } from '../../action-editing-context';
+import { Field } from '../../../../../validation/validation-field';
 
-describe('action reducer: action.sendKey', () => {
-  it('should handle change action.sendKey.actionValueType', () => {
+describe('action reducer: action.keyToSend', () => {
+  it('should handle change action.keyToSend.actionValueType', () => {
     const obj = createSendKeyPressAction();
-    obj.sendKey.actionValueType = ActionValueType.USE_ROLE_KEY;
+    obj.keyToSend.actionValueType = ActionValueType.USE_ROLE_KEY;
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
+      payload: {
+        field: Field.AC_KEY_TO_SEND_RADIO,
+        value: ActionValueType.ENTER_VALUE,
+      },
+    });
 
-    const actual = actionReducer(
-      preReducerState,
-      createSendKeyReduxAction(
-        ActionValueType.ENTER_VALUE,
-        ActionValueOperation.CHANGE_TYPE,
-        SendKeyField.KEY_TO_SEND
-      )
-    );
-    expect(actual.editing).toEqual({
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
       ...obj,
-      sendKey: {
-        ...obj.sendKey,
+      keyToSend: {
+        ...obj.keyToSend,
         actionValueType: ActionValueType.ENTER_VALUE,
       },
     });
   });
 
-  it('should handle change action.sendKey.value', () => {
+  it('should handle change action.keyToSend.value', () => {
     const obj = createSendKeyPressAction();
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
+      payload: {
+        field: Field.AC_KEY_TO_SEND_VALUE,
+        value: 'asdf',
+      },
+    });
 
-    const actual = actionReducer(
-      preReducerState,
-      createSendKeyReduxAction(
-        'asdf',
-        ActionValueOperation.CHANGE_ENTERED_VALUE,
-        SendKeyField.KEY_TO_SEND
-      )
-    );
-    expect(actual.editing).toEqual({
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
       ...obj,
-      sendKey: {
-        ...obj.sendKey,
+      keyToSend: {
+        ...obj.keyToSend,
         value: 'asdf',
       },
     });
   });
 
-  it('should handle change action.sendKey.variableId', () => {
+  it('should handle change action.keyToSend.variableId', () => {
     const obj = createSendKeyPressAction();
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
+      payload: {
+        field: Field.AC_KEY_TO_SEND_VAR,
+        value: 'asdf',
+      },
+    });
 
-    const actual = actionReducer(
-      preReducerState,
-      createSendKeyReduxAction(
-        'asdf',
-        ActionValueOperation.CHANGE_VARIABLE_ID,
-        SendKeyField.KEY_TO_SEND
-      )
-    );
-    expect(actual.editing).toEqual({
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
       ...obj,
-      sendKey: {
-        ...obj.sendKey,
+      keyToSend: {
+        ...obj.keyToSend,
         variableId: 'asdf',
       },
     });
   });
 
-  it('should handle change action.sendKey.roleKeyId', () => {
+  it('should handle change action.keyToSend.roleKeyId', () => {
     const obj = createSendKeyPressAction();
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
+      payload: {
+        field: Field.AC_KEY_TO_SEND_RK,
+        value: 'asdf',
+      },
+    });
 
-    const actual = actionReducer(
-      preReducerState,
-      createSendKeyReduxAction(
-        'asdf',
-        ActionValueOperation.CHANGE_ROLE_KEY_ID,
-        SendKeyField.KEY_TO_SEND
-      )
-    );
-    expect(actual.editing).toEqual({
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
       ...obj,
-      sendKey: {
-        ...obj.sendKey,
+      keyToSend: {
+        ...obj.keyToSend,
         roleKeyId: 'asdf',
       },
     });
-  });
-
-  it('should handle change action.sendKey.value invalidation', () => {
-    // empty string
-    const obj1 = createSendKeyPressAction();
-
-    const preReducerState1: ActionsState = {
-      saved: {},
-      editing: obj1,
-      validationErrors: [],
-    };
-
-    const actual1 = actionReducer(preReducerState1, validateKeyToSend());
-    expect(actual1.validationErrors).toEqual([keyToSendValidators.value.error]);
-
-    // blank string
-    const obj2 = createSendKeyPressAction();
-
-    const preReducerState2: ActionsState = {
-      saved: {},
-      editing: obj2,
-      validationErrors: [],
-    };
-
-    const actual2 = actionReducer(preReducerState2, validateKeyToSend());
-    expect(actual2.validationErrors).toEqual([keyToSendValidators.value.error]);
-  });
-
-  it('should handle change action.sendKey.value validation', () => {
-    const obj = createSendKeyPressAction();
-    obj.sendKey.value = 'a';
-
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
-
-    const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([]);
-  });
-
-  it('should handle change action.sendKey.variableId invalidation', () => {
-    const obj = createSendKeyPressAction();
-    obj.sendKey.actionValueType = ActionValueType.USE_VARIABLE;
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
-
-    const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([
-      keyToSendValidators.variable.error,
-    ]);
-  });
-
-  it('should handle change action.sendKey.variableId validation', () => {
-    const obj = createSendKeyPressAction();
-    obj.sendKey.actionValueType = ActionValueType.USE_VARIABLE;
-    obj.sendKey.variableId = 'a';
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
-
-    const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([]);
-  });
-
-  it('should handle change action.sendKey.roleKeyId invalidation', () => {
-    const obj = createSendKeyPressAction();
-    obj.sendKey.actionValueType = ActionValueType.USE_ROLE_KEY;
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
-
-    const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([
-      keyToSendValidators.roleKey.error,
-    ]);
-  });
-
-  it('should handle change action.sendKey.roleKeyId validation', () => {
-    const obj = createSendKeyPressAction();
-    obj.sendKey.actionValueType = ActionValueType.USE_ROLE_KEY;
-    obj.sendKey.roleKeyId = 'a';
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
-
-    const actual = actionReducer(preReducerState, validateKeyToSend());
-    expect(actual.validationErrors).toEqual([]);
-  });
-
-  it('should handle change sendKey reset', () => {
-    const newObject = createSendKeyPressAction();
-    const expectedEditing = createTestSendKeyPressAction(newObject.id);
-    newObject.sendKey.value = 'asdf';
-    newObject.sendKey.variableId = 'asdf';
-    newObject.sendKey.roleKeyId = 'asdf';
-    /*
-     * It shouldn't be possible for the actionValue to actually get into
-     * this state where all 3 values are filled and all 3 validation
-     * errors are present. This test just demonstrates that all of that
-     * data is cleared in a reset.
-     */
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: newObject,
-      validationErrors: Object.values(keyToSendValidators).map((v) => v.error),
-    };
-
-    const actual = actionReducer(preReducerState, resetKeyToSend());
-
-    const expected: ActionsState = {
-      saved: {},
-      editing: expectedEditing,
-      validationErrors: [],
-    };
-
-    expect(actual).toEqual(expected);
   });
 });

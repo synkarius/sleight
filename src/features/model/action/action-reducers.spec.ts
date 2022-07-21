@@ -3,18 +3,15 @@ import { Action } from './action';
 import { createSendKeyPressAction } from './send-key/send-key';
 import {
   ActionsState,
-  createNewEditingAction,
   selectAction,
-  clearEditingAction,
-  changeEditingActionName,
-  changeEditingActionRoleKey,
-  changeEditingActionType,
-  saveAndClearEditingAction,
-  actionReducer,
+  saveAction,
+  actionReduxReducer,
+  actionReactReducer,
 } from './action-reducers';
 import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionType } from './action-types';
 import { createRangeValue } from './action-value/action-value';
+import { ActionReducerActionType } from './action-editing-context';
 
 const createTestAction = (id: string): Action => {
   return {
@@ -28,23 +25,13 @@ const createTestAction = (id: string): Action => {
 describe('action reducer', () => {
   const initialState: ActionsState = {
     saved: {},
-    editing: null,
-    validationErrors: [],
+    editingId: undefined,
   };
 
   it('should handle initial state', () => {
-    expect(actionReducer(undefined, { type: 'unknown' })).toEqual(initialState);
-  });
-
-  it('should handle create new editing action', () => {
-    const newObject = createPauseAction();
-
-    const actual = actionReducer(
-      initialState,
-      createNewEditingAction(newObject)
+    expect(actionReduxReducer(undefined, { type: 'unknown' })).toEqual(
+      initialState
     );
-
-    expect(actual.editing).toEqual(newObject);
   });
 
   it('should handle save', () => {
@@ -52,66 +39,47 @@ describe('action reducer', () => {
 
     const preReducerState: ActionsState = {
       saved: {},
-      editing: obj,
-      validationErrors: [],
+      editingId: undefined,
     };
 
     const expectedSaved: ReduxFriendlyStringMap<Action> = {};
     expectedSaved[obj.id] = obj;
-    const actual = actionReducer(preReducerState, saveAndClearEditingAction());
+    const actual = actionReduxReducer(preReducerState, saveAction(obj));
 
-    expect(actual.editing).toBeNull();
     expect(actual.saved).toEqual(expectedSaved);
   });
 
   it('should handle select', () => {
-    const obj = createPauseAction();
-    const savedMap: ReduxFriendlyStringMap<Action> = {};
-    savedMap[obj.id] = obj;
     const preReducerState: ActionsState = {
-      saved: savedMap,
-      editing: null,
-      validationErrors: [],
+      saved: {},
+      editingId: undefined,
     };
 
-    const expectedAction = {
-      ...createTestAction(obj.id),
-      type: ActionType.PAUSE,
-      centiseconds: createRangeValue(),
-    };
-
-    const actual = actionReducer(preReducerState, selectAction(obj.id));
-    expect(actual.editing).toEqual(expectedAction);
+    const actual = actionReduxReducer(preReducerState, selectAction('asdf'));
+    expect(actual.editingId).toEqual('asdf');
   });
 
   it('should handle clear', () => {
-    const obj = createPauseAction();
-
     const preReducerState: ActionsState = {
       saved: {},
-      editing: obj,
-      validationErrors: [],
+      editingId: 'asdf',
     };
 
-    const actual = actionReducer(preReducerState, clearEditingAction());
+    const actual = actionReduxReducer(preReducerState, selectAction(undefined));
 
-    expect(actual.editing).toBeNull();
+    expect(actual.editingId).toBeUndefined();
   });
 
   it('should handle change name', () => {
     const obj = createPauseAction();
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_NAME,
+      payload: 'asdf',
+    });
 
-    const actual = actionReducer(
-      preReducerState,
-      changeEditingActionName('asdf')
-    );
-    expect(actual.editing).toEqual({
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
       ...obj,
       name: 'asdf',
     });
@@ -120,17 +88,13 @@ describe('action reducer', () => {
   it('should handle change role key', () => {
     const obj = createPauseAction();
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_ROLE_KEY,
+      payload: 'asdf',
+    });
 
-    const actual = actionReducer(
-      preReducerState,
-      changeEditingActionRoleKey('asdf')
-    );
-    expect(actual.editing).toEqual({
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
       ...obj,
       roleKeyId: 'asdf',
     });
@@ -139,22 +103,18 @@ describe('action reducer', () => {
   it('should handle change type to pause', () => {
     const obj = createSendKeyPressAction();
 
-    const preReducerState: ActionsState = {
-      saved: {},
-      editing: obj,
-      validationErrors: [],
-    };
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_ACTION_TYPE,
+      payload: ActionType.PAUSE,
+    });
 
     const expectedAction: PauseAction = {
       ...createTestAction(obj.id),
       type: ActionType.PAUSE,
       centiseconds: createRangeValue(),
     };
-    const actual = actionReducer(
-      preReducerState,
-      changeEditingActionType({ actionType: ActionType.PAUSE })
-    );
 
-    expect(actual.editing).toEqual(expectedAction);
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual(expectedAction);
   });
 });

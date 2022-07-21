@@ -61,7 +61,7 @@ describe('role key reducer', () => {
       selectRoleKey(undefined)
     );
 
-    expect(actual.editingId).toEqual(undefined);
+    expect(actual.editingId).toBeUndefined();
   });
 
   it('should handle change value', () => {

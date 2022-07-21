@@ -7,6 +7,7 @@ export enum ErrorCode {
   SELECTOR_ID_ALREADY_IN_USE = 'selector id already in use',
   SELECTOR_ID_NOT_FOUND = 'selector id not found',
 
+  UNHANDLED_ACTION_EDITING_EVENT_TYPE = 'unhandled action editing event type',
   UNHANDLED_ACTION_TYPE = 'unhandled action type',
   UNHANDLED_ACTION_VALUE_OPERATION = 'unhandled action value operation',
   UNHANDLED_ACTION_VALUE_TYPE = 'unhandled action value type',

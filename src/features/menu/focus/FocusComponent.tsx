@@ -7,10 +7,11 @@ import { ContextComponent } from '../../model/context/ContextComponent';
 import { VariableComponent } from '../../model/variable/VariableComponent';
 import { SpecComponent } from '../../model/spec/SpecComponent';
 import { RoleKeyParentComponent } from '../../model/role-key/RoleKeyParentComponent';
+import { ActionParentComponent } from '../../model/action/ActionParentComponent';
 
 export const FocusComponent: React.FC<{}> = () => {
   const elementType = useAppSelector((state) => state.focus.elementType);
-  const action = useAppSelector((state) => state.action.editing);
+  const actionId = useAppSelector((state) => state.action.editingId);
   const command = useAppSelector((state) => state.command.editing);
   const context = useAppSelector((state) => state.context.editing);
   const roleKeyId = useAppSelector((state) => state.roleKey.editingId);
@@ -19,8 +20,8 @@ export const FocusComponent: React.FC<{}> = () => {
 
   return (
     <>
-      {elementType === ElementType.ACTION && action && (
-        <ActionComponent action={action} />
+      {elementType === ElementType.ACTION && (
+        <ActionParentComponent actionId={actionId} key={actionId} />
       )}
       {elementType === ElementType.COMMAND && command && (
         <CommandComponent command={command} />

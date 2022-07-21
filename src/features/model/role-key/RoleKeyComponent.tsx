@@ -48,7 +48,8 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
           onBlur={(_e) => validationContext.touch(Field.RK_ROLE_KEY)}
           value={props.roleKey.value}
           isInvalid={validationErrors.includes(roleKeyTextValidator.error)}
-          name={Field[Field.RK_ROLE_KEY]}
+          role="textbox"
+          aria-label={Field[Field.RK_ROLE_KEY]}
         />
         <Form.Control.Feedback type="invalid">
           {roleKeyTextValidator.error.message}

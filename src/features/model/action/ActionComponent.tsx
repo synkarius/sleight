@@ -1,44 +1,55 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Action } from './action';
 import { ActionType } from './action-types';
-import {
-  changeEditingActionName,
-  changeEditingActionRoleKey,
-  changeEditingActionType,
-  clearEditingAction,
-  saveAndClearEditingAction,
-  validateKeyToSend,
-} from './action-reducers';
+import { saveAction } from './action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
 import { SendKeyAction } from './send-key/send-key';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { ValidationContext } from '../../../validation/validation-context';
+import {
+  ActionEditingContext,
+  ActionReducerActionType,
+} from './action-editing-context';
+import { setFocus } from '../../menu/focus/focus-reducers';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
-  const dispatch = useAppDispatch();
-  const validationErrors = useAppSelector(
-    (state) => state.action.validationErrors
-  );
+  const reduxDispatch = useAppDispatch();
+  const validationContext = useContext(ValidationContext);
+  const editingContext = useContext(ActionEditingContext);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeEditingActionName(event.target.value));
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_NAME,
+      payload: event.target.value,
+    });
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeEditingActionType({ actionType: event.target.value }));
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_ACTION_TYPE,
+      payload: event.target.value,
+    });
+  };
+  const roleKeyChangedHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    editingContext.localDispatchFn({
+      type: ActionReducerActionType.CHANGE_ROLE_KEY,
+      payload: event.target.value,
+    });
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    /*
-     * The problem here is that we want to be able to (A) know what's on the screen
-     * and (B) which errors correspond to those elements when either submitting
-     * or disabling the save button.
-     */
-    [validateKeyToSend].forEach((validation) => dispatch(validation()));
-    dispatch(saveAndClearEditingAction());
+    const formIsValid = validationContext.validateForm();
+    if (formIsValid) {
+      reduxDispatch(saveAction(props.action));
+      reduxDispatch(setFocus(undefined));
+    }
   };
 
+  const validationErrors = validationContext.getErrors();
   return (
     <PanelComponent header="Create/Edit Action">
       <FormGroupRowComponent labelText="Name">
@@ -52,7 +63,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
           roleKeyId={props.action.roleKeyId}
-          onChange={(e) => dispatch(changeEditingActionRoleKey(e.target.value))}
+          onChange={roleKeyChangedHandler}
         />
         <FormText className="text-muted">role of action</FormText>
       </FormGroupRowComponent>
@@ -81,7 +92,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => dispatch(clearEditingAction())}
+        onClick={(_e) => reduxDispatch(setFocus(undefined))}
         className="mx-3"
         variant="warning"
         size="lg"

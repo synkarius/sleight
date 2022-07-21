@@ -1,4 +1,4 @@
-import { alwaysTrue, notEmpty } from '../../../validation/common-validations';
+import { alwaysTrue, notEmpty } from '../../../util/common-functions';
 import {
   createFieldValidator,
   FieldValidator,
