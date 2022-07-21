@@ -39,11 +39,6 @@ export const copyIntoChoice = (
   };
 };
 
-export type EditChoiceItemSelectorPayload = {
-  choiceItemId: string;
-  selector: string;
-};
-
 export type EditChoiceItemValuePayload = {
   choiceItemId: string;
   value: string;

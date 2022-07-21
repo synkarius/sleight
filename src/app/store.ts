@@ -1,5 +1,4 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
 import { focusReducer } from '../features/menu/focus/focus-reducers';
 import { actionReduxReducer } from '../features/model/action/action-reducers';
 import { commandReducer } from '../features/model/command/command-reducers';
@@ -14,7 +13,6 @@ export const store = configureStore({
     action: actionReduxReducer,
     command: commandReducer,
     context: contextReducer,
-    counter: counterReducer,
     focus: focusReducer,
     roleKey: roleKeyReduxReducer,
     selector: selectorReducer,

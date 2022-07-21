@@ -10,11 +10,3 @@ export const copyAction = (action: Action) => {
     roleKeyId: action.roleKeyId,
   };
 };
-
-export type ChangeActionTypePayload = {
-  actionType: string;
-};
-
-export type ChangeSendKeyModePayload = {
-  sendKeyMode: string;
-};

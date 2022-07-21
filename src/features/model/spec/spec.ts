@@ -34,10 +34,6 @@ export const createSpec = (selectorId: string) => {
   };
 };
 
-export type AddSpecItemPayload = {
-  specItem: SpecItem;
-};
-
 export type ChangeSpecItemTypePayload = {
   specItemId: string;
   specItemItemId: string;

@@ -1,10 +1,10 @@
-import { notEmptyPredicate } from '../../../validation/common-validations';
+import { notEmpty } from '../../../util/common-functions';
 import {
   createValidationError,
   Validator,
 } from '../../../validation/validator';
 
 export const contextMatcherValidator: Validator<string> = {
-  isValid: notEmptyPredicate,
+  isValid: notEmpty,
   error: createValidationError("matcher can't be empty"),
 };

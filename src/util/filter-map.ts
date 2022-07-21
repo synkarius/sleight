@@ -5,12 +5,12 @@
  *
  * FilterMaps are composable through `FilterMapBuilder`.
  */
-export interface FilterMap<A, B> {
+interface FilterMap<A, B> {
   filter: (a: A) => boolean;
   map: (a: A) => B;
 }
 
-export interface FilterMapBuilder<A, B> {
+interface FilterMapBuilder<A, B> {
   withFilterMap: <C>(filterMap: FilterMap<B, C>) => FilterMapBuilder<A, C>;
   build: () => FilterMap<A, B>;
 }

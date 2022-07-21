@@ -1,6 +1,0 @@
-export enum ActionValueOperation {
-  CHANGE_TYPE,
-  CHANGE_ENTERED_VALUE,
-  CHANGE_VARIABLE_ID,
-  CHANGE_ROLE_KEY_ID,
-}

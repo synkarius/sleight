@@ -1,9 +1,8 @@
 import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
-import { ActionValueOperation } from './action-value-operation';
 import { ActionValueType } from './action-value-type';
 
-export interface ActionValue {
+interface ActionValue {
   /* this is how the user specifies the value in an action:
    * a value of ActionValueType
    */
@@ -71,10 +70,4 @@ export const createChoiceValue = (): ChoiceValue => {
     roleKeyId: SELECT_DEFAULT_VALUE,
     value: '',
   };
-};
-
-export type ChangeActionValuePayload<T> = {
-  eventTargetValue: string;
-  field: T;
-  operation: ActionValueOperation;
 };

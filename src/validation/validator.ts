@@ -23,7 +23,7 @@ export interface Validator<T> {
  * @param error
  * @returns
  */
-export const indexOfError = (
+const indexOfError = (
   errors: ValidationError[],
   error: ValidationError
 ): number => {
@@ -50,10 +50,7 @@ const includesError = (errors: ValidationError[], error: ValidationError) => {
  * @param errors
  * @param error
  */
-export const removeError = (
-  errors: ValidationError[],
-  error: ValidationError
-) => {
+const removeError = (errors: ValidationError[], error: ValidationError) => {
   while (includesError(errors, error)) {
     const index = indexOfError(errors, error);
     errors.splice(index, 1);
