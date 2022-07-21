@@ -13,13 +13,11 @@ import { ActionValueType } from './action-value-type';
 export type TextValued = TextValue | ChoiceValue;
 export type IdValued = TextValued | RangeValue;
 
-export interface IdedValidators {
+export interface ActionValueValidators {
+  radioGroupField: Field;
+  value: FieldValidator<Action>;
   variable: FieldValidator<Action>;
   roleKey: FieldValidator<Action>;
-}
-
-export interface TextValidators extends IdedValidators {
-  value: FieldValidator<Action>;
 }
 
 export const createNonEmptyError = (fieldName: string) =>
@@ -47,9 +45,10 @@ export const toRoleKeyIdFM = createFilterMap(
     actionValue.roleKeyId as string
 );
 
-export const noOpValidator: FieldValidator<IdValued> = createFieldValidator(
-  Field.NO_OP,
-  alwaysFalse,
-  alwaysTrue,
-  createValidationError('no-op error: should never happen')
-);
+export const createNoOpValidator = (field: Field): FieldValidator<Action> =>
+  createFieldValidator(
+    field,
+    alwaysFalse,
+    alwaysTrue,
+    createValidationError('no-op error: should never happen')
+  );

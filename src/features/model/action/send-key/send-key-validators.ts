@@ -15,11 +15,11 @@ import {
   createNonEmptyError,
   createNonSelectedRoleKeyError,
   createNonSelectedVariableError,
-  IdedValidators,
-  TextValidators,
+  ActionValueValidators,
   toEnteredValueFM,
   toRoleKeyIdFM,
   toVariableIdFM,
+  createNoOpValidator,
 } from '../action-value/action-value-validation';
 import {
   SendKeyAction,
@@ -70,7 +70,8 @@ const toKeyToSendVariableIdFM = toKeyToSendKeyBuilder
 const toKeyToSendRoleKeyIdFM = toKeyToSendKeyBuilder
   .withFilterMap(toRoleKeyIdFM)
   .build();
-export const keyToSendValidators: TextValidators = {
+export const keyToSendValidators: ActionValueValidators = {
+  radioGroupField: Field.AC_KEY_TO_SEND_RADIO,
   value: createFieldValidator(
     Field.AC_KEY_TO_SEND_VALUE,
     toKeyToSendValueFM.filter,
@@ -110,7 +111,9 @@ const toOuterPauseVariableIdFM = outerPauseBuilder
 const toOuterPauseRoleKeyIdFM = outerPauseBuilder
   .withFilterMap(toRoleKeyIdFM)
   .build();
-export const outerPauseValidators: IdedValidators = {
+export const outerPauseValidators: ActionValueValidators = {
+  radioGroupField: Field.AC_OUTER_PAUSE_RADIO,
+  value: createNoOpValidator(Field.AC_OUTER_PAUSE_VALUE),
   variable: createFieldValidator(
     Field.AC_OUTER_PAUSE_VAR,
     toOuterPauseVariableIdFM.filter,
@@ -145,7 +148,9 @@ const toInnerPauseVariableIdFM = innerPauseBuilder
 const toInnerPauseRoleKeyIdFM = innerPauseBuilder
   .withFilterMap(toRoleKeyIdFM)
   .build();
-export const innerPauseValidators: IdedValidators = {
+export const innerPauseValidators: ActionValueValidators = {
+  radioGroupField: Field.AC_INNER_PAUSE_RADIO,
+  value: createNoOpValidator(Field.AC_INNER_PAUSE_VALUE),
   variable: createFieldValidator(
     Field.AC_INNER_PAUSE_VAR,
     toInnerPauseVariableIdFM.filter,
@@ -178,7 +183,9 @@ const toRepeatVariableIdFM = repeatBuilder
   .withFilterMap(toVariableIdFM)
   .build();
 const toRepeatRoleKeyIdFM = repeatBuilder.withFilterMap(toRoleKeyIdFM).build();
-export const repeatValidators: IdedValidators = {
+export const repeatValidators: ActionValueValidators = {
+  radioGroupField: Field.AC_REPEAT_RADIO,
+  value: createNoOpValidator(Field.AC_REPEAT_VALUE),
   variable: createFieldValidator(
     Field.AC_REPEAT_VAR,
     toRepeatVariableIdFM.filter,
@@ -218,7 +225,8 @@ const toDirectionRoleKeyIdFM = directionBuilder
   .build();
 
 // TODO: validate this differently so it can only be "up" or "down"
-export const directionValidators: TextValidators = {
+export const directionValidators: ActionValueValidators = {
+  radioGroupField: Field.AC_DIRECTION_RADIO,
   value: createFieldValidator(
     Field.AC_DIRECTION_VALUE,
     toDirectionValueFM.filter,

@@ -7,7 +7,6 @@ import { RoleKeyDropdownComponent } from '../../role-key/RoleKeyDropdownComponen
 import { ChoiceValue, RangeValue, TextValue } from './action-value';
 import { ActionValueType } from './action-value-type';
 import { getRelevantErrorMessage } from '../../../../validation/validator';
-import { noOpValidator } from './action-value-validation';
 import { ValidationContext } from '../../../../validation/validation-context';
 import { FieldValidator } from '../../../../validation/field-validator';
 import {
@@ -16,6 +15,7 @@ import {
 } from '../action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { Action } from '../action';
+import { ActionValueValidators } from './action-value-validation';
 
 type AVCProps = {
   // value
@@ -23,30 +23,33 @@ type AVCProps = {
   // display
   labelText: string;
   descriptionText: string;
-  // validation
-  field: Field;
   required?: boolean;
-  enterValueValidator?: FieldValidator<Action>;
-  variableValidator?: FieldValidator<Action>;
-  roleKeyValidator?: FieldValidator<Action>;
+  // validation
+  validators: ActionValueValidators;
 };
 
 export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
   //
-  const valueValidator = props.enterValueValidator || noOpValidator;
-  const variableValidator = props.variableValidator || noOpValidator;
-  const roleKeyValidator = props.roleKeyValidator || noOpValidator;
+  const {
+    value: valueValidator,
+    variable: variableValidator,
+    roleKey: roleKeyValidator,
+  } = props.validators;
+  // const valueValidator: FieldValidator<Action> = props.validators.value;
+  // const variableValidator: FieldValidator<Action> = props.validators.variable;
+  // const roleKeyValidator: FieldValidator<Action> = props.validators.roleKey;
 
   const typeChangedFn = (type: string) => {
     editingContext.localDispatchFn({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: props.field,
+        field: props.validators.radioGroupField,
         value: type,
       },
     });
+    validationContext.touch(props.validators.radioGroupField);
   };
   const touchEnteredValue = () => validationContext.touch(valueValidator.field);
   const enteredValueChangedFn = (value: string) => {
@@ -89,21 +92,15 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     validationErrors.includes(variableValidator.error);
   const roleKeySelectionIsInvalid = () =>
     validationErrors.includes(roleKeyValidator.error);
-  const enteredValueFieldName =
-    (valueValidator !== noOpValidator && Field[valueValidator.field]) ||
-    undefined;
-  const variableFieldName =
-    (variableValidator !== noOpValidator && Field[variableValidator.field]) ||
-    undefined;
-  const roleKeyFieldName =
-    (roleKeyValidator !== noOpValidator && Field[roleKeyValidator.field]) ||
-    undefined;
+  const enteredValueFieldName = Field[valueValidator.field];
+  const variableFieldName = Field[variableValidator.field];
+  const roleKeyFieldName = Field[roleKeyValidator.field];
   const variableTypeIsNumeric =
     props.actionValue.variableType === VariableType.RANGE;
   const errorMessage = getRelevantErrorMessage(validationErrors, [
-    props.enterValueValidator,
-    props.variableValidator,
-    props.roleKeyValidator,
+    valueValidator,
+    variableValidator,
+    roleKeyValidator,
   ]);
   const isChecked = (actionValueType: string): boolean => {
     return props.actionValue.actionValueType === actionValueType;
@@ -116,7 +113,10 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       errorMessage={errorMessage}
       required={props.required}
     >
-      <div role="radiogroup" aria-label={Field[props.field]}>
+      <div
+        role="radiogroup"
+        aria-label={Field[props.validators.radioGroupField]}
+      >
         {ActionValueType.values().map((actionValueType) => (
           <FormCheck
             inline

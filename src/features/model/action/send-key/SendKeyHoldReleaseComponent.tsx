@@ -13,10 +13,7 @@ export const SendKeyHoldReleaseComponent: React.FC<{
         labelText="Direction"
         descriptionText="up or down"
         actionValue={props.sendKeyHoldReleaseAction.direction}
-        field={Field.AC_DIRECTION_RADIO}
-        enterValueValidator={directionValidators.value}
-        variableValidator={directionValidators.variable}
-        roleKeyValidator={directionValidators.roleKey}
+        validators={directionValidators}
         required={true}
       />
     </>

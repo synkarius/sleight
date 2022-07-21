@@ -203,6 +203,7 @@ const modifyAction = (
         keyToSend,
       };
     case Field.AC_OUTER_PAUSE_RADIO:
+    case Field.AC_OUTER_PAUSE_VALUE:
     case Field.AC_OUTER_PAUSE_VAR:
     case Field.AC_OUTER_PAUSE_RK:
       const outerPause = modifyActionValue(state.outerPause, value, operation);
@@ -211,6 +212,7 @@ const modifyAction = (
         outerPause,
       };
     case Field.AC_INNER_PAUSE_RADIO:
+    case Field.AC_INNER_PAUSE_VALUE:
     case Field.AC_INNER_PAUSE_VAR:
     case Field.AC_INNER_PAUSE_RK:
       const innerPause = modifyActionValue(
@@ -223,6 +225,7 @@ const modifyAction = (
         innerPause,
       };
     case Field.AC_REPEAT_RADIO:
+    case Field.AC_REPEAT_VALUE:
     case Field.AC_REPEAT_VAR:
     case Field.AC_REPEAT_RK:
       const repeat = modifyActionValue(

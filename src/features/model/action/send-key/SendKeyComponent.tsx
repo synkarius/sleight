@@ -64,10 +64,7 @@ export const SendKeyComponent: React.FC<{
         actionValue={props.sendKeyAction.keyToSend}
         labelText="Key to Send"
         descriptionText="key to send"
-        field={Field.AC_KEY_TO_SEND_RADIO}
-        enterValueValidator={keyToSendValidators.value}
-        variableValidator={keyToSendValidators.variable}
-        roleKeyValidator={keyToSendValidators.roleKey}
+        validators={keyToSendValidators}
         required={true}
       />
       <ExpandCollapseComponent
@@ -108,9 +105,7 @@ export const SendKeyComponent: React.FC<{
           actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
           descriptionText="time to pause after keystroke, in centiseconds"
-          field={Field.AC_OUTER_PAUSE_RADIO}
-          variableValidator={outerPauseValidators.variable}
-          roleKeyValidator={outerPauseValidators.roleKey}
+          validators={outerPauseValidators}
         />
 
         {/* TODO: use the filter maps in components
