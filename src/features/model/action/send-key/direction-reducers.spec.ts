@@ -1,8 +1,8 @@
-import { createSendKeyHoldReleaseAction } from '../send-key';
-import { actionReactReducer } from '../../action-reducers';
-import { ActionValueType } from '../../action-value/action-value-type';
-import { ActionReducerActionType } from '../../action-editing-context';
-import { Field } from '../../../../../validation/validation-field';
+import { createSendKeyHoldReleaseAction } from './send-key';
+import { actionReactReducer } from '../action-reducers';
+import { ActionValueType } from '../action-value/action-value-type';
+import { ActionReducerActionType } from '../action-editing-context';
+import { Field } from '../../../../validation/validation-field';
 
 describe('action reducer: action.direction', () => {
   it('should handle change action.direction.actionValueType', () => {

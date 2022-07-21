@@ -3,17 +3,17 @@ import {
   createSendKeyPressAction,
   SendKeyHoldReleaseAction,
   SendKeyPressAction,
-} from '../send-key';
-import { actionReactReducer } from '../../action-reducers';
-import { SendKeyMode } from '../send-key-modes';
-import { SendKeyModifiers } from '../send-key-modifiers';
-import { ActionReducerActionType } from '../../action-editing-context';
-import { Action } from '../../action';
-import { ActionType } from '../../action-types';
+} from './send-key';
+import { actionReactReducer } from './../action-reducers';
+import { SendKeyMode } from './send-key-modes';
+import { SendKeyModifiers } from './send-key-modifiers';
+import { ActionReducerActionType } from './../action-editing-context';
+import { Action } from './../action';
+import { ActionType } from './../action-types';
 import {
   createChoiceValue,
   createRangeValue,
-} from '../../action-value/action-value';
+} from './../action-value/action-value';
 
 const createTestAction = (id: string): Action => {
   return {
