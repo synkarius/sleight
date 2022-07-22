@@ -8,7 +8,7 @@ import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKey } from './role-key';
 import {
-  RoleKeyActionType,
+  RoleKeyReducerActionType,
   RoleKeyEditingContext,
 } from './role-key-editing-context';
 import { saveRoleKey } from './role-key-reducers';
@@ -21,7 +21,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
 
   const valueChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({
-      type: RoleKeyActionType.CHANGE_VALUE,
+      type: RoleKeyReducerActionType.CHANGE_VALUE,
       payload: event.target.value,
     });
     validationContext.touch(Field.RK_ROLE_KEY);

@@ -1,5 +1,6 @@
 import React, { useContext, useId } from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
+import { ValidationContext } from '../../../../validation/validation-context';
 import { Field } from '../../../../validation/validation-field';
 import { ExpandCollapseComponent } from '../../../ui/ExpandCollapseComponent';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
@@ -27,6 +28,7 @@ export const SendKeyComponent: React.FC<{
   const shiftModifierCheckboxId = useId();
   const altModifierCheckboxId = useId();
   const windowsModifierCheckboxId = useId();
+  const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
 
   const modeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -34,6 +36,7 @@ export const SendKeyComponent: React.FC<{
       type: ActionReducerActionType.CHANGE_SEND_KEY_MODE,
       payload: event.target.value,
     });
+    validationContext.touch(Field.AC_SEND_KEY_MODE);
   };
   const modifierToggledHandler = (modifier: SendKeyModifiers) => {
     editingContext.localDispatchFn({
@@ -49,12 +52,13 @@ export const SendKeyComponent: React.FC<{
         descriptionText="press or hold/release"
       >
         <Form.Select
-          aria-label="send-key mode selection"
+          aria-label={Field[Field.AC_SEND_KEY_MODE]}
+          role="list"
           onChange={modeChangedHandler}
           value={props.sendKeyAction.sendKeyMode}
         >
           {SendKeyMode.values().map((skm) => (
-            <option key={skm} value={skm}>
+            <option key={skm} value={skm} role="listitem">
               {skm}
             </option>
           ))}

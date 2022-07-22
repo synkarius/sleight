@@ -1,22 +1,13 @@
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from './command';
+import { CommandReducerActionType } from './command-editing-context';
 import {
   CommandsState,
-  createNewEditingCommand,
   selectCommand,
   saveEditingCommand,
-  clearEditingCommand,
-  changeEditingCommandName,
-  changeEditingCommandRoleKey,
-  changeEditingCommandSpecType,
-  changeEditingCommandSpecSpecId,
-  changeEditingCommandSpecRoleKeyId,
-  addActionToEditingCommand,
-  changeEditingCommandActionId,
-  moveEditingCommandAction,
-  deleteEditingCommandAction,
-  commandReducer,
+  commandReduxReducer,
+  commandReactReducer,
 } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 
@@ -25,348 +16,270 @@ const createTestCommand = (id: string): Command => {
     id: id,
     name: '',
     roleKeyId: null,
-    commandSpecType: CommandSpecType.SPEC,
-    specId: null,
-    specRoleKeyId: null,
+    specType: CommandSpecType.VARIABLE,
+    specVariableId: undefined,
+    specRoleKeyId: undefined,
     actionIds: [],
   };
 };
 
 describe('command reducer', () => {
-  const initialState: CommandsState = {
-    saved: {},
-    editing: null,
-  };
   it('should handle initial state', () => {
-    expect(commandReducer(undefined, { type: 'unknown' })).toEqual({
+    expect(commandReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editing: null,
+      editingId: undefined,
     });
   });
 
-  it('should handle create new', () => {
-    const newObject = createCommand();
+  // TODO: finish functional tests
 
-    const actual = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+  // it('should handle create new', () => {
+  //   const obj = createCommand();
 
-    expect(actual.editing).toEqual(createTestCommand(newObject.id));
-  });
+  //   const actual = commandReduxReducer(
+  //     initialState,
+  //     createNewEditingCommand(obj)
+  //   );
+
+  //   expect(actual.editing).toEqual(createTestCommand(obj.id));
+  // });
 
   it('should handle save', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actual = commandReducer(createdState, saveEditingCommand());
+    const initialState: CommandsState = {
+      saved: {},
+      editingId: undefined,
+    };
+
+    const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
 
     const expected: ReduxFriendlyStringMap<Command> = {};
-    expected[newObject.id] = createTestCommand(newObject.id);
+    expected[obj.id] = createTestCommand(obj.id);
 
     expect(actual.saved).toEqual(expected);
   });
 
   it('should handle select', () => {
-    const newObject = createCommand();
+    const initialState: CommandsState = {
+      saved: {},
+      editingId: undefined,
+    };
+    const actual = commandReduxReducer(initialState, selectCommand('asdf'));
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const savedState = commandReducer(createdState, saveEditingCommand());
-    const clearedState = commandReducer(savedState, clearEditingCommand());
-
-    const actual = commandReducer(clearedState, selectCommand(newObject.id));
-    expect(actual.editing).toEqual(createTestCommand(newObject.id));
+    expect(actual).toEqual({
+      saved: {},
+      editingId: 'asdf',
+    });
   });
 
   it('should handle clear', () => {
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(createCommand())
-    );
+    const initialState: CommandsState = {
+      saved: {},
+      editingId: 'asdf',
+    };
+    const actual = commandReduxReducer(initialState, selectCommand());
 
-    const actual = commandReducer(createdState, clearEditingCommand());
-
-    expect(actual.editing).toBeNull();
+    expect(actual).toEqual({
+      saved: {},
+      editingId: undefined,
+    });
   });
 
   it('should handle change name', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_NAME,
+      payload: 'asdf',
+    });
 
-    const actual = commandReducer(
-      createdState,
-      changeEditingCommandName('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       name: 'asdf',
     });
   });
 
   it('should handle change role key', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_ROLE_KEY,
+      payload: 'asdf',
+    });
 
-    const actual = commandReducer(
-      createdState,
-      changeEditingCommandRoleKey('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       roleKeyId: 'asdf',
     });
   });
 
   it('should handle change spec type', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_SPEC_TYPE,
+      payload: 'asdf',
+    });
 
-    const actual = commandReducer(
-      createdState,
-      changeEditingCommandSpecType('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
-      commandSpecType: 'asdf',
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
+      specType: 'asdf',
     });
   });
 
   it('should handle change spec id', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
+      payload: 'asdf',
+    });
 
-    const actual = commandReducer(
-      createdState,
-      changeEditingCommandSpecSpecId('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
-      specId: 'asdf',
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
+      specVariableId: 'asdf',
     });
   });
 
   it('should handle change spec role key id', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,
+      payload: 'asdf',
+    });
 
-    const actual = commandReducer(
-      createdState,
-      changeEditingCommandSpecRoleKeyId('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       specRoleKeyId: 'asdf',
     });
   });
 
   it('should handle add action', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.ADD_ACTION,
+      payload: 'asdf',
+    });
 
-    const actual = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
-      actionIds: ['asdf'],
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      actionIds: [...obj.actionIds, 'asdf'],
     });
   });
 
   it('should handle change action id', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
+    obj.actionIds.push('asdf-1');
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actionAddedState = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf-1')
-    );
-    const actual = commandReducer(
-      actionAddedState,
-      changeEditingCommandActionId({ index: 0, newActionId: 'asdf-2' })
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_ACTION,
+      payload: {
+        index: 0,
+        newActionId: 'asdf-2',
+      },
+    });
 
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
       actionIds: ['asdf-2'],
     });
   });
 
   it('should handle move action up', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
+    obj.actionIds.push('asdf-1');
+    obj.actionIds.push('asdf-2');
+    obj.actionIds.push('asdf-3');
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actionAddedState1 = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf-1')
-    );
-    const actionAddedState2 = commandReducer(
-      actionAddedState1,
-      addActionToEditingCommand('asdf-2')
-    );
-    const actionAddedState3 = commandReducer(
-      actionAddedState2,
-      addActionToEditingCommand('asdf-3')
-    );
-    const actual = commandReducer(
-      actionAddedState3,
-      moveEditingCommandAction({ index: 1, direction: MoveDirection.UP })
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.MOVE_ACTION,
+      payload: { index: 1, direction: MoveDirection.UP },
+    });
 
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       actionIds: ['asdf-2', 'asdf-1', 'asdf-3'],
     });
   });
 
   it('should handle move action down', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
+    obj.actionIds.push('asdf-1');
+    obj.actionIds.push('asdf-2');
+    obj.actionIds.push('asdf-3');
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actionAddedState1 = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf-1')
-    );
-    const actionAddedState2 = commandReducer(
-      actionAddedState1,
-      addActionToEditingCommand('asdf-2')
-    );
-    const actionAddedState3 = commandReducer(
-      actionAddedState2,
-      addActionToEditingCommand('asdf-3')
-    );
-    const actual = commandReducer(
-      actionAddedState3,
-      moveEditingCommandAction({ index: 1, direction: MoveDirection.DOWN })
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.MOVE_ACTION,
+      payload: { index: 1, direction: MoveDirection.DOWN },
+    });
 
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       actionIds: ['asdf-1', 'asdf-3', 'asdf-2'],
     });
   });
 
   it('should handle move action up out of bounds', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
+    obj.actionIds.push('asdf-1');
+    obj.actionIds.push('asdf-2');
+    obj.actionIds.push('asdf-3');
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actionAddedState1 = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf-1')
-    );
-    const actionAddedState2 = commandReducer(
-      actionAddedState1,
-      addActionToEditingCommand('asdf-2')
-    );
-    const actionAddedState3 = commandReducer(
-      actionAddedState2,
-      addActionToEditingCommand('asdf-3')
-    );
-    const actual = commandReducer(
-      actionAddedState3,
-      moveEditingCommandAction({ index: 0, direction: MoveDirection.UP })
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.MOVE_ACTION,
+      payload: { index: 0, direction: MoveDirection.UP },
+    });
 
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       actionIds: ['asdf-1', 'asdf-2', 'asdf-3'],
     });
   });
 
   it('should handle move action down out of bounds', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
+    obj.actionIds.push('asdf-1');
+    obj.actionIds.push('asdf-2');
+    obj.actionIds.push('asdf-3');
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actionAddedState1 = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf-1')
-    );
-    const actionAddedState2 = commandReducer(
-      actionAddedState1,
-      addActionToEditingCommand('asdf-2')
-    );
-    const actionAddedState3 = commandReducer(
-      actionAddedState2,
-      addActionToEditingCommand('asdf-3')
-    );
-    const actual = commandReducer(
-      actionAddedState3,
-      moveEditingCommandAction({ index: 2, direction: MoveDirection.DOWN })
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.MOVE_ACTION,
+      payload: { index: 2, direction: MoveDirection.DOWN },
+    });
 
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       actionIds: ['asdf-1', 'asdf-2', 'asdf-3'],
     });
   });
 
   it('should handle delete action', () => {
-    const newObject = createCommand();
+    const obj = createCommand();
+    obj.actionIds.push('asdf-1');
+    obj.actionIds.push('asdf-2');
 
-    const createdState = commandReducer(
-      initialState,
-      createNewEditingCommand(newObject)
-    );
-    const actionAddedState1 = commandReducer(
-      createdState,
-      addActionToEditingCommand('asdf-1')
-    );
-    const actionAddedState2 = commandReducer(
-      actionAddedState1,
-      addActionToEditingCommand('asdf-2')
-    );
-    const actual = commandReducer(
-      actionAddedState2,
-      deleteEditingCommandAction(0)
-    );
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.DELETE_ACTION,
+      payload: 0,
+    });
 
-    expect(actual.editing).toEqual({
-      ...createTestCommand(newObject.id),
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
       actionIds: ['asdf-2'],
     });
   });

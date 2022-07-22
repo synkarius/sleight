@@ -11,6 +11,7 @@ export enum ErrorCode {
   UNHANDLED_ACTION_TYPE = 'unhandled action type',
   UNHANDLED_ACTION_VALUE_OPERATION = 'unhandled action value operation',
   UNHANDLED_ACTION_VALUE_TYPE = 'unhandled action value type',
+  UNHANDLED_COMMAND_EDITING_EVENT_TYPE = 'unhandled command editing event type',
   UNHANDLED_ROLE_KEY_EDITING_EVENT_TYPE = 'unhandled role key editing event type',
   UNHANDLED_SPEC_ITEM_TYPE = 'unhandled spec item type',
   UNHANDLED_SEND_KEY_FIELD = 'unhandled send key field',

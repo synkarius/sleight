@@ -1,10 +1,10 @@
 import { createEditingContext } from '../common/editing-context';
 
-export enum RoleKeyActionType {
+export enum RoleKeyReducerActionType {
   CHANGE_VALUE,
 }
 export type RoleKeyReducerAction = {
-  type: RoleKeyActionType;
+  type: RoleKeyReducerActionType;
   payload: string;
 };
 export const RoleKeyEditingContext =

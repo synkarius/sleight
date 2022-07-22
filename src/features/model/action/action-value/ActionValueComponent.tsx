@@ -174,7 +174,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           onChange={(e) => roleKeyIdChangedFn(e.target.value)}
           onBlur={(_e) => touchRoleKey()}
           isInvalid={roleKeySelectionIsInvalid()}
-          name={roleKeyFieldName}
+          field={roleKeyValidator.field}
         />
       )}
     </FormGroupRowComponent>

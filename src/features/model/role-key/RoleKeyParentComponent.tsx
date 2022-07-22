@@ -10,7 +10,7 @@ import { RoleKeyComponent } from './RoleKeyComponent';
 
 const init = (
   savedMap: ReduxFriendlyStringMap<RoleKey>
-): ((roleKeyId: string | undefined) => RoleKey) => {
+): ((returnRoleKeyId: string | undefined) => RoleKey) => {
   return (roleKeyId: string | undefined) => {
     if (roleKeyId && savedMap[roleKeyId]) {
       return { ...savedMap[roleKeyId] };

@@ -15,6 +15,7 @@ import {
   ActionReducerActionType,
 } from './action-editing-context';
 import { setFocus } from '../../menu/focus/focus-reducers';
+import { Field } from '../../../validation/validation-field';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -32,6 +33,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       type: ActionReducerActionType.CHANGE_ACTION_TYPE,
       payload: event.target.value,
     });
+    validationContext.touch(Field.AC_TYPE);
   };
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -62,6 +64,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
+          field={Field.AC_ROLE_KEY}
           roleKeyId={props.action.roleKeyId}
           onChange={roleKeyChangedHandler}
         />
@@ -69,12 +72,13 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type" descriptionText="type of action">
         <FormSelect
-          aria-label="action type selection"
+          aria-label={Field[Field.AC_TYPE]}
+          role="list"
           onChange={typeChangedHandler}
           value={props.action.type}
         >
           {ActionType.values().map((ait) => (
-            <option key={ait} value={ait}>
+            <option key={ait} value={ait} role="listitem">
               {ait}
             </option>
           ))}

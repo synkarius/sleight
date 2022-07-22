@@ -1,6 +1,6 @@
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { createRoleKey, RoleKey } from './role-key';
-import { RoleKeyActionType } from './role-key-editing-context';
+import { RoleKeyReducerActionType } from './role-key-editing-context';
 import {
   RoleKeysState,
   selectRoleKey,
@@ -69,7 +69,7 @@ describe('role key reducer', () => {
 
     const expected = { ...newObject, value: 'asdf' };
     const actual = roleKeyReactReducer(newObject, {
-      type: RoleKeyActionType.CHANGE_VALUE,
+      type: RoleKeyReducerActionType.CHANGE_VALUE,
       payload: 'asdf',
     });
 

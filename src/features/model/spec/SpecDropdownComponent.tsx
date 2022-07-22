@@ -1,10 +1,12 @@
 import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
+import { Field } from '../../../validation/validation-field';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 type SpecDropdownComponentProps = {
-  specId: string | null;
+  specId: string | undefined;
+  field: Field;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
   isInvalid?: boolean;
@@ -18,14 +20,15 @@ export const SpecDropdownComponent: React.FC<SpecDropdownComponentProps> = (
   return (
     <FormSelect
       value={props.specId || SELECT_DEFAULT_VALUE}
-      aria-label="spec selection"
+      aria-label={Field[props.field]}
+      role="list"
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}
     >
-      <option value={SELECT_DEFAULT_VALUE}></option>
+      <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
       {Object.values(specsSaved).map((spec) => (
-        <option key={spec.id} value={spec.id}>
+        <option key={spec.id} value={spec.id} role="listitem">
           {spec.name}
         </option>
       ))}

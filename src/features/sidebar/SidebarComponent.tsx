@@ -2,11 +2,7 @@ import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectAction } from '../model/action/action-reducers';
 import { createCommand } from '../model/command/command';
-import {
-  clearEditingCommand,
-  createNewEditingCommand,
-  selectCommand,
-} from '../model/command/command-reducers';
+import { selectCommand } from '../model/command/command-reducers';
 import { ElementType } from '../model/common/element-types';
 import {
   clearEditingContext,
@@ -55,9 +51,12 @@ export const SidebarComponent = () => {
   const commandSection: SidebarSection = {
     type: ElementType.COMMAND,
     items: Object.values(commandsSaved),
-    createFn: () => dispatch(createNewEditingCommand(createCommand())),
-    selectFn: (id) => dispatch(selectCommand(id)),
-    clearFn: () => dispatch(clearEditingCommand()),
+    createFn: () => dispatch(setFocus(ElementType.COMMAND)),
+    selectFn: (id) => {
+      dispatch(selectCommand(id));
+      dispatch(setFocus(ElementType.COMMAND));
+    },
+    clearFn: () => dispatch(setFocus(undefined)),
   };
   const contextSection: SidebarSection = {
     type: ElementType.CONTEXT,

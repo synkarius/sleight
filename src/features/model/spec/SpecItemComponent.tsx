@@ -1,24 +1,12 @@
 import React, { useId } from 'react';
-import {
-  Col,
-  FormGroup,
-  FormLabel,
-  FormSelect,
-  FormText,
-  Row,
-} from 'react-bootstrap';
+import { FormGroup, FormLabel, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { Variable } from '../variable/variable';
 import { VariablesDropdownComponent } from '../variable/VariablesDropdownComponent';
 import { createSelector, Selector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { SelectorComponent } from '../selector/SelectorComponent';
-import {
-  ChangeSpecItemOrderPayload,
-  ChangeSpecItemVariableIdPayload,
-  SpecItem,
-  SpecItemType,
-} from './spec';
+import { SpecItem, SpecItemType } from './spec';
 import {
   changeSpecItemOrder,
   changeSpecItemType,
@@ -80,13 +68,15 @@ export const SpecItemComponent: React.FC<{
       : undefined;
 
   return (
-    <VerticalMoveableComponent<ChangeSpecItemOrderPayload, string>
-      moveFn={(direction) =>
-        changeSpecItemOrder({
-          specItemId: props.specItem.id,
-          moveDirection: direction,
-        })
-      }
+    <VerticalMoveableComponent
+      moveFn={(direction) => {
+        dispatch(
+          changeSpecItemOrder({
+            specItemId: props.specItem.id,
+            moveDirection: direction,
+          })
+        );
+      }}
       deleteFn={() => deleteSpecItem(props.specItem.id)}
     >
       <FormGroup className="mb-3" controlId={typeInputId}>

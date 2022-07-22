@@ -1,12 +1,11 @@
 import { getRandomId } from '../../../util/random-id';
 import { RoleKeyed, Named, Ided } from '../../domain';
-import { MoveDirection } from '../common/move-direction';
 import { CommandSpecType } from './command-spec-type';
 
 export interface Command extends Ided, Named, RoleKeyed {
-  commandSpecType: string;
-  specId: string | null;
-  specRoleKeyId: string | null;
+  specType: string;
+  specVariableId: string | undefined;
+  specRoleKeyId: string | undefined;
   actionIds: string[];
 }
 
@@ -15,19 +14,9 @@ export const createCommand = (): Command => {
     id: getRandomId(),
     name: '',
     roleKeyId: null,
-    commandSpecType: CommandSpecType.SPEC,
-    specId: null,
-    specRoleKeyId: null,
+    specType: CommandSpecType.VARIABLE,
+    specVariableId: undefined,
+    specRoleKeyId: undefined,
     actionIds: [],
   };
-};
-
-export type ChangeActionIdPayload = {
-  index: number;
-  newActionId: string;
-};
-
-export type MoveCommandActionPayload = {
-  index: number;
-  direction: MoveDirection;
 };

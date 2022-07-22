@@ -3,7 +3,7 @@ import { UnhandledRoleKeyEditingEventTypeError } from '../../../error/UnhandledR
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { RoleKey } from './role-key';
 import {
-  RoleKeyActionType,
+  RoleKeyReducerActionType,
   RoleKeyReducerAction,
 } from './role-key-editing-context';
 
@@ -43,7 +43,7 @@ export const roleKeyReactReducer = (
   action: RoleKeyReducerAction
 ): RoleKey => {
   switch (action.type) {
-    case RoleKeyActionType.CHANGE_VALUE:
+    case RoleKeyReducerActionType.CHANGE_VALUE:
       return { ...state, value: action.payload };
     default:
       throw new UnhandledRoleKeyEditingEventTypeError(action.type);

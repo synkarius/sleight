@@ -1,8 +1,8 @@
 export class CommandSpecType {
-  static readonly SPEC = 'Spec';
+  static readonly VARIABLE = 'Variable';
   static readonly ROLE_KEY = 'Role Key';
   static readonly values = () => [
-    CommandSpecType.SPEC,
+    CommandSpecType.VARIABLE,
     CommandSpecType.ROLE_KEY,
   ];
 }

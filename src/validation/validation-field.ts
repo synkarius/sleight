@@ -1,6 +1,11 @@
 // TODO: make this a string enum so that all the aria-labels work right with screen readers
 
 export enum Field {
+  // action:
+  AC_TYPE,
+  AC_ROLE_KEY,
+  // action: send key :
+  AC_SEND_KEY_MODE,
   // action: key to send
   AC_DIRECTION_RADIO,
   AC_DIRECTION_VALUE,
@@ -26,6 +31,18 @@ export enum Field {
   AC_REPEAT_VALUE,
   AC_REPEAT_VAR,
   AC_REPEAT_RK,
+  // command:
+  CMD_ROLE_KEY,
+  // command: spec
+  CMD_SPEC_RADIO,
+  CMD_SPEC_VAR,
+  CMD_SPEC_RK,
+  // context:
+  CTX_ROLE_KEY,
   // role key: role key
   RK_ROLE_KEY,
+  // spec:
+  SP_ROLE_KEY,
+  // variable:
+  VAR_ROLE_KEY,
 }

@@ -16,6 +16,7 @@ import { createNewSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { SpecPreviewComponent } from './SpecPreviewComponent';
+import { Field } from '../../../validation/validation-field';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const dispatch = useAppDispatch();
@@ -49,6 +50,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
         descriptionText="role of variable"
       >
         <RoleKeyDropdownComponent
+          field={Field.SP_ROLE_KEY}
           roleKeyId={props.spec.roleKeyId}
           onChange={(e) => dispatch(changeEditingSpecRoleKey(e.target.value))}
         />

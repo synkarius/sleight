@@ -7,6 +7,7 @@ import {
   FormText,
 } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { Field } from '../../../validation/validation-field';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
@@ -63,6 +64,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
+          field={Field.CTX_ROLE_KEY}
           roleKeyId={props.context.roleKeyId}
           onChange={(e) =>
             dispatch(changeEditingContextRoleKey(e.target.value))

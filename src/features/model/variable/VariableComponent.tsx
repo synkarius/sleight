@@ -19,6 +19,7 @@ import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { Field } from '../../../validation/validation-field';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const dispatch = useAppDispatch();
@@ -58,6 +59,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Role Key">
         <RoleKeyDropdownComponent
+          field={Field.VAR_ROLE_KEY}
           roleKeyId={props.variable.roleKeyId}
           onChange={(e) =>
             dispatch(changeEditingVariableRoleKey(e.target.value))
