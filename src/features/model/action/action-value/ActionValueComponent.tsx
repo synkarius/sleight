@@ -8,13 +8,11 @@ import { ChoiceValue, RangeValue, TextValue } from './action-value';
 import { ActionValueType } from './action-value-type';
 import { getRelevantErrorMessage } from '../../../../validation/validator';
 import { ValidationContext } from '../../../../validation/validation-context';
-import { FieldValidator } from '../../../../validation/field-validator';
 import {
   ActionEditingContext,
   ActionReducerActionType,
 } from '../action-editing-context';
 import { Field } from '../../../../validation/validation-field';
-import { Action } from '../action';
 import { ActionValueValidators } from './action-value-validation';
 
 type AVCProps = {
@@ -37,9 +35,6 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     variable: variableValidator,
     roleKey: roleKeyValidator,
   } = props.validators;
-  // const valueValidator: FieldValidator<Action> = props.validators.value;
-  // const variableValidator: FieldValidator<Action> = props.validators.variable;
-  // const roleKeyValidator: FieldValidator<Action> = props.validators.roleKey;
 
   const typeChangedFn = (type: string) => {
     editingContext.localDispatchFn({

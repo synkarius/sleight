@@ -1,18 +1,18 @@
-import { createSendKeyPressAction } from './send-key';
-import { actionReactReducer } from './../action-reducers';
-import { ActionValueType } from './../action-value/action-value-type';
-import { ActionReducerActionType } from './../action-editing-context';
-import { Field } from './../../../../validation/validation-field';
+import { createSendKeyPressAction } from './send-key/send-key';
+import { actionReactReducer } from './action-reducers';
+import { ActionValueType } from './action-value/action-value-type';
+import { ActionReducerActionType } from './action-editing-context';
+import { Field } from './../../../validation/validation-field';
 
-describe('action reducer: action.innerPause', () => {
-  it('should handle change action.innerPause.actionValueType', () => {
+describe('action reducer: action.repeat', () => {
+  it('should handle change action.repeat.actionValueType', () => {
     const obj = createSendKeyPressAction();
-    obj.innerPause.actionValueType = ActionValueType.USE_ROLE_KEY;
+    obj.repeat.actionValueType = ActionValueType.USE_ROLE_KEY;
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: Field.AC_INNER_PAUSE_RADIO,
+        field: Field.AC_REPEAT_RADIO,
         value: ActionValueType.ENTER_VALUE,
       },
     });
@@ -20,20 +20,20 @@ describe('action reducer: action.innerPause', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      innerPause: {
-        ...obj.innerPause,
+      repeat: {
+        ...obj.repeat,
         actionValueType: ActionValueType.ENTER_VALUE,
       },
     });
   });
 
-  it('should handle change action.innerPause.value', () => {
+  it('should handle change action.repeat.value', () => {
     const obj = createSendKeyPressAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        field: Field.AC_INNER_PAUSE_VALUE,
+        field: Field.AC_REPEAT_VALUE,
         value: '34',
       },
     });
@@ -41,20 +41,20 @@ describe('action reducer: action.innerPause', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      innerPause: {
-        ...obj.innerPause,
+      repeat: {
+        ...obj.repeat,
         value: 34,
       },
     });
   });
 
-  it('should handle change action.innerPause.variableId', () => {
+  it('should handle change action.repeat.variableId', () => {
     const obj = createSendKeyPressAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        field: Field.AC_INNER_PAUSE_VAR,
+        field: Field.AC_REPEAT_VAR,
         value: 'asdf',
       },
     });
@@ -62,20 +62,20 @@ describe('action reducer: action.innerPause', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      innerPause: {
-        ...obj.innerPause,
+      repeat: {
+        ...obj.repeat,
         variableId: 'asdf',
       },
     });
   });
 
-  it('should handle change action.innerPause.roleKeyId', () => {
+  it('should handle change action.repeat.roleKeyId', () => {
     const obj = createSendKeyPressAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
       payload: {
-        field: Field.AC_INNER_PAUSE_RK,
+        field: Field.AC_REPEAT_RK,
         value: 'asdf',
       },
     });
@@ -83,8 +83,8 @@ describe('action reducer: action.innerPause', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      innerPause: {
-        ...obj.innerPause,
+      repeat: {
+        ...obj.repeat,
         roleKeyId: 'asdf',
       },
     });

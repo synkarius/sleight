@@ -1,18 +1,18 @@
-import { createSendKeyHoldReleaseAction } from './send-key';
-import { actionReactReducer } from '../action-reducers';
-import { ActionValueType } from '../action-value/action-value-type';
-import { ActionReducerActionType } from '../action-editing-context';
-import { Field } from '../../../../validation/validation-field';
+import { createSendKeyPressAction } from './send-key/send-key';
+import { actionReactReducer } from './action-reducers';
+import { ActionValueType } from './action-value/action-value-type';
+import { ActionReducerActionType } from './action-editing-context';
+import { Field } from './../../../validation/validation-field';
 
-describe('action reducer: action.direction', () => {
-  it('should handle change action.direction.actionValueType', () => {
-    const obj = createSendKeyHoldReleaseAction();
-    obj.direction.actionValueType = ActionValueType.USE_ROLE_KEY;
+describe('action reducer: action.keyToSend', () => {
+  it('should handle change action.keyToSend.actionValueType', () => {
+    const obj = createSendKeyPressAction();
+    obj.keyToSend.actionValueType = ActionValueType.USE_ROLE_KEY;
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: Field.AC_DIRECTION_RADIO,
+        field: Field.AC_KEY_TO_SEND_RADIO,
         value: ActionValueType.ENTER_VALUE,
       },
     });
@@ -20,20 +20,20 @@ describe('action reducer: action.direction', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      direction: {
-        ...obj.direction,
+      keyToSend: {
+        ...obj.keyToSend,
         actionValueType: ActionValueType.ENTER_VALUE,
       },
     });
   });
 
-  it('should handle change action.direction.value', () => {
-    const obj = createSendKeyHoldReleaseAction();
+  it('should handle change action.keyToSend.value', () => {
+    const obj = createSendKeyPressAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        field: Field.AC_DIRECTION_VALUE,
+        field: Field.AC_KEY_TO_SEND_VALUE,
         value: 'asdf',
       },
     });
@@ -41,20 +41,20 @@ describe('action reducer: action.direction', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      direction: {
-        ...obj.direction,
+      keyToSend: {
+        ...obj.keyToSend,
         value: 'asdf',
       },
     });
   });
 
-  it('should handle change action.direction.variableId', () => {
-    const obj = createSendKeyHoldReleaseAction();
+  it('should handle change action.keyToSend.variableId', () => {
+    const obj = createSendKeyPressAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        field: Field.AC_DIRECTION_VAR,
+        field: Field.AC_KEY_TO_SEND_VAR,
         value: 'asdf',
       },
     });
@@ -62,20 +62,20 @@ describe('action reducer: action.direction', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      direction: {
-        ...obj.direction,
+      keyToSend: {
+        ...obj.keyToSend,
         variableId: 'asdf',
       },
     });
   });
 
-  it('should handle change action.direction.roleKeyId', () => {
-    const obj = createSendKeyHoldReleaseAction();
+  it('should handle change action.keyToSend.roleKeyId', () => {
+    const obj = createSendKeyPressAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
       payload: {
-        field: Field.AC_DIRECTION_RK,
+        field: Field.AC_KEY_TO_SEND_RK,
         value: 'asdf',
       },
     });
@@ -83,8 +83,8 @@ describe('action reducer: action.direction', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      direction: {
-        ...obj.direction,
+      keyToSend: {
+        ...obj.keyToSend,
         roleKeyId: 'asdf',
       },
     });
