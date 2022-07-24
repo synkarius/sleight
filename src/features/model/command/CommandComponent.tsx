@@ -46,8 +46,11 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     }
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    reduxDispatch(saveEditingCommand(props.command));
-    reduxDispatch(selectCommand(undefined));
+    const formIsValid = validationContext.validateForm();
+    if (formIsValid) {
+      reduxDispatch(saveEditingCommand(props.command));
+      reduxDispatch(selectCommand(undefined));
+    }
   };
   const validationErrors = validationContext.getErrors();
   const commandSpecVariableIsInvalid = () =>
@@ -170,7 +173,12 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           />
         </VerticalMoveableComponent>
       ))}
-      <Button onClick={submitHandler} variant="primary" size="lg">
+      <Button
+        onClick={submitHandler}
+        variant="primary"
+        size="lg"
+        disabled={validationErrors.length > 0}
+      >
         Save
       </Button>
       <Button

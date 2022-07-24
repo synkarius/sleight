@@ -31,7 +31,7 @@ describe('command reducer', () => {
     });
   });
 
-  // TODO: finish functional tests
+  // TODO: finish functional tests  <<<<<<<<-------------------------------
 
   // it('should handle create new', () => {
   //   const obj = createCommand();

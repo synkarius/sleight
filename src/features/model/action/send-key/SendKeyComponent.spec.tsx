@@ -30,10 +30,10 @@ beforeAll(() => {
   store.dispatch(createNewSelector(choiceItemSelector));
   const variable = createChoice(choiceItemSelector.id);
   variable.name = VARIABLE_NAME;
-  // save a role key
   store.dispatch(createNewEditingVariable(variable));
   store.dispatch(saveEditingVariable());
   store.dispatch(clearEditingVariable());
+  // save a role key
   const roleKey = createRoleKey();
   roleKey.value = ROLE_KEY_NAME;
   store.dispatch(saveRoleKey(roleKey));

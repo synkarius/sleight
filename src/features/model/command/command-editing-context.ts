@@ -13,12 +13,12 @@ export enum CommandReducerActionType {
   DELETE_ACTION,
 }
 
-export type ChangeCommandActionId = {
+type ChangeCommandActionId = {
   index: number;
   newActionId: string;
 };
 
-export type MoveCommandAction = {
+type MoveCommandAction = {
   index: number;
   direction: MoveDirection;
 };
