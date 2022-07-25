@@ -11,7 +11,7 @@ export const createPauseAction = (): PauseAction => {
   return {
     id: getRandomId(),
     name: '',
-    type: ActionType.PAUSE,
+    type: ActionType.Enum.PAUSE,
     roleKeyId: null,
     centiseconds: createRangeValue(),
   };
@@ -20,7 +20,7 @@ export const createPauseAction = (): PauseAction => {
 export const copyIntoPauseAction = (action: Action): PauseAction => {
   return {
     ...copyAction(action),
-    type: ActionType.PAUSE,
+    type: ActionType.Enum.PAUSE,
     centiseconds: createRangeValue(),
   };
 };

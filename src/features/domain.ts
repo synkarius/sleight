@@ -10,8 +10,8 @@ export interface Named {
   name: string;
 }
 
-export interface Typed {
-  type: string;
+export interface Typed<T> {
+  type: T;
 }
 
-export interface BasicFields extends RoleKeyed, Ided, Named, Typed {}
+export interface BasicFields<T> extends RoleKeyed, Ided, Named, Typed<T> {}

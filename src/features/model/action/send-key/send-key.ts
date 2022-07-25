@@ -10,10 +10,10 @@ import { getRandomId } from '../../../../util/random-id';
 import { ActionType } from '../action-types';
 
 export interface Modifiers {
-  control: boolean;
-  alt: boolean;
-  shift: boolean;
-  windows: boolean;
+  readonly control: boolean;
+  readonly alt: boolean;
+  readonly shift: boolean;
+  readonly windows: boolean;
 }
 
 const createModifiers = (): Modifiers => {
@@ -27,25 +27,26 @@ const createModifiers = (): Modifiers => {
 
 interface AbstractSendKeyAction extends Action {
   // see send-key-modes.ts for options -- whether a press or a hold/release
-  sendKeyMode: string;
-  modifiers: Modifiers;
+  readonly sendKeyMode: SendKeyMode.Type;
+  readonly modifiers: Modifiers;
   // TODO: enforce that this has roleKey:alphabet if using a choice var??
-  keyToSend: ChoiceValue;
-  outerPause: RangeValue;
+  readonly keyToSend: ChoiceValue;
+  readonly outerPause: RangeValue;
 }
 
 export interface SendKeyPressAction extends AbstractSendKeyAction {
-  innerPause: RangeValue;
-  repeat: RangeValue;
+  readonly sendKeyMode: typeof SendKeyMode.Enum.PRESS;
+  readonly innerPause: RangeValue;
+  readonly repeat: RangeValue;
 }
 
 export const createSendKeyPressAction = (): SendKeyPressAction => {
   return {
     id: getRandomId(),
     name: '',
-    type: ActionType.SEND_KEY,
+    type: ActionType.Enum.SEND_KEY,
     roleKeyId: null,
-    sendKeyMode: SendKeyMode.PRESS,
+    sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
     keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
@@ -59,8 +60,8 @@ export const copyIntoSendKeyPressAction = (
 ): SendKeyPressAction => {
   return {
     ...copyAction(action),
-    type: ActionType.SEND_KEY,
-    sendKeyMode: SendKeyMode.PRESS,
+    type: ActionType.Enum.SEND_KEY,
+    sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
     keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
@@ -70,16 +71,17 @@ export const copyIntoSendKeyPressAction = (
 };
 
 export interface SendKeyHoldReleaseAction extends AbstractSendKeyAction {
-  direction: ChoiceValue;
+  readonly sendKeyMode: typeof SendKeyMode.Enum.HOLD_RELEASE;
+  readonly direction: ChoiceValue;
 }
 
 export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
   return {
     id: getRandomId(),
     name: '',
-    type: ActionType.SEND_KEY,
+    type: ActionType.Enum.SEND_KEY,
     roleKeyId: null,
-    sendKeyMode: SendKeyMode.HOLD_RELEASE,
+    sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
     keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
@@ -92,8 +94,8 @@ export const copyIntoSendKeyHoldReleaseAction = (
 ): SendKeyHoldReleaseAction => {
   return {
     ...copyAction(action),
-    type: ActionType.SEND_KEY,
-    sendKeyMode: SendKeyMode.HOLD_RELEASE,
+    type: ActionType.Enum.SEND_KEY,
+    sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
     keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),

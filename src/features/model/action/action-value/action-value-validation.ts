@@ -29,18 +29,18 @@ export const createNonSelectedRoleKeyError = (fieldName: string) =>
 
 export const toEnteredValueFM = createFilterMap(
   (actionValue: TextValue | ChoiceValue) =>
-    ActionValueType.ENTER_VALUE === actionValue.actionValueType,
+    ActionValueType.Enum.ENTER_VALUE === actionValue.actionValueType,
   (actionValue: TextValue | ChoiceValue) => actionValue.value as string
 );
 export const toVariableIdFM = createFilterMap(
   (actionValue: TextValue | RangeValue | ChoiceValue) =>
-    ActionValueType.USE_VARIABLE === actionValue.actionValueType,
+    ActionValueType.Enum.USE_VARIABLE === actionValue.actionValueType,
   (actionValue: TextValue | RangeValue | ChoiceValue) =>
     actionValue.variableId as string
 );
 export const toRoleKeyIdFM = createFilterMap(
   (actionValue: TextValue | RangeValue | ChoiceValue) =>
-    ActionValueType.USE_ROLE_KEY === actionValue.actionValueType,
+    ActionValueType.Enum.USE_ROLE_KEY === actionValue.actionValueType,
   (actionValue: TextValue | RangeValue | ChoiceValue) =>
     actionValue.roleKeyId as string
 );

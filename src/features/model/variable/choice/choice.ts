@@ -17,7 +17,7 @@ export const createChoiceItem = (selectorId: string): ChoiceItem => {
   };
 };
 
-export interface Choice extends RoleKeyed, Named, Ided, Typed {
+export interface Choice extends RoleKeyed, Named, Ided, Typed<string> {
   items: ChoiceItem[];
 }
 
@@ -29,7 +29,7 @@ export const createChoice = (selectorId: string): Choice => {
 };
 
 export const copyIntoChoice = (
-  variable: BasicFields,
+  variable: BasicFields<string>,
   selectorId: string
 ): Choice => {
   return {

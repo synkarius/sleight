@@ -7,13 +7,13 @@ import { Field } from './../../../validation/validation-field';
 describe('action reducer: action.outerPause', () => {
   it('should handle change action.outerPause.actionValueType', () => {
     const obj = createSendKeyPressAction();
-    obj.outerPause.actionValueType = ActionValueType.USE_ROLE_KEY;
+    obj.outerPause.actionValueType = ActionValueType.Enum.USE_ROLE_KEY;
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         field: Field.AC_OUTER_PAUSE_RADIO,
-        value: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
 
@@ -22,7 +22,7 @@ describe('action reducer: action.outerPause', () => {
       ...obj,
       outerPause: {
         ...obj.outerPause,
-        actionValueType: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
   });

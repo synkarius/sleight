@@ -84,7 +84,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
           ))}
         </FormSelect>
       </FormGroupRowComponent>
-      {props.action.type === ActionType.SEND_KEY && (
+      {props.action.type === ActionType.Enum.SEND_KEY && (
         <SendKeyComponent sendKeyAction={props.action as SendKeyAction} />
       )}
       <Button

@@ -7,13 +7,13 @@ import { Field } from '../../../validation/validation-field';
 describe('action reducer: action.direction', () => {
   it('should handle change action.direction.actionValueType', () => {
     const obj = createSendKeyHoldReleaseAction();
-    obj.direction.actionValueType = ActionValueType.USE_ROLE_KEY;
+    obj.direction.actionValueType = ActionValueType.Enum.USE_ROLE_KEY;
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         field: Field.AC_DIRECTION_RADIO,
-        value: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
 
@@ -22,7 +22,7 @@ describe('action reducer: action.direction', () => {
       ...obj,
       direction: {
         ...obj.direction,
-        actionValueType: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
   });

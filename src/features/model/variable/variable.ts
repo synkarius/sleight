@@ -6,7 +6,7 @@ import { getRandomId } from '../../../util/random-id';
 
 export type Variable = Text | Range | Choice;
 
-export const createVariable = (type: string): BasicFields => {
+export const createVariable = (type: string): BasicFields<string> => {
   return {
     roleKeyId: null,
     id: getRandomId(),
@@ -15,7 +15,9 @@ export const createVariable = (type: string): BasicFields => {
   };
 };
 
-export const copyVariable = (variable: BasicFields): BasicFields => {
+export const copyVariable = (
+  variable: BasicFields<string>
+): BasicFields<string> => {
   return {
     roleKeyId: variable.roleKeyId,
     id: variable.id,

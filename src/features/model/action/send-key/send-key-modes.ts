@@ -1,5 +1,8 @@
-export class SendKeyMode {
-  static readonly PRESS = 'Press';
-  static readonly HOLD_RELEASE = 'Hold/Release';
-  static readonly values = () => [SendKeyMode.PRESS, SendKeyMode.HOLD_RELEASE];
+export namespace SendKeyMode {
+  export const Enum = {
+    PRESS: 'Press',
+    HOLD_RELEASE: 'Hold/Release',
+  } as const;
+  export const values = () => [Enum.PRESS, Enum.HOLD_RELEASE];
+  export type Type = typeof Enum[keyof typeof Enum];
 }

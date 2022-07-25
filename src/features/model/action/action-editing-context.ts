@@ -1,5 +1,8 @@
 import { Field } from '../../../validation/validation-field';
 import { createEditingContext } from '../common/editing-context';
+import { ActionType } from './action-types';
+import { ActionValueType } from './action-value/action-value-type';
+import { SendKeyMode } from './send-key/send-key-modes';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
 
 // TODO: enum values
@@ -24,14 +27,32 @@ type ActionValueChange = {
   field: Field;
   value: string;
 };
+type ActionValueTypeChange = {
+  field: Field;
+  actionValueType: ActionValueType.Type;
+};
+// TODO: what is this used for? -- probably name
 export type ActionReducerStringPayloadAction =
   AbstractActionReducerAction<string>;
+export type ActionReducerActionTypePayloadAction =
+  AbstractActionReducerAction<ActionType.Type>;
+// change action value type
+export type ActionReducerActionValueTypePayloadAction =
+  AbstractActionReducerAction<ActionValueTypeChange>;
+// change send key mode
+export type ActionReducerSendKeyModePayloadAction =
+  AbstractActionReducerAction<SendKeyMode.Type>;
+// change modifiers
 export type ActionReducerModifiersPayloadAction =
   AbstractActionReducerAction<SendKeyModifiers>;
+// change action value: value/variable/roleKey
 export type ActionReducerChangePayloadAction =
   AbstractActionReducerAction<ActionValueChange>;
 export type ActionReducerAction =
   | ActionReducerStringPayloadAction
+  | ActionReducerActionTypePayloadAction
+  | ActionReducerActionValueTypePayloadAction
+  | ActionReducerSendKeyModePayloadAction
   | ActionReducerModifiersPayloadAction
   | ActionReducerChangePayloadAction;
 

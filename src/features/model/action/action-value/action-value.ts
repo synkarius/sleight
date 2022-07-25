@@ -1,3 +1,4 @@
+import { Typed } from '../../../domain';
 import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { ActionValueType } from './action-value-type';
@@ -6,7 +7,7 @@ interface ActionValue {
   /* this is how the user specifies the value in an action:
    * a value of ActionValueType
    */
-  actionValueType: string;
+  actionValueType: ActionValueType.Type;
 }
 
 interface VariableActionValue {
@@ -30,7 +31,7 @@ export interface TextValue
 
 export const createTextValue = (): TextValue => {
   return {
-    actionValueType: ActionValueType.ENTER_VALUE,
+    actionValueType: ActionValueType.Enum.ENTER_VALUE,
     variableType: VariableType.TEXT,
     variableId: SELECT_DEFAULT_VALUE,
     roleKeyId: SELECT_DEFAULT_VALUE,
@@ -47,7 +48,7 @@ export interface RangeValue
 
 export const createRangeValue = (): RangeValue => {
   return {
-    actionValueType: ActionValueType.ENTER_VALUE,
+    actionValueType: ActionValueType.Enum.ENTER_VALUE,
     variableType: VariableType.RANGE,
     variableId: SELECT_DEFAULT_VALUE,
     roleKeyId: SELECT_DEFAULT_VALUE,
@@ -64,10 +65,20 @@ export interface ChoiceValue
 
 export const createChoiceValue = (): ChoiceValue => {
   return {
-    actionValueType: ActionValueType.ENTER_VALUE,
+    actionValueType: ActionValueType.Enum.ENTER_VALUE,
     variableType: VariableType.CHOICE,
     variableId: SELECT_DEFAULT_VALUE,
     roleKeyId: SELECT_DEFAULT_VALUE,
     value: '',
+  };
+};
+
+export const withType = <T extends TextValue | RangeValue | ChoiceValue>(
+  actionValue: T,
+  type: ActionValueType.Type
+): T => {
+  return {
+    ...actionValue,
+    actionValueType: type,
   };
 };

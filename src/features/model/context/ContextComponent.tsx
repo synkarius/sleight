@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Form,
@@ -7,44 +7,62 @@ import {
   FormText,
 } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
+import { setFocus } from '../../menu/focus/focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
 import {
-  changeEditingContextMatcher,
-  changeEditingContextName,
-  changeEditingContextRoleKey,
-  changeEditingContextType,
-  clearEditingContext,
-  saveAndClearEditingContext,
-  validateEditingContextMatcher,
-} from './context-reducers';
+  ContextEditingContext,
+  ContextReducerActionType,
+} from './context-editing-context';
+import { saveEditingContext } from './context-reducers';
 import { ContextType } from './context-types';
 import { contextMatcherValidator } from './context-validation';
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
-  const validationErrors = useAppSelector(
-    (state) => state.context.validationErrors
-  );
-  const dispatch = useAppDispatch();
+  const reduxDispatch = useAppDispatch();
+  const validationContext = useContext(ValidationContext);
+  const contextEditingContext = useContext(ContextEditingContext);
+
+  const validationErrors = validationContext.getErrors();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeEditingContextName(event.target.value));
+    contextEditingContext.localDispatchFn({
+      type: ContextReducerActionType.CHANGE_NAME,
+      payload: event.target.value,
+    });
+  };
+  const roleKeyChangedHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    contextEditingContext.localDispatchFn({
+      type: ContextReducerActionType.CHANGE_ROLE_KEY,
+      payload: event.target.value,
+    });
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeEditingContextType(event.target.value));
+    contextEditingContext.localDispatchFn({
+      type: ContextReducerActionType.CHANGE_TYPE,
+      payload: event.target.value,
+    });
   };
   const matcherChangedHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    dispatch(changeEditingContextMatcher(event.target.value));
-    dispatch(validateEditingContextMatcher());
+    contextEditingContext.localDispatchFn({
+      type: ContextReducerActionType.CHANGE_MATCHER,
+      payload: event.target.value,
+    });
+    validationContext.touch(Field.CTX_MATCHER);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(validateEditingContextMatcher());
-    dispatch(saveAndClearEditingContext());
+    const isValid = validationContext.validateForm();
+    if (isValid) {
+      reduxDispatch(saveEditingContext(props.context));
+    }
   };
 
   const matcherHelpText =
@@ -66,20 +84,19 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         <RoleKeyDropdownComponent
           field={Field.CTX_ROLE_KEY}
           roleKeyId={props.context.roleKeyId}
-          onChange={(e) =>
-            dispatch(changeEditingContextRoleKey(e.target.value))
-          }
+          onChange={roleKeyChangedHandler}
         />
         <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type">
         <FormSelect
-          aria-label="Variable type selection"
+          aria-label={Field[Field.CTX_TYPE]}
+          role="list"
           onChange={typeChangedHandler}
           value={props.context.type}
         >
           {ContextType.values().map((ct) => (
-            <option key={ct} value={ct}>
+            <option key={ct} value={ct} role="listitem">
               {ct}
             </option>
           ))}
@@ -94,9 +111,11 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         <FormControl
           type="text"
           onChange={matcherChangedHandler}
-          onBlur={(_e) => dispatch(validateEditingContextMatcher())}
+          onBlur={(_e) => validationContext.touch(Field.CTX_MATCHER)}
           value={props.context.matcher}
           isInvalid={validationErrors.includes(contextMatcherValidator.error)}
+          role="textbox"
+          aria-label={Field[Field.CTX_MATCHER]}
         />
         <Form.Control.Feedback type="invalid">
           {contextMatcherValidator.error.message}
@@ -111,7 +130,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => dispatch(clearEditingContext())}
+        onClick={(_e) => reduxDispatch(setFocus())}
         className="mx-3"
         variant="warning"
         size="lg"

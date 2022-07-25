@@ -35,16 +35,16 @@ import { SendKeyMode } from './send-key-modes';
  */
 
 const toSendKeyFM = createFilterMap(
-  (action: Action) => action.type === ActionType.SEND_KEY,
+  (action: Action) => action.type === ActionType.Enum.SEND_KEY,
   (action) => action as SendKeyAction
 );
 export const toSendKeyPressFM = createFilterMap(
-  (skAction: SendKeyAction) => skAction.sendKeyMode === SendKeyMode.PRESS,
+  (skAction: SendKeyAction) => skAction.sendKeyMode === SendKeyMode.Enum.PRESS,
   (skAction) => skAction as SendKeyPressAction
 );
 export const toSendKeyHoldReleaseFM = createFilterMap(
   (skAction: SendKeyAction) =>
-    skAction.sendKeyMode === SendKeyMode.HOLD_RELEASE,
+    skAction.sendKeyMode === SendKeyMode.Enum.HOLD_RELEASE,
   (skAction) => skAction as SendKeyHoldReleaseAction
 );
 

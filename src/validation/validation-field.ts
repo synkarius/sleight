@@ -38,7 +38,9 @@ export enum Field {
   CMD_SPEC_VAR,
   CMD_SPEC_RK,
   // context:
+  CTX_MATCHER,
   CTX_ROLE_KEY,
+  CTX_TYPE,
   // role key: role key
   RK_ROLE_KEY,
   // spec:

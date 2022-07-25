@@ -7,13 +7,13 @@ import { Field } from './../../../validation/validation-field';
 describe('action reducer: action.keyToSend', () => {
   it('should handle change action.keyToSend.actionValueType', () => {
     const obj = createSendKeyPressAction();
-    obj.keyToSend.actionValueType = ActionValueType.USE_ROLE_KEY;
+    obj.keyToSend.actionValueType = ActionValueType.Enum.USE_ROLE_KEY;
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         field: Field.AC_KEY_TO_SEND_RADIO,
-        value: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
 
@@ -22,7 +22,7 @@ describe('action reducer: action.keyToSend', () => {
       ...obj,
       keyToSend: {
         ...obj.keyToSend,
-        actionValueType: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
   });

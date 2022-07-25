@@ -17,7 +17,7 @@ const createTestAction = (id: string): Action => {
   return {
     id: id,
     name: '',
-    type: '',
+    type: ActionType.Enum.BRING_APP,
     roleKeyId: null,
   };
 };
@@ -105,12 +105,12 @@ describe('action reducer', () => {
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_TYPE,
-      payload: ActionType.PAUSE,
+      payload: ActionType.Enum.PAUSE,
     });
 
     const expectedAction: PauseAction = {
       ...createTestAction(obj.id),
-      type: ActionType.PAUSE,
+      type: ActionType.Enum.PAUSE,
       centiseconds: createRangeValue(),
     };
 

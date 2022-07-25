@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { focusReducer } from '../features/menu/focus/focus-reducers';
 import { actionReduxReducer } from '../features/model/action/action-reducers';
 import { commandReduxReducer } from '../features/model/command/command-reducers';
-import { contextReducer } from '../features/model/context/context-reducers';
+import { contextReduxReducer } from '../features/model/context/context-reducers';
 import { variableReducer } from '../features/model/variable/variable-reducers';
 import { roleKeyReduxReducer } from '../features/model/role-key/role-key-reducers';
 import { selectorReducer } from '../features/model/selector/selector-reducers';
@@ -12,7 +12,7 @@ export const store = configureStore({
   reducer: {
     action: actionReduxReducer,
     command: commandReduxReducer,
-    context: contextReducer,
+    context: contextReduxReducer,
     focus: focusReducer,
     roleKey: roleKeyReduxReducer,
     selector: selectorReducer,

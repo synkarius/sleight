@@ -53,7 +53,7 @@ beforeEach(async () => {
   const sendKeyModeSelect = screen.getByRole('list', {
     name: Field[Field.AC_SEND_KEY_MODE],
   });
-  await user.selectOptions(sendKeyModeSelect, SendKeyMode.HOLD_RELEASE);
+  await user.selectOptions(sendKeyModeSelect, SendKeyMode.Enum.HOLD_RELEASE);
 });
 
 const selectActionValueType = async (

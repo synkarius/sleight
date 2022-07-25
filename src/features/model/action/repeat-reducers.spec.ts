@@ -7,13 +7,13 @@ import { Field } from './../../../validation/validation-field';
 describe('action reducer: action.repeat', () => {
   it('should handle change action.repeat.actionValueType', () => {
     const obj = createSendKeyPressAction();
-    obj.repeat.actionValueType = ActionValueType.USE_ROLE_KEY;
+    obj.repeat.actionValueType = ActionValueType.Enum.USE_ROLE_KEY;
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         field: Field.AC_REPEAT_RADIO,
-        value: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
 
@@ -22,7 +22,7 @@ describe('action reducer: action.repeat', () => {
       ...obj,
       repeat: {
         ...obj.repeat,
-        actionValueType: ActionValueType.ENTER_VALUE,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
   });

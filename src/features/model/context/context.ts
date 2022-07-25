@@ -2,7 +2,7 @@ import { getRandomId } from '../../../util/random-id';
 import { RoleKeyed, Ided, Named, Typed } from '../../domain';
 import { ContextType } from './context-types';
 
-export interface Context extends RoleKeyed, Ided, Named, Typed {
+export interface Context extends RoleKeyed, Ided, Named, Typed<string> {
   // "Gmail" (window-title-match), "chrome.exe" (executable-name-match)
   matcher: string;
 }

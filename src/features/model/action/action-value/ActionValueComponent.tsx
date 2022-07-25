@@ -41,7 +41,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         field: props.validators.radioGroupField,
-        value: type,
+        actionValueType: type as ActionValueType.Type,
       },
     });
     validationContext.touch(props.validators.radioGroupField);
@@ -126,7 +126,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           />
         ))}
       </div>
-      {props.actionValue.actionValueType === ActionValueType.ENTER_VALUE &&
+      {props.actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE &&
         !variableTypeIsNumeric && (
           <FormControl
             type="text"
@@ -139,7 +139,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             aria-label={enteredValueFieldName}
           />
         )}
-      {props.actionValue.actionValueType === ActionValueType.ENTER_VALUE &&
+      {props.actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE &&
         variableTypeIsNumeric && (
           <FormControl
             type="number"
@@ -153,7 +153,8 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             aria-label={enteredValueFieldName}
           />
         )}
-      {props.actionValue.actionValueType === ActionValueType.USE_VARIABLE && (
+      {props.actionValue.actionValueType ===
+        ActionValueType.Enum.USE_VARIABLE && (
         <VariablesDropdownComponent
           selectedVariableId={props.actionValue.variableId as string}
           onChange={(e) => variableIdChangedFn(e.target.value)}
@@ -163,7 +164,8 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           name={variableFieldName}
         />
       )}
-      {props.actionValue.actionValueType === ActionValueType.USE_ROLE_KEY && (
+      {props.actionValue.actionValueType ===
+        ActionValueType.Enum.USE_ROLE_KEY && (
         <RoleKeyDropdownComponent
           roleKeyId={props.actionValue.roleKeyId}
           onChange={(e) => roleKeyIdChangedFn(e.target.value)}

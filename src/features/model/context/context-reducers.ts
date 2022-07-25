@@ -1,81 +1,89 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UnhandledContextEditingEventTypeError } from '../../../error/UnhandledContextEditingEventTypeError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { validate, ValidationError } from '../../../validation/validator';
 import { Context } from './context';
-import { contextMatcherValidator } from './context-validation';
+import {
+  ContextReducerAction,
+  ContextReducerActionType,
+} from './context-editing-context';
 
 export interface ContextsState {
   saved: ReduxFriendlyStringMap<Context>;
-  editing: Context | null;
-  validationErrors: ValidationError[];
+  editingId: string | undefined;
 }
 
 const initialState: ContextsState = {
   saved: {},
-  editing: null,
-  validationErrors: [],
+  editingId: undefined,
 };
 
 const contextsSlice = createSlice({
   name: 'contexts',
   initialState,
   reducers: {
-    createNewEditingContext: (state, action: PayloadAction<Context>) => {
-      state.editing = action.payload;
+    selectContext: (state, action: PayloadAction<string | undefined>) => {
+      state.editingId = action.payload;
     },
-    selectContext: (state, action: PayloadAction<string>) => {
-      state.editing = state.saved[action.payload];
-    },
-    saveAndClearEditingContext: (state) => {
-      if (state.editing && state.validationErrors.length === 0) {
-        state.saved[state.editing.id] = state.editing;
-        state.editing = null;
-      }
-    },
-    clearEditingContext: (state) => {
-      state.editing = null;
-    },
-    changeEditingContextName: (state, action: PayloadAction<string>) => {
-      if (state.editing) {
-        state.editing.name = action.payload;
-      }
-    },
-    changeEditingContextRoleKey: (state, action: PayloadAction<string>) => {
-      if (state.editing) {
-        state.editing.roleKeyId = action.payload;
-      }
-    },
-    changeEditingContextType: (state, action: PayloadAction<string>) => {
-      if (state.editing) {
-        state.editing.type = action.payload;
-      }
-    },
-    changeEditingContextMatcher: (state, action: PayloadAction<string>) => {
-      if (state.editing) {
-        state.editing.matcher = action.payload;
-      }
-    },
-    validateEditingContextMatcher: (state) => {
-      if (state.editing) {
-        validate(
-          state.editing.matcher,
-          contextMatcherValidator,
-          state.validationErrors
-        );
-      }
+    saveEditingContext: (state, action: PayloadAction<Context>) => {
+      state.saved[action.payload.id] = action.payload;
     },
   },
 });
 
-export const {
-  createNewEditingContext,
-  selectContext,
-  clearEditingContext,
-  changeEditingContextName,
-  changeEditingContextRoleKey,
-  changeEditingContextType,
-  changeEditingContextMatcher,
-  validateEditingContextMatcher,
-  saveAndClearEditingContext,
-} = contextsSlice.actions;
-export const contextReducer = contextsSlice.reducer;
+export const { selectContext, saveEditingContext } = contextsSlice.actions;
+export const contextReduxReducer = contextsSlice.reducer;
+
+const changeEditingContextName = (
+  state: Context,
+  action: ContextReducerAction
+): Context => {
+  return {
+    ...state,
+    name: action.payload,
+  };
+};
+const changeEditingContextRoleKey = (
+  state: Context,
+  action: ContextReducerAction
+): Context => {
+  return {
+    ...state,
+    roleKeyId: action.payload,
+  };
+};
+const changeEditingContextType = (
+  state: Context,
+  action: ContextReducerAction
+): Context => {
+  return {
+    ...state,
+    type: action.payload,
+  };
+};
+const changeEditingContextMatcher = (
+  state: Context,
+  action: ContextReducerAction
+): Context => {
+  return {
+    ...state,
+    matcher: action.payload,
+  };
+};
+
+export const contextReactReducer = (
+  state: Context,
+  action: ContextReducerAction
+): Context => {
+  switch (action.type) {
+    case ContextReducerActionType.CHANGE_NAME:
+      return changeEditingContextName(state, action);
+    case ContextReducerActionType.CHANGE_ROLE_KEY:
+      return changeEditingContextRoleKey(state, action);
+    case ContextReducerActionType.CHANGE_TYPE:
+      return changeEditingContextType(state, action);
+    case ContextReducerActionType.CHANGE_MATCHER:
+      return changeEditingContextMatcher(state, action);
+    default:
+      throw new UnhandledContextEditingEventTypeError(action.type);
+  }
+};

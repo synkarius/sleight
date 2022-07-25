@@ -236,7 +236,7 @@ describe('sendKey action component tests', () => {
     const sendKeyModeSelect = screen.getByRole('list', {
       name: Field[Field.AC_SEND_KEY_MODE],
     });
-    await user.selectOptions(sendKeyModeSelect, SendKeyMode.HOLD_RELEASE);
+    await user.selectOptions(sendKeyModeSelect, SendKeyMode.Enum.HOLD_RELEASE);
     // should be valid again
 
     const saveButton = screen.getByText<HTMLButtonElement>('Save');

@@ -1,20 +1,18 @@
 import React from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ActionComponent } from '../../model/action/ActionComponent';
-import { CommandComponent } from '../../model/command/CommandComponent';
 import { ElementType } from '../../model/common/element-types';
-import { ContextComponent } from '../../model/context/ContextComponent';
 import { VariableComponent } from '../../model/variable/VariableComponent';
 import { SpecComponent } from '../../model/spec/SpecComponent';
 import { RoleKeyParentComponent } from '../../model/role-key/RoleKeyParentComponent';
 import { ActionParentComponent } from '../../model/action/ActionParentComponent';
 import { CommandParentComponent } from '../../model/command/CommandParentComponent';
+import { ContextParentComponent } from '../../model/context/ContextParentComponent';
 
 export const FocusComponent: React.FC<{}> = () => {
   const elementType = useAppSelector((state) => state.focus.elementType);
   const actionId = useAppSelector((state) => state.action.editingId);
   const commandId = useAppSelector((state) => state.command.editingId);
-  const context = useAppSelector((state) => state.context.editing);
+  const contextId = useAppSelector((state) => state.context.editingId);
   const roleKeyId = useAppSelector((state) => state.roleKey.editingId);
   const spec = useAppSelector((state) => state.spec.editing);
   const variable = useAppSelector((state) => state.variable.editing);
@@ -27,8 +25,8 @@ export const FocusComponent: React.FC<{}> = () => {
       {elementType === ElementType.COMMAND && (
         <CommandParentComponent commandId={commandId} />
       )}
-      {elementType === ElementType.CONTEXT && context && (
-        <ContextComponent context={context} />
+      {elementType === ElementType.CONTEXT && (
+        <ContextParentComponent contextId={contextId} />
       )}
       {elementType === ElementType.ROLE_KEY && (
         <RoleKeyParentComponent roleKeyId={roleKeyId} key={roleKeyId} />

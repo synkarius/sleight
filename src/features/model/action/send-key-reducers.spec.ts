@@ -19,16 +19,16 @@ const createTestAction = (id: string): Action => {
   return {
     id: id,
     name: '',
-    type: '',
+    type: ActionType.Enum.BRING_APP,
     roleKeyId: null,
   };
 };
 
-const createTestSendKeyAction = (id: string, sendKeyMode: string) => {
+const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
   return {
     ...createTestAction(id),
-    type: ActionType.SEND_KEY,
-    sendKeyMode: sendKeyMode,
+    type: ActionType.Enum.SEND_KEY,
+    sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: {
       control: false,
       alt: false,
@@ -37,12 +37,6 @@ const createTestSendKeyAction = (id: string, sendKeyMode: string) => {
     },
     keyToSend: createChoiceValue(),
     outerPause: createRangeValue(),
-  };
-};
-
-const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
-  return {
-    ...createTestSendKeyAction(id, SendKeyMode.PRESS),
     innerPause: createRangeValue(),
     repeat: createRangeValue(),
   };
@@ -52,7 +46,17 @@ const createTestSendKeyHoldReleaseAction = (
   id: string
 ): SendKeyHoldReleaseAction => {
   return {
-    ...createTestSendKeyAction(id, SendKeyMode.HOLD_RELEASE),
+    ...createTestAction(id),
+    type: ActionType.Enum.SEND_KEY,
+    sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
+    modifiers: {
+      control: false,
+      alt: false,
+      shift: false,
+      windows: false,
+    },
+    keyToSend: createChoiceValue(),
+    outerPause: createRangeValue(),
     direction: createChoiceValue(),
   };
 };
@@ -63,7 +67,7 @@ describe('action reducer for send key actions', () => {
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_SEND_KEY_MODE,
-      payload: SendKeyMode.HOLD_RELEASE,
+      payload: SendKeyMode.Enum.HOLD_RELEASE,
     });
 
     expect(actual).not.toBe(obj);
@@ -75,7 +79,7 @@ describe('action reducer for send key actions', () => {
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_SEND_KEY_MODE,
-      payload: SendKeyMode.PRESS,
+      payload: SendKeyMode.Enum.PRESS,
     });
 
     expect(actual).not.toBe(obj);

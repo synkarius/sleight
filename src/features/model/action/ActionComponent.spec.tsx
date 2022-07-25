@@ -59,7 +59,7 @@ describe('action component tests', () => {
     const actionTypeSelect = screen.getByRole('list', {
       name: Field[Field.AC_TYPE],
     });
-    await user.selectOptions(actionTypeSelect, ActionType.PAUSE);
+    await user.selectOptions(actionTypeSelect, ActionType.Enum.PAUSE);
     // should be valid again
 
     const saveButton = screen.getByText<HTMLButtonElement>('Save');

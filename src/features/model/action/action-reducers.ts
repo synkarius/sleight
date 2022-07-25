@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { NotImplementedError } from '../../../error/NotImplementedError';
 import { UnhandledActionEditingEventTypeError } from '../../../error/UnhandledActionEditingEventTypeError';
-import { UnhandledActionTypeError } from '../../../error/UnhandledActionTypeError';
 import { UnhandledActionValueOperationError } from '../../../error/UnhandledActionValueOperationError';
-import { UnhandledSendKeyFieldError } from '../../../error/UnhandledSendKeyFieldError';
-import { UnhandledSendKeyModeError } from '../../../error/UnhandledSendKeyModeError';
+import { UnhandledFieldError } from '../../../error/UnhandledFieldError';
 import { UnhandledSendKeyModifierTypeError } from '../../../error/UnhandledSendKeyModifierTypeError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Field } from '../../../validation/validation-field';
@@ -15,9 +15,12 @@ import {
   ActionReducerModifiersPayloadAction,
   ActionReducerStringPayloadAction,
   ActionReducerChangePayloadAction,
+  ActionReducerSendKeyModePayloadAction,
+  ActionReducerActionValueTypePayloadAction,
+  ActionReducerActionTypePayloadAction,
 } from './action-editing-context';
 import { ActionType } from './action-types';
-import { RangeValue } from './action-value/action-value';
+import { ChoiceValue, RangeValue, withType } from './action-value/action-value';
 import { IdValued, TextValued } from './action-value/action-value-validation';
 import { copyIntoPauseAction } from './pause/pause';
 import {
@@ -28,6 +31,13 @@ import {
   SendKeyHoldReleaseAction,
   SendKeyPressAction,
 } from './send-key/send-key';
+import {
+  directionGroup,
+  innerPauseGroup,
+  keyToSendGroup,
+  outerPauseGroup,
+  repeatGroup,
+} from './send-key/send-key-action-value-type-name-groups';
 import { SendKeyMode } from './send-key/send-key-modes';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
 
@@ -105,14 +115,14 @@ const changeEditingSendKeyMode = (
   state: Action,
   action: ActionReducerAction
 ): Action => {
-  const stringAction = action as ActionReducerStringPayloadAction;
-  switch (stringAction.payload) {
-    case SendKeyMode.PRESS:
+  const skmAction = action as ActionReducerSendKeyModePayloadAction;
+  switch (skmAction.payload) {
+    case SendKeyMode.Enum.PRESS:
       return copyIntoSendKeyPressAction(state);
-    case SendKeyMode.HOLD_RELEASE:
+    case SendKeyMode.Enum.HOLD_RELEASE:
       return copyIntoSendKeyHoldReleaseAction(state);
     default:
-      throw new UnhandledSendKeyModeError(stringAction.payload);
+      throw new ExhaustivenessFailureError(skmAction.payload);
   }
 };
 
@@ -120,14 +130,22 @@ const changeEditingActionType = (
   state: Action,
   action: ActionReducerAction
 ): Action => {
-  const stringAction = action as ActionReducerStringPayloadAction;
+  const stringAction = action as ActionReducerActionTypePayloadAction;
   switch (stringAction.payload) {
-    case ActionType.PAUSE:
+    case ActionType.Enum.PAUSE:
       return copyIntoPauseAction(state);
-    case ActionType.SEND_KEY:
+    case ActionType.Enum.SEND_KEY:
       return copyIntoSendKeyPressAction(state);
+    case ActionType.Enum.BRING_APP:
+    case ActionType.Enum.CALL_FUNCTION:
+    case ActionType.Enum.MIMIC:
+    case ActionType.Enum.MOUSE_CLICK:
+    case ActionType.Enum.SEND_TEXT:
+    case ActionType.Enum.WAIT_FOR_WINDOW:
+      // TODO: implement all
+      throw new NotImplementedError('action type ' + stringAction.payload);
     default:
-      throw new UnhandledActionTypeError(stringAction.payload);
+      throw new ExhaustivenessFailureError(stringAction.payload);
   }
 };
 
@@ -157,9 +175,7 @@ const modifyActionValue = <T extends IdValued>(
 ): T => {
   const copy = { ...actionValue };
   switch (operation) {
-    case ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE:
-      copy.actionValueType = eventTargetValue;
-      break;
+    // change type handled elsewhere
     case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
       if (copy.variableType === VariableType.RANGE) {
         (copy as RangeValue).value = +eventTargetValue;
@@ -179,94 +195,110 @@ const modifyActionValue = <T extends IdValued>(
   return copy;
 };
 
-/**
- * Returns a modified copy of an action, with a modified action value.
- */
-type SKAction = SendKeyAction | SendKeyPressAction | SendKeyHoldReleaseAction;
-const modifyAction = (
-  state: SendKeyAction,
-  field: Field,
-  operation: ActionReducerActionType,
-  value: string
-): SKAction => {
-  switch (field) {
-    // TODO: the problem here is that only one of these operations is valid for each field
-    // -- change type is only valid for radio, change value is only valid for "value"
-    // -- might not cause problems now but also isn't as strict as can be
-    case Field.AC_KEY_TO_SEND_RADIO:
-    case Field.AC_KEY_TO_SEND_VALUE:
-    case Field.AC_KEY_TO_SEND_VAR:
-    case Field.AC_KEY_TO_SEND_RK:
-      const keyToSend = modifyActionValue(state.keyToSend, value, operation);
+const getActionValue = (state: Action, field: Field): IdValued => {
+  if (Object.values(keyToSendGroup).includes(field)) {
+    return (state as SendKeyAction).keyToSend;
+  } else if (Object.values(outerPauseGroup).includes(field)) {
+    return (state as SendKeyAction).outerPause;
+  } else if (Object.values(innerPauseGroup).includes(field)) {
+    return (state as SendKeyPressAction).innerPause;
+  } else if (Object.values(repeatGroup).includes(field)) {
+    return (state as SendKeyPressAction).repeat;
+  } else if (Object.values(directionGroup).includes(field)) {
+    return (state as SendKeyHoldReleaseAction).direction;
+  }
+  throw new UnhandledFieldError(field);
+};
+const changeActionValue = <T extends IdValued>(
+  actionValue: T,
+  action:
+    | ActionReducerActionValueTypePayloadAction
+    | ActionReducerChangePayloadAction
+): T => {
+  switch (action.type) {
+    case ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE:
+      const typeAction = action as ActionReducerActionValueTypePayloadAction;
       return {
-        ...state,
-        keyToSend,
-      };
-    case Field.AC_OUTER_PAUSE_RADIO:
-    case Field.AC_OUTER_PAUSE_VALUE:
-    case Field.AC_OUTER_PAUSE_VAR:
-    case Field.AC_OUTER_PAUSE_RK:
-      const outerPause = modifyActionValue(state.outerPause, value, operation);
-      return {
-        ...state,
-        outerPause,
-      };
-    case Field.AC_INNER_PAUSE_RADIO:
-    case Field.AC_INNER_PAUSE_VALUE:
-    case Field.AC_INNER_PAUSE_VAR:
-    case Field.AC_INNER_PAUSE_RK:
-      const innerPause = modifyActionValue(
-        (state as SendKeyPressAction).innerPause,
-        value,
-        operation
-      );
-      return {
-        ...state,
-        innerPause,
-      };
-    case Field.AC_REPEAT_RADIO:
-    case Field.AC_REPEAT_VALUE:
-    case Field.AC_REPEAT_VAR:
-    case Field.AC_REPEAT_RK:
-      const repeat = modifyActionValue(
-        (state as SendKeyPressAction).repeat,
-        value,
-        operation
-      );
-      return {
-        ...state,
-        repeat,
-      };
-    case Field.AC_DIRECTION_RADIO:
-    case Field.AC_DIRECTION_VALUE:
-    case Field.AC_DIRECTION_VAR:
-    case Field.AC_DIRECTION_RK:
-      const direction = modifyActionValue(
-        (state as SendKeyHoldReleaseAction).direction,
-        value,
-        operation
-      );
-      return {
-        ...state,
-        direction,
+        ...actionValue,
+        actionValueType: typeAction.payload.actionValueType,
       };
     default:
-      throw new UnhandledSendKeyFieldError(field);
+      const stringAction = action as ActionReducerChangePayloadAction;
+      switch (action.type) {
+        case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
+          if (actionValue.variableType === VariableType.RANGE) {
+            return {
+              ...actionValue,
+              value: +stringAction.payload.value,
+            };
+          } else {
+            return {
+              ...actionValue,
+              value: stringAction.payload.value,
+            };
+          }
+        case ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID:
+          return {
+            ...actionValue,
+            variableId: stringAction.payload.value,
+          };
+        case ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID:
+          return {
+            ...actionValue,
+            roleKeyId: stringAction.payload.value,
+          };
+        default:
+          throw new UnhandledActionValueOperationError(action.type);
+      }
   }
+};
+const assignIdValuedBack = (
+  state: Action,
+  field: Field,
+  actionValue: IdValued
+): SendKeyAction => {
+  if (Object.values(keyToSendGroup).includes(field)) {
+    return {
+      ...(state as SendKeyAction),
+      keyToSend: actionValue as ChoiceValue,
+    };
+  } else if (Object.values(outerPauseGroup).includes(field)) {
+    return {
+      ...(state as SendKeyAction),
+      outerPause: actionValue as RangeValue,
+    };
+  } else if (Object.values(innerPauseGroup).includes(field)) {
+    return {
+      ...(state as SendKeyPressAction),
+      innerPause: actionValue as RangeValue,
+    };
+  } else if (Object.values(repeatGroup).includes(field)) {
+    return {
+      ...(state as SendKeyPressAction),
+      repeat: actionValue as RangeValue,
+    };
+  } else if (Object.values(directionGroup).includes(field)) {
+    return {
+      ...(state as SendKeyHoldReleaseAction),
+      direction: actionValue as ChoiceValue,
+    };
+  }
+  throw new UnhandledFieldError(field);
 };
 
 const changeSendKey = (
   state: Action,
   action: ActionReducerAction
 ): SendKeyAction => {
-  const skState = state as SendKeyAction;
-  const skAction = action as ActionReducerChangePayloadAction;
-  return modifyAction(
-    skState,
-    skAction.payload.field,
-    action.type,
-    skAction.payload.value
-  );
+  const changeSendKeyAction = action as
+    | ActionReducerActionValueTypePayloadAction
+    | ActionReducerChangePayloadAction;
+  // 1: switch to get correct IdValued
+  const idValued = getActionValue(state, changeSendKeyAction.payload.field);
+  // 2: switch to perform operation on IdValued
+  const changed = changeActionValue(idValued, changeSendKeyAction);
+  // 3: switch to assign it back
+  return assignIdValuedBack(state, changeSendKeyAction.payload.field, changed);
 };
 
 export const actionReactReducer = (

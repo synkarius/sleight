@@ -1,14 +1,9 @@
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectAction } from '../model/action/action-reducers';
-import { createCommand } from '../model/command/command';
 import { selectCommand } from '../model/command/command-reducers';
 import { ElementType } from '../model/common/element-types';
-import {
-  clearEditingContext,
-  createNewEditingContext,
-  selectContext,
-} from '../model/context/context-reducers';
+import { selectContext } from '../model/context/context-reducers';
 import {
   clearEditingVariable,
   createNewEditingVariable,
@@ -25,7 +20,6 @@ import {
   selectSpec,
 } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
-import { createContext } from '../model/context/context';
 import { SidebarSection } from './sidebar';
 import { setFocus } from '../menu/focus/focus-reducers';
 
@@ -61,9 +55,12 @@ export const SidebarComponent = () => {
   const contextSection: SidebarSection = {
     type: ElementType.CONTEXT,
     items: Object.values(contextsSaved),
-    createFn: () => dispatch(createNewEditingContext(createContext())),
-    selectFn: (id) => dispatch(selectContext(id)),
-    clearFn: () => dispatch(clearEditingContext()),
+    createFn: () => dispatch(setFocus(ElementType.CONTEXT)),
+    selectFn: (id) => {
+      dispatch(selectContext(id));
+      dispatch(setFocus(ElementType.CONTEXT));
+    },
+    clearFn: () => dispatch(setFocus(undefined)),
   };
   const roleKeySection: SidebarSection = {
     type: ElementType.ROLE_KEY,

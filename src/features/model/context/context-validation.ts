@@ -1,10 +1,16 @@
-import { notEmpty } from '../../../util/common-functions';
+import { alwaysTrue, notEmpty } from '../../../util/common-functions';
 import {
-  createValidationError,
-  Validator,
-} from '../../../validation/validator';
+  createFieldValidator,
+  FieldValidator,
+} from '../../../validation/field-validator';
+import { Field } from '../../../validation/validation-field';
+import { createValidationError } from '../../../validation/validator';
+import { Context } from './context';
 
-export const contextMatcherValidator: Validator<string> = {
-  isValid: notEmpty,
-  error: createValidationError("matcher can't be empty"),
-};
+export const contextMatcherValidator: FieldValidator<Context> =
+  createFieldValidator(
+    Field.CTX_MATCHER,
+    alwaysTrue,
+    (context) => notEmpty(context.matcher),
+    createValidationError("matcher can't be empty")
+  );

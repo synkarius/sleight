@@ -1,7 +1,8 @@
 export enum ErrorCode {
+  EXHAUSTIVENESS_FAIURE = 'this error should never happen at runtime',
+
   IMPROPER_CONTEXT_USAGE = 'do not use default context impl - provide values to context provider in JSX instead',
 
-  NOT_EDITING_AN_ACTION = 'not editing an action',
   NOT_IMPLEMENTED = 'method not implemented',
 
   SELECTOR_ID_ALREADY_IN_USE = 'selector id already in use',
@@ -12,6 +13,8 @@ export enum ErrorCode {
   UNHANDLED_ACTION_VALUE_OPERATION = 'unhandled action value operation',
   UNHANDLED_ACTION_VALUE_TYPE = 'unhandled action value type',
   UNHANDLED_COMMAND_EDITING_EVENT_TYPE = 'unhandled command editing event type',
+  UNHANDLED_CONTEXT_EDITING_EVENT_TYPE = 'unhandled context editing event type',
+  UNHANDLED_FIELD = 'unhandled field',
   UNHANDLED_ROLE_KEY_EDITING_EVENT_TYPE = 'unhandled role key editing event type',
   UNHANDLED_SPEC_ITEM_TYPE = 'unhandled spec item type',
   UNHANDLED_SEND_KEY_FIELD = 'unhandled send key field',
