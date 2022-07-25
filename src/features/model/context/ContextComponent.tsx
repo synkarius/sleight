@@ -66,7 +66,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   };
 
   const matcherHelpText =
-    props.context.type === ContextType.EXECUTABLE_NAME
+    props.context.type === ContextType.Enum.EXECUTABLE_NAME
       ? 'executable to match'
       : 'window title to match';
 

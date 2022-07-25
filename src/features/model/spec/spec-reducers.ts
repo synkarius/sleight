@@ -7,8 +7,8 @@ import {
   ChangeSpecItemVariableIdPayload,
   Spec,
   SpecItem,
-  SpecItemType,
 } from './spec';
+import { SpecItemType } from './spec-item-type';
 
 export type SpecsState = {
   saved: ReduxFriendlyStringMap<Spec>;
@@ -82,7 +82,7 @@ const specsSlice = createSlice({
         const specItem = state.editing.items.find(
           (specItem) =>
             specItem.id === action.payload.specItemId &&
-            specItem.itemType === SpecItemType.VARIABLE
+            specItem.itemType === SpecItemType.Enum.VARIABLE
         );
         if (specItem) {
           specItem.itemId = action.payload.variableId;

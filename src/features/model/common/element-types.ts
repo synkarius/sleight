@@ -1,16 +1,19 @@
-export class ElementType {
-  static readonly ACTION = 'Action';
-  static readonly COMMAND = 'Command';
-  static readonly CONTEXT = 'Context';
-  static readonly ROLE_KEY = 'Role Key';
-  static readonly SPEC = 'Spec';
-  static readonly VARIABLE = 'Variable';
-  static readonly values = () => [
-    ElementType.ACTION,
-    ElementType.COMMAND,
-    ElementType.CONTEXT,
-    ElementType.ROLE_KEY,
-    ElementType.SPEC,
-    ElementType.VARIABLE,
+export namespace ElementType {
+  export const Enum = {
+    ACTION: 'Action',
+    COMMAND: 'Command',
+    CONTEXT: 'Context',
+    ROLE_KEY: 'Role Key',
+    SPEC: 'Spec',
+    VARIABLE: 'Variable',
+  } as const;
+  export const values = () => [
+    Enum.ACTION,
+    Enum.COMMAND,
+    Enum.CONTEXT,
+    Enum.ROLE_KEY,
+    Enum.SPEC,
+    Enum.VARIABLE,
   ];
+  export type Type = typeof Enum[keyof typeof Enum];
 }

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SelectorIdDuplicateError } from '../../../error/SelectorIdDuplicateError';
-import { SelectorNotFoundError } from '../../../error/SelectorNotFoundError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   CreateSelectorItemPayload,
@@ -15,14 +14,6 @@ export type SelectorsState = {
    * a separate "editing" map
    */
   saved: ReduxFriendlyStringMap<Selector>;
-};
-
-const findSelector = (state: SelectorsState, id: string): Selector => {
-  const selector = state.saved[id];
-  if (selector) {
-    return selector;
-  }
-  throw new SelectorNotFoundError(id);
 };
 
 const initialState: SelectorsState = {
@@ -55,29 +46,47 @@ const selectorsSlice = createSlice({
       state,
       action: PayloadAction<CreateSelectorItemPayload>
     ) => {
-      const selector = findSelector(state, action.payload.selectorId);
-      selector.items = [...selector.items, action.payload.selectorItem];
+      const selector = state.saved[action.payload.selectorId];
+      if (selector) {
+        state.saved[action.payload.selectorId] = {
+          ...selector,
+          items: [...selector.items, action.payload.selectorItem],
+        };
+      }
     },
     editSelectorItem: (
       state,
       action: PayloadAction<EditSelectorItemPayload>
     ) => {
-      const selector = findSelector(state, action.payload.selectorId);
-      const selectorItem = selector.items.find(
-        (selectorItem) => selectorItem.id === action.payload.selectorItemId
-      );
-      if (selectorItem) {
-        selectorItem.value = action.payload.value;
+      const selector = state.saved[action.payload.selectorId];
+      if (selector) {
+        state.saved[action.payload.selectorId] = {
+          ...selector,
+          items: selector.items.map((item) => {
+            if (item.id === action.payload.selectorItemId) {
+              return {
+                ...item,
+                value: action.payload.value,
+              };
+            }
+            return item;
+          }),
+        };
       }
     },
     deleteSelectorItem: (
       state,
       action: PayloadAction<DeleteSelectorItemPayload>
     ) => {
-      const selector = findSelector(state, action.payload.selectorId);
-      selector.items = selector.items.filter(
-        (selectorItem) => selectorItem.id !== action.payload.selectorItemId
-      );
+      const selector = state.saved[action.payload.selectorId];
+      if (selector) {
+        state.saved[action.payload.selectorId] = {
+          ...selector,
+          items: selector.items.filter(
+            (item) => item.id !== action.payload.selectorItemId
+          ),
+        };
+      }
     },
   },
 });

@@ -4,10 +4,9 @@ import { Field } from './validation-field';
 import { ValidationError } from './validator';
 
 interface ValidationData {
-  // F is a ===-able type which can uniquely identify a field
-  touch: (field: Field) => void;
-  validateForm: () => boolean;
-  getErrors: () => ValidationError[];
+  readonly touch: (field: Field) => void;
+  readonly validateForm: () => boolean;
+  readonly getErrors: () => ValidationError[];
 }
 
 const createDefaultValidationState = (): ValidationData => {

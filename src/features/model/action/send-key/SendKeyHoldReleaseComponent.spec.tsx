@@ -28,15 +28,21 @@ beforeAll(() => {
   // save a variable
   const choiceItemSelector = createSelector();
   store.dispatch(createNewSelector(choiceItemSelector));
-  const choiceVariable = createChoice(choiceItemSelector.id);
-  choiceVariable.name = VARIABLE_NAME;
-  store.dispatch(createNewEditingVariable(choiceVariable));
+  store.dispatch(
+    createNewEditingVariable({
+      ...createChoice(choiceItemSelector.id),
+      name: VARIABLE_NAME,
+    })
+  );
   store.dispatch(saveEditingVariable());
   store.dispatch(clearEditingVariable());
   // save a role key
-  const roleKey = createRoleKey();
-  roleKey.value = ROLE_KEY_NAME;
-  store.dispatch(saveRoleKey(roleKey));
+  store.dispatch(
+    saveRoleKey({
+      ...createRoleKey(),
+      value: ROLE_KEY_NAME,
+    })
+  );
   user = userEvent.setup();
 });
 

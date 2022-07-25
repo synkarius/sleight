@@ -2,19 +2,15 @@ import React from 'react';
 import { Button, FormControl, InputGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { createSelectorItem, SelectorItem } from './selector';
+import { SelectorButtonType } from './selector-button-type';
 import {
   createNewSelectorItem,
   deleteSelectorItem,
   editSelectorItem,
 } from './selector-reducers';
 
-export class SelectorButtonType {
-  static readonly ADD_NEW = 'Add New';
-  static readonly REMOVE = 'Remove';
-}
-
 export type SelectorPositionData = {
-  selectorButtonType: string;
+  selectorButtonType: SelectorButtonType.Type;
   isLast: boolean;
 };
 
@@ -62,13 +58,13 @@ export const SelectorItemComponent: React.FC<{
         value={props.selectorItem.value}
       />
       {props.selectorPositionData.selectorButtonType ===
-        SelectorButtonType.ADD_NEW && (
+        SelectorButtonType.Enum.ADD_NEW && (
         <Button variant="outline-primary" onClick={addHandler}>
           Add Alternate
         </Button>
       )}
       {props.selectorPositionData.selectorButtonType ===
-        SelectorButtonType.REMOVE && (
+        SelectorButtonType.Enum.REMOVE && (
         <Button variant="outline-secondary" onClick={deleteHandler}>
           Remove
         </Button>

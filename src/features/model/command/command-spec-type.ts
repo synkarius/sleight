@@ -1,8 +1,8 @@
-export class CommandSpecType {
-  static readonly VARIABLE = 'Variable';
-  static readonly ROLE_KEY = 'Role Key';
-  static readonly values = () => [
-    CommandSpecType.VARIABLE,
-    CommandSpecType.ROLE_KEY,
-  ];
+export namespace CommandSpecType {
+  export const Enum = {
+    VARIABLE: 'Variable',
+    ROLE_KEY: 'Role Key',
+  } as const;
+  export const values = () => [Enum.VARIABLE, Enum.ROLE_KEY];
+  export type Type = typeof Enum[keyof typeof Enum];
 }

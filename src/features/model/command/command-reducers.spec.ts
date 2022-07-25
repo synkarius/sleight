@@ -16,7 +16,7 @@ const createTestCommand = (id: string): Command => {
     id: id,
     name: '',
     roleKeyId: null,
-    specType: CommandSpecType.VARIABLE,
+    specType: CommandSpecType.Enum.VARIABLE,
     specVariableId: undefined,
     specRoleKeyId: undefined,
     actionIds: [],

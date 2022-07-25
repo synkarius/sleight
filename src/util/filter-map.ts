@@ -6,13 +6,15 @@
  * FilterMaps are composable through `FilterMapBuilder`.
  */
 interface FilterMap<A, B> {
-  filter: (a: A) => boolean;
-  map: (a: A) => B;
+  readonly filter: (a: A) => boolean;
+  readonly map: (a: A) => B;
 }
 
 interface FilterMapBuilder<A, B> {
-  withFilterMap: <C>(filterMap: FilterMap<B, C>) => FilterMapBuilder<A, C>;
-  build: () => FilterMap<A, B>;
+  readonly withFilterMap: <C>(
+    filterMap: FilterMap<B, C>
+  ) => FilterMapBuilder<A, C>;
+  readonly build: () => FilterMap<A, B>;
 }
 
 export const newFilterMapBuilder = <A, B>(

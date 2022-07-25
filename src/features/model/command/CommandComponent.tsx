@@ -101,7 +101,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             validationContext.touch(Field.CMD_SPEC_RADIO);
           }}
         />
-        {props.command.specType === CommandSpecType.VARIABLE && (
+        {props.command.specType === CommandSpecType.Enum.VARIABLE && (
           <SpecDropdownComponent
             field={Field.CMD_SPEC_VAR}
             specId={props.command.specVariableId}
@@ -116,7 +116,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             isInvalid={commandSpecVariableIsInvalid()}
           />
         )}
-        {props.command.specType === CommandSpecType.ROLE_KEY && (
+        {props.command.specType === CommandSpecType.Enum.ROLE_KEY && (
           <RoleKeyDropdownComponent
             field={Field.CMD_SPEC_RK}
             roleKeyId={props.command.roleKeyId}

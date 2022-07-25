@@ -36,7 +36,7 @@ describe('context reducer', () => {
       roleKeyId: null,
       id: obj.id,
       name: '',
-      type: ContextType.EXECUTABLE_NAME,
+      type: ContextType.Enum.EXECUTABLE_NAME,
       matcher: '',
     };
 

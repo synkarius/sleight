@@ -3,7 +3,6 @@ import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   Choice,
   ChoiceItem,
-  createChoiceItem,
   RemoveChoiceItemPayload,
   EditChoiceItemValuePayload,
   copyIntoChoice,
@@ -13,7 +12,7 @@ import { Variable } from './variable';
 import { VariableType } from './variable-types';
 import { Range, copyIntoRange } from './range/range';
 import { copyIntoText } from './text/text';
-import { UnhandledVariableTypeError } from '../../../error/UnhandledVariableTypeError';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 
 export type VariablesState = {
   saved: ReduxFriendlyStringMap<Variable>;
@@ -58,30 +57,33 @@ const variablesSlice = createSlice({
       state,
       action: PayloadAction<ChangeVariableTypePayload>
     ) => {
-      // casting here to non-null b/c should not ever be null while editing
       const variable = state.editing as Variable;
       switch (action.payload.variableType) {
-        case VariableType.TEXT:
+        case VariableType.Enum.TEXT:
           state.editing = copyIntoText(variable);
           break;
-        case VariableType.RANGE:
+        case VariableType.Enum.RANGE:
           state.editing = copyIntoRange(variable);
           break;
-        case VariableType.CHOICE:
+        case VariableType.Enum.CHOICE:
           const selectorId = action.payload.selectorId as string;
           state.editing = copyIntoChoice(variable, selectorId);
           break;
         default:
-          throw new UnhandledVariableTypeError(action.payload.variableType);
+          throw new ExhaustivenessFailureError(action.payload.variableType);
       }
     },
     changeRangeMin: (state, action: PayloadAction<number>) => {
-      const range = state.editing as Range;
-      range.beginInclusive = action.payload;
+      state.editing = {
+        ...(state.editing as Range),
+        beginInclusive: action.payload,
+      };
     },
     changeRangeMax: (state, action: PayloadAction<number>) => {
-      const range = state.editing as Range;
-      range.endInclusive = action.payload;
+      state.editing = {
+        ...(state.editing as Range),
+        endInclusive: action.payload,
+      };
     },
     addChoiceItem: (state, action: PayloadAction<ChoiceItem>) => {
       if (state.editing) {
@@ -95,10 +97,24 @@ const variablesSlice = createSlice({
       // TODO: validation
       if (state.editing) {
         const choice = state.editing as Choice;
-        const choiceItem = choice.items.find(
-          (i) => i.id === action.payload.choiceItemId
-        ) as ChoiceItem;
-        choiceItem.value = action.payload.value;
+        state.editing = {
+          ...choice,
+          items: choice.items.map((item) => {
+            if (item.id === action.payload.choiceItemId) {
+              return {
+                ...item,
+                value: action.payload.value,
+              };
+            }
+            return item;
+          }),
+        };
+
+        // const choice = state.editing as Choice;
+        // const choiceItem = choice.items.find(
+        // (i) => i.id === action.payload.choiceItemId
+        // ) as ChoiceItem;
+        // choiceItem.value = action.payload.value;
       }
     },
     removeChoiceItem: (
@@ -107,9 +123,12 @@ const variablesSlice = createSlice({
     ) => {
       if (state.editing) {
         const choice = state.editing as Choice;
-        choice.items = choice.items.filter(
-          (item) => item.id !== action.payload.choiceItemId
-        );
+        state.editing = {
+          ...choice,
+          items: choice.items.filter(
+            (item) => item.id !== action.payload.choiceItemId
+          ),
+        };
       }
     },
   },

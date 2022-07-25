@@ -1,4 +1,7 @@
-import { createSendKeyHoldReleaseAction } from './send-key/send-key';
+import {
+  createSendKeyHoldReleaseAction,
+  SendKeyHoldReleaseAction,
+} from './send-key/send-key';
 import { actionReactReducer } from './action-reducers';
 import { ActionValueType } from './action-value/action-value-type';
 import { ActionReducerActionType } from './action-editing-context';
@@ -6,8 +9,7 @@ import { Field } from '../../../validation/validation-field';
 
 describe('action reducer: action.direction', () => {
   it('should handle change action.direction.actionValueType', () => {
-    const obj = createSendKeyHoldReleaseAction();
-    obj.direction.actionValueType = ActionValueType.Enum.USE_ROLE_KEY;
+    const obj = createTestSendKeyAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
@@ -90,3 +92,14 @@ describe('action reducer: action.direction', () => {
     });
   });
 });
+
+const createTestSendKeyAction = (): SendKeyHoldReleaseAction => {
+  const obj = createSendKeyHoldReleaseAction();
+  return {
+    ...obj,
+    direction: {
+      ...obj.direction,
+      actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
+    },
+  };
+};

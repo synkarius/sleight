@@ -1,5 +1,10 @@
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { createSelector, createSelectorItem, Selector } from './selector';
+import {
+  createSelector,
+  createSelectorItem,
+  Selector,
+  SelectorItem,
+} from './selector';
 import {
   SelectorsState,
   createNewSelector,
@@ -57,9 +62,11 @@ describe('role key reducer', () => {
   it('should handle create new selector item', () => {
     const newSelector1 = createSelector();
     const newSelector2 = createSelector();
-    const newSelectorItem1 = createSelectorItem();
-    newSelectorItem1.roleKeyId = 'some-rk-id';
-    newSelectorItem1.value = 'some-value';
+    const newSelectorItem1: SelectorItem = {
+      ...createSelectorItem(),
+      roleKeyId: 'some-rk-id',
+      value: 'some-value',
+    };
 
     const createdState1 = selectorReducer(
       initialState,
@@ -111,13 +118,19 @@ describe('role key reducer', () => {
 
   it('should handle edit selector item', () => {
     const newSelector1 = createSelector();
-    const newSelectorItem1 = newSelector1.items[0];
-    newSelectorItem1.roleKeyId = 'some-id';
-    newSelectorItem1.value = 'some-value';
 
     const createdState1 = selectorReducer(
       initialState,
-      createNewSelector(newSelector1)
+      createNewSelector({
+        ...newSelector1,
+        items: [
+          {
+            ...newSelector1.items[0],
+            roleKeyId: 'some-id',
+            value: 'some-value',
+          },
+        ],
+      })
     );
     const actual = selectorReducer(
       createdState1,
@@ -135,7 +148,7 @@ describe('role key reducer', () => {
       items: [
         {
           roleKeyId: 'some-id',
-          id: newSelectorItem1.id,
+          id: newSelector1.items[0].id,
           value: 'zxcv',
         },
       ],

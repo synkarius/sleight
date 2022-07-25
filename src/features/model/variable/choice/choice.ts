@@ -1,11 +1,11 @@
 import { getRandomId } from '../../../../util/random-id';
 import { RoleKeyed, Ided, Named, Typed, BasicFields } from '../../../domain';
-import { copyVariable, createVariable } from '../variable';
+import { copyVariable } from '../variable';
 import { VariableType } from '../variable-types';
 
 export interface ChoiceItem extends RoleKeyed, Ided {
-  selectorId: string;
-  value: string;
+  readonly selectorId: string;
+  readonly value: string;
 }
 
 export const createChoiceItem = (selectorId: string): ChoiceItem => {
@@ -17,38 +17,46 @@ export const createChoiceItem = (selectorId: string): ChoiceItem => {
   };
 };
 
-export interface Choice extends RoleKeyed, Named, Ided, Typed<string> {
-  items: ChoiceItem[];
+export interface Choice
+  extends RoleKeyed,
+    Named,
+    Ided,
+    Typed<VariableType.Type> {
+  readonly type: typeof VariableType.Enum.CHOICE;
+  readonly items: ChoiceItem[];
 }
 
 export const createChoice = (selectorId: string): Choice => {
   return {
-    ...createVariable(VariableType.CHOICE),
+    id: getRandomId(),
+    type: VariableType.Enum.CHOICE,
+    name: '',
+    roleKeyId: null,
     items: [createChoiceItem(selectorId)],
   };
 };
 
 export const copyIntoChoice = (
-  variable: BasicFields<string>,
+  variable: BasicFields<VariableType.Type>,
   selectorId: string
 ): Choice => {
   return {
     ...copyVariable(variable),
-    type: VariableType.CHOICE,
+    type: VariableType.Enum.CHOICE,
     items: [createChoiceItem(selectorId)],
   };
 };
 
 export type EditChoiceItemValuePayload = {
-  choiceItemId: string;
-  value: string;
+  readonly choiceItemId: string;
+  readonly value: string;
 };
 
 export type RemoveChoiceItemPayload = {
-  choiceItemId: string;
+  readonly choiceItemId: string;
 };
 
 export type ChangeVariableTypePayload = {
-  variableType: string;
-  selectorId: string | null;
+  readonly variableType: VariableType.Type;
+  readonly selectorId: string | null;
 };

@@ -26,7 +26,7 @@ const createModifiers = (): Modifiers => {
 };
 
 interface AbstractSendKeyAction extends Action {
-  // see send-key-modes.ts for options -- whether a press or a hold/release
+  readonly type: typeof ActionType.Enum.SEND_KEY;
   readonly sendKeyMode: SendKeyMode.Type;
   readonly modifiers: Modifiers;
   // TODO: enforce that this has roleKey:alphabet if using a choice var??

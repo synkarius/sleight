@@ -6,16 +6,17 @@ import { VariablesDropdownComponent } from '../variable/VariablesDropdownCompone
 import { createSelector, Selector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
 import { SelectorComponent } from '../selector/SelectorComponent';
-import { SpecItem, SpecItemType } from './spec';
+import { SpecItem } from './spec';
 import {
   changeSpecItemOrder,
   changeSpecItemType,
   changeSpecItemVariableId,
   deleteSpecItem,
 } from './spec-reducers';
-import { UnhandledSpecItemTypeError } from '../../../error/UnhandledSpecItemTypeError';
 import { VerticalMoveableComponent } from '../../ui/VerticalMoveableComponent';
 import { RequiredAsteriskComponent } from '../../ui/RequiredAsteriskComponent';
+import { SpecItemType } from './spec-item-type';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 
 export const SpecItemComponent: React.FC<{
   specItem: SpecItem;
@@ -28,20 +29,20 @@ export const SpecItemComponent: React.FC<{
 
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     let newSpecItemId: string | undefined;
-    const newSpecItemType = event.target.value;
+    const newSpecItemType = event.target.value as SpecItemType.Type;
 
     switch (newSpecItemType) {
-      case SpecItemType.SELECTOR:
+      case SpecItemType.Enum.SELECTOR:
         const selector = createSelector();
         newSpecItemId = selector.id;
         dispatch(createNewSelector(selector));
         break;
-      case SpecItemType.VARIABLE:
+      case SpecItemType.Enum.VARIABLE:
         // using the 0th item b/c it's the first item in the list the user selects from
         newSpecItemId = Object.values(variables)[0].id;
         break;
       default:
-        throw new UnhandledSpecItemTypeError(newSpecItemType);
+        throw new ExhaustivenessFailureError(newSpecItemType);
     }
     dispatch(
       changeSpecItemType({
@@ -59,11 +60,11 @@ export const SpecItemComponent: React.FC<{
   };
 
   const selector: Selector | undefined =
-    props.specItem.itemType === SpecItemType.SELECTOR
+    props.specItem.itemType === SpecItemType.Enum.SELECTOR
       ? selectors[props.specItem.itemId]
       : undefined;
   const variable: Variable | undefined =
-    props.specItem.itemType === SpecItemType.VARIABLE
+    props.specItem.itemType === SpecItemType.Enum.VARIABLE
       ? variables[props.specItem.itemId]
       : undefined;
 

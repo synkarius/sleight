@@ -1,17 +1,17 @@
 export interface RoleKeyed {
-  roleKeyId: string | null;
+  readonly roleKeyId: string | null;
 }
 
 export interface Ided {
-  id: string;
+  readonly id: string;
 }
 
 export interface Named {
-  name: string;
+  readonly name: string;
 }
 
 export interface Typed<T> {
-  type: T;
+  readonly type: T;
 }
 
 export interface BasicFields<T> extends RoleKeyed, Ided, Named, Typed<T> {}

@@ -1,4 +1,7 @@
-import { createSendKeyPressAction } from './send-key/send-key';
+import {
+  createSendKeyPressAction,
+  SendKeyPressAction,
+} from './send-key/send-key';
 import { actionReactReducer } from './action-reducers';
 import { ActionValueType } from './action-value/action-value-type';
 import { ActionReducerActionType } from './action-editing-context';
@@ -6,8 +9,7 @@ import { Field } from './../../../validation/validation-field';
 
 describe('action reducer: action.repeat', () => {
   it('should handle change action.repeat.actionValueType', () => {
-    const obj = createSendKeyPressAction();
-    obj.repeat.actionValueType = ActionValueType.Enum.USE_ROLE_KEY;
+    const obj = createTestSendKeyAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
@@ -90,3 +92,14 @@ describe('action reducer: action.repeat', () => {
     });
   });
 });
+
+const createTestSendKeyAction = (): SendKeyPressAction => {
+  const obj = createSendKeyPressAction();
+  return {
+    ...obj,
+    repeat: {
+      ...obj.repeat,
+      actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
+    },
+  };
+};

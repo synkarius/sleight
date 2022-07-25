@@ -14,10 +14,10 @@ export type TextValued = TextValue | ChoiceValue;
 export type IdValued = TextValued | RangeValue;
 
 export interface ActionValueValidators {
-  radioGroupField: Field;
-  value: FieldValidator<Action>;
-  variable: FieldValidator<Action>;
-  roleKey: FieldValidator<Action>;
+  readonly radioGroupField: Field;
+  readonly value: FieldValidator<Action>;
+  readonly variable: FieldValidator<Action>;
+  readonly roleKey: FieldValidator<Action>;
 }
 
 export const createNonEmptyError = (fieldName: string) =>

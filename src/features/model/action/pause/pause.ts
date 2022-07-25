@@ -4,7 +4,8 @@ import { ActionType } from '../action-types';
 import { createRangeValue, RangeValue } from '../action-value/action-value';
 
 export interface PauseAction extends Action {
-  centiseconds: RangeValue;
+  readonly type: typeof ActionType.Enum.PAUSE;
+  readonly centiseconds: RangeValue;
 }
 
 export const createPauseAction = (): PauseAction => {

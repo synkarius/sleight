@@ -26,15 +26,21 @@ beforeAll(() => {
   // save a spec
   const specItemSelector = createSelector();
   store.dispatch(createNewSelector(specItemSelector));
-  const spec = createSpec(specItemSelector.id);
-  spec.name = SPEC_NAME;
-  store.dispatch(createNewEditingSpec(spec));
+  store.dispatch(
+    createNewEditingSpec({
+      ...createSpec(specItemSelector.id),
+      name: SPEC_NAME,
+    })
+  );
   store.dispatch(saveEditingSpec());
   store.dispatch(clearEditingSpec());
   // save a role key
-  const roleKey = createRoleKey();
-  roleKey.value = ROLE_KEY_NAME;
-  store.dispatch(saveRoleKey(roleKey));
+  store.dispatch(
+    saveRoleKey({
+      ...createRoleKey(),
+      value: ROLE_KEY_NAME,
+    })
+  );
   user = userEvent.setup();
 });
 

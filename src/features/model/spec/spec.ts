@@ -1,19 +1,17 @@
 import { getRandomId } from '../../../util/random-id';
-import { Ided, Named, RoleKeyed, Typed } from '../../domain';
+import { Ided, Named, RoleKeyed } from '../../domain';
 import { MoveDirection } from '../common/move-direction';
-
-export class SpecItemType {
-  static readonly SELECTOR = 'Selector';
-  static readonly VARIABLE = 'Variable';
-  static readonly values = () => [SpecItemType.SELECTOR, SpecItemType.VARIABLE];
-}
+import { SpecItemType } from './spec-item-type';
 
 export interface SpecItem extends Ided {
-  itemId: string;
-  itemType: string;
+  readonly itemId: string;
+  readonly itemType: SpecItemType.Type;
 }
 
-export const createSpecItem = (itemId: string, itemType: string): SpecItem => {
+export const createSpecItem = (
+  itemId: string,
+  itemType: SpecItemType.Type
+): SpecItem => {
   return {
     id: getRandomId(),
     itemId: itemId,
@@ -22,30 +20,30 @@ export const createSpecItem = (itemId: string, itemType: string): SpecItem => {
 };
 
 export interface Spec extends Named, Ided, RoleKeyed {
-  items: SpecItem[];
+  readonly items: SpecItem[];
 }
 
-export const createSpec = (selectorId: string) => {
+export const createSpec = (selectorId: string): Spec => {
   return {
     id: getRandomId(),
     name: '',
     roleKeyId: null,
-    items: [createSpecItem(selectorId, SpecItemType.SELECTOR)],
+    items: [createSpecItem(selectorId, SpecItemType.Enum.SELECTOR)],
   };
 };
 
 export type ChangeSpecItemTypePayload = {
-  specItemId: string;
-  specItemItemId: string;
-  specItemItemType: string;
+  readonly specItemId: string;
+  readonly specItemItemId: string;
+  readonly specItemItemType: SpecItemType.Type;
 };
 
 export type ChangeSpecItemVariableIdPayload = {
-  specItemId: string;
-  variableId: string;
+  readonly specItemId: string;
+  readonly variableId: string;
 };
 
 export type ChangeSpecItemOrderPayload = {
-  specItemId: string;
-  moveDirection: MoveDirection;
+  readonly specItemId: string;
+  readonly moveDirection: MoveDirection;
 };

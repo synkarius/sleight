@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UnhandledContextEditingEventTypeError } from '../../../error/UnhandledContextEditingEventTypeError';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Context } from './context';
 import {
   ContextReducerAction,
   ContextReducerActionType,
+  ContextReducerMatcherTypeAction,
+  ContextReducerStringAction,
 } from './context-editing-context';
 
 export interface ContextsState {
@@ -35,7 +37,7 @@ export const contextReduxReducer = contextsSlice.reducer;
 
 const changeEditingContextName = (
   state: Context,
-  action: ContextReducerAction
+  action: ContextReducerStringAction
 ): Context => {
   return {
     ...state,
@@ -44,7 +46,7 @@ const changeEditingContextName = (
 };
 const changeEditingContextRoleKey = (
   state: Context,
-  action: ContextReducerAction
+  action: ContextReducerStringAction
 ): Context => {
   return {
     ...state,
@@ -53,7 +55,7 @@ const changeEditingContextRoleKey = (
 };
 const changeEditingContextType = (
   state: Context,
-  action: ContextReducerAction
+  action: ContextReducerMatcherTypeAction
 ): Context => {
   return {
     ...state,
@@ -62,7 +64,7 @@ const changeEditingContextType = (
 };
 const changeEditingContextMatcher = (
   state: Context,
-  action: ContextReducerAction
+  action: ContextReducerStringAction
 ): Context => {
   return {
     ...state,
@@ -80,10 +82,13 @@ export const contextReactReducer = (
     case ContextReducerActionType.CHANGE_ROLE_KEY:
       return changeEditingContextRoleKey(state, action);
     case ContextReducerActionType.CHANGE_TYPE:
-      return changeEditingContextType(state, action);
+      return changeEditingContextType(
+        state,
+        action as ContextReducerMatcherTypeAction
+      );
     case ContextReducerActionType.CHANGE_MATCHER:
       return changeEditingContextMatcher(state, action);
     default:
-      throw new UnhandledContextEditingEventTypeError(action.type);
+      throw new ExhaustivenessFailureError(action.type);
   }
 };

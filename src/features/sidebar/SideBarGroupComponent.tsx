@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../app/hooks';
 import { setFocus } from '../menu/focus/focus-reducers';
+import { ElementType } from '../model/common/element-types';
 import { SidebarSection } from './sidebar';
 
 export const SideBarGroupComponent: React.FC<{
@@ -13,7 +14,7 @@ export const SideBarGroupComponent: React.FC<{
   const dispatch = useAppDispatch();
 
   const changeFocusedTypeFn = () => {
-    dispatch(setFocus(props.group.type));
+    dispatch(setFocus(props.group.type as ElementType.Type));
   };
   const createNewItem = () => {
     props.clearAllFn();

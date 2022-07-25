@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UnhandledCommandEditingEventTypeError } from '../../../error/UnhandledCommandEditingEventTypeError';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Command } from './command';
@@ -9,6 +9,7 @@ import {
   CommandReducerActionType,
   CommandReducerDeleteAction,
   CommandReducerMoveAction,
+  CommandReducerSpecTypeAction,
   CommandReducerStringAction,
 } from './command-editing-context';
 
@@ -58,7 +59,7 @@ const changeEditingCommandRoleKey = (
 };
 const changeEditingCommandSpecType = (
   state: Command,
-  action: CommandReducerStringAction
+  action: CommandReducerSpecTypeAction
 ): Command => {
   return {
     ...state,
@@ -156,7 +157,7 @@ export const commandReactReducer = (
     case CommandReducerActionType.CHANGE_SPEC_TYPE:
       return changeEditingCommandSpecType(
         state,
-        action as CommandReducerStringAction
+        action as CommandReducerSpecTypeAction
       );
     case CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID:
       return changeEditingCommandSpecVariableId(
@@ -189,6 +190,6 @@ export const commandReactReducer = (
         action as CommandReducerDeleteAction
       );
     default:
-      throw new UnhandledCommandEditingEventTypeError(action.type);
+      throw new ExhaustivenessFailureError(action.type);
   }
 };

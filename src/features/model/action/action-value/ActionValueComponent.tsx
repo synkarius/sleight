@@ -91,7 +91,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const variableFieldName = Field[variableValidator.field];
   const roleKeyFieldName = Field[roleKeyValidator.field];
   const variableTypeIsNumeric =
-    props.actionValue.variableType === VariableType.RANGE;
+    props.actionValue.variableType === VariableType.Enum.RANGE;
   const errorMessage = getRelevantErrorMessage(validationErrors, [
     valueValidator,
     variableValidator,

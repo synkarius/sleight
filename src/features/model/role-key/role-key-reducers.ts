@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UnhandledRoleKeyEditingEventTypeError } from '../../../error/UnhandledRoleKeyEditingEventTypeError';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { RoleKey } from './role-key';
 import {
@@ -46,6 +46,6 @@ export const roleKeyReactReducer = (
     case RoleKeyReducerActionType.CHANGE_VALUE:
       return { ...state, value: action.payload };
     default:
-      throw new UnhandledRoleKeyEditingEventTypeError(action.type);
+      throw new ExhaustivenessFailureError(action.type);
   }
 };

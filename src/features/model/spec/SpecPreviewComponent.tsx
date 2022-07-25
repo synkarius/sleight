@@ -1,11 +1,12 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
-import { UnhandledSpecItemTypeError } from '../../../error/UnhandledSpecItemTypeError';
+import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Selector } from '../selector/selector';
 import { Variable } from '../variable/variable';
-import { SpecItem, SpecItemType } from './spec';
+import { SpecItem } from './spec';
+import { SpecItemType } from './spec-item-type';
 
 const mapSpecItemToPreview = (
   specItem: SpecItem,
@@ -13,12 +14,12 @@ const mapSpecItemToPreview = (
   variablesSaved: ReduxFriendlyStringMap<Variable>
 ): string => {
   switch (specItem.itemType) {
-    case SpecItemType.SELECTOR:
+    case SpecItemType.Enum.SELECTOR:
       const selector = selectorsSaved[specItem.itemId];
       return (
         '[ ' + selector.items.map((sItem) => sItem.value).join(' | ') + ' ]'
       );
-    case SpecItemType.VARIABLE:
+    case SpecItemType.Enum.VARIABLE:
       const variable = variablesSaved[specItem.itemId];
       // TODO: should be returning variable.name, but haven't validated it yet
       /* Notes
@@ -29,7 +30,7 @@ const mapSpecItemToPreview = (
        */
       return '<variable>';
     default:
-      throw new UnhandledSpecItemTypeError(specItem.itemType);
+      throw new ExhaustivenessFailureError(specItem.itemType);
   }
 };
 

@@ -26,7 +26,7 @@ const createTestVariable = (id: string): Variable => {
     id: id,
     roleKeyId: null,
     name: '',
-    type: VariableType.TEXT,
+    type: VariableType.Enum.TEXT,
   };
 };
 
@@ -140,13 +140,13 @@ describe('role key reducer', () => {
     const actual = variableReducer(
       createdState,
       changeEditingVariableType({
-        variableType: VariableType.TEXT,
+        variableType: VariableType.Enum.TEXT,
         selectorId: null,
       })
     );
     expect(actual.editing).toEqual({
       ...createTestVariable(newObject.id),
-      type: VariableType.TEXT,
+      type: VariableType.Enum.TEXT,
     });
   });
 
@@ -161,13 +161,13 @@ describe('role key reducer', () => {
     const actual = variableReducer(
       createdState,
       changeEditingVariableType({
-        variableType: VariableType.RANGE,
+        variableType: VariableType.Enum.RANGE,
         selectorId: null,
       })
     );
     expect(actual.editing).toEqual({
       ...createTestVariable(newObject.id),
-      type: VariableType.RANGE,
+      type: VariableType.Enum.RANGE,
       beginInclusive: 0,
       endInclusive: 9,
     });
@@ -184,13 +184,13 @@ describe('role key reducer', () => {
     const actual = variableReducer(
       createdState,
       changeEditingVariableType({
-        variableType: VariableType.CHOICE,
+        variableType: VariableType.Enum.CHOICE,
         selectorId: 'asdf',
       })
     );
     expect(actual.editing).toEqual({
       ...createTestVariable(newObject.id),
-      type: VariableType.CHOICE,
+      type: VariableType.Enum.CHOICE,
       items: [
         {
           roleKeyId: null,

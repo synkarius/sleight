@@ -33,49 +33,49 @@ export const SidebarComponent = () => {
   const variablesSaved = useAppSelector((state) => state.variable.saved);
 
   const actionSection: SidebarSection = {
-    type: ElementType.ACTION,
+    type: ElementType.Enum.ACTION,
     items: Object.values(actionsSaved),
-    createFn: () => dispatch(setFocus(ElementType.ACTION)),
+    createFn: () => dispatch(setFocus(ElementType.Enum.ACTION)),
     selectFn: (id) => {
       dispatch(selectAction(id));
-      dispatch(setFocus(ElementType.ACTION));
+      dispatch(setFocus(ElementType.Enum.ACTION));
     },
     clearFn: () => dispatch(setFocus(undefined)),
   };
   const commandSection: SidebarSection = {
-    type: ElementType.COMMAND,
+    type: ElementType.Enum.COMMAND,
     items: Object.values(commandsSaved),
-    createFn: () => dispatch(setFocus(ElementType.COMMAND)),
+    createFn: () => dispatch(setFocus(ElementType.Enum.COMMAND)),
     selectFn: (id) => {
       dispatch(selectCommand(id));
-      dispatch(setFocus(ElementType.COMMAND));
+      dispatch(setFocus(ElementType.Enum.COMMAND));
     },
     clearFn: () => dispatch(setFocus(undefined)),
   };
   const contextSection: SidebarSection = {
-    type: ElementType.CONTEXT,
+    type: ElementType.Enum.CONTEXT,
     items: Object.values(contextsSaved),
-    createFn: () => dispatch(setFocus(ElementType.CONTEXT)),
+    createFn: () => dispatch(setFocus(ElementType.Enum.CONTEXT)),
     selectFn: (id) => {
       dispatch(selectContext(id));
-      dispatch(setFocus(ElementType.CONTEXT));
+      dispatch(setFocus(ElementType.Enum.CONTEXT));
     },
     clearFn: () => dispatch(setFocus(undefined)),
   };
   const roleKeySection: SidebarSection = {
-    type: ElementType.ROLE_KEY,
+    type: ElementType.Enum.ROLE_KEY,
     items: Object.values(roleKeysSaved).map((rk) => {
       return { id: rk.id, name: rk.value };
     }),
-    createFn: () => dispatch(setFocus(ElementType.ROLE_KEY)),
+    createFn: () => dispatch(setFocus(ElementType.Enum.ROLE_KEY)),
     selectFn: (id) => {
       dispatch(selectRoleKey(id));
-      dispatch(setFocus(ElementType.ROLE_KEY));
+      dispatch(setFocus(ElementType.Enum.ROLE_KEY));
     },
     clearFn: () => dispatch(selectRoleKey(undefined)),
   };
   const specSection: SidebarSection = {
-    type: ElementType.SPEC,
+    type: ElementType.Enum.SPEC,
     items: Object.values(specsSaved),
     createFn: () => {
       // TODO: this way creates orphan selectors - clean them up --> will get cleaned up by new (local) validators
@@ -88,7 +88,7 @@ export const SidebarComponent = () => {
     clearFn: () => dispatch(clearEditingSpec()),
   };
   const variableSection: SidebarSection = {
-    type: ElementType.VARIABLE,
+    type: ElementType.Enum.VARIABLE,
     items: Object.values(variablesSaved),
     createFn: () => dispatch(createNewEditingVariable(createText())),
     selectFn: (variableId) => dispatch(selectVariable(variableId)),

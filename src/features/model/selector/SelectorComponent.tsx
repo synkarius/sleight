@@ -1,8 +1,8 @@
 import React, { useId } from 'react';
 import { FormGroup, FormLabel, FormText, Row } from 'react-bootstrap';
 import { Selector } from './selector';
+import { SelectorButtonType } from './selector-button-type';
 import {
-  SelectorButtonType,
   SelectorItemComponent,
   SelectorPositionData,
 } from './SelectorItemComponent';
@@ -13,7 +13,9 @@ const getSelectorPositionData = (
 ): SelectorPositionData => {
   return {
     selectorButtonType:
-      index === 0 ? SelectorButtonType.ADD_NEW : SelectorButtonType.REMOVE,
+      index === 0
+        ? SelectorButtonType.Enum.ADD_NEW
+        : SelectorButtonType.Enum.REMOVE,
     isLast: index === length - 1,
   };
 };

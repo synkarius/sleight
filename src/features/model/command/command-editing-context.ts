@@ -1,5 +1,6 @@
 import { createEditingContext } from '../common/editing-context';
 import { MoveDirection } from '../common/move-direction';
+import { CommandSpecType } from './command-spec-type';
 
 export enum CommandReducerActionType {
   CHANGE_NAME,
@@ -29,6 +30,8 @@ type AbstractCommandReducerAction<T> = {
 };
 
 export type CommandReducerStringAction = AbstractCommandReducerAction<string>;
+export type CommandReducerSpecTypeAction =
+  AbstractCommandReducerAction<CommandSpecType.Type>;
 export type CommandReducerActionIdAction =
   AbstractCommandReducerAction<ChangeCommandActionId>;
 export type CommandReducerMoveAction =
@@ -36,6 +39,7 @@ export type CommandReducerMoveAction =
 export type CommandReducerDeleteAction = AbstractCommandReducerAction<number>;
 export type CommandReducerAction =
   | CommandReducerStringAction
+  | CommandReducerSpecTypeAction
   | CommandReducerActionIdAction
   | CommandReducerMoveAction
   | CommandReducerDeleteAction;

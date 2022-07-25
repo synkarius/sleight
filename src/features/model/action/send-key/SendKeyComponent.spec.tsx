@@ -28,22 +28,28 @@ let user: UserEvent;
 
 beforeAll(() => {
   // save variables
-  const rangeVariable = createRange();
-  rangeVariable.name = RANGE_VARIABLE_NAME;
-  store.dispatch(createNewEditingVariable(rangeVariable));
+  store.dispatch(
+    createNewEditingVariable({ ...createRange(), name: RANGE_VARIABLE_NAME })
+  );
   store.dispatch(saveEditingVariable());
   store.dispatch(clearEditingVariable());
   const choiceItemSelector = createSelector();
   store.dispatch(createNewSelector(choiceItemSelector));
-  const choiceVariable = createChoice(choiceItemSelector.id);
-  choiceVariable.name = CHOICE_VARIABLE_NAME;
-  store.dispatch(createNewEditingVariable(choiceVariable));
+  store.dispatch(
+    createNewEditingVariable({
+      ...createChoice(choiceItemSelector.id),
+      name: CHOICE_VARIABLE_NAME,
+    })
+  );
   store.dispatch(saveEditingVariable());
   store.dispatch(clearEditingVariable());
   // save a role key
-  const roleKey = createRoleKey();
-  roleKey.value = ROLE_KEY_NAME;
-  store.dispatch(saveRoleKey(roleKey));
+  store.dispatch(
+    saveRoleKey({
+      ...createRoleKey(),
+      value: ROLE_KEY_NAME,
+    })
+  );
   user = userEvent.setup();
 });
 

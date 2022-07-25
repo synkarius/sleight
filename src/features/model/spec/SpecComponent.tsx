@@ -9,7 +9,7 @@ import {
 } from './spec-reducers';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
-import { createSpecItem, Spec, SpecItemType } from './spec';
+import { createSpecItem, Spec } from './spec';
 import { SpecItemComponent } from './SpecItemComponent';
 import { createSelector } from '../selector/selector';
 import { createNewSelector } from '../selector/selector-reducers';
@@ -17,6 +17,7 @@ import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { SpecPreviewComponent } from './SpecPreviewComponent';
 import { Field } from '../../../validation/validation-field';
+import { SpecItemType } from './spec-item-type';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
 
   const addSpecItemHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const selector = createSelector();
-    const specItem = createSpecItem(selector.id, SpecItemType.SELECTOR);
+    const specItem = createSpecItem(selector.id, SpecItemType.Enum.SELECTOR);
     dispatch(createNewSelector(selector));
     dispatch(addSpecItem(specItem));
   };

@@ -23,15 +23,21 @@ let user: UserEvent;
 
 beforeAll(() => {
   // save a variable
-  const variable = createRange();
-  variable.name = VARIABLE_NAME;
-  store.dispatch(createNewEditingVariable(variable));
+  store.dispatch(
+    createNewEditingVariable({
+      ...createRange(),
+      name: VARIABLE_NAME,
+    })
+  );
   store.dispatch(saveEditingVariable());
   store.dispatch(clearEditingVariable());
   // save a role key
-  const roleKey = createRoleKey();
-  roleKey.value = ROLE_KEY_NAME;
-  store.dispatch(saveRoleKey(roleKey));
+  store.dispatch(
+    saveRoleKey({
+      ...createRoleKey(),
+      value: ROLE_KEY_NAME,
+    })
+  );
   user = userEvent.setup();
 });
 

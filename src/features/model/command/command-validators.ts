@@ -11,7 +11,7 @@ import { CommandSpecType } from './command-spec-type';
 export const commandSpecVariableSelectedValidator: FieldValidator<Command> =
   createFieldValidator(
     Field.CMD_SPEC_VAR,
-    (command) => CommandSpecType.VARIABLE === command.specType,
+    (command) => CommandSpecType.Enum.VARIABLE === command.specType,
     (command) => isSelected(command.specVariableId),
     createValidationError('spec variable must be selected')
   );
@@ -19,7 +19,7 @@ export const commandSpecVariableSelectedValidator: FieldValidator<Command> =
 export const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
   createFieldValidator(
     Field.CMD_SPEC_RK,
-    (command) => CommandSpecType.ROLE_KEY === command.specType,
+    (command) => CommandSpecType.Enum.ROLE_KEY === command.specType,
     (command) => isSelected(command.specRoleKeyId),
     createValidationError('spec role key must be selected')
   );

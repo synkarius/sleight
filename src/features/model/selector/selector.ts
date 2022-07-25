@@ -4,11 +4,11 @@ import { RoleKeyed, Ided } from '../../domain';
 interface BasicIded extends RoleKeyed, Ided {}
 
 export interface SelectorItem extends RoleKeyed, Ided {
-  value: string;
+  readonly value: string;
 }
 
 export interface Selector extends RoleKeyed, Ided {
-  items: SelectorItem[];
+  readonly items: SelectorItem[];
 }
 
 export const createSelectorItem = (): SelectorItem => {
@@ -34,17 +34,17 @@ export const createSelector = (
 };
 
 export interface CreateSelectorItemPayload {
-  selectorId: string;
-  selectorItem: SelectorItem;
+  readonly selectorId: string;
+  readonly selectorItem: SelectorItem;
 }
 
 export interface EditSelectorItemPayload {
-  selectorId: string;
-  selectorItemId: string;
-  value: string;
+  readonly selectorId: string;
+  readonly selectorItemId: string;
+  readonly value: string;
 }
 
 export interface DeleteSelectorItemPayload {
-  selectorId: string;
-  selectorItemId: string;
+  readonly selectorId: string;
+  readonly selectorItemId: string;
 }

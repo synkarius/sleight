@@ -1,6 +1,7 @@
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
-import { createSpec, createSpecItem, Spec, SpecItemType } from './spec';
+import { createSpec, createSpecItem, Spec } from './spec';
+import { SpecItemType } from './spec-item-type';
 import {
   SpecsState,
   createNewEditingSpec,
@@ -30,7 +31,7 @@ const createTestSpec = (
       {
         id: specItemId,
         itemId: selectorId,
-        itemType: SpecItemType.SELECTOR,
+        itemType: SpecItemType.Enum.SELECTOR,
       },
     ],
   };
@@ -152,7 +153,10 @@ describe('role key reducer', () => {
 
   it('should handle add spec item', () => {
     const newSpec1 = createSpec('selector-id-1');
-    const newSpecItem1 = createSpecItem('selector-id-2', SpecItemType.SELECTOR);
+    const newSpecItem1 = createSpecItem(
+      'selector-id-2',
+      SpecItemType.Enum.SELECTOR
+    );
 
     const createdState = specReducer(
       initialState,
@@ -183,7 +187,7 @@ describe('role key reducer', () => {
       changeSpecItemType({
         specItemId: newSpec1.items[0].id,
         specItemItemId: 'variable-id-1',
-        specItemItemType: SpecItemType.VARIABLE,
+        specItemItemType: SpecItemType.Enum.VARIABLE,
       })
     );
     expect(actual.editing).toEqual({
@@ -196,7 +200,7 @@ describe('role key reducer', () => {
         {
           ...newSpec1.items[0],
           itemId: 'variable-id-1',
-          itemType: SpecItemType.VARIABLE,
+          itemType: SpecItemType.Enum.VARIABLE,
         },
       ],
     });
@@ -214,7 +218,7 @@ describe('role key reducer', () => {
       changeSpecItemType({
         specItemId: newSpec1.items[0].id,
         specItemItemId: 'variable-id-1',
-        specItemItemType: SpecItemType.VARIABLE,
+        specItemItemType: SpecItemType.Enum.VARIABLE,
       })
     );
 
@@ -235,7 +239,7 @@ describe('role key reducer', () => {
         {
           ...newSpec1.items[0],
           itemId: 'variable-id-2',
-          itemType: SpecItemType.VARIABLE,
+          itemType: SpecItemType.Enum.VARIABLE,
         },
       ],
     });
@@ -243,8 +247,14 @@ describe('role key reducer', () => {
 
   it('should handle move spec item up', () => {
     const newSpec1 = createSpec('selector-id-1');
-    const newSpecItem2 = createSpecItem('variable-id-1', SpecItemType.VARIABLE);
-    const newSpecItem3 = createSpecItem('selector-id-2', SpecItemType.SELECTOR);
+    const newSpecItem2 = createSpecItem(
+      'variable-id-1',
+      SpecItemType.Enum.VARIABLE
+    );
+    const newSpecItem3 = createSpecItem(
+      'selector-id-2',
+      SpecItemType.Enum.SELECTOR
+    );
 
     const createdState = specReducer(
       initialState,
@@ -272,8 +282,14 @@ describe('role key reducer', () => {
 
   it('should handle move spec item down', () => {
     const newSpec1 = createSpec('selector-id-1');
-    const newSpecItem2 = createSpecItem('variable-id-1', SpecItemType.VARIABLE);
-    const newSpecItem3 = createSpecItem('selector-id-2', SpecItemType.SELECTOR);
+    const newSpecItem2 = createSpecItem(
+      'variable-id-1',
+      SpecItemType.Enum.VARIABLE
+    );
+    const newSpecItem3 = createSpecItem(
+      'selector-id-2',
+      SpecItemType.Enum.SELECTOR
+    );
 
     const createdState = specReducer(
       initialState,
@@ -301,8 +317,14 @@ describe('role key reducer', () => {
 
   it('should handle move spec item up out of bounds', () => {
     const newSpec1 = createSpec('selector-id-1');
-    const newSpecItem2 = createSpecItem('variable-id-1', SpecItemType.VARIABLE);
-    const newSpecItem3 = createSpecItem('selector-id-2', SpecItemType.SELECTOR);
+    const newSpecItem2 = createSpecItem(
+      'variable-id-1',
+      SpecItemType.Enum.VARIABLE
+    );
+    const newSpecItem3 = createSpecItem(
+      'selector-id-2',
+      SpecItemType.Enum.SELECTOR
+    );
 
     const createdState = specReducer(
       initialState,
@@ -330,8 +352,14 @@ describe('role key reducer', () => {
 
   it('should handle move spec item down out of bounds', () => {
     const newSpec1 = createSpec('selector-id-1');
-    const newSpecItem2 = createSpecItem('variable-id-1', SpecItemType.VARIABLE);
-    const newSpecItem3 = createSpecItem('selector-id-2', SpecItemType.SELECTOR);
+    const newSpecItem2 = createSpecItem(
+      'variable-id-1',
+      SpecItemType.Enum.VARIABLE
+    );
+    const newSpecItem3 = createSpecItem(
+      'selector-id-2',
+      SpecItemType.Enum.SELECTOR
+    );
 
     const createdState = specReducer(
       initialState,
@@ -359,7 +387,10 @@ describe('role key reducer', () => {
 
   it('should handle delete spec item', () => {
     const newSpec1 = createSpec('selector-id-1');
-    const newSpecItem1 = createSpecItem('selector-id-2', SpecItemType.SELECTOR);
+    const newSpecItem1 = createSpecItem(
+      'selector-id-2',
+      SpecItemType.Enum.SELECTOR
+    );
 
     const createdState = specReducer(
       initialState,

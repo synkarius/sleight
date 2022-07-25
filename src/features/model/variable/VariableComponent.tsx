@@ -28,9 +28,9 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     dispatch(changeEditingVariableName(event.target.value));
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newVariableType = event.target.value;
+    const newVariableType = event.target.value as VariableType.Type;
     let selectorId: string | null = null;
-    if (newVariableType === VariableType.CHOICE) {
+    if (newVariableType === VariableType.Enum.CHOICE) {
       const selector = createSelector();
       selectorId = selector.id;
       dispatch(createNewSelector(selector));
@@ -81,10 +81,10 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         </FormSelect>
         <FormText className="text-muted">kind of variable</FormText>
       </FormGroupRowComponent>
-      {props.variable.type === VariableType.RANGE && (
+      {props.variable.type === VariableType.Enum.RANGE && (
         <RangeComponent range={props.variable as Range} />
       )}
-      {props.variable.type === VariableType.CHOICE && (
+      {props.variable.type === VariableType.Enum.CHOICE && (
         <ChoiceComponent choice={props.variable as Choice} />
       )}
       <Button onClick={submitHandler} variant="primary" size="lg">
