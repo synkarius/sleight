@@ -21,7 +21,7 @@ export const createRange = (): Range => {
     id: getRandomId(),
     type: VariableType.Enum.RANGE,
     name: '',
-    roleKeyId: null,
+    roleKeyId: undefined,
     beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
     endInclusive: END_INCLUSIVE_DEFAULT,
   };

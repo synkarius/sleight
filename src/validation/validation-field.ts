@@ -37,8 +37,8 @@ export enum Field {
   CMD_ROLE_KEY,
   // command: spec
   CMD_SPEC_RADIO,
-  CMD_SPEC_VAR,
-  CMD_SPEC_RK,
+  CMD_SPEC_SPEC_SELECT,
+  CMD_SPEC_RK_SELECT,
   // context:
   CTX_MATCHER,
   CTX_NAME,

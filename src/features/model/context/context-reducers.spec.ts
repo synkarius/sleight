@@ -33,7 +33,7 @@ describe('context reducer', () => {
 
     const expected: ReduxFriendlyStringMap<Context> = {};
     expected[obj.id] = {
-      roleKeyId: null,
+      roleKeyId: undefined,
       id: obj.id,
       name: '',
       type: ContextType.Enum.EXECUTABLE_NAME,

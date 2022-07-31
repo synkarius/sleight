@@ -35,10 +35,10 @@ describe('role key reducer', () => {
     const expected: ReduxFriendlyStringMap<Selector> = {};
     expected[newObject.id] = {
       id: newObject.id,
-      roleKeyId: null,
+      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: null,
+          roleKeyId: undefined,
           id: expect.any(String),
           value: '',
         },
@@ -92,10 +92,10 @@ describe('role key reducer', () => {
     const expected: ReduxFriendlyStringMap<Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
-      roleKeyId: null,
+      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: null,
+          roleKeyId: undefined,
           id: expect.any(String),
           value: '',
         },
@@ -108,10 +108,10 @@ describe('role key reducer', () => {
     };
     expected[newSelector2.id] = {
       id: newSelector2.id,
-      roleKeyId: null,
+      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: null,
+          roleKeyId: undefined,
           id: expect.any(String),
           value: '',
         },
@@ -149,7 +149,7 @@ describe('role key reducer', () => {
     const expected: ReduxFriendlyStringMap<Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
-      roleKeyId: null,
+      roleKeyId: undefined,
       items: [
         {
           roleKeyId: 'some-id',
@@ -180,7 +180,7 @@ describe('role key reducer', () => {
     const expected: ReduxFriendlyStringMap<Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
-      roleKeyId: null,
+      roleKeyId: undefined,
       items: [],
     };
 

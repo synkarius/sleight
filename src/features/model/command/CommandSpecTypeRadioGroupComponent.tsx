@@ -11,7 +11,7 @@ export const CommandSpecTypeRadioGroupComponent: React.FC<{
   const id2 = useId();
 
   const radioButtonData = [
-    { id: id1, type: CommandSpecType.Enum.VARIABLE },
+    { id: id1, type: CommandSpecType.Enum.SPEC },
     { id: id2, type: CommandSpecType.Enum.ROLE_KEY },
   ];
   return (

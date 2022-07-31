@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { createRoleKey } from '../role-key/role-key';
 import { saveRoleKey } from '../role-key/role-key-reducers';
 import { createSelector, Selector } from '../selector/data/selector-domain';
@@ -50,7 +49,7 @@ beforeEach(async () => {
   );
 });
 
-describe('role key component tests', () => {
+describe('command component tests', () => {
   it('should not save if validation errors', async () => {
     const saveButton = screen.getByText<HTMLButtonElement>('Save');
     await user.click(saveButton);
@@ -58,9 +57,9 @@ describe('role key component tests', () => {
     expect(saveButton).toBeDisabled();
   });
 
-  it('should invalidate unselected spec variable', async () => {
+  it('should invalidate unselected spec', async () => {
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_VAR],
+      name: Field[Field.CMD_SPEC_SPEC_SELECT],
     });
     await user.click(variableSelect);
     await user.tab();
@@ -68,9 +67,9 @@ describe('role key component tests', () => {
     expect(variableSelect).toHaveClass('is-invalid');
   });
 
-  it('should validate selected spec variable', async () => {
+  it('should validate selected spec', async () => {
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_VAR],
+      name: Field[Field.CMD_SPEC_SPEC_SELECT],
     });
     await user.selectOptions(variableSelect, [SPEC_NAME]);
     await user.tab();

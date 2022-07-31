@@ -21,7 +21,7 @@ export interface Selector extends RoleKeyed, Ided {
 export const createSelectorItem = (): SelectorItem => {
   return {
     id: getRandomId(),
-    roleKeyId: null,
+    roleKeyId: undefined,
     value: '',
   };
 };
@@ -29,7 +29,7 @@ export const createSelectorItem = (): SelectorItem => {
 export const createSelector = (): Selector => {
   return {
     id: getRandomId(),
-    roleKeyId: null,
+    roleKeyId: undefined,
     items: [createSelectorItem()],
   };
 };

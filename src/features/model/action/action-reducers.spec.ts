@@ -18,7 +18,7 @@ const createTestAction = (id: string): Action => {
     id: id,
     name: '',
     type: ActionType.Enum.BRING_APP,
-    roleKeyId: null,
+    roleKeyId: undefined,
   };
 };
 

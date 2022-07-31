@@ -26,13 +26,19 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(CommandEditingContext);
 
-  const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const nameChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({
       type: CommandReducerActionType.CHANGE_NAME,
-      payload: event.target.value,
+      payload: e.target.value,
     });
   };
-  const addActionHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
+  const roleKeyChangedHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    editingContext.localDispatchFn({
+      type: CommandReducerActionType.CHANGE_ROLE_KEY,
+      payload: e.target.value,
+    });
+  };
+  const addActionHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     const actions = Object.values(actionsSaved);
     if (actions.length > 0) {
       editingContext.localDispatchFn({
@@ -41,7 +47,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       });
     }
   };
-  const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
+  const submitHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
       reduxDispatch(saveEditingCommand(props.command));
@@ -52,8 +58,8 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const errorResultFields = errorResults.map((result) => result.field);
   const specFields = {
     radio: Field.CMD_SPEC_RADIO,
-    variable: Field.CMD_SPEC_VAR,
-    roleKey: Field.CMD_SPEC_RK,
+    variable: Field.CMD_SPEC_SPEC_SELECT,
+    roleKey: Field.CMD_SPEC_RK_SELECT,
   };
   const commandSpecVariableIsInvalid = () =>
     errorResultFields.includes(specFields.variable);
@@ -79,12 +85,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         <RoleKeyDropdownComponent
           field={Field.CMD_ROLE_KEY}
           roleKeyId={props.command.roleKeyId}
-          onChange={(e) => {
-            editingContext.localDispatchFn({
-              type: CommandReducerActionType.CHANGE_ROLE_KEY,
-              payload: e.target.value,
-            });
-          }}
+          onChange={roleKeyChangedHandler}
         />
         <FormText className="text-muted">role of command</FormText>
       </FormGroupRowComponent>
@@ -104,7 +105,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             validationContext.touch(specFields.radio);
           }}
         />
-        {props.command.specType === CommandSpecType.Enum.VARIABLE && (
+        {props.command.specType === CommandSpecType.Enum.SPEC && (
           <SpecDropdownComponent
             field={specFields.variable}
             specId={props.command.specVariableId}
@@ -122,7 +123,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         {props.command.specType === CommandSpecType.Enum.ROLE_KEY && (
           <RoleKeyDropdownComponent
             field={specFields.roleKey}
-            roleKeyId={props.command.roleKeyId}
+            roleKeyId={props.command.specRoleKeyId}
             onChange={(e) => {
               editingContext.localDispatchFn({
                 type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,

@@ -29,7 +29,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariableType = event.target.value as VariableType.Type;
-    let selectorId: string | null = null;
+    let selectorId: string | undefined = undefined;
     if (newVariableType === VariableType.Enum.CHOICE) {
       const selector = createSelector();
       selectorId = selector.id;

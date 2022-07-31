@@ -12,7 +12,7 @@ export const createText = (): Text => {
     id: getRandomId(),
     type: VariableType.Enum.TEXT,
     name: '',
-    roleKeyId: null,
+    roleKeyId: undefined,
   };
 };
 

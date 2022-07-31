@@ -20,7 +20,7 @@ const createTestSpecRedux = (from?: {
   return {
     id: from?.id ?? 'asdf-id',
     name: '',
-    roleKeyId: null,
+    roleKeyId: undefined,
     items: [
       {
         id: from?.specItemId ?? 'asdf-id',

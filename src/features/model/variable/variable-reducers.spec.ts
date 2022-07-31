@@ -24,7 +24,7 @@ import { VariableType } from './variable-types';
 const createTestVariable = (id: string): Variable => {
   return {
     id: id,
-    roleKeyId: null,
+    roleKeyId: undefined,
     name: '',
     type: VariableType.Enum.TEXT,
   };
@@ -33,12 +33,12 @@ const createTestVariable = (id: string): Variable => {
 describe('role key reducer', () => {
   const initialState: VariablesState = {
     saved: {},
-    editing: null,
+    editing: undefined,
   };
   it('should handle initial state', () => {
     expect(variableReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editing: null,
+      editing: undefined,
     });
   });
 
@@ -141,7 +141,7 @@ describe('role key reducer', () => {
       createdState,
       changeEditingVariableType({
         variableType: VariableType.Enum.TEXT,
-        selectorId: null,
+        selectorId: undefined,
       })
     );
     expect(actual.editing).toEqual({
@@ -162,7 +162,7 @@ describe('role key reducer', () => {
       createdState,
       changeEditingVariableType({
         variableType: VariableType.Enum.RANGE,
-        selectorId: null,
+        selectorId: undefined,
       })
     );
     expect(actual.editing).toEqual({
@@ -193,7 +193,7 @@ describe('role key reducer', () => {
       type: VariableType.Enum.CHOICE,
       items: [
         {
-          roleKeyId: null,
+          roleKeyId: undefined,
           id: expect.any(String),
           selectorId: 'asdf',
           value: '',

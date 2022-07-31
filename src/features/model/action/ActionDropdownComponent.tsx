@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 type ActionDropdownComponentProps = {
-  actionId: string | null;
+  actionId: string | undefined;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
   isInvalid?: boolean;

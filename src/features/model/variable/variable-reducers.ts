@@ -16,12 +16,12 @@ import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailure
 
 export type VariablesState = {
   saved: ReduxFriendlyStringMap<Variable>;
-  editing: Variable | null;
+  editing: Variable | undefined;
 };
 
 const initialState: VariablesState = {
   saved: {},
-  editing: null,
+  editing: undefined,
 };
 
 const variablesSlice = createSlice({
@@ -41,7 +41,7 @@ const variablesSlice = createSlice({
       }
     },
     clearEditingVariable: (state) => {
-      state.editing = null;
+      state.editing = undefined;
     },
     changeEditingVariableName: (state, action: PayloadAction<string>) => {
       if (state.editing) {

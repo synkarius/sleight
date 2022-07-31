@@ -10,7 +10,7 @@ export interface ChoiceItem extends RoleKeyed, Ided {
 
 export const createChoiceItem = (selectorId: string): ChoiceItem => {
   return {
-    roleKeyId: null,
+    roleKeyId: undefined,
     id: getRandomId(),
     selectorId: selectorId,
     value: '',
@@ -31,7 +31,7 @@ export const createChoice = (selectorId: string): Choice => {
     id: getRandomId(),
     type: VariableType.Enum.CHOICE,
     name: '',
-    roleKeyId: null,
+    roleKeyId: undefined,
     items: [createChoiceItem(selectorId)],
   };
 };
@@ -58,5 +58,5 @@ export type RemoveChoiceItemPayload = {
 
 export type ChangeVariableTypePayload = {
   readonly variableType: VariableType.Type;
-  readonly selectorId: string | null;
+  readonly selectorId: string | undefined;
 };

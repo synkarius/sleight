@@ -14,7 +14,7 @@ export const createVariable = (
     id: getRandomId(),
     type: type,
     name: '',
-    roleKeyId: null,
+    roleKeyId: undefined,
   };
 };
 

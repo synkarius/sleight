@@ -50,7 +50,7 @@ beforeAll(() => {
   const spec: SpecRedux = {
     id: 'asdf',
     name: SPEC_NAME_1,
-    roleKeyId: null,
+    roleKeyId: undefined,
     items: [],
   };
   store.dispatch(saveEditingSpec(spec));

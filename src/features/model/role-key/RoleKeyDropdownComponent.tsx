@@ -5,7 +5,7 @@ import { Field } from '../../../validation/validation-field';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 type RoleKeyDropdownComponentProps = {
-  roleKeyId: string | null;
+  roleKeyId: string | undefined;
   field: Field;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement>;
