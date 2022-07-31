@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -24,6 +24,7 @@ import {
 import { createRange } from '../model/variable/range/range';
 import { Field } from '../../validation/validation-field';
 import { TEXT_BOX } from '../model/common/accessibility-roles';
+import { CommandSpecType } from '../model/command/command-spec-type';
 
 let user: UserEvent;
 
@@ -69,6 +70,8 @@ beforeEach(async () => {
     </Provider>
   );
 });
+
+const SAVE = 'Save';
 
 const clickToCreateNew = async (type: ElementType.Type): Promise<void> => {
   const sidebarSection = screen.getByText<HTMLButtonElement>(`${type}s`);
@@ -140,6 +143,37 @@ describe('side bar component tests', () => {
     expect(nameField).toHaveValue('');
   });
 
+  it('should display saved action', async () => {
+    await clickToCreateNew(ElementType.Enum.ACTION);
+    // add a name for display
+    const savedName = 'action-1';
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.AC_NAME],
+    });
+    await user.type(nameField, savedName);
+    // minimal info to save
+    const keyToSendField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.AC_KEY_TO_SEND_VALUE],
+    });
+    await user.type(keyToSendField, 'b');
+    // save
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    await user.click(saveButton);
+    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
+     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
+     * It's still "as your user would access it", so still RTL philosophy.
+     */
+    const createButton = screen.getByRole<HTMLButtonElement>('link', {
+      name: 'Create New Action',
+    });
+    const section = createButton.parentElement as HTMLElement;
+    const sidebarSavedItem = within(section).getByRole('button', {
+      name: savedName,
+    });
+
+    expect(sidebarSavedItem).toBeInTheDocument();
+  });
+
   // command
 
   it('should handle create new command ', async () => {
@@ -181,6 +215,41 @@ describe('side bar component tests', () => {
     expect(header).toBeInTheDocument();
     expect(nameField).toBeInTheDocument();
     expect(nameField).toHaveValue('');
+  });
+
+  it('should display saved command', async () => {
+    await clickToCreateNew(ElementType.Enum.COMMAND);
+    // add a name for display
+    const savedName = 'command-1';
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CMD_NAME],
+    });
+    await user.type(nameField, savedName);
+    // minimal info to save
+    const specTypeRoleKeyRadio = screen.getByRole('radio', {
+      name: CommandSpecType.Enum.ROLE_KEY,
+    });
+    await user.click(specTypeRoleKeyRadio);
+    const roleKeySelect = screen.getByRole('list', {
+      name: Field[Field.CMD_SPEC_RK_SELECT],
+    });
+    await user.selectOptions(roleKeySelect, ROLE_KEY_NAME_1);
+    // save
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    await user.click(saveButton);
+    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
+     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
+     * It's still "as your user would access it", so still RTL philosophy.
+     */
+    const createButton = screen.getByRole<HTMLButtonElement>('link', {
+      name: 'Create New Command',
+    });
+    const section = createButton.parentElement as HTMLElement;
+    const sidebarSavedItem = within(section).getByRole('button', {
+      name: savedName,
+    });
+
+    expect(sidebarSavedItem).toBeInTheDocument();
   });
 
   // context
@@ -226,6 +295,37 @@ describe('side bar component tests', () => {
     expect(nameField).toHaveValue('');
   });
 
+  it('should display saved context', async () => {
+    await clickToCreateNew(ElementType.Enum.CONTEXT);
+    // add a name for display
+    const savedName = 'context-1';
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CTX_NAME],
+    });
+    await user.type(nameField, savedName);
+    // minimal info to save
+    const matcherField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CTX_MATCHER],
+    });
+    await user.type(matcherField, 'c');
+    // save
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    await user.click(saveButton);
+    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
+     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
+     * It's still "as your user would access it", so still RTL philosophy.
+     */
+    const createButton = screen.getByRole<HTMLButtonElement>('link', {
+      name: 'Create New Context',
+    });
+    const section = createButton.parentElement as HTMLElement;
+    const sidebarSavedItem = within(section).getByRole('button', {
+      name: savedName,
+    });
+
+    expect(sidebarSavedItem).toBeInTheDocument();
+  });
+
   // role key
 
   it('should handle create new role key ', async () => {
@@ -267,6 +367,33 @@ describe('side bar component tests', () => {
     expect(header).toBeInTheDocument();
     expect(nameField).toBeInTheDocument();
     expect(nameField).toHaveValue('');
+  });
+
+  it('should display saved role key', async () => {
+    await clickToCreateNew(ElementType.Enum.ROLE_KEY);
+    // add a name for display
+    const savedName = 'role-key-1';
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.RK_ROLE_KEY],
+    });
+    await user.type(nameField, savedName);
+    // minimal info to save
+    // save
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    await user.click(saveButton);
+    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
+     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
+     * It's still "as your user would access it", so still RTL philosophy.
+     */
+    const createButton = screen.getByRole<HTMLButtonElement>('link', {
+      name: 'Create New Role Key',
+    });
+    const section = createButton.parentElement as HTMLElement;
+    const sidebarSavedItem = within(section).getByRole('button', {
+      name: savedName,
+    });
+
+    expect(sidebarSavedItem).toBeInTheDocument();
   });
 
   // spec
@@ -312,6 +439,41 @@ describe('side bar component tests', () => {
     expect(nameField).toHaveValue('');
   });
 
+  it('should display saved spec', async () => {
+    await clickToCreateNew(ElementType.Enum.SPEC);
+    // add a name for display
+    const savedName = 'spec-1';
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.SP_NAME],
+    });
+    await user.type(nameField, savedName);
+    // minimal info to save
+    const addNewButton = screen.getByRole<HTMLButtonElement>('button', {
+      name: Field[Field.SP_ADD_ITEM_BUTTON],
+    });
+    await user.click(addNewButton);
+    const selectorItemField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.SP_ITEM_SELECTOR],
+    });
+    await user.type(selectorItemField, 'f');
+    // save
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    await user.click(saveButton);
+    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
+     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
+     * It's still "as your user would access it", so still RTL philosophy.
+     */
+    const createButton = screen.getByRole<HTMLButtonElement>('link', {
+      name: 'Create New Spec',
+    });
+    const section = createButton.parentElement as HTMLElement;
+    const sidebarSavedItem = within(section).getByRole('button', {
+      name: savedName,
+    });
+
+    expect(sidebarSavedItem).toBeInTheDocument();
+  });
+
   // variable
 
   it('should handle create new variable', async () => {
@@ -353,5 +515,32 @@ describe('side bar component tests', () => {
     expect(header).toBeInTheDocument();
     expect(nameField).toBeInTheDocument();
     expect(nameField).toHaveValue('');
+  });
+
+  it('should display saved variable', async () => {
+    await clickToCreateNew(ElementType.Enum.VARIABLE);
+    // add a name for display
+    const savedName = 'variable-1';
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.VAR_NAME],
+    });
+    await user.type(nameField, savedName);
+    // minimal info to save
+    // save
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    await user.click(saveButton);
+    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
+     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
+     * It's still "as your user would access it", so still RTL philosophy.
+     */
+    const createButton = screen.getByRole<HTMLButtonElement>('link', {
+      name: 'Create New Variable',
+    });
+    const section = createButton.parentElement as HTMLElement;
+    const sidebarSavedItem = within(section).getByRole('button', {
+      name: savedName,
+    });
+
+    expect(sidebarSavedItem).toBeInTheDocument();
   });
 });
