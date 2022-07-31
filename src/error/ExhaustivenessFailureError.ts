@@ -6,7 +6,10 @@ import { SleightError } from './SleightError';
  * in switch statements with missing case statements.
  */
 export class ExhaustivenessFailureError extends SleightError {
-  constructor(n: never) {
-    super(ErrorCode.EXHAUSTIVENESS_FAIURE, 'this line should never be reached');
+  constructor(_n: never) {
+    super(
+      ErrorCode.EXHAUSTIVENESS_FAIURE,
+      'this line should be unreachable -- this is a compile time error'
+    );
   }
 }

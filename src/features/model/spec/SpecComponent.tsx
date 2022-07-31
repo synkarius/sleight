@@ -37,6 +37,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       type: SpecReducerActionType.ADD_SPEC_ITEM,
       payload: createSpecItem(),
     });
+    validationContext.touch(Field.SP_ADD_ITEM_BUTTON);
   };
   const saveSpecHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForm();
@@ -54,7 +55,10 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       reduxDispatch(saveEditingSpec(specRedux));
     }
   };
-  const validationErrors = validationContext.getErrorResults();
+  const errorResults = validationContext.getErrorResults();
+  const noSpecItemsErrorMessage = errorResults.find(
+    (result) => result.field === Field.SP_ADD_ITEM_BUTTON
+  )?.message;
 
   return (
     <PanelComponent header="Create/Edit Spec">
@@ -81,7 +85,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
         />
       </FormGroupRowComponent>
       <SpecPreviewComponent spec={props.spec} />
-      <FormGroupRowComponent labelText="Spec Items">
+      <div>
         {props.spec.items.map((specItem, index) => (
           <SpecItemComponent
             key={specItem.id}
@@ -89,25 +93,32 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
             required={index === 0}
           />
         ))}
-      </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="">
-        <Col sm="12" className="my-3">
+      </div>
+      <div>
+        <Col sm="12" className="mb-2">
           <Button
-            variant="outline-primary"
+            variant={
+              !noSpecItemsErrorMessage ? 'outline-primary' : 'outline-danger'
+            }
             onClick={addSpecItemHandler}
             size="lg"
           >
             Add New Spec Item
           </Button>
         </Col>
-      </FormGroupRowComponent>
+        <Col sm="12" className="mb-3">
+          {noSpecItemsErrorMessage && (
+            <span className="small text-danger">{noSpecItemsErrorMessage}</span>
+          )}
+        </Col>
+      </div>
 
       <Col sm="12" className="mb-1">
         <Button
           variant="primary"
           size="lg"
           onClick={saveSpecHandler}
-          disabled={validationErrors.length > 0}
+          disabled={errorResults.length > 0}
         >
           Save
         </Button>

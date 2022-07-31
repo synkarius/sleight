@@ -1,18 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { NotImplementedError } from '../../../error/NotImplementedError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   CreateSelectorItemPayload,
   DeleteSelectorItemPayload,
   EditSelectorItemPayload,
-  Selector,
 } from './data/selector-domain';
 import { SelectorRedux } from './data/selector-redux';
-import {
-  SelectorReducerAction,
-  SelectorReducerActionType,
-} from './selector-editing-context';
 
 export type SelectorsState = {
   saved: ReduxFriendlyStringMap<SelectorRedux>;
@@ -92,15 +85,3 @@ export const {
   deleteSelectorItem,
 } = selectorsSlice.actions;
 export const selectorReduxReducer = selectorsSlice.reducer;
-
-export const selectorReactReducer = (
-  state: Selector,
-  action: SelectorReducerAction
-): Selector => {
-  switch (action.type) {
-    case SelectorReducerActionType.CHANGE_ITEM:
-      throw new NotImplementedError('selector reducer');
-    default:
-      throw new ExhaustivenessFailureError(action.type);
-  }
-};

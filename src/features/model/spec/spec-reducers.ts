@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { NotImplementedError } from '../../../error/NotImplementedError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Spec, SpecItem, VariableSpecItem } from './data/spec-domain';
-import { SpecRedux, SpecItemRedux } from './data/spec-redux';
+import { SpecRedux } from './data/spec-redux';
 import {
   SpecReducerStringAction,
   SpecReducerActionType,
@@ -38,34 +37,16 @@ const specsSlice = createSlice({
   name: 'specs',
   initialState,
   reducers: {
-    // createNewEditingSpec: (state, action: PayloadAction<SpecRedux>) => {
-    //   state.editing = action.payload;
-    // },
     selectSpec: (state, action: PayloadAction<string | undefined>) => {
       state.editingId = action.payload;
     },
     saveEditingSpec: (state, action: PayloadAction<SpecRedux>) => {
       state.saved[action.payload.id] = action.payload;
     },
-    // clearEditingSpec: (state) => {
-    //   state.editing = null;
-    // },
   },
 });
 
-export const {
-  // createNewEditingSpec,
-  selectSpec,
-  saveEditingSpec,
-  // clearEditingSpec,
-  // changeEditingSpecName,
-  // changeEditingSpecRoleKey,
-  // addSpecItem,
-  // changeSpecItemType,
-  // changeSpecItemVariableId,
-  // changeSpecItemOrder,
-  // deleteSpecItem,
-} = specsSlice.actions;
+export const { selectSpec, saveEditingSpec } = specsSlice.actions;
 export const specReduxReducer = specsSlice.reducer;
 
 const changeEditingSpecName = (

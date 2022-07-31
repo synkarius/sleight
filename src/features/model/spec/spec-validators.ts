@@ -14,14 +14,14 @@ import { Spec } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';
 
 export const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
-  Field.SP_SAVE_BUTTON,
+  Field.SP_ADD_ITEM_BUTTON,
   alwaysTrue,
   (spec) => spec.items.length > 0,
   ValidationErrorCode.SP_GTE1_SPEC_ITEM,
   'at least one spec item must be added'
 );
 
-export const findInvalidSelectorIds = (spec: Spec): string[] => {
+const findInvalidSelectorIds = (spec: Spec): string[] => {
   const selectorItems = spec.items.flatMap((specItem) =>
     specItem.itemType === SpecItemType.Enum.SELECTOR
       ? specItem.selector.items
@@ -51,7 +51,7 @@ export const specSelectorItemsCantBeEmpty: FieldValidator<Spec> = {
   },
 };
 
-export const findSpecItemsWithUnselectedVariables = (spec: Spec): string[] => {
+const findSpecItemsWithUnselectedVariables = (spec: Spec): string[] => {
   return spec.items
     .filter(
       (specItem) =>
