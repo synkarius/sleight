@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
-import { flattenDiagnosticMessageText } from 'typescript';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import {
