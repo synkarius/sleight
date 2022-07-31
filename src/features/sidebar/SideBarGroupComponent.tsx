@@ -11,20 +11,17 @@ export const SideBarGroupComponent: React.FC<{
   eventKey: string;
   clearAllFn: () => void;
 }> = (props) => {
-  const dispatch = useAppDispatch();
+  const reduxDispatch = useAppDispatch();
 
-  const changeFocusedTypeFn = () => {
-    dispatch(setFocus(props.group.type as ElementType.Type));
-  };
   const createNewItem = () => {
     props.clearAllFn();
     props.group.createFn();
-    changeFocusedTypeFn();
+    reduxDispatch(setFocus(props.group.type as ElementType.Type));
   };
   const selectItem = (itemId: string) => {
     props.clearAllFn();
     props.group.selectFn(itemId);
-    changeFocusedTypeFn();
+    reduxDispatch(setFocus(props.group.type as ElementType.Type));
   };
 
   return (

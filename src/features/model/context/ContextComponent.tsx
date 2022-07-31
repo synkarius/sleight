@@ -75,6 +75,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     <PanelComponent header="Create/Edit Context">
       <FormGroupRowComponent labelText="Name">
         <FormControl
+          aria-label={Field[Field.CTX_NAME]}
           type="text"
           onChange={nameChangedHandler}
           value={props.context.name}

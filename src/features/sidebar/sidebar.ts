@@ -7,5 +7,4 @@ export interface SidebarSection {
   items: IdedAndNamed[];
   createFn: () => void;
   selectFn: (variableId: string) => void;
-  clearFn: () => void;
 }

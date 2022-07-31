@@ -17,7 +17,7 @@ import { SidebarSection } from './sidebar';
 import { setFocus } from '../menu/focus/focus-reducers';
 
 export const SidebarComponent = () => {
-  const dispatch = useAppDispatch();
+  const reduxDispatch = useAppDispatch();
   const actionsSaved = useAppSelector((state) => state.action.saved);
   const commandsSaved = useAppSelector((state) => state.command.saved);
   const contextsSaved = useAppSelector((state) => state.context.saved);
@@ -28,61 +28,77 @@ export const SidebarComponent = () => {
   const actionSection: SidebarSection = {
     type: ElementType.Enum.ACTION,
     items: Object.values(actionsSaved),
-    createFn: () => dispatch(setFocus(ElementType.Enum.ACTION)),
-    selectFn: (id) => {
-      dispatch(selectAction(id));
-      dispatch(setFocus(ElementType.Enum.ACTION));
+    createFn: () => {
+      reduxDispatch(selectAction());
+      reduxDispatch(setFocus(ElementType.Enum.ACTION));
     },
-    clearFn: () => dispatch(setFocus(undefined)),
+    selectFn: (id) => {
+      reduxDispatch(selectAction(id));
+      reduxDispatch(setFocus(ElementType.Enum.ACTION));
+    },
   };
   const commandSection: SidebarSection = {
     type: ElementType.Enum.COMMAND,
     items: Object.values(commandsSaved),
-    createFn: () => dispatch(setFocus(ElementType.Enum.COMMAND)),
-    selectFn: (id) => {
-      dispatch(selectCommand(id));
-      dispatch(setFocus(ElementType.Enum.COMMAND));
+    createFn: () => {
+      reduxDispatch(selectCommand());
+      reduxDispatch(setFocus(ElementType.Enum.COMMAND));
     },
-    clearFn: () => dispatch(setFocus(undefined)),
+    selectFn: (id) => {
+      reduxDispatch(selectCommand(id));
+      reduxDispatch(setFocus(ElementType.Enum.COMMAND));
+    },
   };
   const contextSection: SidebarSection = {
     type: ElementType.Enum.CONTEXT,
     items: Object.values(contextsSaved),
-    createFn: () => dispatch(setFocus(ElementType.Enum.CONTEXT)),
-    selectFn: (id) => {
-      dispatch(selectContext(id));
-      dispatch(setFocus(ElementType.Enum.CONTEXT));
+    createFn: () => {
+      reduxDispatch(selectContext());
+      reduxDispatch(setFocus(ElementType.Enum.CONTEXT));
     },
-    clearFn: () => dispatch(setFocus(undefined)),
+    selectFn: (id) => {
+      reduxDispatch(selectContext(id));
+      reduxDispatch(setFocus(ElementType.Enum.CONTEXT));
+    },
   };
   const roleKeySection: SidebarSection = {
     type: ElementType.Enum.ROLE_KEY,
     items: Object.values(roleKeysSaved).map((rk) => {
       return { id: rk.id, name: rk.value };
     }),
-    createFn: () => dispatch(setFocus(ElementType.Enum.ROLE_KEY)),
-    selectFn: (id) => {
-      dispatch(selectRoleKey(id));
-      dispatch(setFocus(ElementType.Enum.ROLE_KEY));
+    createFn: () => {
+      reduxDispatch(selectRoleKey());
+      reduxDispatch(setFocus(ElementType.Enum.ROLE_KEY));
     },
-    clearFn: () => dispatch(selectRoleKey(undefined)),
+    selectFn: (id) => {
+      reduxDispatch(selectRoleKey(id));
+      reduxDispatch(setFocus(ElementType.Enum.ROLE_KEY));
+    },
   };
   const specSection: SidebarSection = {
     type: ElementType.Enum.SPEC,
     items: Object.values(specsSaved),
-    createFn: () => dispatch(setFocus(ElementType.Enum.SPEC)),
-    selectFn: (id) => {
-      dispatch(selectSpec(id));
-      dispatch(setFocus(ElementType.Enum.SPEC));
+    createFn: () => {
+      reduxDispatch(selectSpec());
+      reduxDispatch(setFocus(ElementType.Enum.SPEC));
     },
-    clearFn: () => dispatch(setFocus(undefined)),
+    selectFn: (id) => {
+      reduxDispatch(selectSpec(id));
+      reduxDispatch(setFocus(ElementType.Enum.SPEC));
+    },
   };
   const variableSection: SidebarSection = {
     type: ElementType.Enum.VARIABLE,
     items: Object.values(variablesSaved),
-    createFn: () => dispatch(createNewEditingVariable(createText())),
-    selectFn: (variableId) => dispatch(selectVariable(variableId)),
-    clearFn: () => dispatch(clearEditingVariable()),
+    createFn: () => {
+      // TODO
+      reduxDispatch(selectVariable('ASDF'));
+      reduxDispatch(createNewEditingVariable(createText()));
+    },
+    selectFn: (variableId) => {
+      // TODO
+      reduxDispatch(selectVariable(variableId));
+    },
   };
 
   const groups: SidebarSection[] = [
@@ -102,8 +118,8 @@ export const SidebarComponent = () => {
           eventKey={'' + index}
           group={group}
           clearAllFn={() => {
-            dispatch(setFocus(undefined));
-            groups.forEach((group) => group.clearFn());
+            reduxDispatch(setFocus(undefined));
+            reduxDispatch(clearEditingVariable());
           }}
         />
       ))}

@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import App from '../../../App';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
+import { ContextParentComponent } from './ContextParentComponent';
 
 let user: UserEvent;
 
@@ -15,25 +15,12 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <App />
+      <ContextParentComponent />
     </Provider>
   );
-  const contextsSidebarSection =
-    screen.getByText<HTMLButtonElement>('Contexts');
-  await user.click(contextsSidebarSection);
-  const createNewContextButton = screen.getByText('Create New Context');
-  await user.click(createNewContextButton);
 });
 
 describe('context component tests', () => {
-  it('should handle create new', () => {
-    const input = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_MATCHER],
-    });
-
-    expect(input.value).toBe('');
-  });
-
   it('should not save if validation errors', async () => {
     const saveButton = screen.getByText<HTMLButtonElement>('Save');
     await user.click(saveButton);

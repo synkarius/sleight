@@ -23,19 +23,19 @@ export const FocusComponent: React.FC<{}> = () => {
         <ActionParentComponent actionId={actionId} key={actionId} />
       )}
       {elementType === ElementType.Enum.COMMAND && (
-        <CommandParentComponent commandId={commandId} />
+        <CommandParentComponent commandId={commandId} key={commandId} />
       )}
       {elementType === ElementType.Enum.CONTEXT && (
-        <ContextParentComponent contextId={contextId} />
+        <ContextParentComponent contextId={contextId} key={contextId} />
       )}
       {elementType === ElementType.Enum.ROLE_KEY && (
         <RoleKeyParentComponent roleKeyId={roleKeyId} key={roleKeyId} />
       )}
       {elementType === ElementType.Enum.SPEC && (
-        <SpecParentComponent specId={specId} />
+        <SpecParentComponent specId={specId} key={specId} />
       )}
       {elementType === ElementType.Enum.VARIABLE && variable && (
-        <VariableComponent variable={variable} />
+        <VariableComponent variable={variable} key={variable.id} />
       )}
     </>
   );

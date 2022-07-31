@@ -64,6 +64,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
     <PanelComponent header="Create/Edit Spec">
       <FormGroupRowComponent labelText="Name" descriptionText="name of spec">
         <FormControl
+          aria-label={Field[Field.SP_NAME]}
           type="text"
           onChange={nameChangedHandler}
           value={props.spec.name}

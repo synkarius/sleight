@@ -16,6 +16,7 @@ import {
 } from './action-editing-context';
 import { setFocus } from '../../menu/focus/focus-reducers';
 import { Field } from '../../../validation/validation-field';
+import { TEXT_BOX } from '../common/accessibility-roles';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -56,6 +57,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     <PanelComponent header="Create/Edit Action">
       <FormGroupRowComponent labelText="Name">
         <FormControl
+          aria-label={Field[Field.AC_NAME]}
           type="text"
           onChange={nameChangedHandler}
           value={props.action.name}

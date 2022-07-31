@@ -2,6 +2,7 @@
 
 export enum Field {
   // action:
+  AC_NAME,
   AC_TYPE,
   AC_ROLE_KEY,
   // action: send key :
@@ -32,6 +33,7 @@ export enum Field {
   AC_REPEAT_VAR,
   AC_REPEAT_RK,
   // command:
+  CMD_NAME,
   CMD_ROLE_KEY,
   // command: spec
   CMD_SPEC_RADIO,
@@ -39,17 +41,20 @@ export enum Field {
   CMD_SPEC_RK,
   // context:
   CTX_MATCHER,
+  CTX_NAME,
   CTX_ROLE_KEY,
   CTX_TYPE,
   // role key: role key
   RK_ROLE_KEY,
   // spec:
+  SP_NAME,
   SP_ROLE_KEY,
   SP_ADD_ITEM_BUTTON,
   SP_ITEM_TYPE_SELECT,
   SP_ITEM_SELECTOR,
   SP_ITEM_VARIABLE,
   // variable:
+  VAR_NAME,
   VAR_ROLE_KEY,
   VAR_CHOICE_ITEM_SELECTOR,
 }

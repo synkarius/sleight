@@ -68,6 +68,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     <PanelComponent header="Create/Edit Command">
       <FormGroupRowComponent labelText="Name">
         <FormControl
+          aria-label={Field[Field.CMD_NAME]}
           type="text"
           onChange={nameChangedHandler}
           value={props.command.name}

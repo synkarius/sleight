@@ -2,7 +2,6 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import App from '../../../../App';
 import { store } from '../../../../app/store';
 import { Field } from '../../../../validation/validation-field';
 import { createRoleKey } from '../../role-key/role-key';
@@ -13,6 +12,7 @@ import {
   createNewEditingVariable,
   saveEditingVariable,
 } from '../../variable/variable-reducers';
+import { ActionParentComponent } from '../ActionParentComponent';
 
 const VARIABLE_NAME = 'asdf-range-var';
 const ROLE_KEY_NAME = 'asdf-rk';
@@ -44,13 +44,9 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <App />
+      <ActionParentComponent />
     </Provider>
   );
-  const sidebarSection = screen.getByText('Actions');
-  await user.click(sidebarSection);
-  const createButton = screen.getByText('Create New Action');
-  await user.click(createButton);
 });
 
 const selectActionValueType = async (

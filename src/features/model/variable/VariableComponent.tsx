@@ -51,6 +51,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     <PanelComponent header="Create/Edit Variable">
       <FormGroupRowComponent labelText="Name">
         <FormControl
+          aria-label={Field[Field.VAR_NAME]}
           type="text"
           onChange={nameChangedHandler}
           value={props.variable.name}
