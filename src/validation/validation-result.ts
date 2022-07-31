@@ -41,7 +41,8 @@ interface BasicValidationResult extends AbstractInvalidValidationResult {
  * Includes a list of ids which are responsible for an invalid result.
  * If the result is valid, the list should be empty.
  */
-interface IdListValidationResult extends AbstractInvalidValidationResult {
+export interface IdListValidationResult
+  extends AbstractInvalidValidationResult {
   readonly type: typeof ValidationResultType.ID_LIST;
   readonly ids: string[];
 }

@@ -1,8 +1,12 @@
 import React, { useContext } from 'react';
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { flattenDiagnosticMessageText } from 'typescript';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
-import { ValidationResultType } from '../../../validation/validation-result';
+import {
+  IdListValidationResult,
+  ValidationResultType,
+} from '../../../validation/validation-result';
 import { SelectorItem } from './data/selector-domain';
 import { SelectorButtonType } from './selector-button-type';
 
@@ -26,33 +30,40 @@ export const SelectorItemComponent: React.FC<{
   const validationContext = useContext(ValidationContext);
 
   // 1: extract error results for this field from the rest of the errors
-  const errorResultsForThisField = validationContext
-    .getErrorResults()
-    .map(
-      (result) =>
-        (result.type === ValidationResultType.ID_LIST &&
-          result.field === props.field &&
-          result) ||
-        undefined
-    );
+
+  const getErrorResultsForThisField = (): IdListValidationResult[] => {
+    const errorResults = validationContext.getErrorResults();
+    const result: IdListValidationResult[] = [];
+    for (let i = 0; i < errorResults.length; i++) {
+      const errorResult = errorResults[i];
+      if (
+        errorResult.type === ValidationResultType.ID_LIST &&
+        errorResult.field === props.field
+      ) {
+        result.push(errorResult);
+      }
+    }
+    return result;
+  };
+  const errorResultsForThisField = getErrorResultsForThisField();
   const enteredValueIsInvalid = (): boolean => {
     // 2: this particular selector item is invalid if its id is in the list
-    return (
-      errorResultsForThisField
-        .map((result) => result && result.ids.includes(props.selectorItem.id))
-        .reduce((a, b) => a || b) || false
-    );
+    for (let i = 0; i < errorResultsForThisField.length; i++) {
+      if (errorResultsForThisField[i].ids.includes(props.selectorItem.id)) {
+        return true;
+      }
+    }
+    return false;
   };
   const errorMessage = (): string | undefined => {
     // 3: error message should show if this is the last selector item in the group
     //    AND any in the group are invalid
-    return (
-      (props.selectorPositionData.isLast &&
-        errorResultsForThisField
-          .map((result) => (result && result.message) || '')
-          .reduce((a, b) => a + b)) ||
-      undefined
-    );
+    for (let i = 0; i < errorResultsForThisField.length; i++) {
+      if (errorResultsForThisField[i].message) {
+        return errorResultsForThisField[i].message;
+      }
+    }
+    return undefined;
   };
 
   return (
