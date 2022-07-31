@@ -6,7 +6,8 @@ import {
   FormSelect,
   FormText,
 } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
+import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { setFocus } from '../../menu/focus/focus-reducers';
@@ -20,14 +21,11 @@ import {
 } from './context-editing-context';
 import { saveEditingContext } from './context-reducers';
 import { ContextType } from './context-types';
-import { contextMatcherValidator } from './context-validation';
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const contextEditingContext = useContext(ContextEditingContext);
-
-  const validationErrors = validationContext.getErrors();
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     contextEditingContext.localDispatchFn({
@@ -65,10 +63,13 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     }
   };
 
+  const matcherField = Field.CTX_MATCHER;
   const matcherHelpText =
     props.context.type === ContextType.Enum.EXECUTABLE_NAME
       ? 'executable to match'
       : 'window title to match';
+  const errorResults = validationContext.getErrorResults();
+  const errorMessage = getRelevantErrorMessage(errorResults, [matcherField]);
 
   return (
     <PanelComponent header="Create/Edit Context">
@@ -111,21 +112,23 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         <FormControl
           type="text"
           onChange={matcherChangedHandler}
-          onBlur={(_e) => validationContext.touch(Field.CTX_MATCHER)}
+          onBlur={(_e) => validationContext.touch(matcherField)}
           value={props.context.matcher}
-          isInvalid={validationErrors.includes(contextMatcherValidator.error)}
+          isInvalid={errorResults
+            .map((result) => result.field)
+            .includes(matcherField)}
           role="textbox"
-          aria-label={Field[Field.CTX_MATCHER]}
+          aria-label={Field[matcherField]}
         />
         <Form.Control.Feedback type="invalid">
-          {contextMatcherValidator.error.message}
+          {errorMessage}
         </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={validationErrors.length > 0}
+        disabled={errorResults.length > 0}
       >
         Save
       </Button>

@@ -1,5 +1,6 @@
 import { Button, Col, FormControl, FormText, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { Field } from '../../../../validation/validation-field';
 import { RequiredAsteriskComponent } from '../../../ui/RequiredAsteriskComponent';
 import { SelectorComponent } from '../../selector/SelectorComponent';
 import { editChoiceItemValue, removeChoiceItem } from '../variable-reducers';
@@ -12,7 +13,7 @@ export const ChoiceItemComponent: React.FC<{
   const dispatch = useAppDispatch();
   const selectors = useAppSelector((state) => state.selector.saved);
 
-  const removeHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const removeHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(removeChoiceItem({ choiceItemId: props.choiceItem.id }));
   };
   const valueChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +37,18 @@ export const ChoiceItemComponent: React.FC<{
       </Row>
       <Row className="mb-3">
         <Col sm="5">
-          <SelectorComponent selector={selector} showLabel={false} />
+          <SelectorComponent
+            field={Field.VAR_CHOICE_ITEM_SELECTOR}
+            selector={selector}
+            showLabel={false}
+            selectorItemHandlers={{
+              add: () => {
+                /*TODO: these functions*/
+              },
+              change: (i, v) => {},
+              delete: (i) => {},
+            }}
+          />
         </Col>
         <Col sm="5">
           <FormControl

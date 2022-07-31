@@ -1,8 +1,8 @@
 import React, { useId } from 'react';
 import { Button, FormGroup, Row } from 'react-bootstrap';
 import { useAppDispatch } from '../../../../app/hooks';
-import { createSelector } from '../../selector/selector';
-import { createNewSelector } from '../../selector/selector-reducers';
+import { createSelector } from '../../selector/data/selector-domain';
+import { saveSelector } from '../../selector/selector-reducers';
 import { addChoiceItem } from '../variable-reducers';
 import { Choice, createChoiceItem } from './choice';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
@@ -14,7 +14,7 @@ export const ChoiceComponent: React.FC<{ choice: Choice }> = (props) => {
   const addHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const selector = createSelector();
     // TODO: this way creates orphans -- process them out somewhere
-    dispatch(createNewSelector(selector));
+    dispatch(saveSelector(selector));
     dispatch(addChoiceItem(createChoiceItem(selector.id)));
   };
 

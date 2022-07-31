@@ -1,25 +1,27 @@
 import { isSelected } from '../../../util/common-functions';
 import {
-  createFieldValidator,
+  createValidator,
   FieldValidator,
 } from '../../../validation/field-validator';
+import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
-import { createValidationError } from '../../../validation/validator';
 import { Command } from './command';
 import { CommandSpecType } from './command-spec-type';
 
 export const commandSpecVariableSelectedValidator: FieldValidator<Command> =
-  createFieldValidator(
+  createValidator(
     Field.CMD_SPEC_VAR,
     (command) => CommandSpecType.Enum.VARIABLE === command.specType,
     (command) => isSelected(command.specVariableId),
-    createValidationError('spec variable must be selected')
+    ValidationErrorCode.CMD_SPEC_VAR_NOT_SELECTED,
+    'spec variable must be selected'
   );
 
 export const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
-  createFieldValidator(
+  createValidator(
     Field.CMD_SPEC_RK,
     (command) => CommandSpecType.Enum.ROLE_KEY === command.specType,
     (command) => isSelected(command.specRoleKeyId),
-    createValidationError('spec role key must be selected')
+    ValidationErrorCode.CMD_SPEC_RK_NOT_SELECTED,
+    'spec role key must be selected'
   );

@@ -31,23 +31,37 @@ type ActionValueTypeChange = {
   field: Field;
   actionValueType: ActionValueType.Type;
 };
-// TODO: what is this used for? -- probably name
-export type ActionReducerStringPayloadAction =
-  AbstractActionReducerAction<string>;
-export type ActionReducerActionTypePayloadAction =
-  AbstractActionReducerAction<ActionType.Type>;
-// change action value type
-export type ActionReducerActionValueTypePayloadAction =
-  AbstractActionReducerAction<ActionValueTypeChange>;
-// change send key mode
-export type ActionReducerSendKeyModePayloadAction =
-  AbstractActionReducerAction<SendKeyMode.Type>;
-// change modifiers
-export type ActionReducerModifiersPayloadAction =
-  AbstractActionReducerAction<SendKeyModifiers>;
+
+export interface ActionReducerStringPayloadAction
+  extends AbstractActionReducerAction<string> {
+  type:
+    | typeof ActionReducerActionType.CHANGE_NAME
+    | typeof ActionReducerActionType.CHANGE_ROLE_KEY;
+}
+export interface ActionReducerActionTypePayloadAction
+  extends AbstractActionReducerAction<ActionType.Type> {
+  type: typeof ActionReducerActionType.CHANGE_ACTION_TYPE;
+}
+export interface ActionReducerActionValueTypePayloadAction
+  extends AbstractActionReducerAction<ActionValueTypeChange> {
+  type: typeof ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE;
+}
+export interface ActionReducerSendKeyModePayloadAction
+  extends AbstractActionReducerAction<SendKeyMode.Type> {
+  type: typeof ActionReducerActionType.CHANGE_SEND_KEY_MODE;
+}
+export interface ActionReducerModifiersPayloadAction
+  extends AbstractActionReducerAction<SendKeyModifiers> {
+  type: typeof ActionReducerActionType.CHANGE_MODIFIERS;
+}
 // change action value: value/variable/roleKey
-export type ActionReducerChangePayloadAction =
-  AbstractActionReducerAction<ActionValueChange>;
+export interface ActionReducerChangePayloadAction
+  extends AbstractActionReducerAction<ActionValueChange> {
+  type:
+    | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE
+    | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID
+    | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID;
+}
 export type ActionReducerAction =
   | ActionReducerStringPayloadAction
   | ActionReducerActionTypePayloadAction

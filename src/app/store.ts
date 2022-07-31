@@ -5,8 +5,8 @@ import { commandReduxReducer } from '../features/model/command/command-reducers'
 import { contextReduxReducer } from '../features/model/context/context-reducers';
 import { variableReducer } from '../features/model/variable/variable-reducers';
 import { roleKeyReduxReducer } from '../features/model/role-key/role-key-reducers';
-import { selectorReducer } from '../features/model/selector/selector-reducers';
-import { specReducer } from '../features/model/spec/spec-reducers';
+import { selectorReduxReducer } from '../features/model/selector/selector-reducers';
+import { specReduxReducer } from '../features/model/spec/spec-reducers';
 
 export const store = configureStore({
   reducer: {
@@ -15,8 +15,8 @@ export const store = configureStore({
     context: contextReduxReducer,
     focus: focusReducer,
     roleKey: roleKeyReduxReducer,
-    selector: selectorReducer,
-    spec: specReducer,
+    selector: selectorReduxReducer,
+    spec: specReduxReducer,
     variable: variableReducer,
   },
 });

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, Form, FormControl } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
+import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { setFocus } from '../../menu/focus/focus-reducers';
@@ -12,7 +13,6 @@ import {
   RoleKeyEditingContext,
 } from './role-key-editing-context';
 import { saveRoleKey } from './role-key-reducers';
-import { roleKeyTextValidator } from './role-key-validation';
 
 export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -34,7 +34,10 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
     }
   };
 
-  const validationErrors = validationContext.getErrors();
+  const roleKeyField = Field.RK_ROLE_KEY;
+  const errorResults = validationContext.getErrorResults();
+  const errorMessage = getRelevantErrorMessage(errorResults, [roleKeyField]);
+
   return (
     <PanelComponent header="Create/Edit Role Key">
       <FormGroupRowComponent
@@ -45,21 +48,23 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
         <FormControl
           type="text"
           onChange={valueChangedHandler}
-          onBlur={(_e) => validationContext.touch(Field.RK_ROLE_KEY)}
+          onBlur={(_e) => validationContext.touch(roleKeyField)}
           value={props.roleKey.value}
-          isInvalid={validationErrors.includes(roleKeyTextValidator.error)}
+          isInvalid={errorResults
+            .map((result) => result.field)
+            .includes(roleKeyField)}
           role="textbox"
-          aria-label={Field[Field.RK_ROLE_KEY]}
+          aria-label={Field[roleKeyField]}
         />
         <Form.Control.Feedback type="invalid">
-          {roleKeyTextValidator.error.message}
+          {errorMessage}
         </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={validationErrors.length > 0}
+        disabled={errorResults.length > 0}
       >
         Save
       </Button>

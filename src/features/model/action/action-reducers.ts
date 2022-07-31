@@ -51,7 +51,7 @@ export const actionReduxReducer = actionsSlice.reducer;
 
 const toggleModifier = (
   state: Action,
-  action: ActionReducerAction
+  action: ActionReducerModifiersPayloadAction
 ): SendKeyAction => {
   const getNewModifiers = (
     oldModifiers: Modifiers,
@@ -82,14 +82,10 @@ const toggleModifier = (
         throw new ExhaustivenessFailureError(toggle);
     }
   };
-  const modifiersAction = action as ActionReducerModifiersPayloadAction;
   const sendKeyAction = state as SendKeyAction;
   return {
     ...sendKeyAction,
-    modifiers: getNewModifiers(
-      sendKeyAction.modifiers,
-      modifiersAction.payload
-    ),
+    modifiers: getNewModifiers(sendKeyAction.modifiers, action.payload),
   };
 };
 
@@ -110,10 +106,9 @@ const changeEditingSendKeyMode = (
 
 const changeEditingActionType = (
   state: Action,
-  action: ActionReducerAction
+  action: ActionReducerActionTypePayloadAction
 ): Action => {
-  const stringAction = action as ActionReducerActionTypePayloadAction;
-  switch (stringAction.payload) {
+  switch (action.payload) {
     case ActionType.Enum.PAUSE:
       return copyIntoPauseAction(state);
     case ActionType.Enum.SEND_KEY:
@@ -125,9 +120,9 @@ const changeEditingActionType = (
     case ActionType.Enum.SEND_TEXT:
     case ActionType.Enum.WAIT_FOR_WINDOW:
       // TODO: implement all
-      throw new NotImplementedError('action type ' + stringAction.payload);
+      throw new NotImplementedError('action type ' + action.payload);
     default:
-      throw new ExhaustivenessFailureError(stringAction.payload);
+      throw new ExhaustivenessFailureError(action.payload);
   }
 };
 
@@ -151,7 +146,8 @@ export const actionReactReducer = (
   state: Action,
   action: ActionReducerAction
 ): Action => {
-  switch (action.type) {
+  const actionType = action.type;
+  switch (actionType) {
     case ActionReducerActionType.CHANGE_ACTION_TYPE:
       return changeEditingActionType(state, action);
     case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
@@ -168,6 +164,6 @@ export const actionReactReducer = (
     case ActionReducerActionType.CHANGE_SEND_KEY_MODE:
       return changeEditingSendKeyMode(state, action);
     default:
-      throw new ExhaustivenessFailureError(action.type);
+      throw new ExhaustivenessFailureError(actionType);
   }
 };

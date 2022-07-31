@@ -1,52 +1,45 @@
 import {
-  alwaysTrue,
+  alwaysFalse,
   isSelected,
   notEmpty,
 } from '../../../../util/common-functions';
 import {
-  createFilterMap,
-  newFilterMapBuilder,
-} from '../../../../util/filter-map';
-import { createFieldValidator } from '../../../../validation/field-validator';
+  createValidator,
+  FieldValidator,
+} from '../../../../validation/field-validator';
+import { ValidationErrorCode } from '../../../../validation/validation-error-code';
 import { Field } from '../../../../validation/validation-field';
+import { validResult } from '../../../../validation/validation-result';
 import { Action } from '../action';
-import { ActionType } from '../action-types';
 import {
-  createNonEmptyError,
-  createNonSelectedRoleKeyError,
-  createNonSelectedVariableError,
-  ActionValueValidators,
-  toEnteredValueFM,
-  toRoleKeyIdFM,
-  toVariableIdFM,
-  createNoOpValidator,
-} from '../action-value/action-value-validation';
+  isEnterValueActionValue,
+  isRoleKeyActionValue,
+  isVariableActionValue,
+} from '../action-value/action-value';
 import {
-  SendKeyAction,
-  SendKeyHoldReleaseAction,
-  SendKeyPressAction,
+  isSendKeyAction,
+  isSendKeyHoldReleaseAction,
+  isSendKeyPressAction,
 } from './send-key';
-import { SendKeyMode } from './send-key-modes';
 
-/*
- * =================================================
- *               GENERAL SEND KEY
- * =================================================
- */
+interface ActionValueValidators {
+  readonly value: FieldValidator<Action>;
+  readonly variable: FieldValidator<Action>;
+  readonly roleKey: FieldValidator<Action>;
+}
 
-const toSendKeyFM = createFilterMap(
-  (action: Action) => action.type === ActionType.Enum.SEND_KEY,
-  (action) => action as SendKeyAction
-);
-export const toSendKeyPressFM = createFilterMap(
-  (skAction: SendKeyAction) => skAction.sendKeyMode === SendKeyMode.Enum.PRESS,
-  (skAction) => skAction as SendKeyPressAction
-);
-export const toSendKeyHoldReleaseFM = createFilterMap(
-  (skAction: SendKeyAction) =>
-    skAction.sendKeyMode === SendKeyMode.Enum.HOLD_RELEASE,
-  (skAction) => skAction as SendKeyHoldReleaseAction
-);
+const createNoOpValidator = (field: Field): FieldValidator<Action> => ({
+  field,
+  isApplicable: alwaysFalse,
+  validate: (_) => validResult(field),
+});
+
+const createNonEmptyError = (fieldName: string) =>
+  fieldName + " : can't be empty";
+const createNonSelectedVariableError = (fieldName: string) =>
+  fieldName + ' : variable must be selected';
+const createNonSelectedRoleKeyError = (fieldName: string) =>
+  fieldName + ' : role key must be selected';
 
 /*
  * =================================================
@@ -55,39 +48,38 @@ export const toSendKeyHoldReleaseFM = createFilterMap(
  */
 
 const KEY_TO_SEND = 'key to send';
-const toKeyToSendFM = createFilterMap(
-  alwaysTrue,
-  (skAction: SendKeyAction) => skAction.keyToSend
-);
-const toKeyToSendKeyBuilder =
-  newFilterMapBuilder(toSendKeyFM).withFilterMap(toKeyToSendFM);
-const toKeyToSendValueFM = toKeyToSendKeyBuilder
-  .withFilterMap(toEnteredValueFM)
-  .build();
-const toKeyToSendVariableIdFM = toKeyToSendKeyBuilder
-  .withFilterMap(toVariableIdFM)
-  .build();
-const toKeyToSendRoleKeyIdFM = toKeyToSendKeyBuilder
-  .withFilterMap(toRoleKeyIdFM)
-  .build();
 export const keyToSendValidators: ActionValueValidators = {
-  radioGroupField: Field.AC_KEY_TO_SEND_RADIO,
-  value: createFieldValidator(
+  value: createValidator(
     Field.AC_KEY_TO_SEND_VALUE,
-    toKeyToSendValueFM.filter,
-    (action) => notEmpty(toKeyToSendValueFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) && isEnterValueActionValue(action.keyToSend),
+    (action) =>
+      isSendKeyAction(action) &&
+      isEnterValueActionValue(action.keyToSend) &&
+      notEmpty(action.keyToSend.value),
+    ValidationErrorCode.AC_KTS_EMPTY,
     createNonEmptyError(KEY_TO_SEND)
   ),
-  variable: createFieldValidator(
+  variable: createValidator(
     Field.AC_KEY_TO_SEND_VAR,
-    toKeyToSendVariableIdFM.filter,
-    (action) => isSelected(toKeyToSendVariableIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) && isVariableActionValue(action.keyToSend),
+    (action) =>
+      isSendKeyAction(action) &&
+      isVariableActionValue(action.keyToSend) &&
+      isSelected(action.keyToSend.variableId),
+    ValidationErrorCode.AC_KTS_VAR_NOT_SELECTED,
     createNonSelectedVariableError(KEY_TO_SEND)
   ),
-  roleKey: createFieldValidator(
+  roleKey: createValidator(
     Field.AC_KEY_TO_SEND_RK,
-    toKeyToSendRoleKeyIdFM.filter,
-    (action) => isSelected(toKeyToSendRoleKeyIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) && isRoleKeyActionValue(action.keyToSend),
+    (action) =>
+      isSendKeyAction(action) &&
+      isRoleKeyActionValue(action.keyToSend) &&
+      isSelected(action.keyToSend.roleKeyId),
+    ValidationErrorCode.AC_KTS_RK_NOT_SELECTED,
     createNonSelectedRoleKeyError(KEY_TO_SEND)
   ),
 };
@@ -99,31 +91,28 @@ export const keyToSendValidators: ActionValueValidators = {
  */
 
 const OUTER_PAUSE = 'outer pause';
-const toOuterPauseFM = createFilterMap(
-  alwaysTrue,
-  (skAction: SendKeyAction) => skAction.outerPause
-);
-const outerPauseBuilder =
-  newFilterMapBuilder(toSendKeyFM).withFilterMap(toOuterPauseFM);
-const toOuterPauseVariableIdFM = outerPauseBuilder
-  .withFilterMap(toVariableIdFM)
-  .build();
-const toOuterPauseRoleKeyIdFM = outerPauseBuilder
-  .withFilterMap(toRoleKeyIdFM)
-  .build();
 export const outerPauseValidators: ActionValueValidators = {
-  radioGroupField: Field.AC_OUTER_PAUSE_RADIO,
   value: createNoOpValidator(Field.AC_OUTER_PAUSE_VALUE),
-  variable: createFieldValidator(
+  variable: createValidator(
     Field.AC_OUTER_PAUSE_VAR,
-    toOuterPauseVariableIdFM.filter,
-    (action) => isSelected(toOuterPauseVariableIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) && isVariableActionValue(action.outerPause),
+    (action) =>
+      isSendKeyAction(action) &&
+      isVariableActionValue(action.outerPause) &&
+      isSelected(action.outerPause.variableId),
+    ValidationErrorCode.AC_OP_VAR_NOT_SELECTED,
     createNonSelectedVariableError(OUTER_PAUSE)
   ),
-  roleKey: createFieldValidator(
+  roleKey: createValidator(
     Field.AC_OUTER_PAUSE_RK,
-    toOuterPauseRoleKeyIdFM.filter,
-    (action) => isSelected(toOuterPauseRoleKeyIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) && isRoleKeyActionValue(action.outerPause),
+    (action) =>
+      isSendKeyAction(action) &&
+      isRoleKeyActionValue(action.outerPause) &&
+      isSelected(action.outerPause.roleKeyId),
+    ValidationErrorCode.AC_OP_RK_NOT_SELECTED,
     createNonSelectedRoleKeyError(OUTER_PAUSE)
   ),
 };
@@ -135,32 +124,34 @@ export const outerPauseValidators: ActionValueValidators = {
  */
 
 const INNER_PAUSE = 'inner pause';
-const toInnerPauseFM = createFilterMap(
-  alwaysTrue,
-  (skpAction: SendKeyPressAction) => skpAction.innerPause
-);
-const innerPauseBuilder = newFilterMapBuilder(toSendKeyFM)
-  .withFilterMap(toSendKeyPressFM)
-  .withFilterMap(toInnerPauseFM);
-const toInnerPauseVariableIdFM = innerPauseBuilder
-  .withFilterMap(toVariableIdFM)
-  .build();
-const toInnerPauseRoleKeyIdFM = innerPauseBuilder
-  .withFilterMap(toRoleKeyIdFM)
-  .build();
 export const innerPauseValidators: ActionValueValidators = {
-  radioGroupField: Field.AC_INNER_PAUSE_RADIO,
   value: createNoOpValidator(Field.AC_INNER_PAUSE_VALUE),
-  variable: createFieldValidator(
+  variable: createValidator(
     Field.AC_INNER_PAUSE_VAR,
-    toInnerPauseVariableIdFM.filter,
-    (action) => isSelected(toInnerPauseVariableIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isVariableActionValue(action.innerPause),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isVariableActionValue(action.innerPause) &&
+      isSelected(action.innerPause.variableId),
+    ValidationErrorCode.AC_IP_VAR_NOT_SELECTED,
     createNonSelectedVariableError(INNER_PAUSE)
   ),
-  roleKey: createFieldValidator(
+  roleKey: createValidator(
     Field.AC_INNER_PAUSE_RK,
-    toInnerPauseRoleKeyIdFM.filter,
-    (action) => isSelected(toInnerPauseRoleKeyIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isRoleKeyActionValue(action.innerPause),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isRoleKeyActionValue(action.innerPause) &&
+      isSelected(action.innerPause.roleKeyId),
+    ValidationErrorCode.AC_IP_RK_NOT_SELECTED,
     createNonSelectedRoleKeyError(INNER_PAUSE)
   ),
 };
@@ -172,30 +163,34 @@ export const innerPauseValidators: ActionValueValidators = {
  */
 
 const REPEAT = 'repeat';
-const toRepeatFM = createFilterMap(
-  alwaysTrue,
-  (skpAction: SendKeyPressAction) => skpAction.repeat
-);
-const repeatBuilder = newFilterMapBuilder(toSendKeyFM)
-  .withFilterMap(toSendKeyPressFM)
-  .withFilterMap(toRepeatFM);
-const toRepeatVariableIdFM = repeatBuilder
-  .withFilterMap(toVariableIdFM)
-  .build();
-const toRepeatRoleKeyIdFM = repeatBuilder.withFilterMap(toRoleKeyIdFM).build();
 export const repeatValidators: ActionValueValidators = {
-  radioGroupField: Field.AC_REPEAT_RADIO,
   value: createNoOpValidator(Field.AC_REPEAT_VALUE),
-  variable: createFieldValidator(
+  variable: createValidator(
     Field.AC_REPEAT_VAR,
-    toRepeatVariableIdFM.filter,
-    (action) => isSelected(toRepeatVariableIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isVariableActionValue(action.repeat),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isVariableActionValue(action.repeat) &&
+      isSelected(action.repeat.variableId),
+    ValidationErrorCode.AC_RPT_VAR_NOT_SELECTED,
     createNonSelectedVariableError(REPEAT)
   ),
-  roleKey: createFieldValidator(
+  roleKey: createValidator(
     Field.AC_REPEAT_RK,
-    toRepeatRoleKeyIdFM.filter,
-    (action) => isSelected(toRepeatRoleKeyIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isRoleKeyActionValue(action.repeat),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyPressAction(action) &&
+      isRoleKeyActionValue(action.repeat) &&
+      isSelected(action.repeat.roleKeyId),
+    ValidationErrorCode.AC_RPT_RK_NOT_SELECTED,
     createNonSelectedRoleKeyError(REPEAT)
   ),
 };
@@ -207,42 +202,48 @@ export const repeatValidators: ActionValueValidators = {
  */
 
 const DIRECTION = 'direction';
-const toDirectionFM = createFilterMap(
-  alwaysTrue,
-  (skhrAction: SendKeyHoldReleaseAction) => skhrAction.direction
-);
-const directionBuilder = newFilterMapBuilder(toSendKeyFM)
-  .withFilterMap(toSendKeyHoldReleaseFM)
-  .withFilterMap(toDirectionFM);
-const toDirectionValueFM = directionBuilder
-  .withFilterMap(toEnteredValueFM)
-  .build();
-const toDirectionVariableIdFM = directionBuilder
-  .withFilterMap(toVariableIdFM)
-  .build();
-const toDirectionRoleKeyIdFM = directionBuilder
-  .withFilterMap(toRoleKeyIdFM)
-  .build();
-
 // TODO: validate this differently so it can only be "up" or "down"
 export const directionValidators: ActionValueValidators = {
-  radioGroupField: Field.AC_DIRECTION_RADIO,
-  value: createFieldValidator(
+  value: createValidator(
     Field.AC_DIRECTION_VALUE,
-    toDirectionValueFM.filter,
-    (action) => notEmpty(toDirectionValueFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyHoldReleaseAction(action) &&
+      isEnterValueActionValue(action.direction),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyHoldReleaseAction(action) &&
+      isEnterValueActionValue(action.direction) &&
+      notEmpty(action.direction.value),
+    ValidationErrorCode.AC_DIR_EMPTY,
     createNonEmptyError(DIRECTION)
   ),
-  variable: createFieldValidator(
+  variable: createValidator(
     Field.AC_DIRECTION_VAR,
-    toDirectionVariableIdFM.filter,
-    (action) => isSelected(toDirectionVariableIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyHoldReleaseAction(action) &&
+      isVariableActionValue(action.direction),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyHoldReleaseAction(action) &&
+      isVariableActionValue(action.direction) &&
+      isSelected(action.direction.variableId),
+    ValidationErrorCode.AC_DIR_VAR_NOT_SELECTED,
     createNonSelectedVariableError(DIRECTION)
   ),
-  roleKey: createFieldValidator(
+  roleKey: createValidator(
     Field.AC_DIRECTION_RK,
-    toDirectionRoleKeyIdFM.filter,
-    (action) => isSelected(toDirectionRoleKeyIdFM.map(action)),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyHoldReleaseAction(action) &&
+      isRoleKeyActionValue(action.direction),
+    (action) =>
+      isSendKeyAction(action) &&
+      isSendKeyHoldReleaseAction(action) &&
+      isRoleKeyActionValue(action.direction) &&
+      isSelected(action.direction.roleKeyId),
+    ValidationErrorCode.AC_DIR_RK_NOT_SELECTED,
     createNonSelectedRoleKeyError(DIRECTION)
   ),
 };

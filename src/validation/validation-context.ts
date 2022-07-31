@@ -1,27 +1,17 @@
 import React from 'react';
-import { ImproperContextUsageError } from '../error/ImproperContextUsageError';
 import { Field } from './validation-field';
-import { ValidationError } from './validator';
+import { ErrorValidationResult } from './validation-result';
 
 interface ValidationData {
   readonly touch: (field: Field) => void;
   readonly validateForm: () => boolean;
-  readonly getErrors: () => ValidationError[];
+  readonly getErrorResults: () => ErrorValidationResult[];
 }
 
-const createDefaultValidationState = (): ValidationData => {
-  return {
-    touch: (field: Field) => {
-      throw new ImproperContextUsageError();
-    },
-    validateForm: () => {
-      throw new ImproperContextUsageError();
-    },
-    getErrors: (): ValidationError[] => {
-      throw new ImproperContextUsageError();
-    },
-  };
-};
-export const ValidationContext = React.createContext(
-  createDefaultValidationState()
-);
+/**
+ * Ignoring the requirement to add a default context because
+ * it's better to have a React error than some Sleight error.
+ */
+export const ValidationContext: React.Context<ValidationData> =
+  // @ts-ignore
+  React.createContext();

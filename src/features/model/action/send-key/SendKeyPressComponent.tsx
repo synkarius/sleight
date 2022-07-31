@@ -1,7 +1,7 @@
 import React from 'react';
+import { Field } from '../../../../validation/validation-field';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import { SendKeyPressAction } from './send-key';
-import { innerPauseValidators, repeatValidators } from './send-key-validators';
 
 export const SendKeyPressComponent: React.FC<{
   sendKeyPressAction: SendKeyPressAction;
@@ -12,13 +12,23 @@ export const SendKeyPressComponent: React.FC<{
         actionValue={props.sendKeyPressAction.innerPause}
         labelText="Inner Pause"
         descriptionText="time to pause between repetitions of keystroke, in centiseconds"
-        validators={innerPauseValidators}
+        fields={{
+          radio: Field.AC_INNER_PAUSE_RADIO,
+          value: Field.AC_INNER_PAUSE_VALUE,
+          variable: Field.AC_INNER_PAUSE_VAR,
+          roleKey: Field.AC_INNER_PAUSE_RK,
+        }}
       />
       <ActionValueComponent
         actionValue={props.sendKeyPressAction.repeat}
         labelText="Repeat"
         descriptionText="times to repeat keystroke"
-        validators={repeatValidators}
+        fields={{
+          radio: Field.AC_REPEAT_RADIO,
+          value: Field.AC_REPEAT_VALUE,
+          variable: Field.AC_REPEAT_VAR,
+          roleKey: Field.AC_REPEAT_RK,
+        }}
       />
     </>
   );

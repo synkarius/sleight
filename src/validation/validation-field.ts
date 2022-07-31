@@ -45,6 +45,10 @@ export enum Field {
   RK_ROLE_KEY,
   // spec:
   SP_ROLE_KEY,
+  SP_ITEM_TYPE_SELECT,
+  SP_ITEM_SELECTOR,
+  SP_SAVE_BUTTON, // has no touchable field in the form
   // variable:
   VAR_ROLE_KEY,
+  VAR_CHOICE_ITEM_SELECTOR,
 }

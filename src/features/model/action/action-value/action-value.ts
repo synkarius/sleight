@@ -1,86 +1,126 @@
-import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { ActionValueType } from './action-value-type';
 
-interface ActionValue {
+interface AbstractActionValue {
   /* this is how the user specifies the value in an action:
    * a value of ActionValueType
    */
   readonly actionValueType: ActionValueType.Type;
 }
 
-interface VariableActionValue {
+export enum EnterValueType {
+  TEXT,
+  NUMERIC,
+}
+
+interface AbstractEnterValueActionValue extends AbstractActionValue {
+  readonly actionValueType: typeof ActionValueType.Enum.ENTER_VALUE;
+  readonly enteredValueType: EnterValueType;
+}
+
+export const isEnterValueActionValue = (
+  actionValue: AbstractActionValue
+): actionValue is AbstractEnterValueActionValue =>
+  actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE;
+
+interface EnterTextActionValue extends AbstractEnterValueActionValue {
+  readonly enteredValueType: typeof EnterValueType.TEXT;
+  readonly value: string;
+}
+
+export const isEnterTextActionValue = (
+  actionValue: AbstractEnterValueActionValue
+): actionValue is EnterTextActionValue =>
+  actionValue.enteredValueType === EnterValueType.TEXT;
+
+interface EnterNumberActionValue extends AbstractEnterValueActionValue {
+  readonly enteredValueType: typeof EnterValueType.NUMERIC;
+  readonly value: number;
+}
+
+export const isEnterNumberActionValue = (
+  actionValue: AbstractEnterValueActionValue
+): actionValue is EnterNumberActionValue =>
+  actionValue.enteredValueType === EnterValueType.NUMERIC;
+
+interface AbstractVariableActionValue extends AbstractActionValue {
+  readonly actionValueType: typeof ActionValueType.Enum.USE_VARIABLE;
   // if the user has chosen variable binding, this is the variable type
   readonly variableType: VariableType.Type;
   // if the user has chosen variable binding, this is the variable id
-  readonly variableId: string | null;
+  readonly variableId: string;
 }
 
-interface RoleKeyActionValue {
-  // if the user has chosen role key binding, this is the role key id
-  readonly roleKeyId: string | null;
-}
+export const isVariableActionValue = (
+  actionValue: AbstractActionValue
+): actionValue is AbstractVariableActionValue =>
+  actionValue.actionValueType === ActionValueType.Enum.USE_VARIABLE;
 
-export interface TextValue
-  extends ActionValue,
-    VariableActionValue,
-    RoleKeyActionValue {
+interface VariableTextActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.TEXT;
-  readonly value: string | null;
 }
 
-export const createTextValue = (): TextValue => {
-  return {
-    actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    variableType: VariableType.Enum.TEXT,
-    variableId: SELECT_DEFAULT_VALUE,
-    roleKeyId: SELECT_DEFAULT_VALUE,
-    value: '',
-  };
-};
+export const isVariableTextActionValue = (
+  actionValue: AbstractVariableActionValue
+): actionValue is VariableTextActionValue =>
+  actionValue.variableType === VariableType.Enum.TEXT;
 
-export interface RangeValue
-  extends ActionValue,
-    VariableActionValue,
-    RoleKeyActionValue {
+interface VariableRangeActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.RANGE;
-  readonly value: number | null;
 }
 
-export const createRangeValue = (): RangeValue => {
-  return {
-    actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    variableType: VariableType.Enum.RANGE,
-    variableId: SELECT_DEFAULT_VALUE,
-    roleKeyId: SELECT_DEFAULT_VALUE,
-    value: 0,
-  };
-};
+export const isVariableRangeActionValue = (
+  actionValue: AbstractVariableActionValue
+): actionValue is VariableRangeActionValue =>
+  actionValue.variableType === VariableType.Enum.RANGE;
 
-export interface ChoiceValue
-  extends ActionValue,
-    VariableActionValue,
-    RoleKeyActionValue {
+interface VariableChoiceActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.CHOICE;
-  readonly value: string | null;
 }
 
-export const createChoiceValue = (): ChoiceValue => {
+export const isVariableChoiceActionValue = (
+  actionValue: AbstractVariableActionValue
+): actionValue is VariableChoiceActionValue =>
+  actionValue.variableType === VariableType.Enum.CHOICE;
+
+interface RoleKeyActionValue extends AbstractActionValue {
+  readonly actionValueType: typeof ActionValueType.Enum.USE_ROLE_KEY;
+  // if the user has chosen role key binding, this is the role key id
+  readonly roleKeyId: string;
+}
+
+export const isRoleKeyActionValue = (
+  actionValue: AbstractActionValue
+): actionValue is RoleKeyActionValue =>
+  actionValue.actionValueType === ActionValueType.Enum.USE_ROLE_KEY;
+
+export type TextActionValue =
+  | EnterTextActionValue
+  | VariableTextActionValue
+  | VariableChoiceActionValue
+  | RoleKeyActionValue;
+
+export type NumericActionValue =
+  | EnterNumberActionValue
+  | VariableRangeActionValue
+  | RoleKeyActionValue;
+
+//========================================
+//========================================
+//========================================
+
+export const createTextValue = (): EnterTextActionValue => {
   return {
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    variableType: VariableType.Enum.CHOICE,
-    variableId: SELECT_DEFAULT_VALUE,
-    roleKeyId: SELECT_DEFAULT_VALUE,
+    enteredValueType: EnterValueType.TEXT,
     value: '',
   };
 };
 
-export const withType = <T extends TextValue | RangeValue | ChoiceValue>(
-  actionValue: T,
-  type: ActionValueType.Type
-): T => {
+export const createNumericValue = (): EnterNumberActionValue => {
   return {
-    ...actionValue,
-    actionValueType: type,
+    actionValueType: ActionValueType.Enum.ENTER_VALUE,
+    enteredValueType: EnterValueType.NUMERIC,
+    value: 0,
   };
 };

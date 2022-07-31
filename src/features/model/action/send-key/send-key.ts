@@ -1,9 +1,9 @@
 import { Action, copyAction } from '../action';
 import {
-  ChoiceValue,
-  createChoiceValue,
-  createRangeValue,
-  RangeValue,
+  createNumericValue,
+  createTextValue,
+  NumericActionValue,
+  TextActionValue,
 } from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../util/random-id';
@@ -30,15 +30,24 @@ interface AbstractSendKeyAction extends Action {
   readonly sendKeyMode: SendKeyMode.Type;
   readonly modifiers: Modifiers;
   // TODO: enforce that this has roleKey:alphabet if using a choice var??
-  readonly keyToSend: ChoiceValue;
-  readonly outerPause: RangeValue;
+  readonly keyToSend: TextActionValue;
+  readonly outerPause: NumericActionValue;
 }
+
+export const isSendKeyAction = (
+  action: Action
+): action is AbstractSendKeyAction => action.type === ActionType.Enum.SEND_KEY;
 
 export interface SendKeyPressAction extends AbstractSendKeyAction {
   readonly sendKeyMode: typeof SendKeyMode.Enum.PRESS;
-  readonly innerPause: RangeValue;
-  readonly repeat: RangeValue;
+  readonly innerPause: NumericActionValue;
+  readonly repeat: NumericActionValue;
 }
+
+export const isSendKeyPressAction = (
+  action: AbstractSendKeyAction
+): action is SendKeyPressAction =>
+  action.sendKeyMode === SendKeyMode.Enum.PRESS;
 
 export const createSendKeyPressAction = (): SendKeyPressAction => {
   return {
@@ -48,10 +57,10 @@ export const createSendKeyPressAction = (): SendKeyPressAction => {
     roleKeyId: null,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
-    keyToSend: createChoiceValue(),
-    outerPause: createRangeValue(),
-    innerPause: createRangeValue(),
-    repeat: createRangeValue(),
+    keyToSend: createTextValue(),
+    outerPause: createNumericValue(),
+    innerPause: createNumericValue(),
+    repeat: createNumericValue(),
   };
 };
 
@@ -63,17 +72,22 @@ export const copyIntoSendKeyPressAction = (
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
-    keyToSend: createChoiceValue(),
-    outerPause: createRangeValue(),
-    innerPause: createRangeValue(),
-    repeat: createRangeValue(),
+    keyToSend: createTextValue(),
+    outerPause: createNumericValue(),
+    innerPause: createNumericValue(),
+    repeat: createNumericValue(),
   };
 };
 
 export interface SendKeyHoldReleaseAction extends AbstractSendKeyAction {
   readonly sendKeyMode: typeof SendKeyMode.Enum.HOLD_RELEASE;
-  readonly direction: ChoiceValue;
+  readonly direction: TextActionValue;
 }
+
+export const isSendKeyHoldReleaseAction = (
+  action: AbstractSendKeyAction
+): action is SendKeyHoldReleaseAction =>
+  action.sendKeyMode === SendKeyMode.Enum.HOLD_RELEASE;
 
 export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
   return {
@@ -83,9 +97,9 @@ export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
     roleKeyId: null,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
-    keyToSend: createChoiceValue(),
-    outerPause: createRangeValue(),
-    direction: createChoiceValue(),
+    keyToSend: createTextValue(),
+    outerPause: createNumericValue(),
+    direction: createTextValue(),
   };
 };
 
@@ -97,9 +111,9 @@ export const copyIntoSendKeyHoldReleaseAction = (
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
-    keyToSend: createChoiceValue(),
-    outerPause: createRangeValue(),
-    direction: createChoiceValue(),
+    keyToSend: createTextValue(),
+    outerPause: createNumericValue(),
+    direction: createTextValue(),
   };
 };
 

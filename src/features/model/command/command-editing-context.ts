@@ -29,14 +29,31 @@ type AbstractCommandReducerAction<T> = {
   payload: T;
 };
 
-export type CommandReducerStringAction = AbstractCommandReducerAction<string>;
-export type CommandReducerSpecTypeAction =
-  AbstractCommandReducerAction<CommandSpecType.Type>;
-export type CommandReducerActionIdAction =
-  AbstractCommandReducerAction<ChangeCommandActionId>;
-export type CommandReducerMoveAction =
-  AbstractCommandReducerAction<MoveCommandAction>;
-export type CommandReducerDeleteAction = AbstractCommandReducerAction<number>;
+export interface CommandReducerStringAction
+  extends AbstractCommandReducerAction<string> {
+  type:
+    | typeof CommandReducerActionType.CHANGE_NAME
+    | typeof CommandReducerActionType.CHANGE_ROLE_KEY
+    | typeof CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID
+    | typeof CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID
+    | typeof CommandReducerActionType.ADD_ACTION;
+}
+export interface CommandReducerSpecTypeAction
+  extends AbstractCommandReducerAction<CommandSpecType.Type> {
+  type: typeof CommandReducerActionType.CHANGE_SPEC_TYPE;
+}
+export interface CommandReducerActionIdAction
+  extends AbstractCommandReducerAction<ChangeCommandActionId> {
+  type: typeof CommandReducerActionType.CHANGE_ACTION;
+}
+export interface CommandReducerMoveAction
+  extends AbstractCommandReducerAction<MoveCommandAction> {
+  type: typeof CommandReducerActionType.MOVE_ACTION;
+}
+export interface CommandReducerDeleteAction
+  extends AbstractCommandReducerAction<number> {
+  type: typeof CommandReducerActionType.DELETE_ACTION;
+}
 export type CommandReducerAction =
   | CommandReducerStringAction
   | CommandReducerSpecTypeAction

@@ -9,15 +9,15 @@ import {
   ActionReducerActionType,
 } from '../action-editing-context';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
-import { SendKeyAction } from './send-key';
+import {
+  isSendKeyHoldReleaseAction,
+  isSendKeyPressAction,
+  SendKeyAction,
+  SendKeyHoldReleaseAction,
+  SendKeyPressAction,
+} from './send-key';
 import { SendKeyMode } from './send-key-modes';
 import { SendKeyModifiers } from './send-key-modifiers';
-import {
-  keyToSendValidators,
-  outerPauseValidators,
-  toSendKeyHoldReleaseFM as KEY_HOLD_RELEASE,
-  toSendKeyPressFM as KEY_PRESS,
-} from './send-key-validators';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
 import { SendKeyPressComponent } from './SendKeyPressComponent';
 
@@ -34,7 +34,7 @@ export const SendKeyComponent: React.FC<{
   const modeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatchFn({
       type: ActionReducerActionType.CHANGE_SEND_KEY_MODE,
-      payload: event.target.value,
+      payload: event.target.value as SendKeyMode.Type,
     });
     validationContext.touch(Field.AC_SEND_KEY_MODE);
   };
@@ -68,7 +68,12 @@ export const SendKeyComponent: React.FC<{
         actionValue={props.sendKeyAction.keyToSend}
         labelText="Key to Send"
         descriptionText="key to send"
-        validators={keyToSendValidators}
+        fields={{
+          radio: Field.AC_KEY_TO_SEND_RADIO,
+          value: Field.AC_KEY_TO_SEND_VALUE,
+          variable: Field.AC_KEY_TO_SEND_VAR,
+          roleKey: Field.AC_KEY_TO_SEND_RK,
+        }}
         required={true}
       />
       <ExpandCollapseComponent
@@ -109,20 +114,27 @@ export const SendKeyComponent: React.FC<{
           actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
           descriptionText="time to pause after keystroke, in centiseconds"
-          validators={outerPauseValidators}
+          fields={{
+            radio: Field.AC_OUTER_PAUSE_RADIO,
+            value: Field.AC_OUTER_PAUSE_VALUE,
+            variable: Field.AC_OUTER_PAUSE_VAR,
+            roleKey: Field.AC_OUTER_PAUSE_RK,
+          }}
         />
 
-        {/* TODO: use the filter maps in components
+        {/* TODO: use the type guards in components
         like below EVERYWHERE -- then the logic is actually shared */}
 
-        {KEY_PRESS.filter(props.sendKeyAction) && (
+        {isSendKeyPressAction(props.sendKeyAction) && (
           <SendKeyPressComponent
-            sendKeyPressAction={KEY_PRESS.map(props.sendKeyAction)}
+            sendKeyPressAction={props.sendKeyAction as SendKeyPressAction}
           />
         )}
-        {KEY_HOLD_RELEASE.filter(props.sendKeyAction) && (
+        {isSendKeyHoldReleaseAction(props.sendKeyAction) && (
           <SendKeyHoldReleaseComponent
-            sendKeyHoldReleaseAction={KEY_HOLD_RELEASE.map(props.sendKeyAction)}
+            sendKeyHoldReleaseAction={
+              props.sendKeyAction as SendKeyHoldReleaseAction
+            }
           />
         )}
       </ExpandCollapseComponent>

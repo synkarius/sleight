@@ -11,8 +11,8 @@ import { ActionReducerActionType } from './action-editing-context';
 import { Action } from './action';
 import { ActionType } from './action-types';
 import {
-  createChoiceValue,
-  createRangeValue,
+  createNumericValue,
+  createTextValue,
 } from './action-value/action-value';
 
 const createTestAction = (id: string): Action => {
@@ -35,10 +35,10 @@ const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
       shift: false,
       windows: false,
     },
-    keyToSend: createChoiceValue(),
-    outerPause: createRangeValue(),
-    innerPause: createRangeValue(),
-    repeat: createRangeValue(),
+    keyToSend: createTextValue(),
+    outerPause: createNumericValue(),
+    innerPause: createNumericValue(),
+    repeat: createNumericValue(),
   };
 };
 
@@ -55,9 +55,9 @@ const createTestSendKeyHoldReleaseAction = (
       shift: false,
       windows: false,
     },
-    keyToSend: createChoiceValue(),
-    outerPause: createRangeValue(),
-    direction: createChoiceValue(),
+    keyToSend: createTextValue(),
+    outerPause: createNumericValue(),
+    direction: createTextValue(),
   };
 };
 

@@ -10,7 +10,7 @@ import {
 } from './action-reducers';
 import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionType } from './action-types';
-import { createRangeValue } from './action-value/action-value';
+import { createNumericValue } from './action-value/action-value';
 import { ActionReducerActionType } from './action-editing-context';
 
 const createTestAction = (id: string): Action => {
@@ -111,7 +111,7 @@ describe('action reducer', () => {
     const expectedAction: PauseAction = {
       ...createTestAction(obj.id),
       type: ActionType.Enum.PAUSE,
-      centiseconds: createRangeValue(),
+      centiseconds: createNumericValue(),
     };
 
     expect(actual).not.toBe(obj);

@@ -15,8 +15,8 @@ import {
   changeEditingVariableRoleKey,
 } from './variable-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
-import { createSelector } from '../selector/selector';
-import { createNewSelector } from '../selector/selector-reducers';
+import { createSelector } from '../selector/data/selector-domain';
+import { saveSelector } from '../selector/selector-reducers';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { Field } from '../../../validation/validation-field';
@@ -33,7 +33,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     if (newVariableType === VariableType.Enum.CHOICE) {
       const selector = createSelector();
       selectorId = selector.id;
-      dispatch(createNewSelector(selector));
+      dispatch(saveSelector(selector));
     }
     dispatch(
       changeEditingVariableType({

@@ -6,7 +6,11 @@ export const alwaysFalse = <T>(t: T): boolean => false;
 
 export const notEmpty = (value: string) => value.trim().length > 0;
 
+export const isEmpty = (value: string) => value.trim().length === 0;
+
 export const identity = <T>(t: T) => t;
 
 export const isSelected = (id?: string): boolean =>
   !!id && id !== SELECT_DEFAULT_VALUE;
+
+export const isTruthy = (t: any) => !!t;

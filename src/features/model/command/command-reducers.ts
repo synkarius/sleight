@@ -143,53 +143,27 @@ export const commandReactReducer = (
   state: Command,
   action: CommandReducerAction
 ): Command => {
-  switch (action.type) {
+  const actionType = action.type;
+  switch (actionType) {
     case CommandReducerActionType.CHANGE_NAME:
-      return changeEditingCommandName(
-        state,
-        action as CommandReducerStringAction
-      );
+      return changeEditingCommandName(state, action);
     case CommandReducerActionType.CHANGE_ROLE_KEY:
-      return changeEditingCommandRoleKey(
-        state,
-        action as CommandReducerStringAction
-      );
+      return changeEditingCommandRoleKey(state, action);
     case CommandReducerActionType.CHANGE_SPEC_TYPE:
-      return changeEditingCommandSpecType(
-        state,
-        action as CommandReducerSpecTypeAction
-      );
+      return changeEditingCommandSpecType(state, action);
     case CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID:
-      return changeEditingCommandSpecVariableId(
-        state,
-        action as CommandReducerStringAction
-      );
+      return changeEditingCommandSpecVariableId(state, action);
     case CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID:
-      return changeEditingCommandSpecRoleKeyId(
-        state,
-        action as CommandReducerStringAction
-      );
+      return changeEditingCommandSpecRoleKeyId(state, action);
     case CommandReducerActionType.ADD_ACTION:
-      return addActionToEditingCommand(
-        state,
-        action as CommandReducerStringAction
-      );
+      return addActionToEditingCommand(state, action);
     case CommandReducerActionType.CHANGE_ACTION:
-      return changeEditingCommandActionId(
-        state,
-        action as CommandReducerActionIdAction
-      );
+      return changeEditingCommandActionId(state, action);
     case CommandReducerActionType.MOVE_ACTION:
-      return moveEditingCommandAction(
-        state,
-        action as CommandReducerMoveAction
-      );
+      return moveEditingCommandAction(state, action);
     case CommandReducerActionType.DELETE_ACTION:
-      return deleteEditingCommandAction(
-        state,
-        action as CommandReducerDeleteAction
-      );
+      return deleteEditingCommandAction(state, action);
     default:
-      throw new ExhaustivenessFailureError(action.type);
+      throw new ExhaustivenessFailureError(actionType);
   }
 };

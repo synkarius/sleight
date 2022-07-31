@@ -1,9 +1,11 @@
 import React, { useId } from 'react';
 import { FormGroup, FormLabel, FormText, Row } from 'react-bootstrap';
-import { Selector } from './selector';
+import { Field } from '../../../validation/validation-field';
+import { Selector } from './data/selector-domain';
 import { SelectorButtonType } from './selector-button-type';
 import {
   SelectorItemComponent,
+  SelectorItemHandlerFunctions,
   SelectorPositionData,
 } from './SelectorItemComponent';
 
@@ -21,8 +23,10 @@ const getSelectorPositionData = (
 };
 
 export const SelectorComponent: React.FC<{
+  field: Field;
   selector: Selector;
   showLabel: boolean;
+  selectorItemHandlers: SelectorItemHandlerFunctions;
 }> = (props) => {
   const selectorFormGroupId = useId();
 
@@ -32,12 +36,13 @@ export const SelectorComponent: React.FC<{
       {props.selector.items.map((selectorItem, index) => (
         <SelectorItemComponent
           key={selectorItem.id}
-          selectorId={props.selector.id}
           selectorItem={selectorItem}
           selectorPositionData={getSelectorPositionData(
             index,
             props.selector.items.length
           )}
+          handlers={props.selectorItemHandlers}
+          field={props.field}
         />
       ))}
       <FormText className="text-muted">selector (what to say)</FormText>

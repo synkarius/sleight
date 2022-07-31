@@ -8,14 +8,12 @@ import { Field } from '../../../validation/validation-field';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { createRoleKey } from '../role-key/role-key';
 import { saveRoleKey } from '../role-key/role-key-reducers';
-import { createSpec } from '../spec/spec';
-import { createSelector } from '../selector/selector';
-import { createNewSelector } from '../selector/selector-reducers';
-import {
-  clearEditingSpec,
-  createNewEditingSpec,
-  saveEditingSpec,
-} from '../spec/spec-reducers';
+import { createSelector, Selector } from '../selector/data/selector-domain';
+import { saveSelector } from '../selector/selector-reducers';
+import { saveEditingSpec } from '../spec/spec-reducers';
+import { createSpec, createSpecItem } from '../spec/data/spec-domain';
+import { specDomainMapper } from '../spec/data/spec-domain-mapper';
+import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 
 const SPEC_NAME = 'asdf-spec';
 const ROLE_KEY_NAME = 'asdf-rk';
@@ -24,16 +22,16 @@ let user: UserEvent;
 
 beforeAll(() => {
   // save a spec
-  const specItemSelector = createSelector();
-  store.dispatch(createNewSelector(specItemSelector));
+  const selector = createSelector();
+  const selectorRedux = selectorDomainMapper.mapFromDomain(selector);
+  store.dispatch(saveSelector(selectorRedux));
+  const spec = createTestReduxSpec(selector);
   store.dispatch(
-    createNewEditingSpec({
-      ...createSpec(specItemSelector.id),
+    saveEditingSpec({
+      ...spec,
       name: SPEC_NAME,
     })
   );
-  store.dispatch(saveEditingSpec());
-  store.dispatch(clearEditingSpec());
   // save a role key
   store.dispatch(
     saveRoleKey({
@@ -94,3 +92,12 @@ describe('role key component tests', () => {
     expect(variableSelect).not.toHaveClass('is-invalid');
   });
 });
+
+const createTestReduxSpec = (selector: Selector) => {
+  const spec = createSpec();
+  const specItem = createSpecItem();
+  return specDomainMapper.mapFromDomain({
+    ...spec,
+    items: [{ ...specItem, selector: selector }],
+  });
+};

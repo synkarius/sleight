@@ -1,35 +1,36 @@
-import { getRandomId } from '../../../util/random-id';
-import { RoleKeyed, Ided } from '../../domain';
+import { getRandomId } from '../../../../util/random-id';
+import { RoleKeyed, Ided } from '../../../domain';
 
-interface BasicIded extends RoleKeyed, Ided {}
-
+/**
+ * A string with a role key; represents a single spoken
+ * word or phrase.
+ */
 export interface SelectorItem extends RoleKeyed, Ided {
   readonly value: string;
 }
 
+/**
+ * A group of selector items. All selector items in
+ * a group are alternates. One can be said in place of
+ * another.
+ */
 export interface Selector extends RoleKeyed, Ided {
   readonly items: SelectorItem[];
 }
 
 export const createSelectorItem = (): SelectorItem => {
   return {
-    roleKeyId: null,
     id: getRandomId(),
+    roleKeyId: null,
     value: '',
   };
 };
 
-export const createSelector = (
-  fromItems: SelectorItem[] | null = null,
-  from: BasicIded | null = null
-): Selector => {
-  const roleKeyId = from !== null ? from.roleKeyId : null;
-  const id = from !== null ? from.id : getRandomId();
-  const items = fromItems !== null ? fromItems : [createSelectorItem()];
+export const createSelector = (): Selector => {
   return {
-    roleKeyId: roleKeyId,
-    id: id,
-    items: items,
+    id: getRandomId(),
+    roleKeyId: null,
+    items: [createSelectorItem()],
   };
 };
 

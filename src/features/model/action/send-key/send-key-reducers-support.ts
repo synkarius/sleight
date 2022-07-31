@@ -1,16 +1,19 @@
-import { UnhandledActionValueOperationError } from '../../../../error/UnhandledActionValueOperationError';
+import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFailureError';
 import { UnhandledFieldError } from '../../../../error/UnhandledFieldError';
-import { Field } from '../../../../validation/validation-field';
+import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { Action } from '../action';
 import {
-  ActionReducerAction,
   ActionReducerActionType,
   ActionReducerActionValueTypePayloadAction,
   ActionReducerChangePayloadAction,
 } from '../action-editing-context';
-import { ChoiceValue, RangeValue } from '../action-value/action-value';
-import { IdValued } from '../action-value/action-value-validation';
+import {
+  EnterValueType,
+  NumericActionValue,
+  TextActionValue,
+} from '../action-value/action-value';
+import { ActionValueType } from '../action-value/action-value-type';
 import {
   SendKeyAction,
   SendKeyHoldReleaseAction,
@@ -24,108 +27,142 @@ import {
   repeatGroup,
 } from './send-key-action-value-type-name-groups';
 
-const getActionValue = (state: Action, field: Field): IdValued => {
-  if (Object.values(keyToSendGroup).includes(field)) {
-    return (state as SendKeyAction).keyToSend;
-  } else if (Object.values(outerPauseGroup).includes(field)) {
-    return (state as SendKeyAction).outerPause;
-  } else if (Object.values(innerPauseGroup).includes(field)) {
-    return (state as SendKeyPressAction).innerPause;
-  } else if (Object.values(repeatGroup).includes(field)) {
-    return (state as SendKeyPressAction).repeat;
-  } else if (Object.values(directionGroup).includes(field)) {
-    return (state as SendKeyHoldReleaseAction).direction;
-  }
-  throw new UnhandledFieldError(field);
-};
-const changeActionValue = <T extends IdValued>(
-  actionValue: T,
-  action:
-    | ActionReducerActionValueTypePayloadAction
-    | ActionReducerChangePayloadAction
-): T => {
-  switch (action.type) {
-    case ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE:
-      const typeAction = action as ActionReducerActionValueTypePayloadAction;
+const changeTextActionValueType = (
+  action: ActionReducerActionValueTypePayloadAction
+): TextActionValue => {
+  const actionValueType = action.payload.actionValueType;
+  switch (actionValueType) {
+    case ActionValueType.Enum.ENTER_VALUE:
       return {
-        ...actionValue,
-        actionValueType: typeAction.payload.actionValueType,
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
+        enteredValueType: EnterValueType.TEXT,
+        value: '',
+      };
+    case ActionValueType.Enum.USE_VARIABLE:
+      return {
+        actionValueType: ActionValueType.Enum.USE_VARIABLE,
+        variableType: VariableType.Enum.CHOICE,
+        variableId: SELECT_DEFAULT_VALUE,
+      };
+    case ActionValueType.Enum.USE_ROLE_KEY:
+      return {
+        actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
+        roleKeyId: SELECT_DEFAULT_VALUE,
       };
     default:
-      const stringAction = action as ActionReducerChangePayloadAction;
-      switch (action.type) {
-        case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
-          if (actionValue.variableType === VariableType.Enum.RANGE) {
-            return {
-              ...actionValue,
-              value: +stringAction.payload.value,
-            };
-          } else {
-            return {
-              ...actionValue,
-              value: stringAction.payload.value,
-            };
-          }
-        case ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID:
-          return {
-            ...actionValue,
-            variableId: stringAction.payload.value,
-          };
-        case ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID:
-          return {
-            ...actionValue,
-            roleKeyId: stringAction.payload.value,
-          };
-        default:
-          throw new UnhandledActionValueOperationError(action.type);
-      }
+      throw new ExhaustivenessFailureError(actionValueType);
   }
 };
-const assignIdValuedBack = (
-  state: Action,
-  field: Field,
-  actionValue: IdValued
-): SendKeyAction => {
-  if (Object.values(keyToSendGroup).includes(field)) {
-    return {
-      ...(state as SendKeyAction),
-      keyToSend: actionValue as ChoiceValue,
-    };
-  } else if (Object.values(outerPauseGroup).includes(field)) {
-    return {
-      ...(state as SendKeyAction),
-      outerPause: actionValue as RangeValue,
-    };
-  } else if (Object.values(innerPauseGroup).includes(field)) {
-    return {
-      ...(state as SendKeyPressAction),
-      innerPause: actionValue as RangeValue,
-    };
-  } else if (Object.values(repeatGroup).includes(field)) {
-    return {
-      ...(state as SendKeyPressAction),
-      repeat: actionValue as RangeValue,
-    };
-  } else if (Object.values(directionGroup).includes(field)) {
-    return {
-      ...(state as SendKeyHoldReleaseAction),
-      direction: actionValue as ChoiceValue,
-    };
+
+const changeNumericActionValueType = (
+  action: ActionReducerActionValueTypePayloadAction
+): NumericActionValue => {
+  const actionValueType = action.payload.actionValueType;
+  switch (actionValueType) {
+    case ActionValueType.Enum.ENTER_VALUE:
+      return {
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
+        enteredValueType: EnterValueType.NUMERIC,
+        value: 0,
+      };
+    case ActionValueType.Enum.USE_VARIABLE:
+      return {
+        actionValueType: ActionValueType.Enum.USE_VARIABLE,
+        variableType: VariableType.Enum.RANGE,
+        variableId: SELECT_DEFAULT_VALUE,
+      };
+    case ActionValueType.Enum.USE_ROLE_KEY:
+      return {
+        actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
+        roleKeyId: SELECT_DEFAULT_VALUE,
+      };
+    default:
+      throw new ExhaustivenessFailureError(actionValueType);
   }
-  throw new UnhandledFieldError(field);
+};
+
+const changeActionValue = <T extends TextActionValue | NumericActionValue>(
+  actionValue: T,
+  action: ActionReducerChangePayloadAction
+): T => {
+  const actionType = action.type;
+  switch (actionType) {
+    case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
+      if (
+        actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE &&
+        actionValue.enteredValueType === EnterValueType.NUMERIC
+      ) {
+        return {
+          ...actionValue,
+          value: +action.payload.value,
+        };
+      } else {
+        return {
+          ...actionValue,
+          value: action.payload.value,
+        };
+      }
+    case ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID:
+      return {
+        ...actionValue,
+        variableId: action.payload.value,
+      };
+    case ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID:
+      return {
+        ...actionValue,
+        roleKeyId: action.payload.value,
+      };
+    default:
+      throw new ExhaustivenessFailureError(actionType);
+  }
 };
 
 export const changeSendKey = (
   state: Action,
-  action: ActionReducerAction
-): SendKeyAction => {
-  const changeSendKeyAction = action as
+  action:
+    | ActionReducerChangePayloadAction
     | ActionReducerActionValueTypePayloadAction
-    | ActionReducerChangePayloadAction;
-  // 1: switch to get correct IdValued
-  const idValued = getActionValue(state, changeSendKeyAction.payload.field);
-  // 2: switch to perform operation on IdValued
-  const changed = changeActionValue(idValued, changeSendKeyAction);
-  // 3: switch to assign it back
-  return assignIdValuedBack(state, changeSendKeyAction.payload.field, changed);
+): SendKeyAction => {
+  if (Object.values(keyToSendGroup).includes(action.payload.field)) {
+    const ska = state as SendKeyAction;
+    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+      ? { ...ska, keyToSend: changeTextActionValueType(action) }
+      : {
+          ...ska,
+          keyToSend: changeActionValue(ska.keyToSend, action),
+        };
+  } else if (Object.values(outerPauseGroup).includes(action.payload.field)) {
+    const ska = state as SendKeyAction;
+    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+      ? { ...ska, outerPause: changeNumericActionValueType(action) }
+      : {
+          ...ska,
+          outerPause: changeActionValue(ska.outerPause, action),
+        };
+  } else if (Object.values(innerPauseGroup).includes(action.payload.field)) {
+    const skpa = state as SendKeyPressAction;
+    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+      ? { ...skpa, innerPause: changeNumericActionValueType(action) }
+      : {
+          ...skpa,
+          innerPause: changeActionValue(skpa.innerPause, action),
+        };
+  } else if (Object.values(repeatGroup).includes(action.payload.field)) {
+    const skpa = state as SendKeyPressAction;
+    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+      ? { ...skpa, repeat: changeNumericActionValueType(action) }
+      : {
+          ...skpa,
+          repeat: changeActionValue(skpa.repeat, action),
+        };
+  } else if (Object.values(directionGroup).includes(action.payload.field)) {
+    const skhra = state as SendKeyHoldReleaseAction;
+    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+      ? { ...skhra, direction: changeTextActionValueType(action) }
+      : {
+          ...skhra,
+          direction: changeActionValue(skhra.direction, action),
+        };
+  }
+  throw new UnhandledFieldError(action.payload.field);
 };

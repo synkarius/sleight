@@ -4,31 +4,33 @@ import {
   createSelectorItem,
   Selector,
   SelectorItem,
-} from './selector';
+} from './data/selector-domain';
 import {
   SelectorsState,
-  createNewSelector,
+  saveSelector,
   deleteSelector,
   createNewSelectorItem,
   editSelectorItem,
   deleteSelectorItem,
-  selectorReducer,
+  selectorReduxReducer,
 } from './selector-reducers';
 
 describe('role key reducer', () => {
   const initialState: SelectorsState = {
     saved: {},
+    editingId: undefined,
   };
   it('should handle initial state', () => {
-    expect(selectorReducer(undefined, { type: 'unknown' })).toEqual({
+    expect(selectorReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
+      editingId: undefined,
     });
   });
 
   it('should handle create new', () => {
     const newObject = createSelector();
 
-    const actual = selectorReducer(initialState, createNewSelector(newObject));
+    const actual = selectorReduxReducer(initialState, saveSelector(newObject));
 
     const expected: ReduxFriendlyStringMap<Selector> = {};
     expected[newObject.id] = {
@@ -49,11 +51,14 @@ describe('role key reducer', () => {
   it('should handle delete', () => {
     const newObject = createSelector();
 
-    const createdState = selectorReducer(
+    const createdState = selectorReduxReducer(
       initialState,
-      createNewSelector(newObject)
+      saveSelector(newObject)
     );
-    const actual = selectorReducer(createdState, deleteSelector(newObject.id));
+    const actual = selectorReduxReducer(
+      createdState,
+      deleteSelector(newObject.id)
+    );
     const expected: ReduxFriendlyStringMap<Selector> = {};
 
     expect(actual.saved).toEqual(expected);
@@ -68,15 +73,15 @@ describe('role key reducer', () => {
       value: 'some-value',
     };
 
-    const createdState1 = selectorReducer(
+    const createdState1 = selectorReduxReducer(
       initialState,
-      createNewSelector(newSelector1)
+      saveSelector(newSelector1)
     );
-    const createdState2 = selectorReducer(
+    const createdState2 = selectorReduxReducer(
       createdState1,
-      createNewSelector(newSelector2)
+      saveSelector(newSelector2)
     );
-    const actual = selectorReducer(
+    const actual = selectorReduxReducer(
       createdState2,
       createNewSelectorItem({
         selectorId: newSelector1.id,
@@ -119,9 +124,9 @@ describe('role key reducer', () => {
   it('should handle edit selector item', () => {
     const newSelector1 = createSelector();
 
-    const createdState1 = selectorReducer(
+    const createdState1 = selectorReduxReducer(
       initialState,
-      createNewSelector({
+      saveSelector({
         ...newSelector1,
         items: [
           {
@@ -132,7 +137,7 @@ describe('role key reducer', () => {
         ],
       })
     );
-    const actual = selectorReducer(
+    const actual = selectorReduxReducer(
       createdState1,
       editSelectorItem({
         selectorId: newSelector1.id,
@@ -160,11 +165,11 @@ describe('role key reducer', () => {
   it('should handle delete selector item', () => {
     const newSelector1 = createSelector();
 
-    const createdState1 = selectorReducer(
+    const createdState1 = selectorReduxReducer(
       initialState,
-      createNewSelector(newSelector1)
+      saveSelector(newSelector1)
     );
-    const actual = selectorReducer(
+    const actual = selectorReduxReducer(
       createdState1,
       deleteSelectorItem({
         selectorId: newSelector1.id,

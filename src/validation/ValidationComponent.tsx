@@ -2,8 +2,17 @@ import { useEffect, useState } from 'react';
 import { FieldValidator } from './field-validator';
 import { ValidationContext } from './validation-context';
 import { Field } from './validation-field';
-import { ValidationError } from './validator';
+import {
+  ErrorValidationResult,
+  ValidationResultType,
+} from './validation-result';
 
+enum ValidateMode {
+  SUBMIT,
+  TOUCH,
+}
+
+// generic props
 type ValidationProps<E> = {
   children: React.ReactNode;
   validators: FieldValidator<E>[];
@@ -24,37 +33,40 @@ type ValidationPropsComponent = <E>(
  */
 export const ValidationComponent: ValidationPropsComponent = (props) => {
   const [touched, setTouched] = useState<Field[]>([]);
-  const [errors, setErrors] = useState<ValidationError[]>([]);
+  const [results, setResults] = useState<ErrorValidationResult[]>([]);
   useEffect(() => validateTouched(), [touched]);
-  const validateTouched = () => {
-    const validationErrors = props.validators
-      .filter((v) => touched.includes(v.field))
+  const validate = (mode: ValidateMode): ErrorValidationResult[] => {
+    // submit means everything is touched
+    return props.validators
+      .filter((v) => mode === ValidateMode.SUBMIT || touched.includes(v.field))
       .filter((v) => v.isApplicable(props.editing))
-      .filter((v) => !v.isValid(props.editing))
-      .map((v) => v.error);
+      .map((v) => v.validate(props.editing))
+      .filter(
+        (result): result is ErrorValidationResult =>
+          result.type !== ValidationResultType.VALID
+      );
+  };
+  const validateTouched = () => {
     // want to ignore prior state:
-    setErrors(validationErrors);
+    setResults(validate(ValidateMode.TOUCH));
   };
   // addToTouched and localDispatch get passed down via context
   const addToTouched = (fieldName: Field): void => {
     setTouched((state) => [...state, fieldName]);
   };
-  const validate = (): boolean => {
-    const validationErrors = props.validators
-      // submit means everything is touched
-      .filter((v) => v.isApplicable(props.editing))
-      .filter((v) => !v.isValid(props.editing))
-      .map((v) => v.error);
-    setErrors(validationErrors);
-    return validationErrors.length === 0;
+
+  const validateOnSubmit = (): boolean => {
+    const errorResults = validate(ValidateMode.SUBMIT);
+    setResults(errorResults);
+    return errorResults.length === 0;
   };
 
   return (
     <ValidationContext.Provider
       value={{
         touch: addToTouched,
-        validateForm: validate,
-        getErrors: () => [...errors],
+        validateForm: validateOnSubmit,
+        getErrorResults: () => [...results],
       }}
     >
       {props.children}

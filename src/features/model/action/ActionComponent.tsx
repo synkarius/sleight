@@ -31,7 +31,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatchFn({
       type: ActionReducerActionType.CHANGE_ACTION_TYPE,
-      payload: event.target.value,
+      payload: event.target.value as ActionType.Type,
     });
     validationContext.touch(Field.AC_TYPE);
   };
@@ -51,7 +51,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     }
   };
 
-  const validationErrors = validationContext.getErrors();
+  const validationErrors = validationContext.getErrorResults();
   return (
     <PanelComponent header="Create/Edit Action">
       <FormGroupRowComponent labelText="Name">

@@ -3,7 +3,7 @@ import { Button, FormControl, FormText } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
-import { getRelevantErrorMessage } from '../../../validation/validator';
+import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { setFocus } from '../../menu/focus/focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
@@ -18,10 +18,6 @@ import {
 } from './command-editing-context';
 import { saveEditingCommand, selectCommand } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
-import {
-  commandSpecRoleKeySelectedValidator,
-  commandSpecVariableSelectedValidator,
-} from './command-validators';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
@@ -52,14 +48,20 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       reduxDispatch(selectCommand(undefined));
     }
   };
-  const validationErrors = validationContext.getErrors();
+  const errorResults = validationContext.getErrorResults();
+  const errorResultFields = errorResults.map((result) => result.field);
+  const specFields = {
+    radio: Field.CMD_SPEC_RADIO,
+    variable: Field.CMD_SPEC_VAR,
+    roleKey: Field.CMD_SPEC_RK,
+  };
   const commandSpecVariableIsInvalid = () =>
-    validationErrors.includes(commandSpecVariableSelectedValidator.error);
+    errorResultFields.includes(specFields.variable);
   const commandSpecRoleKeyIsInvalid = () =>
-    validationErrors.includes(commandSpecRoleKeySelectedValidator.error);
-  const errorMessage = getRelevantErrorMessage(validationErrors, [
-    commandSpecVariableSelectedValidator,
-    commandSpecRoleKeySelectedValidator,
+    errorResultFields.includes(specFields.roleKey);
+  const errorMessage = getRelevantErrorMessage(errorResults, [
+    specFields.variable,
+    specFields.roleKey,
   ]);
 
   return (
@@ -92,42 +94,42 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       >
         <CommandSpecTypeRadioGroupComponent
           commandSpecType={props.command.specType}
-          radioGroupName={Field[Field.CMD_SPEC_RADIO]}
+          radioGroupName={Field[specFields.radio]}
           typeChangedFn={(value) => {
             editingContext.localDispatchFn({
               type: CommandReducerActionType.CHANGE_SPEC_TYPE,
-              payload: value,
+              payload: value as CommandSpecType.Type,
             });
-            validationContext.touch(Field.CMD_SPEC_RADIO);
+            validationContext.touch(specFields.radio);
           }}
         />
         {props.command.specType === CommandSpecType.Enum.VARIABLE && (
           <SpecDropdownComponent
-            field={Field.CMD_SPEC_VAR}
+            field={specFields.variable}
             specId={props.command.specVariableId}
             onChange={(e) => {
               editingContext.localDispatchFn({
                 type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
                 payload: e.target.value,
               });
-              validationContext.touch(Field.CMD_SPEC_VAR);
+              validationContext.touch(specFields.variable);
             }}
-            onBlur={(_e) => validationContext.touch(Field.CMD_SPEC_VAR)}
+            onBlur={(_e) => validationContext.touch(specFields.variable)}
             isInvalid={commandSpecVariableIsInvalid()}
           />
         )}
         {props.command.specType === CommandSpecType.Enum.ROLE_KEY && (
           <RoleKeyDropdownComponent
-            field={Field.CMD_SPEC_RK}
+            field={specFields.roleKey}
             roleKeyId={props.command.roleKeyId}
             onChange={(e) => {
               editingContext.localDispatchFn({
                 type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,
                 payload: e.target.value,
               });
-              validationContext.touch(Field.CMD_SPEC_RK);
+              validationContext.touch(specFields.roleKey);
             }}
-            onBlur={(_e) => validationContext.touch(Field.CMD_SPEC_RK)}
+            onBlur={(_e) => validationContext.touch(specFields.roleKey)}
             isInvalid={commandSpecRoleKeyIsInvalid()}
           />
         )}
@@ -177,7 +179,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={validationErrors.length > 0}
+        disabled={errorResults.length > 0}
       >
         Save
       </Button>

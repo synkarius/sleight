@@ -121,13 +121,13 @@ describe('command reducer', () => {
 
     const actual = commandReactReducer(obj, {
       type: CommandReducerActionType.CHANGE_SPEC_TYPE,
-      payload: 'asdf',
+      payload: CommandSpecType.Enum.ROLE_KEY,
     });
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...createTestCommand(obj.id),
-      specType: 'asdf',
+      specType: CommandSpecType.Enum.ROLE_KEY,
     });
   });
 

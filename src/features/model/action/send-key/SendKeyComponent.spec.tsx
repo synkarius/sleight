@@ -7,8 +7,8 @@ import { store } from '../../../../app/store';
 import { Field } from '../../../../validation/validation-field';
 import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
-import { createSelector } from '../../selector/selector';
-import { createNewSelector } from '../../selector/selector-reducers';
+import { createSelector } from '../../selector/data/selector-domain';
+import { saveSelector } from '../../selector/selector-reducers';
 import { createChoice } from '../../variable/choice/choice';
 import { createRange } from '../../variable/range/range';
 import {
@@ -34,7 +34,7 @@ beforeAll(() => {
   store.dispatch(saveEditingVariable());
   store.dispatch(clearEditingVariable());
   const choiceItemSelector = createSelector();
-  store.dispatch(createNewSelector(choiceItemSelector));
+  store.dispatch(saveSelector(choiceItemSelector));
   store.dispatch(
     createNewEditingVariable({
       ...createChoice(choiceItemSelector.id),

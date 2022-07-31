@@ -11,14 +11,7 @@ import {
 } from '../model/variable/variable-reducers';
 import { createText } from '../model/variable/text/text';
 import { selectRoleKey } from '../model/role-key/role-key-reducers';
-import { createSelector } from '../model/selector/selector';
-import { createNewSelector } from '../model/selector/selector-reducers';
-import { createSpec } from '../model/spec/spec';
-import {
-  clearEditingSpec,
-  createNewEditingSpec,
-  selectSpec,
-} from '../model/spec/spec-reducers';
+import { selectSpec } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { SidebarSection } from './sidebar';
 import { setFocus } from '../menu/focus/focus-reducers';
@@ -77,15 +70,12 @@ export const SidebarComponent = () => {
   const specSection: SidebarSection = {
     type: ElementType.Enum.SPEC,
     items: Object.values(specsSaved),
-    createFn: () => {
-      // TODO: this way creates orphan selectors - clean them up --> will get cleaned up by new (local) validators
-      const selector = createSelector();
-      const spec = createSpec(selector.id);
-      dispatch(createNewSelector(selector));
-      dispatch(createNewEditingSpec(spec));
+    createFn: () => dispatch(setFocus(ElementType.Enum.SPEC)),
+    selectFn: (id) => {
+      dispatch(selectSpec(id));
+      dispatch(setFocus(ElementType.Enum.SPEC));
     },
-    selectFn: (id) => dispatch(selectSpec(id)),
-    clearFn: () => dispatch(clearEditingSpec()),
+    clearFn: () => dispatch(setFocus(undefined)),
   };
   const variableSection: SidebarSection = {
     type: ElementType.Enum.VARIABLE,

@@ -6,6 +6,8 @@ import { actionReactReducer } from './action-reducers';
 import { ActionValueType } from './action-value/action-value-type';
 import { ActionReducerActionType } from './action-editing-context';
 import { Field } from './../../../validation/validation-field';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { EnterValueType } from './action-value/action-value';
 
 describe('action reducer: action.repeat', () => {
   it('should handle change action.repeat.actionValueType', () => {
@@ -23,8 +25,9 @@ describe('action reducer: action.repeat', () => {
     expect(actual).toEqual({
       ...obj,
       repeat: {
-        ...obj.repeat,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
+        enteredValueType: EnterValueType.NUMERIC,
+        value: 0,
       },
     });
   });
@@ -100,6 +103,7 @@ const createTestSendKeyAction = (): SendKeyPressAction => {
     repeat: {
       ...obj.repeat,
       actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
+      roleKeyId: SELECT_DEFAULT_VALUE,
     },
   };
 };
