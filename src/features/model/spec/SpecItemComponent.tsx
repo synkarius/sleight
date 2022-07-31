@@ -1,7 +1,5 @@
 import React, { useContext, useId } from 'react';
 import { FormGroup, FormLabel, FormSelect, FormText } from 'react-bootstrap';
-import { useAppSelector } from '../../../app/hooks';
-import { Variable } from '../variable/variable';
 import { VariablesDropdownComponent } from '../variable/VariablesDropdownComponent';
 import {
   createSelector,
@@ -23,17 +21,18 @@ import { MoveDirection } from '../common/move-direction';
 import { Field } from '../../../validation/validation-field';
 import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
-import { specSelectorItemsCantBeEmpty } from './spec-validators';
+import { ValidationResultType } from '../../../validation/validation-result';
+import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 
 export const SpecItemComponent: React.FC<{
   specItem: SpecItem;
   required?: boolean;
 }> = (props) => {
   const typeInputId = useId();
-  const variables = useAppSelector((state) => state.variable.saved);
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
 
+  const errorResults = validationContext.getErrorResults();
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSpecItemType = event.target.value as SpecItemType.Type;
     switch (newSpecItemType) {
@@ -48,7 +47,6 @@ export const SpecItemComponent: React.FC<{
         });
         break;
       case SpecItemType.Enum.VARIABLE:
-        // using the 0th item b/c it's the first item in the list the user selects from
         editingContext.localDispatchFn({
           type: SpecReducerActionType.CHANGE_SPEC_ITEM_TYPE,
           payload: {
@@ -61,6 +59,7 @@ export const SpecItemComponent: React.FC<{
       default:
         throw new ExhaustivenessFailureError(newSpecItemType);
     }
+    validationContext.touch(Field.SP_ITEM_TYPE_SELECT);
   };
   const variableChangedHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatchFn({
@@ -70,6 +69,7 @@ export const SpecItemComponent: React.FC<{
         variableId: e.target.value,
       },
     });
+    validationContext.touch(Field.SP_ITEM_VARIABLE);
   };
   const specItemMovedHandler = (moveDirection: MoveDirection) => {
     editingContext.localDispatchFn({
@@ -119,10 +119,19 @@ export const SpecItemComponent: React.FC<{
     props.specItem.itemType === SpecItemType.Enum.SELECTOR
       ? props.specItem.selector
       : undefined;
-  const variable: Variable | undefined =
-    props.specItem.itemType === SpecItemType.Enum.VARIABLE
-      ? variables[props.specItem.variableId]
-      : undefined;
+  const getVariableErrorMessage = () => {
+    for (let i = 0; i < errorResults.length; i++) {
+      const errorResult = errorResults[i];
+      if (
+        errorResult.type === ValidationResultType.ID_LIST &&
+        errorResult.ids.includes(props.specItem.id)
+      ) {
+        return errorResult.message;
+      }
+    }
+    return undefined;
+  };
+  const variableErrorMessage = getVariableErrorMessage();
 
   return (
     <VerticalMoveableComponent
@@ -161,10 +170,18 @@ export const SpecItemComponent: React.FC<{
         />
       )}
       {props.specItem.itemType === SpecItemType.Enum.VARIABLE && (
-        <VariablesDropdownComponent
-          selectedVariableId={variable?.id}
-          onChange={variableChangedHandler}
-        />
+        <FormGroupRowComponent
+          labelText="Variable"
+          descriptionText="which variable to use for this spec item"
+          errorMessage={variableErrorMessage}
+        >
+          <VariablesDropdownComponent
+            selectedVariableId={props.specItem.variableId}
+            onChange={variableChangedHandler}
+            onBlur={(_e) => validationContext.touch(Field.SP_ITEM_VARIABLE)}
+            isInvalid={!!variableErrorMessage}
+          />
+        </FormGroupRowComponent>
       )}
     </VerticalMoveableComponent>
   );

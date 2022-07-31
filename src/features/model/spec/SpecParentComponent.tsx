@@ -13,6 +13,7 @@ import { wrapReduxMap } from '../../../data/wrap-redux-map';
 import {
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,
+  specVariableMustBeSelected,
 } from './spec-validators';
 
 type SpecInitFunction = (specId: string | undefined) => Spec;
@@ -41,7 +42,11 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
 
   return (
     <ValidationComponent<Spec>
-      validators={[atLeastOneSpecItem, specSelectorItemsCantBeEmpty]}
+      validators={[
+        atLeastOneSpecItem,
+        specSelectorItemsCantBeEmpty,
+        specVariableMustBeSelected,
+      ]}
       editing={editing}
     >
       <SpecEditingContext.Provider

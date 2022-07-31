@@ -9,6 +9,7 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { Spec } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';
 
@@ -16,7 +17,7 @@ export const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
   Field.SP_SAVE_BUTTON,
   alwaysTrue,
   (spec) => spec.items.length > 0,
-  ValidationErrorCode.SPEC_GTE1_SPEC_ITEM,
+  ValidationErrorCode.SP_GTE1_SPEC_ITEM,
   'at least one spec item must be added'
 );
 
@@ -31,19 +32,49 @@ export const findInvalidSelectorIds = (spec: Spec): string[] => {
     .map((selectorItem) => selectorItem.id);
 };
 
+const specItemSelectorFields = Field.SP_ITEM_SELECTOR;
 export const specSelectorItemsCantBeEmpty: FieldValidator<Spec> = {
-  field: Field.SP_ITEM_SELECTOR,
+  field: specItemSelectorFields,
   isApplicable: (spec) =>
     !!spec.items.find((item) => item.itemType === SpecItemType.Enum.SELECTOR),
   validate: (spec) => {
     const invalidIds = findInvalidSelectorIds(spec);
     return invalidIds.length === 0
-      ? validResult(Field.SP_ITEM_SELECTOR)
+      ? validResult(specItemSelectorFields)
       : {
           type: ValidationResultType.ID_LIST,
-          field: Field.SP_ITEM_SELECTOR,
-          code: ValidationErrorCode.SPEC_EMPTY_SELECTOR,
+          field: specItemSelectorFields,
+          code: ValidationErrorCode.SP_EMPTY_SELECTOR,
           message: 'selectors may not be empty',
+          ids: invalidIds,
+        };
+  },
+};
+
+export const findSpecItemsWithUnselectedVariables = (spec: Spec): string[] => {
+  return spec.items
+    .filter(
+      (specItem) =>
+        specItem.itemType === SpecItemType.Enum.VARIABLE &&
+        specItem.variableId === SELECT_DEFAULT_VALUE
+    )
+    .map((specItem) => specItem.id);
+};
+
+const specItemVariableFields = Field.SP_ITEM_VARIABLE;
+export const specVariableMustBeSelected: FieldValidator<Spec> = {
+  field: specItemVariableFields,
+  isApplicable: (spec) =>
+    !!spec.items.find((item) => item.itemType === SpecItemType.Enum.VARIABLE),
+  validate: (spec) => {
+    const invalidIds = findSpecItemsWithUnselectedVariables(spec);
+    return invalidIds.length === 0
+      ? validResult(specItemVariableFields)
+      : {
+          type: ValidationResultType.ID_LIST,
+          field: specItemVariableFields,
+          code: ValidationErrorCode.SP_VAR_NOT_SELECTED,
+          message: 'variable must be selected',
           ids: invalidIds,
         };
   },
