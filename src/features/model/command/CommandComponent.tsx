@@ -16,7 +16,7 @@ import {
   CommandEditingContext,
   CommandReducerActionType,
 } from './command-editing-context';
-import { saveEditingCommand, selectCommand } from './command-reducers';
+import { saveEditingCommand } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 
@@ -51,7 +51,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
       reduxDispatch(saveEditingCommand(props.command));
-      reduxDispatch(selectCommand(undefined));
+      reduxDispatch(setFocus(undefined));
     }
   };
   const errorResults = validationContext.getErrorResults();

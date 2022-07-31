@@ -53,6 +53,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       });
       const specRedux = specDomainMapper.mapFromDomain(props.spec);
       reduxDispatch(saveEditingSpec(specRedux));
+      reduxDispatch(setFocus(undefined));
     }
   };
   const errorResults = validationContext.getErrorResults();
@@ -98,6 +99,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       <div>
         <Col sm="12" className="mb-2">
           <Button
+            aria-label={Field[Field.SP_ADD_ITEM_BUTTON]}
             variant={
               !noSpecItemsErrorMessage ? 'outline-primary' : 'outline-danger'
             }

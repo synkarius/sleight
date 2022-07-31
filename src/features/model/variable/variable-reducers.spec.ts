@@ -90,7 +90,7 @@ describe('role key reducer', () => {
 
     const actual = variableReducer(createdState, clearEditingVariable());
 
-    expect(actual.editing).toBeNull();
+    expect(actual.editing).toBeUndefined();
   });
 
   it('should handle change name', () => {
