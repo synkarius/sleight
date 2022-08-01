@@ -176,6 +176,7 @@ export const SpecItemComponent: React.FC<{
           errorMessage={variableErrorMessage}
         >
           <VariablesDropdownComponent
+            field={Field.SP_ITEM_VARIABLE}
             selectedVariableId={props.specItem.variableId}
             onChange={variableChangedHandler}
             onBlur={(_e) => validationContext.touch(Field.SP_ITEM_VARIABLE)}

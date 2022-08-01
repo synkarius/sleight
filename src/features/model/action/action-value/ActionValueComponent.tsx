@@ -91,7 +91,6 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const roleKeySelectionIsInvalid = () =>
     errorResultFields.includes(props.fields.roleKey);
   const enteredValueFieldName = Field[props.fields.value];
-  const variableFieldName = Field[props.fields.variable];
   const errorMessage = getRelevantErrorMessage(errorResults, [
     props.fields.value,
     props.fields.variable,
@@ -153,12 +152,12 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       {props.actionValue.actionValueType ===
         ActionValueType.Enum.USE_VARIABLE && (
         <VariablesDropdownComponent
+          field={props.fields.variable}
           selectedVariableId={props.actionValue.variableId}
           onChange={(e) => variableIdChangedFn(e.target.value)}
           onBlur={(_e) => touchVariable()}
           isInvalid={variableSelectionIsInvalid()}
           variableTypeFilter={[props.actionValue.variableType]}
-          name={variableFieldName}
         />
       )}
       {props.actionValue.actionValueType ===
