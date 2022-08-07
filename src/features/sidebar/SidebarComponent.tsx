@@ -9,7 +9,7 @@ import { selectRoleKey } from '../model/role-key/role-key-reducers';
 import { selectSpec } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { SidebarSection } from './sidebar';
-import { setFocus } from '../menu/focus/focus-reducers';
+import { setEditorFocus } from '../menu/editor/editor-focus-reducers';
 
 export const SidebarComponent = () => {
   const reduxDispatch = useAppDispatch();
@@ -25,11 +25,11 @@ export const SidebarComponent = () => {
     items: Object.values(actionsSaved),
     createFn: () => {
       reduxDispatch(selectAction());
-      reduxDispatch(setFocus(ElementType.Enum.ACTION));
+      reduxDispatch(setEditorFocus(ElementType.Enum.ACTION));
     },
     selectFn: (id) => {
       reduxDispatch(selectAction(id));
-      reduxDispatch(setFocus(ElementType.Enum.ACTION));
+      reduxDispatch(setEditorFocus(ElementType.Enum.ACTION));
     },
   };
   const commandSection: SidebarSection = {
@@ -37,11 +37,11 @@ export const SidebarComponent = () => {
     items: Object.values(commandsSaved),
     createFn: () => {
       reduxDispatch(selectCommand());
-      reduxDispatch(setFocus(ElementType.Enum.COMMAND));
+      reduxDispatch(setEditorFocus(ElementType.Enum.COMMAND));
     },
     selectFn: (id) => {
       reduxDispatch(selectCommand(id));
-      reduxDispatch(setFocus(ElementType.Enum.COMMAND));
+      reduxDispatch(setEditorFocus(ElementType.Enum.COMMAND));
     },
   };
   const contextSection: SidebarSection = {
@@ -49,11 +49,11 @@ export const SidebarComponent = () => {
     items: Object.values(contextsSaved),
     createFn: () => {
       reduxDispatch(selectContext());
-      reduxDispatch(setFocus(ElementType.Enum.CONTEXT));
+      reduxDispatch(setEditorFocus(ElementType.Enum.CONTEXT));
     },
     selectFn: (id) => {
       reduxDispatch(selectContext(id));
-      reduxDispatch(setFocus(ElementType.Enum.CONTEXT));
+      reduxDispatch(setEditorFocus(ElementType.Enum.CONTEXT));
     },
   };
   const roleKeySection: SidebarSection = {
@@ -63,11 +63,11 @@ export const SidebarComponent = () => {
     }),
     createFn: () => {
       reduxDispatch(selectRoleKey());
-      reduxDispatch(setFocus(ElementType.Enum.ROLE_KEY));
+      reduxDispatch(setEditorFocus(ElementType.Enum.ROLE_KEY));
     },
     selectFn: (id) => {
       reduxDispatch(selectRoleKey(id));
-      reduxDispatch(setFocus(ElementType.Enum.ROLE_KEY));
+      reduxDispatch(setEditorFocus(ElementType.Enum.ROLE_KEY));
     },
   };
   const specSection: SidebarSection = {
@@ -75,11 +75,11 @@ export const SidebarComponent = () => {
     items: Object.values(specsSaved),
     createFn: () => {
       reduxDispatch(selectSpec());
-      reduxDispatch(setFocus(ElementType.Enum.SPEC));
+      reduxDispatch(setEditorFocus(ElementType.Enum.SPEC));
     },
     selectFn: (id) => {
       reduxDispatch(selectSpec(id));
-      reduxDispatch(setFocus(ElementType.Enum.SPEC));
+      reduxDispatch(setEditorFocus(ElementType.Enum.SPEC));
     },
   };
   const variableSection: SidebarSection = {
@@ -87,11 +87,11 @@ export const SidebarComponent = () => {
     items: Object.values(variablesSaved),
     createFn: () => {
       reduxDispatch(selectVariable());
-      reduxDispatch(setFocus(ElementType.Enum.VARIABLE));
+      reduxDispatch(setEditorFocus(ElementType.Enum.VARIABLE));
     },
     selectFn: (id) => {
       reduxDispatch(selectVariable(id));
-      reduxDispatch(setFocus(ElementType.Enum.VARIABLE));
+      reduxDispatch(setEditorFocus(ElementType.Enum.VARIABLE));
     },
   };
 
@@ -111,7 +111,7 @@ export const SidebarComponent = () => {
           key={group.type}
           eventKey={'' + index}
           group={group}
-          clearAllFn={() => reduxDispatch(setFocus())}
+          clearAllFn={() => reduxDispatch(setEditorFocus())}
         />
       ))}
     </Accordion>

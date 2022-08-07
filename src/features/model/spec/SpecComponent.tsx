@@ -18,7 +18,7 @@ import {
 } from './spec-editing-context';
 import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { specDomainMapper } from './data/spec-domain-mapper';
-import { setFocus } from '../../menu/focus/focus-reducers';
+import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -53,7 +53,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       });
       const specRedux = specDomainMapper.mapFromDomain(props.spec);
       reduxDispatch(saveEditingSpec(specRedux));
-      reduxDispatch(setFocus());
+      reduxDispatch(setEditorFocus());
     }
   };
   const errorResults = validationContext.getErrorResults();
@@ -126,7 +126,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           Save
         </Button>
         <Button
-          onClick={(_e) => reduxDispatch(setFocus())}
+          onClick={(_e) => reduxDispatch(setEditorFocus())}
           className="mx-3"
           variant="warning"
           size="lg"

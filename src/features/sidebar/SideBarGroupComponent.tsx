@@ -1,7 +1,7 @@
 import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../app/hooks';
-import { setFocus } from '../menu/focus/focus-reducers';
+import { setEditorFocus } from '../menu/editor/editor-focus-reducers';
 import { ElementType } from '../model/common/element-types';
 import { SidebarSection } from './sidebar';
 
@@ -16,12 +16,12 @@ export const SideBarGroupComponent: React.FC<{
   const createNewItem = () => {
     props.clearAllFn();
     props.group.createFn();
-    reduxDispatch(setFocus(props.group.type as ElementType.Type));
+    reduxDispatch(setEditorFocus(props.group.type as ElementType.Type));
   };
   const selectItem = (itemId: string) => {
     props.clearAllFn();
     props.group.selectFn(itemId);
-    reduxDispatch(setFocus(props.group.type as ElementType.Type));
+    reduxDispatch(setEditorFocus(props.group.type as ElementType.Type));
   };
 
   return (

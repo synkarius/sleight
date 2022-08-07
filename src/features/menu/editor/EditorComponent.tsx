@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '../../../app/hooks';
 import { ElementType } from '../../model/common/element-types';
-import { VariableComponent } from '../../model/variable/VariableComponent';
 import { RoleKeyParentComponent } from '../../model/role-key/RoleKeyParentComponent';
 import { ActionParentComponent } from '../../model/action/ActionParentComponent';
 import { CommandParentComponent } from '../../model/command/CommandParentComponent';
@@ -9,7 +8,7 @@ import { ContextParentComponent } from '../../model/context/ContextParentCompone
 import { SpecParentComponent } from '../../model/spec/SpecParentComponent';
 import { VariableParentComponent } from '../../model/variable/VariableParentComponent';
 
-export const FocusComponent: React.FC<{}> = () => {
+export const EditorComponent: React.FC<{}> = () => {
   const elementType = useAppSelector((state) => state.focus.elementType);
   const actionId = useAppSelector((state) => state.action.editingId);
   const commandId = useAppSelector((state) => state.command.editingId);

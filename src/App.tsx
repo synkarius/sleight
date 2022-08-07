@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navigation } from './features/menu/Navigation';
 import { SidebarComponent } from './features/sidebar/SidebarComponent';
 import { Col, Row } from 'react-bootstrap';
-import { FocusComponent } from './features/menu/focus/FocusComponent';
+import { EditorComponent } from './features/menu/editor/EditorComponent';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
           <SidebarComponent />
         </Col>
         <Col sm="8">
-          <FocusComponent />
+          <EditorComponent />
         </Col>
       </Row>
     </div>

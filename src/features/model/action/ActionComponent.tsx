@@ -14,7 +14,7 @@ import {
   ActionEditingContext,
   ActionReducerActionType,
 } from './action-editing-context';
-import { setFocus } from '../../menu/focus/focus-reducers';
+import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
 import { TEXT_BOX } from '../common/accessibility-roles';
 
@@ -48,7 +48,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
       reduxDispatch(saveAction(props.action));
-      reduxDispatch(setFocus());
+      reduxDispatch(setEditorFocus());
     }
   };
 
@@ -98,7 +98,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => reduxDispatch(setFocus())}
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
         className="mx-3"
         variant="warning"
         size="lg"

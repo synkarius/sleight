@@ -17,7 +17,7 @@ import {
 } from './variable-editing-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { variableDomainMapper } from './data/variable-domain-mapper';
-import { setFocus } from '../../menu/focus/focus-reducers';
+import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { saveSelector } from '../selector/selector-reducers';
 
@@ -74,7 +74,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       }
       const variableDTO = variableDomainMapper.mapFromDomain(props.variable);
       reduxDispatch(saveEditingVariable(variableDTO));
-      reduxDispatch(setFocus());
+      reduxDispatch(setEditorFocus());
     }
   };
 
@@ -121,7 +121,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => reduxDispatch(setFocus())}
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
         className="mx-3"
         variant="warning"
         size="lg"

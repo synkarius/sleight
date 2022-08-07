@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../../app/hooks';
 import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
-import { setFocus } from '../../menu/focus/focus-reducers';
+import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
@@ -60,7 +60,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     const isValid = validationContext.validateForm();
     if (isValid) {
       reduxDispatch(saveEditingContext(props.context));
-      reduxDispatch(setFocus());
+      reduxDispatch(setEditorFocus());
     }
   };
 
@@ -135,7 +135,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => reduxDispatch(setFocus())}
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
         className="mx-3"
         variant="warning"
         size="lg"
