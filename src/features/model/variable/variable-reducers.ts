@@ -23,7 +23,7 @@ import {
   ChoiceVariable,
 } from './data/variable';
 import { VariableDTO } from './data/variable-dto';
-import { BasicFields } from '../../domain';
+import { BasicFields, Ided, Named, RoleKeyed } from '../../domain';
 
 export type VariablesState = {
   saved: ReduxFriendlyStringMap<VariableDTO>;
@@ -58,13 +58,12 @@ export const { saveEditingVariable, selectVariable } = variablesSlice.actions;
 export const variableReduxReducer = variablesSlice.reducer;
 
 const copyVariable = (
-  variable: BasicFields<VariableType.Type>
-): BasicFields<VariableType.Type> => {
+  variable: Ided & Named & RoleKeyed
+): Ided & Named & RoleKeyed => {
   return {
     roleKeyId: variable.roleKeyId,
     id: variable.id,
     name: variable.name,
-    type: variable.type,
   };
 };
 
@@ -95,11 +94,11 @@ const changeEditingVariableType = (
   const variableType = action.payload.variableType;
   switch (variableType) {
     case VariableType.Enum.TEXT:
-      return { ...createTextVariable(), id: state.id };
+      return { ...createTextVariable(), ...copyVariable(state) };
     case VariableType.Enum.RANGE:
-      return { ...createRangeVariable(), id: state.id };
+      return { ...createRangeVariable(), ...copyVariable(state) };
     case VariableType.Enum.CHOICE:
-      return { ...createChoiceVariable(), id: state.id };
+      return { ...createChoiceVariable(), ...copyVariable(state) };
     default:
       throw new ExhaustivenessFailureError(variableType);
   }

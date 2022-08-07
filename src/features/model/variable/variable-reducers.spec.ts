@@ -1,6 +1,9 @@
 import { NotImplementedError } from '../../../error/NotImplementedError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { createSelector } from '../selector/data/selector-domain';
+import {
+  createSelector,
+  createSelectorItem,
+} from '../selector/data/selector-domain';
 import {
   ChoiceVariable,
   createChoiceItem,
@@ -127,6 +130,8 @@ describe('variable reducer', () => {
     expect(actual).toEqual({
       ...createTextVariable(),
       id: obj.id,
+      name: VARIABLE_NAME_1,
+      roleKeyId: VARIABLE_RK_1,
     });
   });
 
@@ -145,6 +150,8 @@ describe('variable reducer', () => {
     expect(actual).toEqual({
       ...createRangeVariable(),
       id: obj.id,
+      name: VARIABLE_NAME_1,
+      roleKeyId: VARIABLE_RK_1,
     });
   });
 
@@ -164,6 +171,8 @@ describe('variable reducer', () => {
     expect(actual).toEqual({
       ...createChoiceVariable(),
       id: obj.id,
+      name: VARIABLE_NAME_1,
+      roleKeyId: VARIABLE_RK_1,
     });
   });
 
@@ -253,14 +262,94 @@ describe('variable reducer', () => {
   });
 
   it('should handle add selector item', () => {
-    throw new NotImplementedError('tests');
+    const selector1 = createSelector();
+    const choiceItem1 = createChoiceItem(selector1);
+    const obj: ChoiceVariable = {
+      ...createChoiceVariable(),
+      items: [choiceItem1],
+    };
+
+    const selectorItem2 = createSelectorItem();
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.ADD_SELECTOR_ITEM,
+      payload: {
+        choiceItemId: choiceItem1.id,
+        selectorItem: selectorItem2,
+      },
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      items: [
+        {
+          ...choiceItem1,
+          selector: {
+            ...selector1,
+            items: [...selector1.items, selectorItem2],
+          },
+        },
+      ],
+    });
   });
 
   it('should handle edit selector item', () => {
-    throw new NotImplementedError('tests');
+    const selector1 = createSelector();
+    const choiceItem1 = createChoiceItem(selector1);
+    const obj: ChoiceVariable = {
+      ...createChoiceVariable(),
+      items: [choiceItem1],
+    };
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.EDIT_SELECTOR_ITEM,
+      payload: {
+        choiceItemId: choiceItem1.id,
+        selectorItemId: selector1.items[0].id,
+        value: 'asdf',
+      },
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      items: [
+        {
+          ...choiceItem1,
+          selector: {
+            ...selector1,
+            items: [{ ...selector1.items[0], value: 'asdf' }],
+          },
+        },
+      ],
+    });
   });
 
   it('should handle delete selector item', () => {
-    throw new NotImplementedError('tests');
+    const selector1 = createSelector();
+    const choiceItem1 = createChoiceItem(selector1);
+    const obj: ChoiceVariable = {
+      ...createChoiceVariable(),
+      items: [choiceItem1],
+    };
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.DELETE_SELECTOR_ITEM,
+      payload: {
+        choiceItemId: choiceItem1.id,
+        selectorItemId: selector1.items[0].id,
+      },
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      items: [
+        {
+          ...choiceItem1,
+          selector: {
+            ...selector1,
+            items: [],
+          },
+        },
+      ],
+    });
   });
 });
