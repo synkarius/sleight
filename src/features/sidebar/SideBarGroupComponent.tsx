@@ -2,26 +2,22 @@ import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
 import { useAppDispatch } from '../../app/hooks';
 import { setEditorFocus } from '../menu/editor/editor-focus-reducers';
-import { ElementType } from '../model/common/element-types';
 import { SidebarSection } from './sidebar';
 
 export const SideBarGroupComponent: React.FC<{
   key: string | number;
   group: SidebarSection;
   eventKey: string;
-  clearAllFn: () => void;
 }> = (props) => {
   const reduxDispatch = useAppDispatch();
 
   const createNewItem = () => {
-    props.clearAllFn();
     props.group.createFn();
-    reduxDispatch(setEditorFocus(props.group.type as ElementType.Type));
+    reduxDispatch(setEditorFocus(props.group.type));
   };
   const selectItem = (itemId: string) => {
-    props.clearAllFn();
     props.group.selectFn(itemId);
-    reduxDispatch(setEditorFocus(props.group.type as ElementType.Type));
+    reduxDispatch(setEditorFocus(props.group.type));
   };
 
   return (

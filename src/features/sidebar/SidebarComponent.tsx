@@ -111,7 +111,6 @@ export const SidebarComponent = () => {
           key={group.type}
           eventKey={'' + index}
           group={group}
-          clearAllFn={() => reduxDispatch(setEditorFocus())}
         />
       ))}
     </Accordion>
