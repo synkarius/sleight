@@ -1,5 +1,4 @@
-import { useId } from 'react';
-import { useAppDispatch } from '../../../../app/hooks';
+import { useContext, useId } from 'react';
 import {
   Col,
   FormControl,
@@ -8,18 +7,29 @@ import {
   FormText,
   Row,
 } from 'react-bootstrap';
-import { Range } from './range';
-import { changeRangeMax, changeRangeMin } from '../variable-reducers';
+import {
+  VariableEditingContext,
+  VariableReducerActionType,
+} from './variable-editing-context';
+import { RangeVariable } from './data/variable';
 
-export const RangeComponent: React.FC<{ range: Range }> = (props) => {
-  const dispatch = useAppDispatch();
+export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
+  props
+) => {
+  const editingContext = useContext(VariableEditingContext);
   const numberInputId = useId();
 
   const fromChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeRangeMin(+event.target.value));
+    editingContext.localDispatchFn({
+      type: VariableReducerActionType.CHANGE_RANGE_MIN,
+      payload: +event.target.value,
+    });
   };
   const toChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeRangeMax(+event.target.value));
+    editingContext.localDispatchFn({
+      type: VariableReducerActionType.CHANGE_RANGE_MAX,
+      payload: +event.target.value,
+    });
   };
 
   return (

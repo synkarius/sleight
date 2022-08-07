@@ -5,10 +5,10 @@ import {
   DeleteSelectorItemPayload,
   EditSelectorItemPayload,
 } from './data/selector-domain';
-import { SelectorRedux } from './data/selector-redux';
+import { SelectorDTO } from './data/selector-dto';
 
 export type SelectorsState = {
-  saved: ReduxFriendlyStringMap<SelectorRedux>;
+  saved: ReduxFriendlyStringMap<SelectorDTO>;
   editingId: string | undefined;
 };
 
@@ -21,7 +21,7 @@ const selectorsSlice = createSlice({
   name: 'selectors',
   initialState,
   reducers: {
-    saveSelector: (state, action: PayloadAction<SelectorRedux>) => {
+    saveSelector: (state, action: PayloadAction<SelectorDTO>) => {
       state.saved[action.payload.id] = action.payload;
     },
     deleteSelector: (state, action: PayloadAction<string>) => {

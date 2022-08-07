@@ -1,27 +1,30 @@
+import { NotImplementedError } from '../../../error/NotImplementedError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { createChoice, createChoiceItem } from './choice/choice';
-import { createRange } from './range/range';
-import { createText } from './text/text';
-import { Variable } from './variable';
+import { createSelector } from '../selector/data/selector-domain';
+import {
+  ChoiceVariable,
+  createChoiceItem,
+  createChoiceVariable,
+  createRangeVariable,
+  createTextVariable,
+  RangeVariable,
+} from './data/variable';
+import { VariableDTO } from './data/variable-dto';
+import { VariableReducerActionType } from './variable-editing-context';
 import {
   VariablesState,
-  createNewEditingVariable,
-  selectVariable,
-  clearEditingVariable,
-  changeEditingVariableName,
-  changeEditingVariableRoleKey,
-  changeEditingVariableType,
   saveEditingVariable,
-  changeRangeMin,
-  changeRangeMax,
-  addChoiceItem,
-  editChoiceItemValue,
-  removeChoiceItem,
-  variableReducer,
+  selectVariable,
+  variableReduxReducer,
+  variableReactReducer,
 } from './variable-reducers';
 import { VariableType } from './variable-types';
 
-const createTestVariable = (id: string): Variable => {
+const VARIABLE_ID_1 = 'VARIABLE_ID_1';
+const VARIABLE_NAME_1 = 'VARIABLE_NAME_1';
+const VARIABLE_RK_1 = 'VARIABLE_RK_1';
+
+const createTestVariable = (id: string): VariableDTO => {
   return {
     id: id,
     roleKeyId: undefined,
@@ -30,260 +33,234 @@ const createTestVariable = (id: string): Variable => {
   };
 };
 
-describe('role key reducer', () => {
+describe('variable reducer', () => {
   const initialState: VariablesState = {
     saved: {},
-    editing: undefined,
+    editingId: undefined,
   };
   it('should handle initial state', () => {
-    expect(variableReducer(undefined, { type: 'unknown' })).toEqual({
+    expect(variableReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
       editing: undefined,
     });
   });
 
-  it('should handle create new', () => {
-    const newObject = createText();
+  // it('should handle create new', () => {
+  //   const obj = createTextVariable();
 
-    const actual = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+  //   const actual = variableReduxReducer(
+  //     initialState,
+  //     createNewEditingVariable(obj)
+  //   );
 
-    expect(actual.editing).toEqual(createTestVariable(newObject.id));
-  });
+  //   expect(actual.editing).toEqual(createTestVariable(obj.id));
+  // });
 
   it('should handle save', () => {
-    const newObject = createText();
+    const obj = createTestVariable(VARIABLE_ID_1);
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
-    const actual = variableReducer(createdState, saveEditingVariable());
+    const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
 
-    const expected: ReduxFriendlyStringMap<Variable> = {};
-    expected[newObject.id] = createTestVariable(newObject.id);
+    const expected: ReduxFriendlyStringMap<VariableDTO> = {};
+    expected[obj.id] = obj;
 
     expect(actual.saved).toEqual(expected);
   });
 
   it('should handle select', () => {
-    const newObject = createText();
+    const prereducerState = { saved: {}, editingId: undefined };
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
+    const actual = variableReduxReducer(
+      prereducerState,
+      selectVariable(VARIABLE_ID_1)
     );
-    const savedState = variableReducer(createdState, saveEditingVariable());
-    const clearedState = variableReducer(savedState, clearEditingVariable());
-
-    const actual = variableReducer(clearedState, selectVariable(newObject.id));
-    expect(actual.editing).toEqual(createTestVariable(newObject.id));
+    expect(actual.editingId).toEqual(VARIABLE_ID_1);
   });
 
   it('should handle clear', () => {
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(createText())
-    );
+    const prereducerState = { saved: {}, editingId: VARIABLE_ID_1 };
 
-    const actual = variableReducer(createdState, clearEditingVariable());
-
-    expect(actual.editing).toBeUndefined();
+    const actual = variableReduxReducer(prereducerState, selectVariable());
+    expect(actual.editingId).toBeUndefined();
   });
 
   it('should handle change name', () => {
-    const newObject = createText();
+    const obj = createTextVariable();
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_NAME,
+      payload: 'asdf',
+    });
 
-    const actual = variableReducer(
-      createdState,
-      changeEditingVariableName('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestVariable(newObject.id),
+    expect(actual).toEqual({
+      ...obj,
       name: 'asdf',
     });
   });
 
   it('should handle change role key', () => {
-    const newObject = createText();
+    const obj = createTextVariable();
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_ROLE_KEY,
+      payload: 'asdf',
+    });
 
-    const actual = variableReducer(
-      createdState,
-      changeEditingVariableRoleKey('asdf')
-    );
-    expect(actual.editing).toEqual({
-      ...createTestVariable(newObject.id),
+    expect(actual).toEqual({
+      ...obj,
       roleKeyId: 'asdf',
     });
   });
 
   it('should handle change type to text', () => {
-    const newObject = createRange();
+    const obj: RangeVariable = {
+      ...createRangeVariable(),
+      name: VARIABLE_NAME_1,
+      roleKeyId: VARIABLE_RK_1,
+    };
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_TYPE,
+      payload: { variableType: VariableType.Enum.TEXT },
+    });
 
-    const actual = variableReducer(
-      createdState,
-      changeEditingVariableType({
-        variableType: VariableType.Enum.TEXT,
-        selectorId: undefined,
-      })
-    );
-    expect(actual.editing).toEqual({
-      ...createTestVariable(newObject.id),
-      type: VariableType.Enum.TEXT,
+    expect(actual).toEqual({
+      ...createTextVariable(),
+      id: obj.id,
     });
   });
 
   it('should handle change type to range', () => {
-    const newObject = createText();
+    const obj = {
+      ...createTextVariable(),
+      name: VARIABLE_NAME_1,
+      roleKeyId: VARIABLE_RK_1,
+    };
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_TYPE,
+      payload: { variableType: VariableType.Enum.RANGE },
+    });
 
-    const actual = variableReducer(
-      createdState,
-      changeEditingVariableType({
-        variableType: VariableType.Enum.RANGE,
-        selectorId: undefined,
-      })
-    );
-    expect(actual.editing).toEqual({
-      ...createTestVariable(newObject.id),
-      type: VariableType.Enum.RANGE,
-      beginInclusive: 0,
-      endInclusive: 9,
+    expect(actual).toEqual({
+      ...createRangeVariable(),
+      id: obj.id,
     });
   });
 
   it('should handle change type to choice', () => {
-    const newObject = createText();
+    const obj = {
+      ...createRangeVariable(),
+      name: VARIABLE_NAME_1,
+      roleKeyId: VARIABLE_RK_1,
+    };
+    const selector = createSelector();
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_TYPE,
+      payload: { variableType: VariableType.Enum.CHOICE, selector },
+    });
 
-    const actual = variableReducer(
-      createdState,
-      changeEditingVariableType({
-        variableType: VariableType.Enum.CHOICE,
-        selectorId: 'asdf',
-      })
-    );
-    expect(actual.editing).toEqual({
-      ...createTestVariable(newObject.id),
-      type: VariableType.Enum.CHOICE,
-      items: [
-        {
-          roleKeyId: undefined,
-          id: expect.any(String),
-          selectorId: 'asdf',
-          value: '',
-        },
-      ],
+    expect(actual).toEqual({
+      ...createChoiceVariable(),
+      id: obj.id,
     });
   });
 
   it('should handle change range min', () => {
-    const newObject = createRange();
+    const obj = createRangeVariable();
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_RANGE_MIN,
+      payload: 2,
+    });
 
-    const actual = variableReducer(createdState, changeRangeMin(5));
-    expect(actual.editing).toEqual({
-      ...newObject,
-      beginInclusive: 5,
+    expect(actual).toEqual({
+      ...obj,
+      beginInclusive: 2,
     });
   });
 
   it('should handle change range max', () => {
-    const newObject = createRange();
+    const obj = createRangeVariable();
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newObject)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_RANGE_MAX,
+      payload: 23,
+    });
 
-    const actual = variableReducer(createdState, changeRangeMax(5));
-    expect(actual.editing).toEqual({
-      ...newObject,
-      endInclusive: 5,
+    expect(actual).toEqual({
+      ...obj,
+      endInclusive: 23,
     });
   });
 
   it('should handle add choice item', () => {
-    const newChoice1 = createChoice('some-selector-id-1');
-    const newChoiceItem2 = createChoiceItem('some-selector-item-2');
+    const obj = createChoiceVariable();
+    const newSelector1 = createSelector();
+    const newChoiceItem1 = createChoiceItem(newSelector1);
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newChoice1)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.ADD_CHOICE_ITEM,
+      payload: newChoiceItem1,
+    });
 
-    const actual = variableReducer(createdState, addChoiceItem(newChoiceItem2));
-    expect(actual.editing).toEqual({
-      ...newChoice1,
-      items: [newChoice1.items[0], newChoiceItem2],
+    expect(actual).toEqual({
+      ...obj,
+      items: [newChoiceItem1],
     });
   });
 
   it('should handle edit choice item', () => {
-    const newChoice1 = createChoice('some-selector-id-1');
+    const newSelector1 = createSelector();
+    const newChoiceItem1 = createChoiceItem(newSelector1);
+    const obj: ChoiceVariable = {
+      ...createChoiceVariable(),
+      items: [newChoiceItem1],
+    };
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newChoice1)
-    );
-
-    const actual = variableReducer(
-      createdState,
-      editChoiceItemValue({
-        choiceItemId: newChoice1.items[0].id,
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.EDIT_CHOICE_ITEM,
+      payload: {
+        choiceItemId: newChoiceItem1.id,
         value: 'asdf',
-      })
-    );
-    expect(actual.editing).toEqual({
-      ...newChoice1,
-      items: [{ ...newChoice1.items[0], value: 'asdf' }],
+      },
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      items: [{ ...newChoiceItem1, value: 'asdf' }],
     });
   });
 
   it('should handle delete choice item', () => {
-    const newChoice1 = createChoice('some-selector-id-1');
+    const newSelector1 = createSelector();
+    const newChoiceItem1 = createChoiceItem(newSelector1);
+    const obj: ChoiceVariable = {
+      ...createChoiceVariable(),
+      items: [newChoiceItem1],
+    };
 
-    const createdState = variableReducer(
-      initialState,
-      createNewEditingVariable(newChoice1)
-    );
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.DELETE_CHOICE_ITEM,
+      payload: newChoiceItem1.id,
+    });
 
-    const actual = variableReducer(
-      createdState,
-      removeChoiceItem({ choiceItemId: newChoice1.items[0].id })
-    );
-    expect(actual.editing).toEqual({
-      ...newChoice1,
+    expect(actual).toEqual({
+      ...obj,
       items: [],
     });
+  });
+
+  it('should handle add selector item', () => {
+    throw new NotImplementedError('tests');
+  });
+
+  it('should handle edit selector item', () => {
+    throw new NotImplementedError('tests');
+  });
+
+  it('should handle delete selector item', () => {
+    throw new NotImplementedError('tests');
   });
 });

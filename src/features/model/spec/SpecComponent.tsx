@@ -53,7 +53,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       });
       const specRedux = specDomainMapper.mapFromDomain(props.spec);
       reduxDispatch(saveEditingSpec(specRedux));
-      reduxDispatch(setFocus(undefined));
+      reduxDispatch(setFocus());
     }
   };
   const errorResults = validationContext.getErrorResults();

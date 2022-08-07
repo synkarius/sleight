@@ -60,7 +60,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     const isValid = validationContext.validateForm();
     if (isValid) {
       reduxDispatch(saveEditingContext(props.context));
-      reduxDispatch(setFocus(undefined));
+      reduxDispatch(setFocus());
     }
   };
 

@@ -6,12 +6,9 @@ import { store } from '../../../../app/store';
 import { Field } from '../../../../validation/validation-field';
 import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
-import { createRange } from '../../variable/range/range';
-import {
-  clearEditingVariable,
-  createNewEditingVariable,
-  saveEditingVariable,
-} from '../../variable/variable-reducers';
+import { rangeVariableDomainMapperDelegate } from '../../variable/data/range-variable-domain-mapper';
+import { createRangeVariable } from '../../variable/data/variable';
+import { saveEditingVariable } from '../../variable/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
 
 const VARIABLE_NAME = 'asdf-range-var';
@@ -23,14 +20,13 @@ let user: UserEvent;
 
 beforeAll(() => {
   // save a variable
-  store.dispatch(
-    createNewEditingVariable({
-      ...createRange(),
-      name: VARIABLE_NAME,
-    })
-  );
-  store.dispatch(saveEditingVariable());
-  store.dispatch(clearEditingVariable());
+  const rangeVariable = {
+    ...createRangeVariable(),
+    name: VARIABLE_NAME,
+  };
+  const rangeVariableDTO =
+    rangeVariableDomainMapperDelegate.mapFromDomain(rangeVariable);
+  store.dispatch(saveEditingVariable(rangeVariableDTO));
   // save a role key
   store.dispatch(
     saveRoleKey({

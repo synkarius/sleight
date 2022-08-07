@@ -51,7 +51,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
       reduxDispatch(saveEditingCommand(props.command));
-      reduxDispatch(setFocus(undefined));
+      reduxDispatch(setFocus());
     }
   };
   const errorResults = validationContext.getErrorResults();
@@ -186,7 +186,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => reduxDispatch(setFocus(undefined))}
+        onClick={(_e) => reduxDispatch(setFocus())}
         className="mx-3"
         variant="warning"
         size="lg"

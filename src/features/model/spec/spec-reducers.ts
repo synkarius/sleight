@@ -3,7 +3,7 @@ import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailure
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Spec, SpecItem, VariableSpecItem } from './data/spec-domain';
-import { SpecRedux } from './data/spec-redux';
+import { SpecDTO } from './data/spec-dto';
 import {
   SpecReducerStringAction,
   SpecReducerActionType,
@@ -19,7 +19,7 @@ import {
 import { SpecItemType } from './spec-item-type';
 
 export type SpecsState = {
-  saved: ReduxFriendlyStringMap<SpecRedux>;
+  saved: ReduxFriendlyStringMap<SpecDTO>;
   editingId: string | undefined;
 };
 
@@ -40,7 +40,7 @@ const specsSlice = createSlice({
     selectSpec: (state, action: PayloadAction<string | undefined>) => {
       state.editingId = action.payload;
     },
-    saveEditingSpec: (state, action: PayloadAction<SpecRedux>) => {
+    saveEditingSpec: (state, action: PayloadAction<SpecDTO>) => {
       state.saved[action.payload.id] = action.payload;
     },
   },

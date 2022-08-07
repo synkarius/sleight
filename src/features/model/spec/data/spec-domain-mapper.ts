@@ -1,34 +1,34 @@
 import { ReduxCopyFunction } from '../../../../data/wrap-redux-map';
-import { SelectorRedux } from '../../selector/data/selector-redux';
+import { SelectorDTO } from '../../selector/data/selector-dto';
 import { Spec } from './spec-domain';
 import { specItemDomainMapper } from './spec-item-domain-mapper';
-import { SpecRedux } from './spec-redux';
+import { SpecDTO } from './spec-dto';
 
 interface SpecDomainMapper {
   mapToDomain: (
-    spec: SpecRedux,
-    selectorFn: ReduxCopyFunction<SelectorRedux>
+    spec: SpecDTO,
+    selectorFn: ReduxCopyFunction<SelectorDTO>
   ) => Spec;
-  mapFromDomain: (spec: Spec) => SpecRedux;
+  mapFromDomain: (spec: Spec) => SpecDTO;
 }
 
 export const specDomainMapper: SpecDomainMapper = {
-  mapToDomain: (specRedux, selectorFn) => {
+  mapToDomain: (dto, selectorFn) => {
     return {
-      id: specRedux.id,
-      name: specRedux.name,
-      roleKeyId: specRedux.roleKeyId,
-      items: specRedux.items.map((item) =>
+      id: dto.id,
+      name: dto.name,
+      roleKeyId: dto.roleKeyId,
+      items: dto.items.map((item) =>
         specItemDomainMapper.mapToDomain(item, selectorFn)
       ),
     };
   },
-  mapFromDomain: (domainSpec) => {
+  mapFromDomain: (domain) => {
     return {
-      id: domainSpec.id,
-      name: domainSpec.name,
-      roleKeyId: domainSpec.roleKeyId,
-      items: domainSpec.items.map((dSpecItem) =>
+      id: domain.id,
+      name: domain.name,
+      roleKeyId: domain.roleKeyId,
+      items: domain.items.map((dSpecItem) =>
         specItemDomainMapper.mapFromDomain(dSpecItem)
       ),
     };

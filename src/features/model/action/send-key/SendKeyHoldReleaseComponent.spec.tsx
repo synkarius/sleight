@@ -8,12 +8,13 @@ import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
 import { createSelector } from '../../selector/data/selector-domain';
 import { saveSelector } from '../../selector/selector-reducers';
-import { createChoice } from '../../variable/choice/choice';
+import { choiceVariableDomainMapperDelegate } from '../../variable/data/choice-variable-domain-mapper';
 import {
-  clearEditingVariable,
-  createNewEditingVariable,
-  saveEditingVariable,
-} from '../../variable/variable-reducers';
+  ChoiceVariable,
+  createChoiceItem,
+  createChoiceVariable,
+} from '../../variable/data/variable';
+import { saveEditingVariable } from '../../variable/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { SendKeyMode } from './send-key-modes';
 
@@ -28,14 +29,14 @@ beforeAll(() => {
   // save a variable
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
-  store.dispatch(
-    createNewEditingVariable({
-      ...createChoice(choiceItemSelector.id),
-      name: VARIABLE_NAME,
-    })
-  );
-  store.dispatch(saveEditingVariable());
-  store.dispatch(clearEditingVariable());
+  const choiceVariable: ChoiceVariable = {
+    ...createChoiceVariable(),
+    name: VARIABLE_NAME,
+    items: [createChoiceItem(choiceItemSelector)],
+  };
+  const choiceVariableDTO =
+    choiceVariableDomainMapperDelegate.mapFromDomain(choiceVariable);
+  store.dispatch(saveEditingVariable(choiceVariableDTO));
   // save a role key
   store.dispatch(
     saveRoleKey({

@@ -48,7 +48,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
       reduxDispatch(saveAction(props.action));
-      reduxDispatch(setFocus(undefined));
+      reduxDispatch(setFocus());
     }
   };
 
@@ -98,7 +98,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => reduxDispatch(setFocus(undefined))}
+        onClick={(_e) => reduxDispatch(setFocus())}
         className="mx-3"
         variant="warning"
         size="lg"

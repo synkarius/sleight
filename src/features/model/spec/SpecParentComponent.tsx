@@ -4,11 +4,11 @@ import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { createSpec, Spec } from './data/spec-domain';
 import { specDomainMapper } from './data/spec-domain-mapper';
-import { SpecRedux } from './data/spec-redux';
+import { SpecDTO } from './data/spec-dto';
 import { SpecEditingContext } from './spec-editing-context';
 import { specReactReducer } from './spec-reducers';
 import { SpecComponent } from './SpecComponent';
-import { SelectorRedux } from '../selector/data/selector-redux';
+import { SelectorDTO } from '../selector/data/selector-dto';
 import { wrapReduxMap } from '../../../data/wrap-redux-map';
 import {
   atLeastOneSpecItem,
@@ -19,8 +19,8 @@ import {
 type SpecInitFunction = (specId: string | undefined) => Spec;
 
 const getSpecInitFunction = (
-  savedSpecMap: ReduxFriendlyStringMap<SpecRedux>,
-  savedSelectorMap: ReduxFriendlyStringMap<SelectorRedux>
+  savedSpecMap: ReduxFriendlyStringMap<SpecDTO>,
+  savedSelectorMap: ReduxFriendlyStringMap<SelectorDTO>
 ): SpecInitFunction => {
   return (specId: string | undefined) => {
     if (specId && savedSpecMap[specId]) {

@@ -3,13 +3,13 @@ import { Card } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { Variable } from '../variable/variable';
+import { VariableDTO } from '../variable/data/variable-dto';
 import { Spec, SpecItem } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';
 
 const mapSpecItemToPreview = (
   specItem: SpecItem,
-  variablesSaved: ReduxFriendlyStringMap<Variable>
+  variablesSaved: ReduxFriendlyStringMap<VariableDTO>
 ): string => {
   const itemType = specItem.itemType;
   switch (itemType) {
@@ -20,7 +20,7 @@ const mapSpecItemToPreview = (
         ' ]'
       );
     case SpecItemType.Enum.VARIABLE:
-      const variable = variablesSaved[specItem.variableId];
+      const variableDTO = { ...variablesSaved[specItem.variableId] };
       // TODO: should be returning variable.name, but haven't validated it yet
       /* Notes
        * - the name of a variable

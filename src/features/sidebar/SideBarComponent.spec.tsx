@@ -14,17 +14,13 @@ import { Context, createContext } from '../model/context/context';
 import { saveEditingContext } from '../model/context/context-reducers';
 import { createRoleKey, RoleKey } from '../model/role-key/role-key';
 import { saveRoleKey } from '../model/role-key/role-key-reducers';
-import { SpecRedux } from '../model/spec/data/spec-redux';
+import { SpecDTO } from '../model/spec/data/spec-dto';
 import { saveEditingSpec } from '../model/spec/spec-reducers';
-import {
-  clearEditingVariable,
-  createNewEditingVariable,
-  saveEditingVariable,
-} from '../model/variable/variable-reducers';
-import { createRange } from '../model/variable/range/range';
+import { saveEditingVariable } from '../model/variable/variable-reducers';
 import { Field } from '../../validation/validation-field';
 import { TEXT_BOX } from '../model/common/accessibility-roles';
 import { CommandSpecType } from '../model/command/command-spec-type';
+import { createRangeVariable } from '../model/variable/data/variable';
 
 let user: UserEvent;
 
@@ -48,17 +44,15 @@ beforeAll(() => {
   store.dispatch(saveEditingContext(context));
   const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
   store.dispatch(saveRoleKey(roleKey));
-  const spec: SpecRedux = {
+  const spec: SpecDTO = {
     id: 'asdf',
     name: SPEC_NAME_1,
     roleKeyId: undefined,
     items: [],
   };
   store.dispatch(saveEditingSpec(spec));
-  const variable = { ...createRange(), name: VARIABLE_NAME_1 };
-  store.dispatch(createNewEditingVariable(variable));
-  store.dispatch(saveEditingVariable());
-  store.dispatch(clearEditingVariable());
+  const variable = { ...createRangeVariable(), name: VARIABLE_NAME_1 };
+  store.dispatch(saveEditingVariable(variable));
   //
   user = userEvent.setup();
 });

@@ -1,58 +1,54 @@
 import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFailureError';
 import { SpecItemType } from '../spec-item-type';
-import { SpecItem, SelectorSpecItem, VariableSpecItem } from './spec-domain';
-import { SpecItemRedux } from './spec-redux';
-import { SELECT_DEFAULT_VALUE } from '../../common/consts';
+import { SpecItem } from './spec-domain';
+import { SpecItemDTO } from './spec-dto';
 import { ReduxCopyFunction } from '../../../../data/wrap-redux-map';
-import { SelectorRedux } from '../../selector/data/selector-redux';
+import { SelectorDTO } from '../../selector/data/selector-dto';
 import { selectorDomainMapper } from '../../selector/data/selector-domain-mapper';
 
 interface SpecItemDomainMapper {
   mapToDomain: (
-    specItem: SpecItemRedux,
-    selectorFn: ReduxCopyFunction<SelectorRedux>
+    specItem: SpecItemDTO,
+    selectorFn: ReduxCopyFunction<SelectorDTO>
   ) => SpecItem;
-  mapFromDomain: (specItem: SpecItem) => SpecItemRedux;
+  mapFromDomain: (specItem: SpecItem) => SpecItemDTO;
 }
 
 export const specItemDomainMapper: SpecItemDomainMapper = {
-  mapToDomain: (pSpecItem, selectorFn) => {
-    switch (pSpecItem.itemType) {
+  mapToDomain: (dto, selectorFn) => {
+    switch (dto.itemType) {
       case SpecItemType.Enum.SELECTOR:
-        const selectorRedux = selectorFn(pSpecItem.itemId);
+        const selectorDTO = selectorFn(dto.itemId);
         return {
-          id: pSpecItem.id,
+          id: dto.id,
           itemType: SpecItemType.Enum.SELECTOR,
-          selector: selectorDomainMapper.mapToDomain(selectorRedux),
+          selector: selectorDomainMapper.mapToDomain(selectorDTO),
         };
       case SpecItemType.Enum.VARIABLE:
         return {
-          id: pSpecItem.id,
+          id: dto.id,
           itemType: SpecItemType.Enum.VARIABLE,
-          variableId: pSpecItem.itemId,
+          variableId: dto.itemId,
         };
       default:
-        throw new ExhaustivenessFailureError(pSpecItem.itemType);
+        throw new ExhaustivenessFailureError(dto.itemType);
     }
   },
 
-  mapFromDomain: (dSpecItem) => {
-    const itemType = dSpecItem.itemType;
+  mapFromDomain: (domain) => {
+    const itemType = domain.itemType;
     switch (itemType) {
       case SpecItemType.Enum.SELECTOR:
         return {
-          id: dSpecItem.id,
-          itemType: dSpecItem.itemType,
-          itemId:
-            (dSpecItem as SelectorSpecItem).selector?.id ??
-            SELECT_DEFAULT_VALUE,
+          id: domain.id,
+          itemType: domain.itemType,
+          itemId: domain.selector.id,
         };
       case SpecItemType.Enum.VARIABLE:
         return {
-          id: dSpecItem.id,
-          itemType: dSpecItem.itemType,
-          itemId:
-            (dSpecItem as VariableSpecItem).variableId ?? SELECT_DEFAULT_VALUE,
+          id: domain.id,
+          itemType: domain.itemType,
+          itemId: domain.variableId,
         };
       default:
         throw new ExhaustivenessFailureError(itemType);

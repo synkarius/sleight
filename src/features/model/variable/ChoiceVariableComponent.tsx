@@ -1,21 +1,25 @@
-import React, { useId } from 'react';
+import React, { useContext, useId } from 'react';
 import { Button, FormGroup, Row } from 'react-bootstrap';
-import { useAppDispatch } from '../../../../app/hooks';
-import { createSelector } from '../../selector/data/selector-domain';
-import { saveSelector } from '../../selector/selector-reducers';
-import { addChoiceItem } from '../variable-reducers';
-import { Choice, createChoiceItem } from './choice';
+import { createSelector } from '../selector/data/selector-domain';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
+import { ChoiceVariable, createChoiceItem } from './data/variable';
+import {
+  VariableEditingContext,
+  VariableReducerActionType,
+} from './variable-editing-context';
 
-export const ChoiceComponent: React.FC<{ choice: Choice }> = (props) => {
-  const dispatch = useAppDispatch();
+export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
+  props
+) => {
+  const editingContext = useContext(VariableEditingContext);
   const choicesId = useId();
 
   const addHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    const selector = createSelector();
-    // TODO: this way creates orphans -- process them out somewhere
-    dispatch(saveSelector(selector));
-    dispatch(addChoiceItem(createChoiceItem(selector.id)));
+    // TODO: this way creates selector orphans -- process them out somewhere
+    editingContext.localDispatchFn({
+      type: VariableReducerActionType.ADD_CHOICE_ITEM,
+      payload: createChoiceItem(createSelector()),
+    });
   };
 
   return (

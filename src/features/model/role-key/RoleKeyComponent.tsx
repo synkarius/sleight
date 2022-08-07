@@ -30,7 +30,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
       reduxDispatch(saveRoleKey(props.roleKey));
-      reduxDispatch(setFocus(undefined));
+      reduxDispatch(setFocus());
     }
   };
 
@@ -69,7 +69,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
         Save
       </Button>
       <Button
-        onClick={(_e) => reduxDispatch(setFocus(undefined))}
+        onClick={(_e) => reduxDispatch(setFocus())}
         className="mx-3"
         variant="warning"
         size="lg"

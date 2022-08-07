@@ -15,7 +15,7 @@ import {
   selectorReduxReducer,
 } from './selector-reducers';
 
-describe('role key reducer', () => {
+describe('selector reducer', () => {
   const initialState: SelectorsState = {
     saved: {},
     editingId: undefined,

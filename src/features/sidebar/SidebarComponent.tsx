@@ -4,12 +4,7 @@ import { selectAction } from '../model/action/action-reducers';
 import { selectCommand } from '../model/command/command-reducers';
 import { ElementType } from '../model/common/element-types';
 import { selectContext } from '../model/context/context-reducers';
-import {
-  clearEditingVariable,
-  createNewEditingVariable,
-  selectVariable,
-} from '../model/variable/variable-reducers';
-import { createText } from '../model/variable/text/text';
+import { selectVariable } from '../model/variable/variable-reducers';
 import { selectRoleKey } from '../model/role-key/role-key-reducers';
 import { selectSpec } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
@@ -91,13 +86,12 @@ export const SidebarComponent = () => {
     type: ElementType.Enum.VARIABLE,
     items: Object.values(variablesSaved),
     createFn: () => {
-      // TODO
-      reduxDispatch(selectVariable('ASDF'));
-      reduxDispatch(createNewEditingVariable(createText()));
+      reduxDispatch(selectVariable());
+      reduxDispatch(setFocus(ElementType.Enum.VARIABLE));
     },
-    selectFn: (variableId) => {
-      // TODO
-      reduxDispatch(selectVariable(variableId));
+    selectFn: (id) => {
+      reduxDispatch(selectVariable(id));
+      reduxDispatch(setFocus(ElementType.Enum.VARIABLE));
     },
   };
 
@@ -117,10 +111,7 @@ export const SidebarComponent = () => {
           key={group.type}
           eventKey={'' + index}
           group={group}
-          clearAllFn={() => {
-            reduxDispatch(setFocus(undefined));
-            reduxDispatch(clearEditingVariable());
-          }}
+          clearAllFn={() => reduxDispatch(setFocus())}
         />
       ))}
     </Accordion>

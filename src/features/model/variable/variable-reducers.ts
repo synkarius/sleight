@@ -1,151 +1,277 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import {
-  Choice,
-  ChoiceItem,
-  RemoveChoiceItemPayload,
-  EditChoiceItemValuePayload,
-  copyIntoChoice,
-  ChangeVariableTypePayload,
-} from './choice/choice';
-import { Variable } from './variable';
 import { VariableType } from './variable-types';
-import { Range, copyIntoRange } from './range/range';
-import { copyIntoText } from './text/text';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import {
+  VariableReducerAction,
+  VariableReducerActionType,
+  VariableReducerAddChoiceItemAction,
+  VariableReducerAddSelectorItemAction,
+  VariableReducerChangeSelectorItemAction,
+  VariableReducerDeleteSelectorItemAction,
+  VariableReducerEditChoiceItemAction,
+  VariableReducerNumberAction,
+  VariableReducerStringAction,
+  VariableReducerVariableTypeAction,
+} from './variable-editing-context';
+import {
+  createRangeVariable,
+  createTextVariable,
+  createChoiceVariable,
+  Variable,
+  RangeVariable,
+  ChoiceVariable,
+} from './data/variable';
+import { VariableDTO } from './data/variable-dto';
+import { BasicFields } from '../../domain';
 
 export type VariablesState = {
-  saved: ReduxFriendlyStringMap<Variable>;
-  editing: Variable | undefined;
+  saved: ReduxFriendlyStringMap<VariableDTO>;
+  editingId: string | undefined;
 };
 
 const initialState: VariablesState = {
   saved: {},
-  editing: undefined,
+  editingId: undefined,
 };
 
 const variablesSlice = createSlice({
   name: 'variables',
   initialState,
   reducers: {
-    createNewEditingVariable: (state, action: PayloadAction<Variable>) => {
-      state.editing = action.payload;
+    // createNewEditingVariable: (state, action: PayloadAction<Variable>) => {
+    //   state.editing = action.payload;
+    // },
+    selectVariable: (state, action: PayloadAction<string | undefined>) => {
+      state.editingId = action.payload;
     },
-    selectVariable: (state, action: PayloadAction<string>) => {
-      state.editing = state.saved[action.payload];
+    saveEditingVariable: (state, action: PayloadAction<VariableDTO>) => {
+      state.saved[action.payload.id] = action.payload;
     },
-    saveEditingVariable: (state) => {
-      if (state.editing) {
-        // TODO: validation
-        state.saved[state.editing.id] = state.editing;
-      }
-    },
-    clearEditingVariable: (state) => {
-      state.editing = undefined;
-    },
-    changeEditingVariableName: (state, action: PayloadAction<string>) => {
-      if (state.editing) {
-        state.editing.name = action.payload;
-      }
-    },
-    changeEditingVariableRoleKey: (state, action: PayloadAction<string>) => {
-      if (state.editing) {
-        state.editing.roleKeyId = action.payload;
-      }
-    },
-    changeEditingVariableType: (
-      state,
-      action: PayloadAction<ChangeVariableTypePayload>
-    ) => {
-      const variable = state.editing as Variable;
-      switch (action.payload.variableType) {
-        case VariableType.Enum.TEXT:
-          state.editing = copyIntoText(variable);
-          break;
-        case VariableType.Enum.RANGE:
-          state.editing = copyIntoRange(variable);
-          break;
-        case VariableType.Enum.CHOICE:
-          const selectorId = action.payload.selectorId as string;
-          state.editing = copyIntoChoice(variable, selectorId);
-          break;
-        default:
-          throw new ExhaustivenessFailureError(action.payload.variableType);
-      }
-    },
-    changeRangeMin: (state, action: PayloadAction<number>) => {
-      state.editing = {
-        ...(state.editing as Range),
-        beginInclusive: action.payload,
-      };
-    },
-    changeRangeMax: (state, action: PayloadAction<number>) => {
-      state.editing = {
-        ...(state.editing as Range),
-        endInclusive: action.payload,
-      };
-    },
-    addChoiceItem: (state, action: PayloadAction<ChoiceItem>) => {
-      if (state.editing) {
-        (state.editing as Choice).items.push(action.payload);
-      }
-    },
-    editChoiceItemValue: (
-      state,
-      action: PayloadAction<EditChoiceItemValuePayload>
-    ) => {
-      // TODO: validation
-      if (state.editing) {
-        const choice = state.editing as Choice;
-        state.editing = {
-          ...choice,
-          items: choice.items.map((item) => {
-            if (item.id === action.payload.choiceItemId) {
-              return {
-                ...item,
-                value: action.payload.value,
-              };
-            }
-            return item;
-          }),
-        };
-
-        // const choice = state.editing as Choice;
-        // const choiceItem = choice.items.find(
-        // (i) => i.id === action.payload.choiceItemId
-        // ) as ChoiceItem;
-        // choiceItem.value = action.payload.value;
-      }
-    },
-    removeChoiceItem: (
-      state,
-      action: PayloadAction<RemoveChoiceItemPayload>
-    ) => {
-      if (state.editing) {
-        const choice = state.editing as Choice;
-        state.editing = {
-          ...choice,
-          items: choice.items.filter(
-            (item) => item.id !== action.payload.choiceItemId
-          ),
-        };
-      }
-    },
+    // clearEditingVariable: (state) => {
+    //   state.editing = undefined;
+    // },
   },
 });
 
-export const {
-  createNewEditingVariable,
-  selectVariable,
-  clearEditingVariable,
-  changeEditingVariableName,
-  changeEditingVariableRoleKey,
-  changeEditingVariableType,
-  saveEditingVariable,
-  changeRangeMin,
-  changeRangeMax,
-  addChoiceItem,
-  editChoiceItemValue,
-  removeChoiceItem,
-} = variablesSlice.actions;
-export const variableReducer = variablesSlice.reducer;
+export const { saveEditingVariable, selectVariable } = variablesSlice.actions;
+export const variableReduxReducer = variablesSlice.reducer;
+
+const copyVariable = (
+  variable: BasicFields<VariableType.Type>
+): BasicFields<VariableType.Type> => {
+  return {
+    roleKeyId: variable.roleKeyId,
+    id: variable.id,
+    name: variable.name,
+    type: variable.type,
+  };
+};
+
+const changeEditingVariableName = (
+  state: Variable,
+  action: VariableReducerStringAction
+): Variable => {
+  return {
+    ...state,
+    name: action.payload,
+  };
+};
+
+const changeEditingVariableRoleKey = (
+  state: Variable,
+  action: VariableReducerStringAction
+): Variable => {
+  return {
+    ...state,
+    roleKeyId: action.payload,
+  };
+};
+
+const changeEditingVariableType = (
+  state: Variable,
+  action: VariableReducerVariableTypeAction
+): Variable => {
+  const variableType = action.payload.variableType;
+  switch (variableType) {
+    case VariableType.Enum.TEXT:
+      return { ...createTextVariable(), id: state.id };
+    case VariableType.Enum.RANGE:
+      return { ...createRangeVariable(), id: state.id };
+    case VariableType.Enum.CHOICE:
+      return { ...createChoiceVariable(), id: state.id };
+    default:
+      throw new ExhaustivenessFailureError(variableType);
+  }
+};
+
+const changeRangeMin = (
+  state: Variable,
+  action: VariableReducerNumberAction
+): Variable => {
+  return {
+    ...(state as RangeVariable),
+    beginInclusive: action.payload,
+  };
+};
+
+const changeRangeMax = (
+  state: Variable,
+  action: VariableReducerNumberAction
+): Variable => {
+  return {
+    ...(state as RangeVariable),
+    endInclusive: action.payload,
+  };
+};
+
+const addChoiceItem = (
+  state: Variable,
+  action: VariableReducerAddChoiceItemAction
+): Variable => {
+  const choiceVariable = state as ChoiceVariable;
+  return {
+    ...choiceVariable,
+    items: [...choiceVariable.items, action.payload],
+  };
+};
+
+const editChoiceItemValue = (
+  state: Variable,
+  action: VariableReducerEditChoiceItemAction
+): Variable => {
+  const choice = state as ChoiceVariable;
+  return {
+    ...choice,
+    items: choice.items.map((item) => {
+      if (item.id === action.payload.choiceItemId) {
+        return {
+          ...item,
+          value: action.payload.value,
+        };
+      }
+      return item;
+    }),
+  };
+};
+
+const removeChoiceItem = (
+  state: Variable,
+  action: VariableReducerStringAction
+): Variable => {
+  const choice = state as ChoiceVariable;
+  return {
+    ...choice,
+    items: choice.items.filter((item) => item.id !== action.payload),
+  };
+};
+
+const addSelectorItem = (
+  state: Variable,
+  action: VariableReducerAddSelectorItemAction
+): Variable => {
+  const choiceVariable = state as ChoiceVariable;
+  return {
+    ...choiceVariable,
+    items: choiceVariable.items.map((choiceItem) => {
+      if (choiceItem.id === action.payload.choiceItemId) {
+        return {
+          ...choiceItem,
+          selector: {
+            ...choiceItem.selector,
+            items: [...choiceItem.selector.items, action.payload.selectorItem],
+          },
+        };
+      }
+      return choiceItem;
+    }),
+  };
+};
+
+const changeSelectorItem = (
+  state: Variable,
+  action: VariableReducerChangeSelectorItemAction
+): Variable => {
+  const choiceVariable = state as ChoiceVariable;
+  return {
+    ...choiceVariable,
+    items: choiceVariable.items.map((specItem) => {
+      if (specItem.id === action.payload.choiceItemId) {
+        return {
+          ...specItem,
+          selector: {
+            ...specItem.selector,
+            items: specItem.selector.items.map((selectorItem) => {
+              if (selectorItem.id === action.payload.selectorItemId) {
+                return {
+                  ...selectorItem,
+                  value: action.payload.value,
+                };
+              }
+              return selectorItem;
+            }),
+          },
+        };
+      }
+      return specItem;
+    }),
+  };
+};
+
+const deleteSelectorItem = (
+  state: Variable,
+  action: VariableReducerDeleteSelectorItemAction
+): Variable => {
+  const choiceVariable = state as ChoiceVariable;
+  return {
+    ...choiceVariable,
+    items: choiceVariable.items.map((specItem) => {
+      if (specItem.id === action.payload.choiceItemId) {
+        return {
+          ...specItem,
+          selector: {
+            ...specItem.selector,
+            items: specItem.selector.items.filter(
+              (selectorItem) =>
+                selectorItem.id !== action.payload.selectorItemId
+            ),
+          },
+        };
+      }
+      return specItem;
+    }),
+  };
+};
+
+export const variableReactReducer = (
+  state: Variable,
+  action: VariableReducerAction
+): Variable => {
+  const actionType = action.type;
+  switch (actionType) {
+    case VariableReducerActionType.CHANGE_NAME:
+      return changeEditingVariableName(state, action);
+    case VariableReducerActionType.CHANGE_ROLE_KEY:
+      return changeEditingVariableRoleKey(state, action);
+    case VariableReducerActionType.CHANGE_TYPE:
+      return changeEditingVariableType(state, action);
+    case VariableReducerActionType.CHANGE_RANGE_MIN:
+      return changeRangeMin(state, action);
+    case VariableReducerActionType.CHANGE_RANGE_MAX:
+      return changeRangeMax(state, action);
+    case VariableReducerActionType.ADD_CHOICE_ITEM:
+      return addChoiceItem(state, action);
+    case VariableReducerActionType.EDIT_CHOICE_ITEM:
+      return editChoiceItemValue(state, action);
+    case VariableReducerActionType.DELETE_CHOICE_ITEM:
+      return removeChoiceItem(state, action);
+    case VariableReducerActionType.ADD_SELECTOR_ITEM:
+      return addSelectorItem(state, action);
+    case VariableReducerActionType.EDIT_SELECTOR_ITEM:
+      return changeSelectorItem(state, action);
+    case VariableReducerActionType.DELETE_SELECTOR_ITEM:
+      return deleteSelectorItem(state, action);
+    default:
+      throw new ExhaustivenessFailureError(actionType);
+  }
+};

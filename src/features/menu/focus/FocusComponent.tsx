@@ -7,6 +7,7 @@ import { ActionParentComponent } from '../../model/action/ActionParentComponent'
 import { CommandParentComponent } from '../../model/command/CommandParentComponent';
 import { ContextParentComponent } from '../../model/context/ContextParentComponent';
 import { SpecParentComponent } from '../../model/spec/SpecParentComponent';
+import { VariableParentComponent } from '../../model/variable/VariableParentComponent';
 
 export const FocusComponent: React.FC<{}> = () => {
   const elementType = useAppSelector((state) => state.focus.elementType);
@@ -15,7 +16,7 @@ export const FocusComponent: React.FC<{}> = () => {
   const contextId = useAppSelector((state) => state.context.editingId);
   const roleKeyId = useAppSelector((state) => state.roleKey.editingId);
   const specId = useAppSelector((state) => state.spec.editingId);
-  const variable = useAppSelector((state) => state.variable.editing);
+  const variableId = useAppSelector((state) => state.variable.editingId);
 
   return (
     <>
@@ -34,8 +35,8 @@ export const FocusComponent: React.FC<{}> = () => {
       {elementType === ElementType.Enum.SPEC && (
         <SpecParentComponent specId={specId} key={specId} />
       )}
-      {elementType === ElementType.Enum.VARIABLE && variable && (
-        <VariableComponent variable={variable} key={variable.id} />
+      {elementType === ElementType.Enum.VARIABLE && (
+        <VariableParentComponent variableId={variableId} key={variableId} />
       )}
     </>
   );

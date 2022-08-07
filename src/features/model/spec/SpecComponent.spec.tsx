@@ -8,12 +8,9 @@ import { SpecParentComponent } from './SpecParentComponent';
 import { createRoleKey, RoleKey } from '../role-key/role-key';
 import { saveRoleKey } from '../role-key/role-key-reducers';
 import { SpecItemType } from './spec-item-type';
-import { createRange } from '../variable/range/range';
-import {
-  clearEditingVariable,
-  createNewEditingVariable,
-  saveEditingVariable,
-} from '../variable/variable-reducers';
+import { saveEditingVariable } from '../variable/variable-reducers';
+import { createRangeVariable } from '../variable/data/variable';
+import { rangeVariableDomainMapperDelegate } from '../variable/data/range-variable-domain-mapper';
 
 let user: UserEvent;
 
@@ -26,10 +23,13 @@ const GTE1_ERROR_MESSAGE = 'at least one spec item must be added';
 beforeAll(() => {
   const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
   store.dispatch(saveRoleKey(roleKey));
-  const variable = { ...createRange(), name: VARIABLE_NAME_1 };
-  store.dispatch(createNewEditingVariable(variable));
-  store.dispatch(saveEditingVariable());
-  store.dispatch(clearEditingVariable());
+  const rangeVariable = {
+    ...createRangeVariable(),
+    name: VARIABLE_NAME_1,
+  };
+  const rangeVariableDTO =
+    rangeVariableDomainMapperDelegate.mapFromDomain(rangeVariable);
+  store.dispatch(saveEditingVariable(rangeVariableDTO));
   user = userEvent.setup();
 });
 
