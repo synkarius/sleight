@@ -5,7 +5,6 @@ import { ActionValueType } from './action-value/action-value-type';
 import { SendKeyMode } from './send-key/send-key-modes';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
 
-// TODO: enum values
 export enum ActionReducerActionType {
   CHANGE_ACTION_TYPE,
   CHANGE_ACTION_VALUE_ENTERED_VALUE,
@@ -22,7 +21,6 @@ type AbstractActionReducerAction<T> = {
   type: ActionReducerActionType;
   payload: T;
 };
-// for action values, fill in later
 type ActionValueChange = {
   field: Field;
   value: string;

@@ -10,7 +10,7 @@ import { createSelector, Selector } from '../selector/data/selector-domain';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { Field } from '../../../validation/validation-field';
-import { Variable } from './data/variable';
+import { isChoiceVariable, isRangeVariable, Variable } from './data/variable';
 import {
   VariableEditingContext,
   VariableReducerActionType,
@@ -20,6 +20,7 @@ import { variableDomainMapper } from './data/variable-domain-mapper';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { saveSelector } from '../selector/selector-reducers';
+import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -60,6 +61,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
           },
         });
     }
+    validationContext.touch(Field.VAR_TYPE_SELECT);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForm();
@@ -77,6 +79,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       reduxDispatch(setEditorFocus());
     }
   };
+  const errorResults = validationContext.getErrorResults();
 
   return (
     <PanelComponent header="Create/Edit Variable">
@@ -99,25 +102,31 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type">
         <FormSelect
-          aria-label="Variable type selection"
+          aria-label={Field[Field.VAR_TYPE_SELECT]}
           onChange={typeChangedHandler}
           value={props.variable.type}
+          role={LIST}
         >
           {VariableType.values().map((vt) => (
-            <option key={vt} value={vt}>
+            <option key={vt} value={vt} role={LIST_ITEM}>
               {vt}
             </option>
           ))}
         </FormSelect>
         <FormText className="text-muted">kind of variable</FormText>
       </FormGroupRowComponent>
-      {props.variable.type === VariableType.Enum.RANGE && (
+      {isRangeVariable(props.variable) && (
         <RangeVariableComponent range={props.variable} />
       )}
-      {props.variable.type === VariableType.Enum.CHOICE && (
+      {isChoiceVariable(props.variable) && (
         <ChoiceVariableComponent choice={props.variable} />
       )}
-      <Button onClick={submitHandler} variant="primary" size="lg">
+      <Button
+        onClick={submitHandler}
+        variant="primary"
+        size="lg"
+        disabled={errorResults.length > 0}
+      >
         Save
       </Button>
       <Button

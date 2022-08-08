@@ -9,6 +9,11 @@ import { variableDomainMapper } from './data/variable-domain-mapper';
 import { VariableDTO } from './data/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
 import { variableReactReducer } from './variable-reducers';
+import {
+  atLeastOneChoiceItem,
+  choiceSelectorItemsCantBeEmpty,
+  rangeMaxIsGreaterThanOrEqualsRangeMin,
+} from './variable-validators';
 import { VariableComponent } from './VariableComponent';
 
 type VariableInitFunction = (specId: string | undefined) => Variable;
@@ -41,7 +46,14 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
   );
 
   return (
-    <ValidationComponent<Variable> validators={[]} editing={editing}>
+    <ValidationComponent<Variable>
+      validators={[
+        rangeMaxIsGreaterThanOrEqualsRangeMin,
+        atLeastOneChoiceItem,
+        choiceSelectorItemsCantBeEmpty,
+      ]}
+      editing={editing}
+    >
       <VariableEditingContext.Provider
         value={{ localDispatchFn: localVariableDispatch }}
       >

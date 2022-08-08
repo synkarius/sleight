@@ -56,5 +56,9 @@ export enum Field {
   // variable:
   VAR_NAME,
   VAR_ROLE_KEY,
+  VAR_TYPE_SELECT,
+  VAR_RANGE_MIN,
+  VAR_RANGE_MAX,
   VAR_CHOICE_ITEM_SELECTOR,
+  VAR_ADD_ITEM_BUTTON,
 }

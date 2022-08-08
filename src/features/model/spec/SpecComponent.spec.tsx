@@ -59,6 +59,19 @@ describe('spec component tests', () => {
     expect(errorSpan).toBeInTheDocument();
   });
 
+  it('should clear error status when spec items added', async () => {
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    await user.click(saveButton);
+    const errorSpan = screen.getByText(GTE1_ERROR_MESSAGE);
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+
+    expect(errorSpan).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+  });
+
   it('should validate spec with complete spec-type spec item', async () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);

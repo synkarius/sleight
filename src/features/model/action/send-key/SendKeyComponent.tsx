@@ -126,15 +126,11 @@ export const SendKeyComponent: React.FC<{
         like below EVERYWHERE -- then the logic is actually shared */}
 
         {isSendKeyPressAction(props.sendKeyAction) && (
-          <SendKeyPressComponent
-            sendKeyPressAction={props.sendKeyAction as SendKeyPressAction}
-          />
+          <SendKeyPressComponent sendKeyPressAction={props.sendKeyAction} />
         )}
         {isSendKeyHoldReleaseAction(props.sendKeyAction) && (
           <SendKeyHoldReleaseComponent
-            sendKeyHoldReleaseAction={
-              props.sendKeyAction as SendKeyHoldReleaseAction
-            }
+            sendKeyHoldReleaseAction={props.sendKeyAction}
           />
         )}
       </ExpandCollapseComponent>

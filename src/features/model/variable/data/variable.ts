@@ -19,6 +19,10 @@ export interface RangeVariable extends AbstractVariable {
   readonly endInclusive: number;
 }
 
+export const isRangeVariable = (
+  variable: AbstractVariable
+): variable is RangeVariable => variable.type === VariableType.Enum.RANGE;
+
 export interface ChoiceItem extends RoleKeyed, Ided {
   readonly selector: Selector;
   readonly value: string;
@@ -29,10 +33,16 @@ export interface ChoiceVariable extends AbstractVariable {
   readonly items: ChoiceItem[];
 }
 
+export const isChoiceVariable = (
+  variable: AbstractVariable
+): variable is ChoiceVariable => variable.type === VariableType.Enum.CHOICE;
+
 export type Variable = TextVariable | RangeVariable | ChoiceVariable;
 
 const BEGIN_INCLUSIVE_DEFAULT = 0;
 const END_INCLUSIVE_DEFAULT = 9;
+
+// ============= convenience "create" methods
 
 export const createTextVariable = (): TextVariable => {
   return {

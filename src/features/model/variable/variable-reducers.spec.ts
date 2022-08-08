@@ -1,4 +1,3 @@
-import { NotImplementedError } from '../../../error/NotImplementedError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   createSelector,
@@ -47,17 +46,6 @@ describe('variable reducer', () => {
       editing: undefined,
     });
   });
-
-  // it('should handle create new', () => {
-  //   const obj = createTextVariable();
-
-  //   const actual = variableReduxReducer(
-  //     initialState,
-  //     createNewEditingVariable(obj)
-  //   );
-
-  //   expect(actual.editing).toEqual(createTestVariable(obj.id));
-  // });
 
   it('should handle save', () => {
     const obj = createTestVariable(VARIABLE_ID_1);

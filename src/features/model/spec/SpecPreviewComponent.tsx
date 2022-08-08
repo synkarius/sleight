@@ -21,7 +21,7 @@ const mapSpecItemToPreview = (
       );
     case SpecItemType.Enum.VARIABLE:
       const variableDTO = { ...variablesSaved[specItem.variableId] };
-      // TODO: should be returning variable.name, but haven't validated it yet
+      // TODO: should be returning calculated variable name, but haven't validated it yet
       /* Notes
        * - the name of a variable
        *  - must not be blank
