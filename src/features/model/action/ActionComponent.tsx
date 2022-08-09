@@ -17,6 +17,7 @@ import {
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
 import { TEXT_BOX } from '../common/accessibility-roles';
+import { actionDefaultNamer } from './action-default-namer';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -61,6 +62,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
           type="text"
           onChange={nameChangedHandler}
           value={props.action.name}
+          placeholder={actionDefaultNamer.getDefaultName(props.action)}
         />
         <FormText className="text-muted">name of action</FormText>
       </FormGroupRowComponent>

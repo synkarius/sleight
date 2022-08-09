@@ -3,6 +3,7 @@ import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailure
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Command } from './command';
+import { commandDefaultNamer } from './command-default-namer';
 import {
   CommandReducerAction,
   CommandReducerActionIdAction,
@@ -23,6 +24,13 @@ const initialState: CommandsState = {
   editingId: undefined,
 };
 
+const addDefaults = (command: Command): Command => {
+  return {
+    ...command,
+    name: command.name.trim() || commandDefaultNamer.getDefaultName(command),
+  };
+};
+
 const commandsSlice = createSlice({
   name: 'commands',
   initialState,
@@ -31,7 +39,7 @@ const commandsSlice = createSlice({
       state.editingId = action.payload;
     },
     saveEditingCommand: (state, action: PayloadAction<Command>) => {
-      state.saved[action.payload.id] = action.payload;
+      state.saved[action.payload.id] = addDefaults(action.payload);
     },
   },
 });
@@ -45,7 +53,7 @@ const changeEditingCommandName = (
 ): Command => {
   return {
     ...state,
-    name: action.payload,
+    name: action.payload.trim() === '' ? '' : action.payload,
   };
 };
 const changeEditingCommandRoleKey = (

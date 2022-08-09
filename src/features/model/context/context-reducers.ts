@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Context } from './context';
+import { contextDefaultNamer } from './context-default-namer';
 import {
   ContextReducerAction,
   ContextReducerActionType,
@@ -19,6 +20,13 @@ const initialState: ContextsState = {
   editingId: undefined,
 };
 
+const addDefaults = (context: Context): Context => {
+  return {
+    ...context,
+    name: context.name.trim() || contextDefaultNamer.getDefaultName(context),
+  };
+};
+
 const contextsSlice = createSlice({
   name: 'contexts',
   initialState,
@@ -27,7 +35,7 @@ const contextsSlice = createSlice({
       state.editingId = action.payload;
     },
     saveEditingContext: (state, action: PayloadAction<Context>) => {
-      state.saved[action.payload.id] = action.payload;
+      state.saved[action.payload.id] = addDefaults(action.payload);
     },
   },
 });
@@ -41,7 +49,7 @@ const changeEditingContextName = (
 ): Context => {
   return {
     ...state,
-    name: action.payload,
+    name: action.payload.trim() === '' ? '' : action.payload,
   };
 };
 const changeEditingContextRoleKey = (

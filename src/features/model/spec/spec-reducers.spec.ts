@@ -2,6 +2,7 @@ import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { createSpec, createSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
+import { specDefaultNamer } from './spec-default-namer';
 import { SpecReducerActionType } from './spec-editing-context';
 import { SpecItemType } from './spec-item-type';
 import {
@@ -14,12 +15,13 @@ import {
 
 const createTestSpecRedux = (from?: {
   id?: string;
+  name?: string;
   specItemId?: string;
   selectorId?: string;
 }): SpecDTO => {
   return {
     id: from?.id ?? 'asdf-id',
-    name: '',
+    name: from?.name ?? '',
     roleKeyId: undefined,
     items: [
       {
@@ -32,10 +34,6 @@ const createTestSpecRedux = (from?: {
 };
 
 describe('spec reducer', () => {
-  const initialState: SpecsState = {
-    saved: {},
-    editingId: undefined,
-  };
   it('should handle initial state', () => {
     expect(specReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
@@ -43,26 +41,10 @@ describe('spec reducer', () => {
     });
   });
 
-  // it('should handle create new', () => {
-  //   const newObject = createSpec('some-selector-id-1');
-
-  //   const actual = specReduxReducer(
-  //     initialState,
-  //     createNewEditingSpec(newObject)
-  //   );
-
-  //   expect(actual.editing).toEqual(
-  //     createTestSpec(
-  //       newObject.id,
-  //       newObject.items[0].id,
-  //       newObject.items[0].itemId
-  //     )
-  //   );
-  // });
-
   it('should handle save', () => {
     const obj = createTestSpecRedux({
       id: 'some-id',
+      name: '',
       specItemId: 'some-spec-item-id',
       selectorId: 'some-selector-id',
     });
@@ -76,6 +58,32 @@ describe('spec reducer', () => {
     const expected: ReduxFriendlyStringMap<SpecDTO> = {};
     expected[obj.id] = createTestSpecRedux({
       id: obj.id,
+      name: specDefaultNamer.getDefaultName(obj),
+      specItemId: obj.items[0].id,
+      selectorId: obj.items[0].itemId,
+    });
+
+    expect(actual.saved).toEqual(expected);
+  });
+
+  it('should handle save with name', () => {
+    const obj = createTestSpecRedux({
+      id: 'some-id',
+      name: 'asdf',
+      specItemId: 'some-spec-item-id',
+      selectorId: 'some-selector-id',
+    });
+
+    const prereducerState: SpecsState = {
+      saved: {},
+      editingId: undefined,
+    };
+    const actual = specReduxReducer(prereducerState, saveEditingSpec(obj));
+
+    const expected: ReduxFriendlyStringMap<SpecDTO> = {};
+    expected[obj.id] = createTestSpecRedux({
+      id: obj.id,
+      name: 'asdf',
       specItemId: obj.items[0].id,
       selectorId: obj.items[0].itemId,
     });
@@ -107,7 +115,7 @@ describe('spec reducer', () => {
   });
 
   it('should handle change name', () => {
-    const obj = { ...createSpec(), id: 'some-selector-id-1' };
+    const obj = { ...createSpec(), id: 'some-selector-id-1', name: '' };
 
     const actual = specReactReducer(obj, {
       type: SpecReducerActionType.CHANGE_NAME,
@@ -117,6 +125,20 @@ describe('spec reducer', () => {
     expect(actual).toEqual({
       ...obj,
       name: 'asdf',
+    });
+  });
+
+  it('should handle change name to blank', () => {
+    const obj = { ...createSpec(), id: 'some-selector-id-1', name: 'asdf' };
+
+    const actual = specReactReducer(obj, {
+      type: SpecReducerActionType.CHANGE_NAME,
+      payload: '    ',
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      name: '',
     });
   });
 

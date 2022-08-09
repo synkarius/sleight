@@ -1,6 +1,7 @@
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from './command';
+import { commandDefaultNamer } from './command-default-namer';
 import { CommandReducerActionType } from './command-editing-context';
 import {
   CommandsState,
@@ -31,21 +32,8 @@ describe('command reducer', () => {
     });
   });
 
-  // TODO: finish functional tests  <<<<<<<<-------------------------------
-
-  // it('should handle create new', () => {
-  //   const obj = createCommand();
-
-  //   const actual = commandReduxReducer(
-  //     initialState,
-  //     createNewEditingCommand(obj)
-  //   );
-
-  //   expect(actual.editing).toEqual(createTestCommand(obj.id));
-  // });
-
   it('should handle save', () => {
-    const obj = createCommand();
+    const obj = { ...createCommand(), name: '' };
 
     const initialState: CommandsState = {
       saved: {},
@@ -55,7 +43,26 @@ describe('command reducer', () => {
     const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
 
     const expected: ReduxFriendlyStringMap<Command> = {};
-    expected[obj.id] = createTestCommand(obj.id);
+    expected[obj.id] = {
+      ...createTestCommand(obj.id),
+      name: commandDefaultNamer.getDefaultName(obj),
+    };
+
+    expect(actual.saved).toEqual(expected);
+  });
+
+  it('should handle save with name', () => {
+    const obj = { ...createCommand(), name: 'asdf' };
+
+    const initialState: CommandsState = {
+      saved: {},
+      editingId: undefined,
+    };
+
+    const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
+
+    const expected: ReduxFriendlyStringMap<Command> = {};
+    expected[obj.id] = obj;
 
     expect(actual.saved).toEqual(expected);
   });
@@ -98,6 +105,21 @@ describe('command reducer', () => {
     expect(actual).toEqual({
       ...createTestCommand(obj.id),
       name: 'asdf',
+    });
+  });
+
+  it('should handle change name to blank', () => {
+    const obj = { ...createCommand(), name: 'asdf' };
+
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_NAME,
+      payload: '      ',
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
+      name: '',
     });
   });
 

@@ -12,6 +12,7 @@ import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionType } from './action-types';
 import { createNumericValue } from './action-value/action-value';
 import { ActionReducerActionType } from './action-editing-context';
+import { actionDefaultNamer } from './action-default-namer';
 
 const createTestAction = (id: string): Action => {
   return {
@@ -35,7 +36,25 @@ describe('action reducer', () => {
   });
 
   it('should handle save', () => {
-    const obj = createPauseAction();
+    const obj = { ...createPauseAction(), name: '' };
+
+    const preReducerState: ActionsState = {
+      saved: {},
+      editingId: undefined,
+    };
+
+    const expectedSaved: ReduxFriendlyStringMap<Action> = {};
+    expectedSaved[obj.id] = {
+      ...obj,
+      name: actionDefaultNamer.getDefaultName(obj),
+    };
+    const actual = actionReduxReducer(preReducerState, saveAction(obj));
+
+    expect(actual.saved).toEqual(expectedSaved);
+  });
+
+  it('should handle save with name', () => {
+    const obj = { ...createPauseAction(), name: 'asdf' };
 
     const preReducerState: ActionsState = {
       saved: {},
@@ -82,6 +101,21 @@ describe('action reducer', () => {
     expect(actual).toEqual({
       ...obj,
       name: 'asdf',
+    });
+  });
+
+  it('should handle change name to blank', () => {
+    const obj = { ...createPauseAction(), name: 'asdf' };
+
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.CHANGE_NAME,
+      payload: '     ',
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      name: '',
     });
   });
 

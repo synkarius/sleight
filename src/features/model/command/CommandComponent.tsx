@@ -19,6 +19,7 @@ import {
 import { saveEditingCommand } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
+import { commandDefaultNamer } from './command-default-namer';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
@@ -78,6 +79,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           type="text"
           onChange={nameChangedHandler}
           value={props.command.name}
+          placeholder={commandDefaultNamer.getDefaultName(props.command)}
         />
         <FormText className="text-muted">name of command</FormText>
       </FormGroupRowComponent>

@@ -4,6 +4,7 @@ import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Spec, SpecItem, VariableSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
+import { specDefaultNamer } from './spec-default-namer';
 import {
   SpecReducerStringAction,
   SpecReducerActionType,
@@ -33,6 +34,13 @@ const specItemIdMatches: (
 ) => (specItem: SpecItem) => boolean = (specItemId) => (specItem) =>
   specItem.id === specItemId;
 
+const addDefaults = (spec: SpecDTO): SpecDTO => {
+  return {
+    ...spec,
+    name: spec.name.trim() || specDefaultNamer.getDefaultName(spec),
+  };
+};
+
 const specsSlice = createSlice({
   name: 'specs',
   initialState,
@@ -41,7 +49,7 @@ const specsSlice = createSlice({
       state.editingId = action.payload;
     },
     saveEditingSpec: (state, action: PayloadAction<SpecDTO>) => {
-      state.saved[action.payload.id] = action.payload;
+      state.saved[action.payload.id] = addDefaults(action.payload);
     },
   },
 });
@@ -55,7 +63,7 @@ const changeEditingSpecName = (
 ): Spec => {
   return {
     ...state,
-    name: action.payload,
+    name: action.payload.trim() === '' ? '' : action.payload,
   };
 };
 const changeEditingSpecRoleKey = (

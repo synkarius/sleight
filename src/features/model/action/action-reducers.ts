@@ -3,6 +3,7 @@ import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailure
 import { NotImplementedError } from '../../../error/NotImplementedError';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Action } from './action';
+import { actionDefaultNamer } from './action-default-namer';
 import {
   ActionReducerAction,
   ActionReducerActionType,
@@ -33,6 +34,13 @@ const initialState: ActionsState = {
   editingId: undefined,
 };
 
+const addDefaults = (action: Action): Action => {
+  return {
+    ...action,
+    name: action.name.trim() || actionDefaultNamer.getDefaultName(action),
+  };
+};
+
 const actionsSlice = createSlice({
   name: 'actions',
   initialState,
@@ -41,7 +49,7 @@ const actionsSlice = createSlice({
       state.editingId = action.payload;
     },
     saveAction: (state, action: PayloadAction<Action>) => {
-      state.saved[action.payload.id] = action.payload;
+      state.saved[action.payload.id] = addDefaults(action.payload);
     },
   },
 });
@@ -128,18 +136,16 @@ const changeEditingActionType = (
 
 const changeEditingActionRoleKey = (
   state: Action,
-  action: ActionReducerAction
+  action: ActionReducerStringPayloadAction
 ): Action => {
-  const stringAction = action as ActionReducerStringPayloadAction;
-  return { ...state, roleKeyId: stringAction.payload };
+  return { ...state, roleKeyId: action.payload };
 };
 
 const changeEditingActionName = (
   state: Action,
-  action: ActionReducerAction
+  action: ActionReducerStringPayloadAction
 ): Action => {
-  const stringAction = action as ActionReducerStringPayloadAction;
-  return { ...state, name: stringAction.payload };
+  return { ...state, name: action.payload.trim() === '' ? '' : action.payload };
 };
 
 export const actionReactReducer = (

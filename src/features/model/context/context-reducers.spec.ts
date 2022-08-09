@@ -9,6 +9,7 @@ import {
 import { ContextType } from './context-types';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ContextReducerActionType } from './context-editing-context';
+import { contextDefaultNamer } from './context-default-namer';
 
 describe('context reducer', () => {
   it('should handle initial state', () => {
@@ -19,7 +20,7 @@ describe('context reducer', () => {
   });
 
   it('should handle save', () => {
-    const obj = createContext();
+    const obj = { ...createContext(), name: '' };
 
     const prereducerState: ContextsState = {
       saved: {},
@@ -35,7 +36,32 @@ describe('context reducer', () => {
     expected[obj.id] = {
       roleKeyId: undefined,
       id: obj.id,
-      name: '',
+      name: contextDefaultNamer.getDefaultName(obj),
+      type: ContextType.Enum.EXECUTABLE_NAME,
+      matcher: '',
+    };
+
+    expect(actual.saved).toEqual(expected);
+  });
+
+  it('should handle save with name', () => {
+    const obj = { ...createContext(), name: 'asdf' };
+
+    const prereducerState: ContextsState = {
+      saved: {},
+      editingId: undefined,
+    };
+
+    const actual = contextReduxReducer(
+      prereducerState,
+      saveEditingContext(obj)
+    );
+
+    const expected: ReduxFriendlyStringMap<Context> = {};
+    expected[obj.id] = {
+      roleKeyId: undefined,
+      id: obj.id,
+      name: 'asdf',
       type: ContextType.Enum.EXECUTABLE_NAME,
       matcher: '',
     };
@@ -76,6 +102,19 @@ describe('context reducer', () => {
     expect(actual).toEqual({
       ...obj,
       name: 'asdf',
+    });
+  });
+
+  it('should handle change name to blank', () => {
+    const obj = { ...createContext(), name: 'asdf' };
+    const actual = contextReactReducer(obj, {
+      type: ContextReducerActionType.CHANGE_NAME,
+      payload: '      ',
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      name: '',
     });
   });
 

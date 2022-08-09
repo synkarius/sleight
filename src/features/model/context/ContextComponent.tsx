@@ -15,6 +15,7 @@ import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
+import { contextDefaultNamer } from './context-default-namer';
 import {
   ContextEditingContext,
   ContextReducerActionType,
@@ -80,6 +81,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
           type="text"
           onChange={nameChangedHandler}
           value={props.context.name}
+          placeholder={contextDefaultNamer.getDefaultName(props.context)}
         />
         <FormText className="text-muted">name of context</FormText>
       </FormGroupRowComponent>

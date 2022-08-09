@@ -51,8 +51,7 @@ const variablesSlice = createSlice({
       state.editingId = action.payload;
     },
     saveEditingVariable: (state, action: PayloadAction<VariableDTO>) => {
-      const withDefaults = addDefaults(action.payload);
-      state.saved[action.payload.id] = withDefaults;
+      state.saved[action.payload.id] = addDefaults(action.payload);
     },
   },
 });

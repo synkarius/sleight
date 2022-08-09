@@ -24,6 +24,17 @@ beforeEach(async () => {
 });
 
 describe('variable component tests', () => {
+  it('should have a placeholder name', () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.VAR_NAME],
+    });
+
+    expect(nameField).toHaveAttribute(
+      'placeholder',
+      expect.stringMatching(/text-var-[a-z0-9]{8}-[a-z0-9]{4}/)
+    );
+  });
+
   it('should not save if validation errors', async () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],

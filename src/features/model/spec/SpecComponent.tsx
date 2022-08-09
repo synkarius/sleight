@@ -19,6 +19,7 @@ import {
 import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { specDomainMapper } from './data/spec-domain-mapper';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
+import { specDefaultNamer } from './spec-default-namer';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -69,6 +70,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           type="text"
           onChange={nameChangedHandler}
           value={props.spec.name}
+          placeholder={specDefaultNamer.getDefaultName(props.spec)}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent

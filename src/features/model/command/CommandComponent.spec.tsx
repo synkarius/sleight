@@ -50,6 +50,17 @@ beforeEach(async () => {
 });
 
 describe('command component tests', () => {
+  it('should have a placeholder name', () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CMD_NAME],
+    });
+
+    expect(nameField).toHaveAttribute(
+      'placeholder',
+      expect.stringMatching(/com-[a-z0-9]{8}-[a-z0-9]{4}/)
+    );
+  });
+
   it('should not save if validation errors', async () => {
     const saveButton = screen.getByText<HTMLButtonElement>('Save');
     await user.click(saveButton);
