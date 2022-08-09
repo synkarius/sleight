@@ -23,7 +23,8 @@ import {
   ChoiceVariable,
 } from './data/variable';
 import { VariableDTO } from './data/variable-dto';
-import { BasicFields, Ided, Named, RoleKeyed } from '../../domain';
+import { Ided, Named, RoleKeyed } from '../../domain';
+import { variableDefaultNamer } from './variable-default-namer';
 
 export type VariablesState = {
   saved: ReduxFriendlyStringMap<VariableDTO>;
@@ -35,22 +36,24 @@ const initialState: VariablesState = {
   editingId: undefined,
 };
 
+const addDefaults = (variable: VariableDTO): VariableDTO => {
+  return {
+    ...variable,
+    name: variable.name.trim() || variableDefaultNamer.getDefaultName(variable),
+  };
+};
+
 const variablesSlice = createSlice({
   name: 'variables',
   initialState,
   reducers: {
-    // createNewEditingVariable: (state, action: PayloadAction<Variable>) => {
-    //   state.editing = action.payload;
-    // },
     selectVariable: (state, action: PayloadAction<string | undefined>) => {
       state.editingId = action.payload;
     },
     saveEditingVariable: (state, action: PayloadAction<VariableDTO>) => {
-      state.saved[action.payload.id] = action.payload;
+      const withDefaults = addDefaults(action.payload);
+      state.saved[action.payload.id] = withDefaults;
     },
-    // clearEditingVariable: (state) => {
-    //   state.editing = undefined;
-    // },
   },
 });
 
@@ -73,7 +76,7 @@ const changeEditingVariableName = (
 ): Variable => {
   return {
     ...state,
-    name: action.payload,
+    name: action.payload.trim() === '' ? '' : action.payload,
   };
 };
 

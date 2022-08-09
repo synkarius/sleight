@@ -21,6 +21,7 @@ import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { saveSelector } from '../selector/selector-reducers';
 import { LIST, LIST_ITEM } from '../common/accessibility-roles';
+import { variableDefaultNamer } from './variable-default-namer';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -89,6 +90,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
           type="text"
           onChange={nameChangedHandler}
           value={props.variable.name}
+          placeholder={variableDefaultNamer.getDefaultName(props.variable)}
         />
         <FormText className="text-muted">name of variable</FormText>
       </FormGroupRowComponent>

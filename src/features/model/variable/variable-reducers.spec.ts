@@ -48,12 +48,26 @@ describe('variable reducer', () => {
   });
 
   it('should handle save', () => {
-    const obj = createTestVariable(VARIABLE_ID_1);
+    const obj = {
+      ...createTestVariable(VARIABLE_ID_1),
+      name: 'asdf',
+    };
 
     const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
 
     const expected: ReduxFriendlyStringMap<VariableDTO> = {};
     expected[obj.id] = obj;
+
+    expect(actual.saved).toEqual(expected);
+  });
+
+  it('should handle save with default name', () => {
+    const obj = createTestVariable(VARIABLE_ID_1);
+
+    const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
+
+    const expected: ReduxFriendlyStringMap<VariableDTO> = {};
+    expected[obj.id] = { ...obj, name: 'text-var-VARIABLE_ID_1' };
 
     expect(actual.saved).toEqual(expected);
   });
@@ -86,6 +100,20 @@ describe('variable reducer', () => {
     expect(actual).toEqual({
       ...obj,
       name: 'asdf',
+    });
+  });
+
+  it('should handle change name to blank', () => {
+    const obj = { ...createTextVariable(), name: '' };
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_NAME,
+      payload: '       ',
+    });
+
+    expect(actual).toEqual({
+      ...obj,
+      name: '',
     });
   });
 
