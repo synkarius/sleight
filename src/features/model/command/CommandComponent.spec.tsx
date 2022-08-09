@@ -13,9 +13,13 @@ import { createSpec, createSpecItem } from '../spec/data/spec-domain';
 import { specDomainMapper } from '../spec/data/spec-domain-mapper';
 import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { CommandParentComponent } from './CommandParentComponent';
+import { saveEditingContext } from '../context/context-reducers';
+import { createContext } from '../context/context';
 
 const SPEC_NAME = 'asdf-spec';
 const ROLE_KEY_NAME = 'asdf-rk';
+const CONTEXT_ID = 'asdf-ctx-id';
+const CONTEXT_NAME = 'asdf-ctx-name';
 
 let user: UserEvent;
 
@@ -36,6 +40,14 @@ beforeAll(() => {
     saveRoleKey({
       ...createRoleKey(),
       value: ROLE_KEY_NAME,
+    })
+  );
+  // save a context
+  store.dispatch(
+    saveEditingContext({
+      ...createContext(),
+      id: CONTEXT_ID,
+      name: CONTEXT_NAME,
     })
   );
   user = userEvent.setup();
@@ -86,6 +98,16 @@ describe('command component tests', () => {
     await user.tab();
 
     expect(variableSelect).not.toHaveClass('is-invalid');
+  });
+
+  it('selected context should stick', async () => {
+    const contextSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_CONTEXT],
+    });
+    await user.selectOptions(contextSelect, [CONTEXT_NAME]);
+    await user.tab();
+
+    expect(contextSelect).toHaveValue(CONTEXT_ID);
   });
 });
 

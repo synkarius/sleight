@@ -3,6 +3,7 @@ import { RoleKeyed, Named, Ided } from '../../domain';
 import { CommandSpecType } from './command-spec-type';
 
 export interface Command extends Ided, Named, RoleKeyed {
+  contextId: string | undefined;
   specType: CommandSpecType.Type;
   specVariableId: string | undefined;
   specRoleKeyId: string | undefined;
@@ -14,6 +15,7 @@ export const createCommand = (): Command => {
     id: getRandomId(),
     name: '',
     roleKeyId: undefined,
+    contextId: undefined,
     specType: CommandSpecType.Enum.SPEC,
     specVariableId: undefined,
     specRoleKeyId: undefined,

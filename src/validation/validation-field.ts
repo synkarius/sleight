@@ -35,6 +35,7 @@ export enum Field {
   // command:
   CMD_NAME,
   CMD_ROLE_KEY,
+  CMD_CONTEXT,
   // command: spec
   CMD_SPEC_RADIO,
   CMD_SPEC_SPEC_SELECT,

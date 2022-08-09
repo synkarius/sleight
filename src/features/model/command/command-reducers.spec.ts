@@ -17,6 +17,7 @@ const createTestCommand = (id: string): Command => {
     id: id,
     name: '',
     roleKeyId: undefined,
+    contextId: undefined,
     specType: CommandSpecType.Enum.SPEC,
     specVariableId: undefined,
     specRoleKeyId: undefined,
@@ -135,6 +136,21 @@ describe('command reducer', () => {
     expect(actual).toEqual({
       ...createTestCommand(obj.id),
       roleKeyId: 'asdf',
+    });
+  });
+
+  it('should handle change context', () => {
+    const obj = createCommand();
+
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.CHANGE_CONTEXT,
+      payload: 'asdf',
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...createTestCommand(obj.id),
+      contextId: 'asdf',
     });
   });
 

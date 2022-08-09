@@ -65,6 +65,15 @@ const changeEditingCommandRoleKey = (
     roleKeyId: action.payload,
   };
 };
+const changeEditingCommandContext = (
+  state: Command,
+  action: CommandReducerStringAction
+): Command => {
+  return {
+    ...state,
+    contextId: action.payload,
+  };
+};
 const changeEditingCommandSpecType = (
   state: Command,
   action: CommandReducerSpecTypeAction
@@ -157,6 +166,8 @@ export const commandReactReducer = (
       return changeEditingCommandName(state, action);
     case CommandReducerActionType.CHANGE_ROLE_KEY:
       return changeEditingCommandRoleKey(state, action);
+    case CommandReducerActionType.CHANGE_CONTEXT:
+      return changeEditingCommandContext(state, action);
     case CommandReducerActionType.CHANGE_SPEC_TYPE:
       return changeEditingCommandSpecType(state, action);
     case CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID:

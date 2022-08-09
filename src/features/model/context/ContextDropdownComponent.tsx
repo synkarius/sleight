@@ -1,0 +1,37 @@
+import React from 'react';
+import { FormSelect } from 'react-bootstrap';
+import { useAppSelector } from '../../../app/hooks';
+import { Field } from '../../../validation/validation-field';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
+
+type ContextDropdownComponentProps = {
+  contextId: string | undefined;
+  field: Field;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  isInvalid?: boolean;
+};
+
+export const ContextDropdownComponent: React.FC<
+  ContextDropdownComponentProps
+> = (props) => {
+  const contextsSaved = useAppSelector((state) => state.context.saved);
+
+  return (
+    <FormSelect
+      value={props.contextId || SELECT_DEFAULT_VALUE}
+      aria-label={Field[props.field]}
+      onChange={props.onChange}
+      onBlur={props.onBlur}
+      isInvalid={props.isInvalid}
+      role="list"
+    >
+      <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
+      {Object.values(contextsSaved).map((context) => (
+        <option key={context.id} value={context.id} role="listitem">
+          {context.name}
+        </option>
+      ))}
+    </FormSelect>
+  );
+};

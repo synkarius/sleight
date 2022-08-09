@@ -20,6 +20,7 @@ import { saveEditingCommand } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 import { commandDefaultNamer } from './command-default-namer';
+import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
@@ -90,6 +91,18 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           onChange={roleKeyChangedHandler}
         />
         <FormText className="text-muted">role of command</FormText>
+      </FormGroupRowComponent>
+      <FormGroupRowComponent labelText="Context">
+        <ContextDropdownComponent
+          field={Field.CMD_CONTEXT}
+          contextId={props.command.contextId}
+          onChange={(e) => {
+            editingContext.localDispatchFn({
+              type: CommandReducerActionType.CHANGE_CONTEXT,
+              payload: e.target.value,
+            });
+          }}
+        />
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Spec Type"

@@ -5,6 +5,7 @@ import { CommandSpecType } from './command-spec-type';
 export enum CommandReducerActionType {
   CHANGE_NAME,
   CHANGE_ROLE_KEY,
+  CHANGE_CONTEXT,
   CHANGE_SPEC_TYPE,
   CHANGE_SPEC_VARIABLE_ID,
   CHANGE_SPEC_ROLE_KEY_ID,
@@ -34,6 +35,7 @@ export interface CommandReducerStringAction
   type:
     | typeof CommandReducerActionType.CHANGE_NAME
     | typeof CommandReducerActionType.CHANGE_ROLE_KEY
+    | typeof CommandReducerActionType.CHANGE_CONTEXT
     | typeof CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID
     | typeof CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID
     | typeof CommandReducerActionType.ADD_ACTION;
