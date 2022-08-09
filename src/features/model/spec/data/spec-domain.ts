@@ -5,6 +5,8 @@ import { SpecItemType } from '../spec-item-type';
 
 interface AbstractSpecItem extends Ided {
   readonly itemType: SpecItemType.Type;
+  readonly optional: boolean;
+  readonly grouped: boolean;
 }
 
 export interface SelectorSpecItem extends AbstractSpecItem {
@@ -24,6 +26,8 @@ export const createSpecItem = (): SelectorSpecItem => {
     id: getRandomId(),
     itemType: SpecItemType.Enum.SELECTOR,
     selector: createSelector(),
+    optional: false,
+    grouped: false,
   };
 };
 

@@ -12,6 +12,8 @@ export enum SpecReducerActionType {
   CHANGE_SPEC_ITEM_VARIABLE_ID,
   CHANGE_SPEC_ITEM_ORDER,
   DELETE_SPEC_ITEM,
+  TOGGLE_SPEC_ITEM_OPTIONAL,
+  TOGGLE_SPEC_ITEM_GROUPED,
   ADD_SELECTOR_ITEM,
   CHANGE_SELECTOR_ITEM,
   DELETE_SELECTOR_ITEM,
@@ -27,7 +29,9 @@ export interface SpecReducerStringAction
   type:
     | typeof SpecReducerActionType.CHANGE_NAME
     | typeof SpecReducerActionType.CHANGE_ROLE_KEY
-    | typeof SpecReducerActionType.DELETE_SPEC_ITEM;
+    | typeof SpecReducerActionType.DELETE_SPEC_ITEM
+    | typeof SpecReducerActionType.TOGGLE_SPEC_ITEM_OPTIONAL
+    | typeof SpecReducerActionType.TOGGLE_SPEC_ITEM_GROUPED;
 }
 export interface SpecReducerAddAction
   extends AbstractSpecReducerAction<SpecItem> {

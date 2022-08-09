@@ -93,12 +93,16 @@ const changeSpecItemType = (
               id: item.id,
               itemType: action.payload.specItemType,
               selector: action.payload.selector,
+              optional: false,
+              grouped: false,
             };
           case SpecItemType.Enum.VARIABLE:
             return {
               id: item.id,
               itemType: action.payload.specItemType,
               variableId: action.payload.variableId,
+              optional: false,
+              grouped: false,
             };
           default:
             throw new ExhaustivenessFailureError(specItemType);
@@ -241,6 +245,44 @@ const deleteSelectorItem = (
   };
 };
 
+const toggleSpecItemOptional = (
+  state: Spec,
+  action: SpecReducerStringAction
+): Spec => {
+  return {
+    ...state,
+    items: state.items.map((item) => {
+      if (item.id === action.payload) {
+        const toggledOptional = !item.optional;
+        return {
+          ...item,
+          optional: toggledOptional,
+          grouped: toggledOptional ? item.grouped : false,
+        };
+      }
+      return item;
+    }),
+  };
+};
+
+const toggleSpecItemGrouped = (
+  state: Spec,
+  action: SpecReducerStringAction
+): Spec => {
+  return {
+    ...state,
+    items: state.items.map((item) => {
+      if (item.id === action.payload) {
+        return {
+          ...item,
+          grouped: !item.grouped,
+        };
+      }
+      return item;
+    }),
+  };
+};
+
 export const specReactReducer = (
   state: Spec,
   action: SpecReducerAction
@@ -267,6 +309,10 @@ export const specReactReducer = (
       return changeSelectorItem(state, action);
     case SpecReducerActionType.DELETE_SELECTOR_ITEM:
       return deleteSelectorItem(state, action);
+    case SpecReducerActionType.TOGGLE_SPEC_ITEM_OPTIONAL:
+      return toggleSpecItemOptional(state, action);
+    case SpecReducerActionType.TOGGLE_SPEC_ITEM_GROUPED:
+      return toggleSpecItemGrouped(state, action);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

@@ -28,6 +28,8 @@ const createTestSpecRedux = (from?: {
         id: from?.specItemId ?? 'asdf-id',
         itemId: from?.selectorId ?? 'asdf-spec-item-id',
         itemType: SpecItemType.Enum.SELECTOR,
+        optional: false,
+        grouped: false,
       },
     ],
   };
@@ -198,6 +200,8 @@ describe('spec reducer', () => {
           id: obj.items[0].id,
           itemType: SpecItemType.Enum.VARIABLE,
           variableId: 'asdf-variable-id',
+          optional: false,
+          grouped: false,
         },
       ],
     });
@@ -212,6 +216,8 @@ describe('spec reducer', () => {
           id: 'asdf-item-id-1',
           itemType: SpecItemType.Enum.VARIABLE,
           variableId: 'asdf-variable-id-1',
+          optional: false,
+          grouped: false,
         },
       ],
     };
@@ -231,6 +237,8 @@ describe('spec reducer', () => {
           id: 'asdf-item-id-1',
           itemType: SpecItemType.Enum.VARIABLE,
           variableId: 'asdf-variable-id-2',
+          optional: false,
+          grouped: false,
         },
       ],
     });
@@ -356,6 +364,38 @@ describe('spec reducer', () => {
     expect(actual).toEqual({
       ...newSpec1,
       items: [newSpecItem1],
+    });
+  });
+
+  it('should handle toggle spec item "optional"', () => {
+    const newSpecItem1 = createSpecItem();
+    const newSpecItem2 = createSpecItem();
+    const newSpec1 = { ...createSpec(), items: [newSpecItem1, newSpecItem2] };
+
+    const actual = specReactReducer(newSpec1, {
+      type: SpecReducerActionType.TOGGLE_SPEC_ITEM_OPTIONAL,
+      payload: newSpecItem2.id,
+    });
+
+    expect(actual).toEqual({
+      ...newSpec1,
+      items: [newSpecItem1, { ...newSpecItem2, optional: true }],
+    });
+  });
+
+  it('should handle toggle spec item "grouped"', () => {
+    const newSpecItem1 = createSpecItem();
+    const newSpecItem2 = createSpecItem();
+    const newSpec1 = { ...createSpec(), items: [newSpecItem1, newSpecItem2] };
+
+    const actual = specReactReducer(newSpec1, {
+      type: SpecReducerActionType.TOGGLE_SPEC_ITEM_GROUPED,
+      payload: newSpecItem2.id,
+    });
+
+    expect(actual).toEqual({
+      ...newSpec1,
+      items: [newSpecItem1, { ...newSpecItem2, grouped: true }],
     });
   });
 });

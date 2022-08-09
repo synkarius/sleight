@@ -1,5 +1,11 @@
 import React, { useContext, useId } from 'react';
-import { FormGroup, FormLabel, FormSelect, FormText } from 'react-bootstrap';
+import {
+  FormCheck,
+  FormGroup,
+  FormLabel,
+  FormSelect,
+  FormText,
+} from 'react-bootstrap';
 import { VariablesDropdownComponent } from '../variable/VariablesDropdownComponent';
 import {
   createSelector,
@@ -28,6 +34,8 @@ export const SpecItemComponent: React.FC<{
   specItem: SpecItem;
   required?: boolean;
 }> = (props) => {
+  const optionalId = useId();
+  const groupedId = useId();
   const typeInputId = useId();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
@@ -184,6 +192,33 @@ export const SpecItemComponent: React.FC<{
           />
         </FormGroupRowComponent>
       )}
+      <FormGroupRowComponent labelText="Spec Item Optionality">
+        <FormCheck
+          type="switch"
+          id={optionalId}
+          label="Optional"
+          checked={props.specItem.optional}
+          onChange={(_e) =>
+            editingContext.localDispatchFn({
+              type: SpecReducerActionType.TOGGLE_SPEC_ITEM_OPTIONAL,
+              payload: props.specItem.id,
+            })
+          }
+        />
+        <FormCheck
+          type="switch"
+          id={groupedId}
+          label="Grouped"
+          checked={props.specItem.grouped}
+          onChange={(_e) =>
+            editingContext.localDispatchFn({
+              type: SpecReducerActionType.TOGGLE_SPEC_ITEM_GROUPED,
+              payload: props.specItem.id,
+            })
+          }
+          disabled={!props.specItem.optional}
+        />
+      </FormGroupRowComponent>
     </VerticalMoveableComponent>
   );
 };

@@ -144,4 +144,54 @@ describe('spec component tests', () => {
 
     expect(variableTypeSelect).toHaveClass('is-invalid');
   });
+
+  it('toggle "optional" checkbox should stick', async () => {
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const optionalCheckbox = screen.getByRole('checkbox', {
+      name: 'Optional',
+    });
+    await user.click(optionalCheckbox);
+    const groupedCheckbox = screen.getByRole('checkbox', {
+      name: 'Grouped',
+    });
+
+    expect(optionalCheckbox).toBeChecked();
+    expect(groupedCheckbox).not.toBeDisabled();
+  });
+
+  it('false "optional" checkbox toggle should force grouped to false/disabled', async () => {
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const optionalCheckbox = screen.getByRole('checkbox', {
+      name: 'Optional',
+    });
+    await user.click(optionalCheckbox);
+    const groupedCheckbox = screen.getByRole('checkbox', {
+      name: 'Grouped',
+    });
+    await user.click(groupedCheckbox);
+    await user.click(optionalCheckbox);
+
+    expect(optionalCheckbox).not.toBeChecked();
+    expect(groupedCheckbox).not.toBeChecked();
+    expect(groupedCheckbox).toBeDisabled();
+  });
+
+  it('toggle "grouped" checkbox should stick', async () => {
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const optionalCheckbox = screen.getByRole('checkbox', {
+      name: 'Optional',
+    });
+    await user.click(optionalCheckbox);
+    const groupedCheckbox = screen.getByRole('checkbox', {
+      name: 'Grouped',
+    });
+    await user.click(groupedCheckbox);
+
+    expect(optionalCheckbox).toBeChecked();
+    expect(groupedCheckbox).toBeChecked();
+    expect(groupedCheckbox).not.toBeDisabled();
+  });
 });

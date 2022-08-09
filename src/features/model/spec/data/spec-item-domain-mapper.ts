@@ -23,12 +23,16 @@ export const specItemDomainMapper: SpecItemDomainMapper = {
           id: dto.id,
           itemType: SpecItemType.Enum.SELECTOR,
           selector: selectorDomainMapper.mapToDomain(selectorDTO),
+          optional: dto.optional,
+          grouped: dto.grouped,
         };
       case SpecItemType.Enum.VARIABLE:
         return {
           id: dto.id,
           itemType: SpecItemType.Enum.VARIABLE,
           variableId: dto.itemId,
+          optional: dto.optional,
+          grouped: dto.grouped,
         };
       default:
         throw new ExhaustivenessFailureError(dto.itemType);
@@ -43,12 +47,16 @@ export const specItemDomainMapper: SpecItemDomainMapper = {
           id: domain.id,
           itemType: domain.itemType,
           itemId: domain.selector.id,
+          optional: domain.optional,
+          grouped: domain.grouped,
         };
       case SpecItemType.Enum.VARIABLE:
         return {
           id: domain.id,
           itemType: domain.itemType,
           itemId: domain.variableId,
+          optional: domain.optional,
+          grouped: domain.grouped,
         };
       default:
         throw new ExhaustivenessFailureError(itemType);
