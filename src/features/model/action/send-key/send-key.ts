@@ -1,4 +1,4 @@
-import { Action, copyAction } from '../action';
+import { AbstractAction, copyAction } from '../abstract-action';
 import {
   createNumericValue,
   createTextValue,
@@ -8,6 +8,7 @@ import {
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../util/random-id';
 import { ActionType } from '../action-types';
+import { Action } from '../action';
 
 export interface Modifiers {
   readonly control: boolean;
@@ -25,7 +26,7 @@ const createModifiers = (): Modifiers => {
   };
 };
 
-interface AbstractSendKeyAction extends Action {
+interface AbstractSendKeyAction extends AbstractAction {
   readonly type: typeof ActionType.Enum.SEND_KEY;
   readonly sendKeyMode: SendKeyMode.Type;
   readonly modifiers: Modifiers;
@@ -34,9 +35,8 @@ interface AbstractSendKeyAction extends Action {
   readonly outerPause: NumericActionValue;
 }
 
-export const isSendKeyAction = (
-  action: Action
-): action is AbstractSendKeyAction => action.type === ActionType.Enum.SEND_KEY;
+export const isSendKeyAction = (action: Action): action is SendKeyAction =>
+  action.type === ActionType.Enum.SEND_KEY;
 
 export interface SendKeyPressAction extends AbstractSendKeyAction {
   readonly sendKeyMode: typeof SendKeyMode.Enum.PRESS;

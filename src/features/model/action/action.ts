@@ -1,17 +1,5 @@
-import { RoleKeyed, Named, Ided, Typed } from '../../domain';
-import { ActionType } from './action-types';
+import { MouseAction } from './mouse/mouse';
+import { PauseAction } from './pause/pause';
+import { SendKeyAction } from './send-key/send-key';
 
-export interface Action
-  extends Ided,
-    Named,
-    Typed<ActionType.Type>,
-    RoleKeyed {}
-
-export const copyAction = (action: Action) => {
-  return {
-    id: action.id,
-    name: action.name,
-    type: action.type,
-    roleKeyId: action.roleKeyId,
-  };
-};
+export type Action = MouseAction | PauseAction | SendKeyAction;

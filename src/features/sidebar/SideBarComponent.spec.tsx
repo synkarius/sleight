@@ -9,7 +9,6 @@ import { saveAction } from '../model/action/action-reducers';
 import { createPauseAction } from '../model/action/pause/pause';
 import { saveEditingCommand } from '../model/command/command-reducers';
 import { Command, createCommand } from '../model/command/command';
-import { Action } from '../model/action/action';
 import { Context, createContext } from '../model/context/context';
 import { saveEditingContext } from '../model/context/context-reducers';
 import { createRoleKey, RoleKey } from '../model/role-key/role-key';
@@ -21,6 +20,7 @@ import { Field } from '../../validation/validation-field';
 import { TEXT_BOX } from '../model/common/accessibility-roles';
 import { CommandSpecType } from '../model/command/command-spec-type';
 import { createRangeVariable } from '../model/variable/data/variable';
+import { Action } from '../model/action/action';
 
 let user: UserEvent;
 
@@ -36,7 +36,10 @@ beforeAll(() => {
    * Some of this test data is not actually in a saveable state,
    * but it doesn't matter since that's not what's being tested here.
    */
-  const action: Action = { ...createPauseAction(), name: ACTION_NAME_1 };
+  const action: Action = {
+    ...createPauseAction(),
+    name: ACTION_NAME_1,
+  };
   store.dispatch(saveAction(action));
   const command: Command = { ...createCommand(), name: COMMAND_NAME_1 };
   store.dispatch(saveEditingCommand(command));

@@ -1,5 +1,4 @@
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
-import { Action } from './action';
 import { createSendKeyPressAction } from './send-key/send-key';
 import {
   ActionsState,
@@ -13,15 +12,7 @@ import { ActionType } from './action-types';
 import { createNumericValue } from './action-value/action-value';
 import { ActionReducerActionType } from './action-editing-context';
 import { actionDefaultNamer } from './action-default-namer';
-
-const createTestAction = (id: string): Action => {
-  return {
-    id: id,
-    name: '',
-    type: ActionType.Enum.BRING_APP,
-    roleKeyId: undefined,
-  };
-};
+import { Action } from './action';
 
 describe('action reducer', () => {
   const initialState: ActionsState = {
@@ -143,7 +134,9 @@ describe('action reducer', () => {
     });
 
     const expectedAction: PauseAction = {
-      ...createTestAction(obj.id),
+      id: obj.id,
+      name: '',
+      roleKeyId: undefined,
       type: ActionType.Enum.PAUSE,
       centiseconds: createNumericValue(),
     };

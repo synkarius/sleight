@@ -3,11 +3,10 @@ import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
-import { Action } from './action';
 import { ActionType } from './action-types';
 import { saveAction } from './action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
-import { SendKeyAction } from './send-key/send-key';
+import { isSendKeyAction, SendKeyAction } from './send-key/send-key';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { ValidationContext } from '../../../validation/validation-context';
 import {
@@ -16,8 +15,8 @@ import {
 } from './action-editing-context';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
-import { TEXT_BOX } from '../common/accessibility-roles';
 import { actionDefaultNamer } from './action-default-namer';
+import { Action } from './action';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -88,8 +87,8 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
           ))}
         </FormSelect>
       </FormGroupRowComponent>
-      {props.action.type === ActionType.Enum.SEND_KEY && (
-        <SendKeyComponent sendKeyAction={props.action as SendKeyAction} />
+      {isSendKeyAction(props.action) && (
+        <SendKeyComponent sendKeyAction={props.action} />
       )}
       <Button
         onClick={submitHandler}

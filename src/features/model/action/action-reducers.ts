@@ -124,7 +124,7 @@ const changeEditingActionType = (
     case ActionType.Enum.BRING_APP:
     case ActionType.Enum.CALL_FUNCTION:
     case ActionType.Enum.MIMIC:
-    case ActionType.Enum.MOUSE_CLICK:
+    case ActionType.Enum.MOUSE:
     case ActionType.Enum.SEND_TEXT:
     case ActionType.Enum.WAIT_FOR_WINDOW:
       // TODO: implement all

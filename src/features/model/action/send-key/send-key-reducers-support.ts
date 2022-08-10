@@ -3,6 +3,7 @@ import { UnhandledFieldError } from '../../../../error/UnhandledFieldError';
 import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { Action } from '../action';
+
 import {
   ActionReducerActionType,
   ActionReducerActionValueTypePayloadAction,

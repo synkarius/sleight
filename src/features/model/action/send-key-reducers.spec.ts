@@ -8,25 +8,17 @@ import { actionReactReducer } from './action-reducers';
 import { SendKeyMode } from './send-key/send-key-modes';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
 import { ActionReducerActionType } from './action-editing-context';
-import { Action } from './action';
 import { ActionType } from './action-types';
 import {
   createNumericValue,
   createTextValue,
 } from './action-value/action-value';
 
-const createTestAction = (id: string): Action => {
+const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
   return {
     id: id,
     name: '',
-    type: ActionType.Enum.BRING_APP,
     roleKeyId: undefined,
-  };
-};
-
-const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
-  return {
-    ...createTestAction(id),
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: {
@@ -46,7 +38,9 @@ const createTestSendKeyHoldReleaseAction = (
   id: string
 ): SendKeyHoldReleaseAction => {
   return {
-    ...createTestAction(id),
+    id: id,
+    name: '',
+    roleKeyId: undefined,
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: {
