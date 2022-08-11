@@ -11,6 +11,7 @@ import {
 } from '../action-editing-context';
 import {
   EnterValueType,
+  EnumActionValue,
   NumericActionValue,
   TextActionValue,
 } from '../action-value/action-value';
@@ -42,7 +43,7 @@ const changeTextActionValueType = (
     case ActionValueType.Enum.USE_VARIABLE:
       return {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.CHOICE,
+        variableType: VariableType.Enum.TEXT,
         variableId: SELECT_DEFAULT_VALUE,
       };
     case ActionValueType.Enum.USE_ROLE_KEY:
@@ -82,7 +83,36 @@ const changeNumericActionValueType = (
   }
 };
 
-const changeActionValue = <T extends TextActionValue | NumericActionValue>(
+const changeEnumActionValueType = (
+  action: ActionReducerActionValueTypePayloadAction
+): EnumActionValue => {
+  const actionValueType = action.payload.actionValueType;
+  switch (actionValueType) {
+    case ActionValueType.Enum.ENTER_VALUE:
+      return {
+        actionValueType: ActionValueType.Enum.ENTER_VALUE,
+        enteredValueType: EnterValueType.ENUM,
+        value: SELECT_DEFAULT_VALUE,
+      };
+    case ActionValueType.Enum.USE_VARIABLE:
+      return {
+        actionValueType: ActionValueType.Enum.USE_VARIABLE,
+        variableType: VariableType.Enum.CHOICE,
+        variableId: SELECT_DEFAULT_VALUE,
+      };
+    case ActionValueType.Enum.USE_ROLE_KEY:
+      return {
+        actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
+        roleKeyId: SELECT_DEFAULT_VALUE,
+      };
+    default:
+      throw new ExhaustivenessFailureError(actionValueType);
+  }
+};
+
+const changeActionValue = <
+  T extends TextActionValue | NumericActionValue | EnumActionValue
+>(
   actionValue: T,
   action: ActionReducerChangePayloadAction
 ): T => {
@@ -127,7 +157,7 @@ export const changeSendKey = (
   if (Object.values(keyToSendGroup).includes(action.payload.field)) {
     const ska = state as SendKeyAction;
     return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...ska, keyToSend: changeTextActionValueType(action) }
+      ? { ...ska, keyToSend: changeEnumActionValueType(action) }
       : {
           ...ska,
           keyToSend: changeActionValue(ska.keyToSend, action),
@@ -159,7 +189,7 @@ export const changeSendKey = (
   } else if (Object.values(directionGroup).includes(action.payload.field)) {
     const skhra = state as SendKeyHoldReleaseAction;
     return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...skhra, direction: changeTextActionValueType(action) }
+      ? { ...skhra, direction: changeEnumActionValueType(action) }
       : {
           ...skhra,
           direction: changeActionValue(skhra.direction, action),

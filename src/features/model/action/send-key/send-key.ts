@@ -1,7 +1,9 @@
 import { AbstractAction, copyAction } from '../abstract-action';
 import {
+  createEnumValue,
   createNumericValue,
   createTextValue,
+  EnumActionValue,
   NumericActionValue,
   TextActionValue,
 } from '../action-value/action-value';
@@ -31,7 +33,7 @@ interface AbstractSendKeyAction extends AbstractAction {
   readonly sendKeyMode: SendKeyMode.Type;
   readonly modifiers: Modifiers;
   // TODO: enforce that this has roleKey:alphabet if using a choice var??
-  readonly keyToSend: TextActionValue;
+  readonly keyToSend: EnumActionValue;
   readonly outerPause: NumericActionValue;
 }
 
@@ -57,7 +59,7 @@ export const createSendKeyPressAction = (): SendKeyPressAction => {
     roleKeyId: undefined,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
-    keyToSend: createTextValue(),
+    keyToSend: createEnumValue(),
     outerPause: createNumericValue(),
     innerPause: createNumericValue(),
     repeat: createNumericValue(),
@@ -72,7 +74,7 @@ export const copyIntoSendKeyPressAction = (
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
-    keyToSend: createTextValue(),
+    keyToSend: createEnumValue(),
     outerPause: createNumericValue(),
     innerPause: createNumericValue(),
     repeat: createNumericValue(),
@@ -81,7 +83,7 @@ export const copyIntoSendKeyPressAction = (
 
 export interface SendKeyHoldReleaseAction extends AbstractSendKeyAction {
   readonly sendKeyMode: typeof SendKeyMode.Enum.HOLD_RELEASE;
-  readonly direction: TextActionValue;
+  readonly direction: EnumActionValue;
 }
 
 export const isSendKeyHoldReleaseAction = (
@@ -97,9 +99,9 @@ export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
     roleKeyId: undefined,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
-    keyToSend: createTextValue(),
+    keyToSend: createEnumValue(),
     outerPause: createNumericValue(),
-    direction: createTextValue(),
+    direction: createEnumValue(),
   };
 };
 
@@ -111,9 +113,9 @@ export const copyIntoSendKeyHoldReleaseAction = (
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
-    keyToSend: createTextValue(),
+    keyToSend: createEnumValue(),
     outerPause: createNumericValue(),
-    direction: createTextValue(),
+    direction: createEnumValue(),
   };
 };
 

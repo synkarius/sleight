@@ -149,10 +149,10 @@ describe('side bar component tests', () => {
     });
     await user.type(nameField, savedName);
     // minimal info to save
-    const keyToSendField = screen.getByRole<HTMLInputElement>('textbox', {
+    const keyToSendField = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.AC_KEY_TO_SEND_VALUE],
     });
-    await user.type(keyToSendField, 'b');
+    await user.selectOptions(keyToSendField, 'b (bravo)');
     // save
     const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
     await user.click(saveButton);

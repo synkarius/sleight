@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field } from '../../../../validation/validation-field';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
+import { Direction } from '../direction';
 import { SendKeyHoldReleaseAction } from './send-key';
 
 export const SendKeyHoldReleaseComponent: React.FC<{
@@ -11,7 +12,10 @@ export const SendKeyHoldReleaseComponent: React.FC<{
       <ActionValueComponent
         labelText="Direction"
         descriptionText="up or down"
-        actionValue={props.sendKeyHoldReleaseAction.direction}
+        actionValue={{
+          ...props.sendKeyHoldReleaseAction.direction,
+          enumValues: Direction.values(),
+        }}
         fields={{
           radio: Field.AC_DIRECTION_RADIO,
           value: Field.AC_DIRECTION_VALUE,

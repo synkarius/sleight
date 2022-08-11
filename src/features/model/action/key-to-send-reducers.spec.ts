@@ -26,8 +26,8 @@ describe('action reducer: action.keyToSend', () => {
       ...obj,
       keyToSend: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.TEXT,
-        value: '',
+        enteredValueType: EnterValueType.ENUM,
+        value: SELECT_DEFAULT_VALUE,
       },
     });
   });

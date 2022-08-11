@@ -41,10 +41,10 @@ describe('action component tests', () => {
   });
 
   it('should reset valid status on change action type', async () => {
-    const input = screen.getByRole<HTMLInputElement>('textbox', {
+    const select = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.AC_KEY_TO_SEND_VALUE],
     });
-    await user.click(input);
+    await user.click(select);
     await user.tab();
     // is invalid at this point
     const actionTypeSelect = screen.getByRole('list', {

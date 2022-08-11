@@ -73,25 +73,26 @@ const selectActionValueType = async (
 
 describe('sendKeyHoldRelease action component tests', () => {
   it('should invalidate empty direction value', async () => {
-    const input = screen.getByRole('textbox', {
+    const select = screen.getByRole('list', {
       name: Field[Field.AC_DIRECTION_VALUE],
     });
-    await user.click(input);
+    await user.click(select);
 
     await user.tab();
 
-    expect(input).toHaveClass('is-invalid');
+    expect(select).toHaveClass('is-invalid');
   });
 
   it('should validate non-empty direction value', async () => {
-    const input = screen.getByRole('textbox', {
+    const select = screen.getByRole('list', {
       name: Field[Field.AC_DIRECTION_VALUE],
     });
-    await user.click(input);
+    await user.click(select);
 
-    await user.keyboard('a');
+    await user.selectOptions(select, 'Up');
+    await user.tab();
 
-    expect(input).not.toHaveClass('is-invalid');
+    expect(select).not.toHaveClass('is-invalid');
   });
 
   it('should invalidate non-selected direction variable', async () => {

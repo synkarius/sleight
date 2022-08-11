@@ -1,3 +1,4 @@
+import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { ActionValueType } from './action-value-type';
 
@@ -11,6 +12,7 @@ interface AbstractActionValue {
 export enum EnterValueType {
   TEXT,
   NUMERIC,
+  ENUM,
 }
 
 interface AbstractEnterValueActionValue extends AbstractActionValue {
@@ -42,6 +44,16 @@ export const isEnterNumberActionValue = (
   actionValue: AbstractEnterValueActionValue
 ): actionValue is EnterNumberActionValue =>
   actionValue.enteredValueType === EnterValueType.NUMERIC;
+
+interface EnterEnumActionValue extends AbstractEnterValueActionValue {
+  readonly enteredValueType: typeof EnterValueType.ENUM;
+  readonly value: string;
+}
+
+export const isEnterEnumActionValue = (
+  actionValue: AbstractEnterValueActionValue
+): actionValue is EnterEnumActionValue =>
+  actionValue.enteredValueType === EnterValueType.ENUM;
 
 interface AbstractVariableActionValue extends AbstractActionValue {
   readonly actionValueType: typeof ActionValueType.Enum.USE_VARIABLE;
@@ -97,12 +109,16 @@ export const isRoleKeyActionValue = (
 export type TextActionValue =
   | EnterTextActionValue
   | VariableTextActionValue
-  | VariableChoiceActionValue
   | RoleKeyActionValue;
 
 export type NumericActionValue =
   | EnterNumberActionValue
   | VariableRangeActionValue
+  | RoleKeyActionValue;
+
+export type EnumActionValue =
+  | EnterEnumActionValue
+  | VariableChoiceActionValue
   | RoleKeyActionValue;
 
 //========================================
@@ -122,5 +138,13 @@ export const createNumericValue = (): EnterNumberActionValue => {
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
     enteredValueType: EnterValueType.NUMERIC,
     value: 0,
+  };
+};
+
+export const createEnumValue = (): EnterEnumActionValue => {
+  return {
+    actionValueType: ActionValueType.Enum.ENTER_VALUE,
+    enteredValueType: EnterValueType.ENUM,
+    value: SELECT_DEFAULT_VALUE,
   };
 };

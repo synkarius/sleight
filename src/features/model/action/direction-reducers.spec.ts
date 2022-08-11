@@ -26,8 +26,8 @@ describe('action reducer: action.direction', () => {
       ...obj,
       direction: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.TEXT,
-        value: '',
+        enteredValueType: EnterValueType.ENUM,
+        value: SELECT_DEFAULT_VALUE,
       },
     });
   });

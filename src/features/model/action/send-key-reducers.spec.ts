@@ -10,6 +10,7 @@ import { SendKeyModifiers } from './send-key/send-key-modifiers';
 import { ActionReducerActionType } from './action-editing-context';
 import { ActionType } from './action-types';
 import {
+  createEnumValue,
   createNumericValue,
   createTextValue,
 } from './action-value/action-value';
@@ -27,7 +28,7 @@ const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
       shift: false,
       windows: false,
     },
-    keyToSend: createTextValue(),
+    keyToSend: createEnumValue(),
     outerPause: createNumericValue(),
     innerPause: createNumericValue(),
     repeat: createNumericValue(),
@@ -49,9 +50,9 @@ const createTestSendKeyHoldReleaseAction = (
       shift: false,
       windows: false,
     },
-    keyToSend: createTextValue(),
+    keyToSend: createEnumValue(),
     outerPause: createNumericValue(),
-    direction: createTextValue(),
+    direction: createEnumValue(),
   };
 };
 

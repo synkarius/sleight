@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FormCheck, FormControl } from 'react-bootstrap';
+import { FormCheck, FormControl, FormSelect } from 'react-bootstrap';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
 import { RoleKeyDropdownComponent } from '../../role-key/RoleKeyDropdownComponent';
@@ -12,26 +12,40 @@ import {
 } from '../action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import {
-  EnterValueType,
+  EnumActionValue,
+  isEnterEnumActionValue,
+  isEnterNumberActionValue,
+  isEnterTextActionValue,
+  isEnterValueActionValue,
+  isRoleKeyActionValue,
+  isVariableActionValue,
   NumericActionValue,
   TextActionValue,
 } from './action-value';
+import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 
 type ActionValueFields = {
-  radio: Field;
-  value: Field;
-  variable: Field;
-  roleKey: Field;
+  readonly radio: Field;
+  readonly value: Field;
+  readonly variable: Field;
+  readonly roleKey: Field;
+};
+
+type EnumActionValueWithEnumValues = EnumActionValue & {
+  readonly enumValues: string[];
 };
 
 type AVCProps = {
   // value
-  actionValue: TextActionValue | NumericActionValue;
-  fields: ActionValueFields;
+  readonly actionValue:
+    | TextActionValue
+    | NumericActionValue
+    | EnumActionValueWithEnumValues;
+  readonly fields: ActionValueFields;
   // display
-  labelText: string;
-  descriptionText: string;
-  required?: boolean;
+  readonly labelText: string;
+  readonly descriptionText: string;
+  readonly required?: boolean;
 };
 
 export const ActionValueComponent: React.FC<AVCProps> = (props) => {
@@ -122,8 +136,8 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           />
         ))}
       </div>
-      {props.actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE &&
-        props.actionValue.enteredValueType === EnterValueType.TEXT && (
+      {isEnterValueActionValue(props.actionValue) &&
+        isEnterTextActionValue(props.actionValue) && (
           <FormControl
             type="text"
             value={props.actionValue.value}
@@ -135,8 +149,8 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             aria-label={enteredValueFieldName}
           />
         )}
-      {props.actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE &&
-        props.actionValue.enteredValueType === EnterValueType.NUMERIC && (
+      {isEnterValueActionValue(props.actionValue) &&
+        isEnterNumberActionValue(props.actionValue) && (
           <FormControl
             type="number"
             value={props.actionValue.value}
@@ -149,8 +163,25 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             aria-label={enteredValueFieldName}
           />
         )}
-      {props.actionValue.actionValueType ===
-        ActionValueType.Enum.USE_VARIABLE && (
+      {isEnterValueActionValue(props.actionValue) &&
+        isEnterEnumActionValue(props.actionValue) && (
+          <FormSelect
+            value={props.actionValue.value}
+            aria-label={Field[props.fields.value]}
+            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onBlur={(_e) => touchEnteredValue()}
+            isInvalid={enteredValueIsInvalid()}
+            role="list"
+          >
+            <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
+            {props.actionValue.enumValues.map((enumValue) => (
+              <option key={enumValue} value={enumValue} role="listitem">
+                {enumValue}
+              </option>
+            ))}
+          </FormSelect>
+        )}
+      {isVariableActionValue(props.actionValue) && (
         <VariablesDropdownComponent
           field={props.fields.variable}
           selectedVariableId={props.actionValue.variableId}
@@ -160,8 +191,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           variableTypeFilter={[props.actionValue.variableType]}
         />
       )}
-      {props.actionValue.actionValueType ===
-        ActionValueType.Enum.USE_ROLE_KEY && (
+      {isRoleKeyActionValue(props.actionValue) && (
         <RoleKeyDropdownComponent
           roleKeyId={props.actionValue.roleKeyId}
           onChange={(e) => roleKeyIdChangedFn(e.target.value)}

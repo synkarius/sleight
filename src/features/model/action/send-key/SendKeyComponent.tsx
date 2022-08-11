@@ -9,12 +9,11 @@ import {
   ActionReducerActionType,
 } from '../action-editing-context';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
+import { Key } from './key';
 import {
   isSendKeyHoldReleaseAction,
   isSendKeyPressAction,
   SendKeyAction,
-  SendKeyHoldReleaseAction,
-  SendKeyPressAction,
 } from './send-key';
 import { SendKeyMode } from './send-key-modes';
 import { SendKeyModifiers } from './send-key-modifiers';
@@ -65,7 +64,10 @@ export const SendKeyComponent: React.FC<{
         </Form.Select>
       </FormGroupRowComponent>
       <ActionValueComponent
-        actionValue={props.sendKeyAction.keyToSend}
+        actionValue={{
+          ...props.sendKeyAction.keyToSend,
+          enumValues: Key.values(),
+        }}
         labelText="Key to Send"
         descriptionText="key to send"
         fields={{

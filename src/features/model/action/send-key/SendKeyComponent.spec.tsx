@@ -79,25 +79,26 @@ const selectActionValueType = async (
 
 describe('sendKey action component tests', () => {
   it('should invalidate empty key to send value', async () => {
-    const input = screen.getByRole('textbox', {
+    const select = screen.getByRole('list', {
       name: Field[Field.AC_KEY_TO_SEND_VALUE],
     });
-    await user.click(input);
+    await user.click(select);
 
     await user.tab();
 
-    expect(input).toHaveClass('is-invalid');
+    expect(select).toHaveClass('is-invalid');
   });
 
   it('should validate non-empty key to send value', async () => {
-    const input = screen.getByRole('textbox', {
+    const select = screen.getByRole('list', {
       name: Field[Field.AC_KEY_TO_SEND_VALUE],
     });
-    await user.click(input);
+    await user.click(select);
 
-    await user.keyboard('a');
+    await user.selectOptions(select, 'a (alpha)');
+    await user.tab();
 
-    expect(input).not.toHaveClass('is-invalid');
+    expect(select).not.toHaveClass('is-invalid');
   });
 
   it('should invalidate non-selected key to send variable', async () => {

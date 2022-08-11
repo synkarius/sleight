@@ -12,6 +12,7 @@ import { Field } from '../../../../validation/validation-field';
 import { validResult } from '../../../../validation/validation-result';
 import { Action } from '../action';
 import {
+  isEnterEnumActionValue,
   isEnterValueActionValue,
   isRoleKeyActionValue,
   isVariableActionValue,
@@ -36,6 +37,8 @@ const createNoOpValidator = (field: Field): FieldValidator<Action> => ({
 
 const createNonEmptyError = (fieldName: string) =>
   fieldName + " : can't be empty";
+const createNonSelectedEnumError = (fieldName: string) =>
+  fieldName + ' : value must be selected';
 const createNonSelectedVariableError = (fieldName: string) =>
   fieldName + ' : variable must be selected';
 const createNonSelectedRoleKeyError = (fieldName: string) =>
@@ -52,13 +55,18 @@ export const keyToSendValidators: ActionValueValidators = {
   value: createValidator(
     Field.AC_KEY_TO_SEND_VALUE,
     (action) =>
-      isSendKeyAction(action) && isEnterValueActionValue(action.keyToSend),
+      isSendKeyAction(action) &&
+      !isVariableActionValue(action.keyToSend) &&
+      !isRoleKeyActionValue(action.keyToSend) &&
+      isEnterEnumActionValue(action.keyToSend),
     (action) =>
       isSendKeyAction(action) &&
-      isEnterValueActionValue(action.keyToSend) &&
-      notEmpty(action.keyToSend.value),
+      !isVariableActionValue(action.keyToSend) &&
+      !isRoleKeyActionValue(action.keyToSend) &&
+      isEnterEnumActionValue(action.keyToSend) &&
+      isSelected(action.keyToSend.value),
     ValidationErrorCode.AC_KTS_EMPTY,
-    createNonEmptyError(KEY_TO_SEND)
+    createNonSelectedEnumError(KEY_TO_SEND)
   ),
   variable: createValidator(
     Field.AC_KEY_TO_SEND_VAR,
@@ -202,21 +210,24 @@ export const repeatValidators: ActionValueValidators = {
  */
 
 const DIRECTION = 'direction';
-// TODO: validate this differently so it can only be "up" or "down"
 export const directionValidators: ActionValueValidators = {
   value: createValidator(
     Field.AC_DIRECTION_VALUE,
     (action) =>
       isSendKeyAction(action) &&
       isSendKeyHoldReleaseAction(action) &&
-      isEnterValueActionValue(action.direction),
+      !isVariableActionValue(action.direction) &&
+      !isRoleKeyActionValue(action.direction) &&
+      isEnterEnumActionValue(action.direction),
     (action) =>
       isSendKeyAction(action) &&
       isSendKeyHoldReleaseAction(action) &&
-      isEnterValueActionValue(action.direction) &&
-      notEmpty(action.direction.value),
+      !isVariableActionValue(action.direction) &&
+      !isRoleKeyActionValue(action.direction) &&
+      isEnterEnumActionValue(action.direction) &&
+      isSelected(action.direction.value),
     ValidationErrorCode.AC_DIR_EMPTY,
-    createNonEmptyError(DIRECTION)
+    createNonSelectedEnumError(DIRECTION)
   ),
   variable: createValidator(
     Field.AC_DIRECTION_VAR,
