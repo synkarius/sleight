@@ -15,8 +15,8 @@ import {
 } from './command-editing-context';
 
 export type CommandsState = {
-  saved: ReduxFriendlyStringMap<Command>;
-  editingId: string | undefined;
+  readonly saved: ReduxFriendlyStringMap<Command>;
+  readonly editingId?: string;
 };
 
 const initialState: CommandsState = {

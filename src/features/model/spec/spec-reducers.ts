@@ -20,8 +20,8 @@ import {
 import { SpecItemType } from './spec-item-type';
 
 export type SpecsState = {
-  saved: ReduxFriendlyStringMap<SpecDTO>;
-  editingId: string | undefined;
+  readonly saved: ReduxFriendlyStringMap<SpecDTO>;
+  readonly editingId?: string;
 };
 
 const initialState: SpecsState = {

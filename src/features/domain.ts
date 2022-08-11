@@ -1,5 +1,5 @@
 export interface RoleKeyed {
-  readonly roleKeyId: string | undefined;
+  readonly roleKeyId?: string;
 }
 
 export interface Ided {

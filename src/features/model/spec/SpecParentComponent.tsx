@@ -15,13 +15,13 @@ import {
   specVariableMustBeSelected,
 } from './spec-validators';
 
-type SpecInitFunction = (specId: string | undefined) => Spec;
+type SpecInitFunction = (specId?: string) => Spec;
 
 const getSpecInitFunction = (
   savedSpecMap: ReduxFriendlyStringMap<SpecDTO>,
   savedSelectorMap: ReduxFriendlyStringMap<SelectorDTO>
 ): SpecInitFunction => {
-  return (specId: string | undefined) => {
+  return (specId?: string) => {
     if (specId && savedSpecMap[specId]) {
       return specDomainMapper.mapToDomain(
         savedSpecMap[specId],

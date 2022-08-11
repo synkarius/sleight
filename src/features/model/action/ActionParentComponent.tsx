@@ -17,8 +17,8 @@ import {
 
 const init = (
   savedMap: ReduxFriendlyStringMap<Action>
-): ((returnActionId: string | undefined) => Action) => {
-  return (actionId: string | undefined) => {
+): ((returnActionId?: string) => Action) => {
+  return (actionId?: string) => {
     if (actionId && savedMap[actionId]) {
       return { ...savedMap[actionId] };
     }

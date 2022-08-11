@@ -4,10 +4,10 @@ import { useAppSelector } from '../../../app/hooks';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 type ActionDropdownComponentProps = {
-  actionId: string | undefined;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
-  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
-  isInvalid?: boolean;
+  readonly actionId?: string;
+  readonly onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  readonly onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  readonly isInvalid?: boolean;
 };
 
 export const ActionDropdownComponent: React.FC<ActionDropdownComponentProps> = (

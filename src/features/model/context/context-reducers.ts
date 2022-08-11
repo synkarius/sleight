@@ -11,8 +11,8 @@ import {
 } from './context-editing-context';
 
 export interface ContextsState {
-  saved: ReduxFriendlyStringMap<Context>;
-  editingId: string | undefined;
+  readonly saved: ReduxFriendlyStringMap<Context>;
+  readonly editingId?: string;
 }
 
 const initialState: ContextsState = {

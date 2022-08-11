@@ -10,8 +10,8 @@ import { ContextComponent } from './ContextComponent';
 
 const init = (
   savedMap: ReduxFriendlyStringMap<Context>
-): ((c: string | undefined) => Context) => {
-  return (contextId: string | undefined) => {
+): ((c?: string) => Context) => {
+  return (contextId?: string) => {
     if (contextId && savedMap[contextId]) {
       return { ...savedMap[contextId] };
     }

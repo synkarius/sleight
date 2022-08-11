@@ -8,8 +8,8 @@ import {
 import { SelectorDTO } from './data/selector-dto';
 
 export type SelectorsState = {
-  saved: ReduxFriendlyStringMap<SelectorDTO>;
-  editingId: string | undefined;
+  readonly saved: ReduxFriendlyStringMap<SelectorDTO>;
+  readonly editingId?: string;
 };
 
 const initialState: SelectorsState = {

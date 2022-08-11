@@ -27,8 +27,8 @@ import { Ided, Named, RoleKeyed } from '../../domain';
 import { variableDefaultNamer } from './variable-default-namer';
 
 export type VariablesState = {
-  saved: ReduxFriendlyStringMap<VariableDTO>;
-  editingId: string | undefined;
+  readonly saved: ReduxFriendlyStringMap<VariableDTO>;
+  readonly editingId?: string;
 };
 
 const initialState: VariablesState = {

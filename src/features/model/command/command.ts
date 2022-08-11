@@ -3,11 +3,11 @@ import { RoleKeyed, Named, Ided } from '../../domain';
 import { CommandSpecType } from './command-spec-type';
 
 export interface Command extends Ided, Named, RoleKeyed {
-  contextId: string | undefined;
-  specType: CommandSpecType.Type;
-  specVariableId: string | undefined;
-  specRoleKeyId: string | undefined;
-  actionIds: string[];
+  readonly contextId?: string;
+  readonly specType: CommandSpecType.Type;
+  readonly specVariableId?: string;
+  readonly specRoleKeyId?: string;
+  readonly actionIds: string[];
 }
 
 export const createCommand = (): Command => {

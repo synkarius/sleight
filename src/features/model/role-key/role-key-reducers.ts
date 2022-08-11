@@ -8,8 +8,8 @@ import {
 } from './role-key-editing-context';
 
 export type RoleKeysState = {
-  saved: ReduxFriendlyStringMap<RoleKey>;
-  editingId: string | undefined;
+  readonly saved: ReduxFriendlyStringMap<RoleKey>;
+  readonly editingId?: string;
 };
 
 const initialState: RoleKeysState = {

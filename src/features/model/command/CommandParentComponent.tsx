@@ -13,8 +13,8 @@ import { CommandComponent } from './CommandComponent';
 
 const init = (
   savedMap: ReduxFriendlyStringMap<Command>
-): ((c: string | undefined) => Command) => {
-  return (commandId: string | undefined) => {
+): ((c?: string) => Command) => {
+  return (commandId?: string) => {
     if (commandId && savedMap[commandId]) {
       return { ...savedMap[commandId] };
     }
