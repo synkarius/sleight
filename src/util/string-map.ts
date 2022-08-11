@@ -1,3 +1,1 @@
-export type ReduxFriendlyStringMap<T> = {
-  [key: string]: T;
-};
+export type ReduxFriendlyStringMap<T> = Record<string, T>;

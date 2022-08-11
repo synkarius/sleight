@@ -2,27 +2,25 @@ import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFail
 import { SpecItemType } from '../spec-item-type';
 import { SpecItem } from './spec-domain';
 import { SpecItemDTO } from './spec-dto';
-import { ReduxCopyFunction } from '../../../../data/wrap-redux-map';
 import { SelectorDTO } from '../../selector/data/selector-dto';
 import { selectorDomainMapper } from '../../selector/data/selector-domain-mapper';
 
 interface SpecItemDomainMapper {
   mapToDomain: (
     specItem: SpecItemDTO,
-    selectorFn: ReduxCopyFunction<SelectorDTO>
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
   ) => SpecItem;
   mapFromDomain: (specItem: SpecItem) => SpecItemDTO;
 }
 
 export const specItemDomainMapper: SpecItemDomainMapper = {
-  mapToDomain: (dto, selectorFn) => {
+  mapToDomain: (dto, selectorDtos) => {
     switch (dto.itemType) {
       case SpecItemType.Enum.SELECTOR:
-        const selectorDTO = selectorFn(dto.itemId);
         return {
           id: dto.id,
           itemType: SpecItemType.Enum.SELECTOR,
-          selector: selectorDomainMapper.mapToDomain(selectorDTO),
+          selector: selectorDomainMapper.mapToDomain(selectorDtos[dto.itemId]),
           optional: dto.optional,
           grouped: dto.grouped,
         };

@@ -5,7 +5,7 @@ export interface DomainMapper<D, O> {
 
 /**
  * Convenience mapper factory for when the domain type
- * and other type perfectly overlap.
+ * and other type are equal.
  */
 export const createCloneMapper = <T>(): DomainMapper<T, T> => {
   return {

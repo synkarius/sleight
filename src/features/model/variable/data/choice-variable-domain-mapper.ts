@@ -1,4 +1,4 @@
-import { ReduxCopyFunction } from '../../../../data/wrap-redux-map';
+import { selectorDomainMapper } from '../../selector/data/selector-domain-mapper';
 import { SelectorDTO } from '../../selector/data/selector-dto';
 import { ChoiceItem, ChoiceVariable } from './variable';
 import { ChoiceItemDTO, ChoiceVariableDTO } from './variable-dto';
@@ -12,11 +12,11 @@ const choiceItemDomainMapper = {
   }),
   mapToDomain: (
     dto: ChoiceItemDTO,
-    selectorFn: ReduxCopyFunction<SelectorDTO>
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
   ): ChoiceItem => ({
     id: dto.id,
     roleKeyId: dto.roleKeyId,
-    selector: selectorFn(dto.selectorId),
+    selector: selectorDomainMapper.mapToDomain(selectorDtos[dto.selectorId]),
     value: dto.value,
   }),
 };
@@ -33,14 +33,14 @@ export const choiceVariableDomainMapperDelegate = {
   }),
   mapToDomain: (
     dto: ChoiceVariableDTO,
-    selectorFn: ReduxCopyFunction<SelectorDTO>
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
   ): ChoiceVariable => ({
     id: dto.id,
     name: dto.name,
     type: dto.type,
     roleKeyId: dto.roleKeyId,
     items: dto.items.map((item) =>
-      choiceItemDomainMapper.mapToDomain(item, selectorFn)
+      choiceItemDomainMapper.mapToDomain(item, selectorDtos)
     ),
   }),
 };

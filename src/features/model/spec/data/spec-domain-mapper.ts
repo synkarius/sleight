@@ -1,4 +1,3 @@
-import { ReduxCopyFunction } from '../../../../data/wrap-redux-map';
 import { SelectorDTO } from '../../selector/data/selector-dto';
 import { Spec } from './spec-domain';
 import { specItemDomainMapper } from './spec-item-domain-mapper';
@@ -6,20 +5,20 @@ import { SpecDTO } from './spec-dto';
 
 interface SpecDomainMapper {
   mapToDomain: (
-    spec: SpecDTO,
-    selectorFn: ReduxCopyFunction<SelectorDTO>
+    specDto: SpecDTO,
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
   ) => Spec;
   mapFromDomain: (spec: Spec) => SpecDTO;
 }
 
 export const specDomainMapper: SpecDomainMapper = {
-  mapToDomain: (dto, selectorFn) => {
+  mapToDomain: (dto, selectorDtos) => {
     return {
       id: dto.id,
       name: dto.name,
       roleKeyId: dto.roleKeyId,
       items: dto.items.map((item) =>
-        specItemDomainMapper.mapToDomain(item, selectorFn)
+        specItemDomainMapper.mapToDomain(item, selectorDtos)
       ),
     };
   },

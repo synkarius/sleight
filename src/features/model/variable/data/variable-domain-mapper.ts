@@ -1,4 +1,3 @@
-import { ReduxCopyFunction } from '../../../../data/wrap-redux-map';
 import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFailureError';
 import { SelectorDTO } from '../../selector/data/selector-dto';
 import { VariableType } from '../variable-types';
@@ -11,7 +10,7 @@ import { VariableDTO } from './variable-dto';
 export const variableDomainMapper = {
   mapToDomain: (
     dto: VariableDTO,
-    selectorFn: ReduxCopyFunction<SelectorDTO>
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
   ): Variable => {
     const dtoType = dto.type;
     switch (dtoType) {
@@ -20,7 +19,10 @@ export const variableDomainMapper = {
       case VariableType.Enum.RANGE:
         return rangeVariableDomainMapperDelegate.mapToDomain(dto);
       case VariableType.Enum.CHOICE:
-        return choiceVariableDomainMapperDelegate.mapToDomain(dto, selectorFn);
+        return choiceVariableDomainMapperDelegate.mapToDomain(
+          dto,
+          selectorDtos
+        );
       default:
         throw new ExhaustivenessFailureError(dtoType);
     }

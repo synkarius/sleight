@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { wrapReduxMap } from '../../../data/wrap-redux-map';
 import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
@@ -9,6 +8,7 @@ import { variableDomainMapper } from './data/variable-domain-mapper';
 import { VariableDTO } from './data/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
 import { variableReactReducer } from './variable-reducers';
+import { VariableType } from './variable-types';
 import {
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,
@@ -16,18 +16,17 @@ import {
 } from './variable-validators';
 import { VariableComponent } from './VariableComponent';
 
-type VariableInitFunction = (specId: string | undefined) => Variable;
+type VariableInitFunction = (specId?: string) => Variable;
 
 const getVariableInitFunction = (
   savedVariableMap: ReduxFriendlyStringMap<VariableDTO>,
   savedSelectorMap: ReduxFriendlyStringMap<SelectorDTO>
 ): VariableInitFunction => {
-  return (variableId: string | undefined) => {
+  return (variableId?: string) => {
     if (variableId && savedVariableMap[variableId]) {
-      const selectorFn = wrapReduxMap(savedSelectorMap);
       return variableDomainMapper.mapToDomain(
         savedVariableMap[variableId],
-        selectorFn
+        savedSelectorMap
       );
     }
     return createTextVariable();

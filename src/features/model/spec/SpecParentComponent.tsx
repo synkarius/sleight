@@ -9,7 +9,6 @@ import { SpecEditingContext } from './spec-editing-context';
 import { specReactReducer } from './spec-reducers';
 import { SpecComponent } from './SpecComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
-import { wrapReduxMap } from '../../../data/wrap-redux-map';
 import {
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,
@@ -24,8 +23,10 @@ const getSpecInitFunction = (
 ): SpecInitFunction => {
   return (specId: string | undefined) => {
     if (specId && savedSpecMap[specId]) {
-      const selectorFn = wrapReduxMap(savedSelectorMap);
-      return specDomainMapper.mapToDomain(savedSpecMap[specId], selectorFn);
+      return specDomainMapper.mapToDomain(
+        savedSpecMap[specId],
+        savedSelectorMap
+      );
     }
     return createSpec();
   };
