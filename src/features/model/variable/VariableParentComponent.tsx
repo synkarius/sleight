@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
 import { createTextVariable, Variable } from './data/variable';
@@ -8,7 +7,6 @@ import { variableDomainMapper } from './data/variable-domain-mapper';
 import { VariableDTO } from './data/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
 import { variableReactReducer } from './variable-reducers';
-import { VariableType } from './variable-types';
 import {
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,
@@ -19,8 +17,8 @@ import { VariableComponent } from './VariableComponent';
 type VariableInitFunction = (specId?: string) => Variable;
 
 const getVariableInitFunction = (
-  savedVariableMap: ReduxFriendlyStringMap<VariableDTO>,
-  savedSelectorMap: ReduxFriendlyStringMap<SelectorDTO>
+  savedVariableMap: Record<string, VariableDTO>,
+  savedSelectorMap: Record<string, SelectorDTO>
 ): VariableInitFunction => {
   return (variableId?: string) => {
     if (variableId && savedVariableMap[variableId]) {

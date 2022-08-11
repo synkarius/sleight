@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import { NotImplementedError } from '../../../error/NotImplementedError';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Action } from './action';
 import { actionDefaultNamer } from './action-default-namer';
 import {
@@ -25,7 +24,7 @@ import { SendKeyModifiers } from './send-key/send-key-modifiers';
 import { changeSendKey } from './send-key/send-key-reducers-support';
 
 export type ActionsState = {
-  saved: ReduxFriendlyStringMap<Action>;
+  saved: Record<string, Action>;
   editingId: string | undefined;
 };
 

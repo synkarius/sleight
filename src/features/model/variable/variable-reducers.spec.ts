@@ -1,4 +1,3 @@
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   createSelector,
   createSelectorItem,
@@ -55,7 +54,7 @@ describe('variable reducer', () => {
 
     const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
 
-    const expected: ReduxFriendlyStringMap<VariableDTO> = {};
+    const expected: Record<string, VariableDTO> = {};
     expected[obj.id] = obj;
 
     expect(actual.saved).toEqual(expected);
@@ -66,7 +65,7 @@ describe('variable reducer', () => {
 
     const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
 
-    const expected: ReduxFriendlyStringMap<VariableDTO> = {};
+    const expected: Record<string, VariableDTO> = {};
     expected[obj.id] = { ...obj, name: 'text-var-VARIABLE_ID_1' };
 
     expect(actual.saved).toEqual(expected);

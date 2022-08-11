@@ -2,14 +2,13 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { VariableDTO } from '../variable/data/variable-dto';
 import { Spec, SpecItem } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';
 
 const mapSpecItemToPreview = (
   specItem: SpecItem,
-  variablesSaved: ReduxFriendlyStringMap<VariableDTO>
+  variablesSaved: Record<string, VariableDTO>
 ): string => {
   const itemType = specItem.itemType;
   switch (itemType) {

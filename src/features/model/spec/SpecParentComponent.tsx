@@ -1,6 +1,5 @@
 import { useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { createSpec, Spec } from './data/spec-domain';
 import { specDomainMapper } from './data/spec-domain-mapper';
@@ -18,8 +17,8 @@ import {
 type SpecInitFunction = (specId?: string) => Spec;
 
 const getSpecInitFunction = (
-  savedSpecMap: ReduxFriendlyStringMap<SpecDTO>,
-  savedSelectorMap: ReduxFriendlyStringMap<SelectorDTO>
+  savedSpecMap: Record<string, SpecDTO>,
+  savedSelectorMap: Record<string, SelectorDTO>
 ): SpecInitFunction => {
   return (specId?: string) => {
     if (specId && savedSpecMap[specId]) {

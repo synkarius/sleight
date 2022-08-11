@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { Context } from './context';
 import { contextDefaultNamer } from './context-default-namer';
 import {
@@ -11,7 +10,7 @@ import {
 } from './context-editing-context';
 
 export interface ContextsState {
-  readonly saved: ReduxFriendlyStringMap<Context>;
+  readonly saved: Record<string, Context>;
   readonly editingId?: string;
 }
 

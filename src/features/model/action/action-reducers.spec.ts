@@ -1,4 +1,3 @@
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { createSendKeyPressAction } from './send-key/send-key';
 import {
   ActionsState,
@@ -34,7 +33,7 @@ describe('action reducer', () => {
       editingId: undefined,
     };
 
-    const expectedSaved: ReduxFriendlyStringMap<Action> = {};
+    const expectedSaved: Record<string, Action> = {};
     expectedSaved[obj.id] = {
       ...obj,
       name: actionDefaultNamer.getDefaultName(obj),
@@ -52,7 +51,7 @@ describe('action reducer', () => {
       editingId: undefined,
     };
 
-    const expectedSaved: ReduxFriendlyStringMap<Action> = {};
+    const expectedSaved: Record<string, Action> = {};
     expectedSaved[obj.id] = obj;
     const actual = actionReduxReducer(preReducerState, saveAction(obj));
 

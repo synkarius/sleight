@@ -1,4 +1,3 @@
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { createRoleKey, RoleKey } from './role-key';
 import { RoleKeyReducerActionType } from './role-key-editing-context';
 import {
@@ -10,8 +9,8 @@ import {
   roleKeyReactReducer,
 } from './role-key-reducers';
 
-const createSavedMap = (roleKey: RoleKey): ReduxFriendlyStringMap<RoleKey> => {
-  const map: ReduxFriendlyStringMap<RoleKey> = {};
+const createSavedMap = (roleKey: RoleKey): Record<string, RoleKey> => {
+  const map: Record<string, RoleKey> = {};
   map[roleKey.id] = roleKey;
   return map;
 };

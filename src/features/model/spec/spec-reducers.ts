@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Spec, SpecItem, VariableSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
@@ -20,7 +19,7 @@ import {
 import { SpecItemType } from './spec-item-type';
 
 export type SpecsState = {
-  readonly saved: ReduxFriendlyStringMap<SpecDTO>;
+  readonly saved: Record<string, SpecDTO>;
   readonly editingId?: string;
 };
 

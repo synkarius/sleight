@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { createRoleKey, RoleKey } from './role-key';
 import { RoleKeyEditingContext } from './role-key-editing-context';
@@ -9,7 +8,7 @@ import { roleKeyTextValidator } from './role-key-validation';
 import { RoleKeyComponent } from './RoleKeyComponent';
 
 const init = (
-  savedMap: ReduxFriendlyStringMap<RoleKey>
+  savedMap: Record<string, RoleKey>
 ): ((returnRoleKeyId?: string) => RoleKey) => {
   return (roleKeyId?: string) => {
     if (roleKeyId && savedMap[roleKeyId]) {

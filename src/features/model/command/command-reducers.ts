@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { Command } from './command';
 import { commandDefaultNamer } from './command-default-namer';
@@ -15,7 +14,7 @@ import {
 } from './command-editing-context';
 
 export type CommandsState = {
-  readonly saved: ReduxFriendlyStringMap<Command>;
+  readonly saved: Record<string, Command>;
   readonly editingId?: string;
 };
 

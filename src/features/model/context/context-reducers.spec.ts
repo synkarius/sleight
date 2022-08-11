@@ -7,7 +7,6 @@ import {
   contextReactReducer,
 } from './context-reducers';
 import { ContextType } from './context-types';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ContextReducerActionType } from './context-editing-context';
 import { contextDefaultNamer } from './context-default-namer';
 
@@ -32,7 +31,7 @@ describe('context reducer', () => {
       saveEditingContext(obj)
     );
 
-    const expected: ReduxFriendlyStringMap<Context> = {};
+    const expected: Record<string, Context> = {};
     expected[obj.id] = {
       roleKeyId: undefined,
       id: obj.id,
@@ -57,7 +56,7 @@ describe('context reducer', () => {
       saveEditingContext(obj)
     );
 
-    const expected: ReduxFriendlyStringMap<Context> = {};
+    const expected: Record<string, Context> = {};
     expected[obj.id] = {
       roleKeyId: undefined,
       id: obj.id,

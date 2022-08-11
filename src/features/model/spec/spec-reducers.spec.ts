@@ -1,4 +1,3 @@
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { createSpec, createSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
@@ -57,7 +56,7 @@ describe('spec reducer', () => {
     };
     const actual = specReduxReducer(prereducerState, saveEditingSpec(obj));
 
-    const expected: ReduxFriendlyStringMap<SpecDTO> = {};
+    const expected: Record<string, SpecDTO> = {};
     expected[obj.id] = createTestSpecRedux({
       id: obj.id,
       name: specDefaultNamer.getDefaultName(obj),
@@ -82,7 +81,7 @@ describe('spec reducer', () => {
     };
     const actual = specReduxReducer(prereducerState, saveEditingSpec(obj));
 
-    const expected: ReduxFriendlyStringMap<SpecDTO> = {};
+    const expected: Record<string, SpecDTO> = {};
     expected[obj.id] = createTestSpecRedux({
       id: obj.id,
       name: 'asdf',

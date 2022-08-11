@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { Command, createCommand } from './command';
 import { CommandEditingContext } from './command-editing-context';
@@ -11,9 +10,7 @@ import {
 } from './command-validators';
 import { CommandComponent } from './CommandComponent';
 
-const init = (
-  savedMap: ReduxFriendlyStringMap<Command>
-): ((c?: string) => Command) => {
+const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
   return (commandId?: string) => {
     if (commandId && savedMap[commandId]) {
       return { ...savedMap[commandId] };

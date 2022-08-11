@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { VariableType } from './variable-types';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
 import {
@@ -27,7 +26,7 @@ import { Ided, Named, RoleKeyed } from '../../domain';
 import { variableDefaultNamer } from './variable-default-namer';
 
 export type VariablesState = {
-  readonly saved: ReduxFriendlyStringMap<VariableDTO>;
+  readonly saved: Record<string, VariableDTO>;
   readonly editingId?: string;
 };
 

@@ -1,4 +1,3 @@
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   createSelector,
   createSelectorItem,
@@ -32,7 +31,7 @@ describe('selector reducer', () => {
 
     const actual = selectorReduxReducer(initialState, saveSelector(newObject));
 
-    const expected: ReduxFriendlyStringMap<Selector> = {};
+    const expected: Record<string, Selector> = {};
     expected[newObject.id] = {
       id: newObject.id,
       roleKeyId: undefined,
@@ -59,7 +58,7 @@ describe('selector reducer', () => {
       createdState,
       deleteSelector(newObject.id)
     );
-    const expected: ReduxFriendlyStringMap<Selector> = {};
+    const expected: Record<string, Selector> = {};
 
     expect(actual.saved).toEqual(expected);
   });
@@ -89,7 +88,7 @@ describe('selector reducer', () => {
       })
     );
 
-    const expected: ReduxFriendlyStringMap<Selector> = {};
+    const expected: Record<string, Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
       roleKeyId: undefined,
@@ -146,7 +145,7 @@ describe('selector reducer', () => {
       })
     );
 
-    const expected: ReduxFriendlyStringMap<Selector> = {};
+    const expected: Record<string, Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
       roleKeyId: undefined,
@@ -177,7 +176,7 @@ describe('selector reducer', () => {
       })
     );
 
-    const expected: ReduxFriendlyStringMap<Selector> = {};
+    const expected: Record<string, Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
       roleKeyId: undefined,

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { RoleKey } from './role-key';
 import {
   RoleKeyReducerActionType,
@@ -8,7 +7,7 @@ import {
 } from './role-key-editing-context';
 
 export type RoleKeysState = {
-  readonly saved: ReduxFriendlyStringMap<RoleKey>;
+  readonly saved: Record<string, RoleKey>;
   readonly editingId?: string;
 };
 

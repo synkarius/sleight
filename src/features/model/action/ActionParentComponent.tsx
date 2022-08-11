@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { Action } from './action';
 import { ActionEditingContext } from './action-editing-context';
@@ -16,7 +15,7 @@ import {
 } from './send-key/send-key-validators';
 
 const init = (
-  savedMap: ReduxFriendlyStringMap<Action>
+  savedMap: Record<string, Action>
 ): ((returnActionId?: string) => Action) => {
   return (actionId?: string) => {
     if (actionId && savedMap[actionId]) {

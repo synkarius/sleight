@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import {
   CreateSelectorItemPayload,
   DeleteSelectorItemPayload,
@@ -8,7 +7,7 @@ import {
 import { SelectorDTO } from './data/selector-dto';
 
 export type SelectorsState = {
-  readonly saved: ReduxFriendlyStringMap<SelectorDTO>;
+  readonly saved: Record<string, SelectorDTO>;
   readonly editingId?: string;
 };
 

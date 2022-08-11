@@ -1,4 +1,3 @@
-import { ReduxFriendlyStringMap } from '../../../util/string-map';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from './command';
 import { commandDefaultNamer } from './command-default-namer';
@@ -43,7 +42,7 @@ describe('command reducer', () => {
 
     const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
 
-    const expected: ReduxFriendlyStringMap<Command> = {};
+    const expected: Record<string, Command> = {};
     expected[obj.id] = {
       ...createTestCommand(obj.id),
       name: commandDefaultNamer.getDefaultName(obj),
@@ -62,7 +61,7 @@ describe('command reducer', () => {
 
     const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
 
-    const expected: ReduxFriendlyStringMap<Command> = {};
+    const expected: Record<string, Command> = {};
     expected[obj.id] = obj;
 
     expect(actual.saved).toEqual(expected);
