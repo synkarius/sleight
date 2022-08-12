@@ -1,6 +1,12 @@
 import React from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { useAppSelector } from '../../app/hooks';
+import { dragonflyExporter } from '../../data/exports/dragonfly/dragonfly-exporter';
+import {
+  DRAGONFLY,
+  getExportFileName,
+  JSON,
+} from '../../data/exports/export-type';
 import { jsonExporter } from '../../data/exports/json-exporter';
 import { simpleSaveFile } from '../../data/exports/simple-save-file';
 
@@ -22,8 +28,19 @@ export const Navigation = () => {
       specs,
       variables
     );
-    const filename = 'sleight-export-v0.1.0-' + Date.now() + '.json';
-    simpleSaveFile(data[0], filename);
+    simpleSaveFile(data[0], getExportFileName(JSON));
+  };
+  const exportDragonfly = (_e: React.MouseEvent<HTMLElement>) => {
+    const data = dragonflyExporter.export(
+      actions,
+      commands,
+      contexts,
+      roleKeys,
+      selectors,
+      specs,
+      variables
+    );
+    simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
   };
   return (
     <Navbar bg="primary" variant="dark" expand="lg" sticky="top">
@@ -51,7 +68,7 @@ export const Navigation = () => {
               <NavDropdown.Item href="#action/3.5" disabled>
                 Export Caster
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.6" disabled>
+              <NavDropdown.Item href="#action/3.6" onClick={exportDragonfly}>
                 Export Dragonfly
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.7" disabled>
