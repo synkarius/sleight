@@ -17,6 +17,8 @@ import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
 import { actionDefaultNamer } from './action-default-namer';
 import { Action } from './action';
+import { isMouseAction } from './mouse/mouse';
+import { MouseComponent } from './mouse/MouseComponent';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -89,6 +91,9 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       </FormGroupRowComponent>
       {isSendKeyAction(props.action) && (
         <SendKeyComponent sendKeyAction={props.action} />
+      )}
+      {isMouseAction(props.action) && (
+        <MouseComponent mouseAction={props.action} />
       )}
       <Button
         onClick={submitHandler}

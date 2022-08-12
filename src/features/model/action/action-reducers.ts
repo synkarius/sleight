@@ -10,8 +10,18 @@ import {
   ActionReducerStringPayloadAction,
   ActionReducerSendKeyModePayloadAction,
   ActionReducerActionTypePayloadAction,
+  ActionReducerMouseActionTypePayloadAction,
+  ActionReducerMouseMovementTypePayloadAction,
 } from './action-editing-context';
 import { ActionType } from './action-types';
+import {
+  copyIntoMouseClickAction,
+  copyIntoMouseHoldAction,
+  copyIntoMouseMoveAction,
+  MoveMouseAction,
+} from './mouse/mouse';
+import { MouseActionType } from './mouse/mouse-action-type';
+import { MouseMovementType } from './mouse/mouse-movement-type';
 import { copyIntoPauseAction } from './pause/pause';
 import {
   copyIntoSendKeyHoldReleaseAction,
@@ -98,16 +108,56 @@ const toggleModifier = (
 
 const changeEditingSendKeyMode = (
   state: Action,
-  action: ActionReducerAction
+  action: ActionReducerSendKeyModePayloadAction
 ): Action => {
-  const skmAction = action as ActionReducerSendKeyModePayloadAction;
-  switch (skmAction.payload) {
+  switch (action.payload) {
     case SendKeyMode.Enum.PRESS:
       return copyIntoSendKeyPressAction(state);
     case SendKeyMode.Enum.HOLD_RELEASE:
       return copyIntoSendKeyHoldReleaseAction(state);
     default:
-      throw new ExhaustivenessFailureError(skmAction.payload);
+      throw new ExhaustivenessFailureError(action.payload);
+  }
+};
+
+const changeEditingMouseActionType = (
+  state: Action,
+  action: ActionReducerMouseActionTypePayloadAction
+): Action => {
+  switch (action.payload) {
+    case MouseActionType.Enum.MOVE:
+      return copyIntoMouseMoveAction(state);
+    case MouseActionType.Enum.PRESS:
+      return copyIntoMouseClickAction(state);
+    case MouseActionType.Enum.HOLD_RELEASE:
+      return copyIntoMouseHoldAction(state);
+    default:
+      throw new ExhaustivenessFailureError(action.payload);
+  }
+};
+
+const changeEditingMouseMovementType = (
+  state: Action,
+  action: ActionReducerMouseMovementTypePayloadAction
+): Action => {
+  switch (action.payload) {
+    case MouseMovementType.Enum.ABSOLUTE:
+      return {
+        ...(state as MoveMouseAction),
+        mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
+      };
+    case MouseMovementType.Enum.RELATIVE:
+      return {
+        ...(state as MoveMouseAction),
+        mouseMovementType: MouseMovementType.Enum.RELATIVE,
+      };
+    case MouseMovementType.Enum.WINDOW:
+      return {
+        ...(state as MoveMouseAction),
+        mouseMovementType: MouseMovementType.Enum.WINDOW,
+      };
+    default:
+      throw new ExhaustivenessFailureError(action.payload);
   }
 };
 
@@ -120,10 +170,11 @@ const changeEditingActionType = (
       return copyIntoPauseAction(state);
     case ActionType.Enum.SEND_KEY:
       return copyIntoSendKeyPressAction(state);
+    case ActionType.Enum.MOUSE:
+      return copyIntoMouseMoveAction(state);
     case ActionType.Enum.BRING_APP:
     case ActionType.Enum.CALL_FUNCTION:
     case ActionType.Enum.MIMIC:
-    case ActionType.Enum.MOUSE:
     case ActionType.Enum.SEND_TEXT:
     case ActionType.Enum.WAIT_FOR_WINDOW:
       // TODO: implement all
@@ -168,6 +219,10 @@ export const actionReactReducer = (
       return changeEditingActionRoleKey(state, action);
     case ActionReducerActionType.CHANGE_SEND_KEY_MODE:
       return changeEditingSendKeyMode(state, action);
+    case ActionReducerActionType.CHANGE_MOUSE_ACTION_TYPE:
+      return changeEditingMouseActionType(state, action);
+    case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE:
+      return changeEditingMouseMovementType(state, action);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

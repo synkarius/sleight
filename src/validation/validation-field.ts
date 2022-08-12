@@ -7,6 +7,9 @@ export enum Field {
   AC_ROLE_KEY,
   // action: send key :
   AC_SEND_KEY_MODE,
+  // action: mouse
+  AC_MOUSE_ACTION_TYPE,
+  AC_MOUSE_MOVEMENT_TYPE,
   // action: key to send
   AC_DIRECTION_RADIO,
   AC_DIRECTION_VALUE,

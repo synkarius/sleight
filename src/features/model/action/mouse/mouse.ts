@@ -1,8 +1,11 @@
-import { AbstractAction } from '../abstract-action';
+import { AbstractAction, copyAction } from '../abstract-action';
+import { Action } from '../action';
 import { ActionType } from '../action-types';
 import {
+  createEnumValue,
+  createNumericValue,
+  EnumActionValue,
   NumericActionValue,
-  TextActionValue,
 } from '../action-value/action-value';
 import { MouseActionType } from './mouse-action-type';
 import { MouseMovementType } from './mouse-movement-type';
@@ -12,34 +15,87 @@ interface AbstractMouseAction extends AbstractAction {
   readonly mouseActionType: MouseActionType.Type;
 }
 
-interface MoveMouseAction extends AbstractMouseAction {
+export const isMouseAction = (action: Action): action is MouseAction =>
+  action.type === ActionType.Enum.MOUSE;
+
+export interface MoveMouseAction extends AbstractMouseAction {
   readonly mouseActionType: typeof MouseActionType.Enum.MOVE;
   readonly mouseMovementType: MouseMovementType.Type;
   readonly x: number;
   readonly y: number;
 }
 
+export const isMoveMouseAction = (
+  action: MouseAction
+): action is MoveMouseAction =>
+  action.mouseActionType === MouseActionType.Enum.MOVE;
+
 interface AbstractButtonMouseAction extends AbstractMouseAction {
   readonly mouseActionType:
     | typeof MouseActionType.Enum.PRESS
     | typeof MouseActionType.Enum.HOLD_RELEASE;
-  // TODO: change this to an EnumActionValue
-  readonly mouseKey: TextActionValue;
+  readonly mouseKey: EnumActionValue;
   readonly pause: NumericActionValue;
 }
 
-interface PressMouseAction extends AbstractButtonMouseAction {
+export interface PressMouseAction extends AbstractButtonMouseAction {
   readonly mouseActionType: typeof MouseActionType.Enum.PRESS;
   readonly repeat: NumericActionValue;
 }
 
-interface HoldReleaseMouseAction extends AbstractButtonMouseAction {
-  readonly mouseActionType: typeof MouseActionType.Enum.PRESS;
-  // TODO: change this to an EnumActionValue
-  readonly direction: TextActionValue;
+export const isClickMouseAction = (
+  action: MouseAction
+): action is PressMouseAction =>
+  action.mouseActionType === MouseActionType.Enum.PRESS;
+
+export interface HoldReleaseMouseAction extends AbstractButtonMouseAction {
+  readonly mouseActionType: typeof MouseActionType.Enum.HOLD_RELEASE;
+  readonly direction: EnumActionValue;
 }
+
+export const isHoldReleaseMouseAction = (
+  action: MouseAction
+): action is HoldReleaseMouseAction =>
+  action.mouseActionType === MouseActionType.Enum.HOLD_RELEASE;
 
 export type MouseAction =
   | MoveMouseAction
   | PressMouseAction
   | HoldReleaseMouseAction;
+
+//===============
+
+export const copyIntoMouseMoveAction = (action: Action): MouseAction => {
+  return {
+    ...copyAction(action),
+    type: ActionType.Enum.MOUSE,
+    mouseActionType: MouseActionType.Enum.MOVE,
+    mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
+    x: 0,
+    y: 0,
+  };
+};
+
+export const copyIntoMouseClickAction = (action: Action): PressMouseAction => {
+  return {
+    ...copyAction(action),
+    type: ActionType.Enum.MOUSE,
+    mouseActionType: MouseActionType.Enum.PRESS,
+    mouseKey: createEnumValue(),
+    pause: createNumericValue(),
+    repeat: createNumericValue(),
+  };
+};
+
+export const copyIntoMouseHoldAction = (
+  action: Action
+): HoldReleaseMouseAction => {
+  return {
+    ...copyAction(action),
+    type: ActionType.Enum.MOUSE,
+    mouseActionType: MouseActionType.Enum.HOLD_RELEASE,
+    mouseKey: createEnumValue(),
+    pause: createNumericValue(),
+    direction: createEnumValue(),
+  };
+};

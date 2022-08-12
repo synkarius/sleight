@@ -1,7 +1,7 @@
 export namespace MouseActionType {
   export const Enum = {
     MOVE: 'Move',
-    PRESS: 'Press',
+    PRESS: 'Click',
     HOLD_RELEASE: 'Hold/Release',
   } as const;
   export const values = () => [Enum.MOVE, Enum.PRESS, Enum.HOLD_RELEASE];

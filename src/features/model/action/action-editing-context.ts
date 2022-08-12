@@ -2,6 +2,8 @@ import { Field } from '../../../validation/validation-field';
 import { createEditingContext } from '../common/editing-context';
 import { ActionType } from './action-types';
 import { ActionValueType } from './action-value/action-value-type';
+import { MouseActionType } from './mouse/mouse-action-type';
+import { MouseMovementType } from './mouse/mouse-movement-type';
 import { SendKeyMode } from './send-key/send-key-modes';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
 
@@ -15,12 +17,15 @@ export enum ActionReducerActionType {
   CHANGE_NAME,
   CHANGE_ROLE_KEY,
   CHANGE_SEND_KEY_MODE,
+  CHANGE_MOUSE_ACTION_TYPE,
+  CHANGE_MOUSE_MOVEMENT_TYPE,
 }
 
 type AbstractActionReducerAction<T> = {
   type: ActionReducerActionType;
   payload: T;
 };
+//====== payloads:
 type ActionValueChange = {
   field: Field;
   value: string;
@@ -29,7 +34,7 @@ type ActionValueTypeChange = {
   field: Field;
   actionValueType: ActionValueType.Type;
 };
-
+//====== reducer actions:
 export interface ActionReducerStringPayloadAction
   extends AbstractActionReducerAction<string> {
   type:
@@ -52,6 +57,15 @@ export interface ActionReducerModifiersPayloadAction
   extends AbstractActionReducerAction<SendKeyModifiers> {
   type: typeof ActionReducerActionType.CHANGE_MODIFIERS;
 }
+export interface ActionReducerMouseActionTypePayloadAction
+  extends AbstractActionReducerAction<MouseActionType.Type> {
+  type: typeof ActionReducerActionType.CHANGE_MOUSE_ACTION_TYPE;
+}
+export interface ActionReducerMouseMovementTypePayloadAction
+  extends AbstractActionReducerAction<MouseMovementType.Type> {
+  type: typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE;
+}
+
 // change action value: value/variable/roleKey
 export interface ActionReducerChangePayloadAction
   extends AbstractActionReducerAction<ActionValueChange> {
@@ -66,6 +80,8 @@ export type ActionReducerAction =
   | ActionReducerActionValueTypePayloadAction
   | ActionReducerSendKeyModePayloadAction
   | ActionReducerModifiersPayloadAction
-  | ActionReducerChangePayloadAction;
+  | ActionReducerChangePayloadAction
+  | ActionReducerMouseActionTypePayloadAction
+  | ActionReducerMouseMovementTypePayloadAction;
 
 export const ActionEditingContext = createEditingContext<ActionReducerAction>();
