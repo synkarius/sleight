@@ -1,6 +1,30 @@
+import React from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { useAppSelector } from '../../app/hooks';
+import { jsonExporter } from '../../data/exports/json-exporter';
+import { simpleSaveFile } from '../../data/exports/simple-save-file';
 
 export const Navigation = () => {
+  const actions = useAppSelector((state) => state.action.saved);
+  const commands = useAppSelector((state) => state.command.saved);
+  const contexts = useAppSelector((state) => state.context.saved);
+  const roleKeys = useAppSelector((state) => state.roleKey.saved);
+  const selectors = useAppSelector((state) => state.selector.saved);
+  const specs = useAppSelector((state) => state.spec.saved);
+  const variables = useAppSelector((state) => state.variable.saved);
+  const exportJson = (_e: React.MouseEvent<HTMLElement>) => {
+    const data = jsonExporter.export(
+      actions,
+      commands,
+      contexts,
+      roleKeys,
+      selectors,
+      specs,
+      variables
+    );
+    const filename = 'sleight-export-v0.1.0-' + Date.now() + '.json';
+    simpleSaveFile(data[0], filename);
+  };
   return (
     <Navbar bg="primary" variant="dark" expand="lg" sticky="top">
       <Container>
@@ -20,7 +44,7 @@ export const Navigation = () => {
               <NavDropdown.Item href="#action/3.3" disabled>
                 Import Element Set
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.4" disabled>
+              <NavDropdown.Item href="#action/3.4" onClick={exportJson}>
                 Export Element Set
               </NavDropdown.Item>
               <NavDropdown.Divider />
