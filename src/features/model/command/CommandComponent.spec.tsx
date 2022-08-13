@@ -15,6 +15,8 @@ import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { CommandParentComponent } from './CommandParentComponent';
 import { saveEditingContext } from '../context/context-reducers';
 import { createContext } from '../context/context';
+import { InjectionContext } from '../../../di/injector-context';
+import { appDefaultInjectionContext } from '../../../app-default-injection-context';
 
 const SPEC_NAME = 'asdf-spec';
 const ROLE_KEY_NAME = 'asdf-rk';
@@ -56,7 +58,9 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <CommandParentComponent />
+      <InjectionContext.Provider value={appDefaultInjectionContext}>
+        <CommandParentComponent />
+      </InjectionContext.Provider>
     </Provider>
   );
 });

@@ -1,5 +1,6 @@
-import React, { useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
+import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
 import { createTextVariable, Variable } from './data/variable';
@@ -7,11 +8,6 @@ import { variableDomainMapper } from './data/variable-domain-mapper';
 import { VariableDTO } from './data/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
 import { variableReactReducer } from './variable-reducers';
-import {
-  atLeastOneChoiceItem,
-  choiceSelectorItemsCantBeEmpty,
-  rangeMaxIsGreaterThanOrEqualsRangeMin,
-} from './variable-validators';
 import { VariableComponent } from './VariableComponent';
 
 type VariableInitFunction = (specId?: string) => Variable;
@@ -41,14 +37,11 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
     props.variableId,
     getVariableInitFunction(variables, selectors)
   );
+  const injectionContext = useContext(InjectionContext);
 
   return (
     <ValidationComponent<Variable>
-      validators={[
-        rangeMaxIsGreaterThanOrEqualsRangeMin,
-        atLeastOneChoiceItem,
-        choiceSelectorItemsCantBeEmpty,
-      ]}
+      validators={[...injectionContext.validators.variable]}
       editing={editing}
     >
       <VariableEditingContext.Provider

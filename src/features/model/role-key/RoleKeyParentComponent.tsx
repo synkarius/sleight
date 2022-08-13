@@ -1,10 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
+import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { createRoleKey, RoleKey } from './role-key';
 import { RoleKeyEditingContext } from './role-key-editing-context';
 import { roleKeyReactReducer } from './role-key-reducers';
-import { roleKeyTextValidator } from './role-key-validation';
 import { RoleKeyComponent } from './RoleKeyComponent';
 
 const init = (
@@ -27,10 +27,11 @@ export const RoleKeyParentComponent: React.FC<{ roleKeyId?: string }> = (
     props.roleKeyId,
     init(savedMap)
   );
+  const injectionContext = useContext(InjectionContext);
 
   return (
     <ValidationComponent<RoleKey>
-      validators={[roleKeyTextValidator]}
+      validators={[...injectionContext.validators.roleKey]}
       editing={editing}
     >
       <RoleKeyEditingContext.Provider

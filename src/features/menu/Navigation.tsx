@@ -1,16 +1,14 @@
-import React, { useId, useRef } from 'react';
+import React, { useContext, useId, useRef } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { useAppSelector } from '../../app/hooks';
-import { dragonflyExporter } from '../../data/exports/dragonfly/dragonfly-exporter';
 import {
   DRAGONFLY,
   getExportFileName,
   JSON,
 } from '../../data/exports/export-type';
-import { jsonExporter } from '../../data/exports/json-exporter';
 import { simpleSaveFile } from '../../data/exports/simple-save-file';
 import { ImportResultType } from '../../data/imports/import-result';
-import { jsonImporter } from '../../data/imports/json-importer';
+import { InjectionContext } from '../../di/injector-context';
 
 export const Navigation = () => {
   const actions = useAppSelector((state) => state.action.saved);
@@ -20,11 +18,12 @@ export const Navigation = () => {
   const selectors = useAppSelector((state) => state.selector.saved);
   const specs = useAppSelector((state) => state.spec.saved);
   const variables = useAppSelector((state) => state.variable.saved);
+  const injectionContext = useContext(InjectionContext);
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);
 
   const exportJson = () => {
-    const data = jsonExporter.export({
+    const data = injectionContext.exporters.json.export({
       actions: Object.values(actions),
       commands: Object.values(commands),
       contexts: Object.values(contexts),
@@ -36,7 +35,7 @@ export const Navigation = () => {
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
   const exportDragonfly = () => {
-    const data = dragonflyExporter.export({
+    const data = injectionContext.exporters.dragonfly.export({
       actions: Object.values(actions),
       commands: Object.values(commands),
       contexts: Object.values(contexts),
@@ -58,7 +57,7 @@ export const Navigation = () => {
     const file = e.target.files?.item(0);
     const fileContents = await file?.text();
     if (fileContents) {
-      const importResult = jsonImporter.import(fileContents);
+      const importResult = injectionContext.importers.json.import(fileContents);
       if (importResult.type === ImportResultType.VALID) {
         // TODO: version adapters
         // TODO: add it to redux

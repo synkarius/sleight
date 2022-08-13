@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { ContextParentComponent } from './ContextParentComponent';
+import { InjectionContext } from '../../../di/injector-context';
+import { appDefaultInjectionContext } from '../../../app-default-injection-context';
 
 let user: UserEvent;
 
@@ -15,7 +17,9 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <ContextParentComponent />
+      <InjectionContext.Provider value={appDefaultInjectionContext}>
+        <ContextParentComponent />
+      </InjectionContext.Provider>
     </Provider>
   );
 });

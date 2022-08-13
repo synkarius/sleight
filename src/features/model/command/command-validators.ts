@@ -8,7 +8,7 @@ import { Field } from '../../../validation/validation-field';
 import { Command } from './command';
 import { CommandSpecType } from './command-spec-type';
 
-export const commandSpecVariableSelectedValidator: FieldValidator<Command> =
+const commandSpecVariableSelectedValidator: FieldValidator<Command> =
   createValidator(
     Field.CMD_SPEC_SPEC_SELECT,
     (command) => CommandSpecType.Enum.SPEC === command.specType,
@@ -17,7 +17,7 @@ export const commandSpecVariableSelectedValidator: FieldValidator<Command> =
     'spec variable must be selected'
   );
 
-export const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
+const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
   createValidator(
     Field.CMD_SPEC_RK_SELECT,
     (command) => CommandSpecType.Enum.ROLE_KEY === command.specType,
@@ -25,3 +25,8 @@ export const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
     ValidationErrorCode.CMD_SPEC_RK_NOT_SELECTED,
     'spec role key must be selected'
   );
+
+export const commandValidators = [
+  commandSpecVariableSelectedValidator,
+  commandSpecRoleKeySelectedValidator,
+];

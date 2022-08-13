@@ -6,6 +6,8 @@ import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from './variable-types';
+import { InjectionContext } from '../../../di/injector-context';
+import { appDefaultInjectionContext } from '../../../app-default-injection-context';
 
 let user: UserEvent;
 
@@ -18,7 +20,9 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <VariableParentComponent />
+      <InjectionContext.Provider value={appDefaultInjectionContext}>
+        <VariableParentComponent />
+      </InjectionContext.Provider>
     </Provider>
   );
 });

@@ -2,7 +2,9 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
+import { appDefaultInjectionContext } from '../../../../app-default-injection-context';
 import { store } from '../../../../app/store';
+import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
 import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
@@ -50,7 +52,9 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <ActionParentComponent />
+      <InjectionContext.Provider value={appDefaultInjectionContext}>
+        <ActionParentComponent />
+      </InjectionContext.Provider>
     </Provider>
   );
   const sendKeyModeSelect = screen.getByRole('list', {

@@ -16,7 +16,7 @@ import {
   Variable,
 } from './data/variable';
 
-export const rangeMaxIsGreaterThanOrEqualsRangeMin: FieldValidator<Variable> =
+const rangeMaxIsGreaterThanOrEqualsRangeMin: FieldValidator<Variable> =
   createValidator(
     Field.VAR_RANGE_MAX,
     (variable) => isRangeVariable(variable),
@@ -27,7 +27,7 @@ export const rangeMaxIsGreaterThanOrEqualsRangeMin: FieldValidator<Variable> =
     'maximum cannot be less than minimum'
   );
 
-export const atLeastOneChoiceItem: FieldValidator<Variable> = createValidator(
+const atLeastOneChoiceItem: FieldValidator<Variable> = createValidator(
   Field.VAR_ADD_ITEM_BUTTON,
   (variable) => isChoiceVariable(variable),
   (variable) => isChoiceVariable(variable) && variable.items.length > 0,
@@ -43,7 +43,7 @@ const findInvalidSelectorIds = (choiceVariable: ChoiceVariable): string[] => {
 };
 
 const choiceItemSelectorFields = Field.VAR_CHOICE_ITEM_SELECTOR;
-export const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
+const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
   field: choiceItemSelectorFields,
   isApplicable: (variable) => isChoiceVariable(variable),
   validate: (variable) => {
@@ -61,3 +61,9 @@ export const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
         };
   },
 };
+
+export const variableValidators = [
+  rangeMaxIsGreaterThanOrEqualsRangeMin,
+  atLeastOneChoiceItem,
+  choiceSelectorItemsCantBeEmpty,
+];

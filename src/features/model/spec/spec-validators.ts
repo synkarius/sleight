@@ -13,7 +13,7 @@ import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { Spec } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';
 
-export const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
+const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
   Field.SP_ADD_ITEM_BUTTON,
   alwaysTrue,
   (spec) => spec.items.length > 0,
@@ -33,7 +33,7 @@ const findInvalidSelectorIds = (spec: Spec): string[] => {
 };
 
 const specItemSelectorFields = Field.SP_ITEM_SELECTOR;
-export const specSelectorItemsCantBeEmpty: FieldValidator<Spec> = {
+const specSelectorItemsCantBeEmpty: FieldValidator<Spec> = {
   field: specItemSelectorFields,
   isApplicable: (spec) =>
     !!spec.items.find((item) => item.itemType === SpecItemType.Enum.SELECTOR),
@@ -62,7 +62,7 @@ const findSpecItemsWithUnselectedVariables = (spec: Spec): string[] => {
 };
 
 const specItemVariableFields = Field.SP_ITEM_VARIABLE;
-export const specVariableMustBeSelected: FieldValidator<Spec> = {
+const specVariableMustBeSelected: FieldValidator<Spec> = {
   field: specItemVariableFields,
   isApplicable: (spec) =>
     !!spec.items.find((item) => item.itemType === SpecItemType.Enum.VARIABLE),
@@ -79,3 +79,9 @@ export const specVariableMustBeSelected: FieldValidator<Spec> = {
         };
   },
 };
+
+export const specValidators = [
+  atLeastOneSpecItem,
+  specSelectorItemsCantBeEmpty,
+  specVariableMustBeSelected,
+];

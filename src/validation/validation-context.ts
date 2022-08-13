@@ -8,10 +8,6 @@ interface ValidationData {
   readonly getErrorResults: () => ErrorValidationResult[];
 }
 
-/**
- * Ignoring the requirement to add a default context because
- * it's better to have a React error than some Sleight error.
- */
-export const ValidationContext: React.Context<ValidationData> =
-  // @ts-ignore
-  React.createContext();
+export const ValidationContext = React.createContext<
+  ValidationData | undefined
+>(undefined) as React.Context<ValidationData>;

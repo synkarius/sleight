@@ -1,10 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
+import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { Context, createContext } from './context';
 import { ContextEditingContext } from './context-editing-context';
 import { contextReactReducer } from './context-reducers';
-import { contextMatcherValidator } from './context-validation';
 import { ContextComponent } from './ContextComponent';
 
 const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
@@ -25,9 +25,10 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
     props.contextId,
     init(savedMap)
   );
+  const injectionContext = useContext(InjectionContext);
   return (
     <ValidationComponent<Context>
-      validators={[contextMatcherValidator]}
+      validators={[...injectionContext.validators.context]}
       editing={editing}
     >
       <ContextEditingContext.Provider

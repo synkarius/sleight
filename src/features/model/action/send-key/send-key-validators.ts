@@ -51,7 +51,7 @@ const createNonSelectedRoleKeyError = (fieldName: string) =>
  */
 
 const KEY_TO_SEND = 'key to send';
-export const keyToSendValidators: ActionValueValidators = {
+const keyToSendValidators: ActionValueValidators = {
   value: createValidator(
     Field.AC_KEY_TO_SEND_VALUE,
     (action) =>
@@ -99,7 +99,7 @@ export const keyToSendValidators: ActionValueValidators = {
  */
 
 const OUTER_PAUSE = 'outer pause';
-export const outerPauseValidators: ActionValueValidators = {
+const outerPauseValidators: ActionValueValidators = {
   value: createNoOpValidator(Field.AC_OUTER_PAUSE_VALUE),
   variable: createValidator(
     Field.AC_OUTER_PAUSE_VAR,
@@ -132,7 +132,7 @@ export const outerPauseValidators: ActionValueValidators = {
  */
 
 const INNER_PAUSE = 'inner pause';
-export const innerPauseValidators: ActionValueValidators = {
+const innerPauseValidators: ActionValueValidators = {
   value: createNoOpValidator(Field.AC_INNER_PAUSE_VALUE),
   variable: createValidator(
     Field.AC_INNER_PAUSE_VAR,
@@ -171,7 +171,7 @@ export const innerPauseValidators: ActionValueValidators = {
  */
 
 const REPEAT = 'repeat';
-export const repeatValidators: ActionValueValidators = {
+const repeatValidators: ActionValueValidators = {
   value: createNoOpValidator(Field.AC_REPEAT_VALUE),
   variable: createValidator(
     Field.AC_REPEAT_VAR,
@@ -210,7 +210,7 @@ export const repeatValidators: ActionValueValidators = {
  */
 
 const DIRECTION = 'direction';
-export const directionValidators: ActionValueValidators = {
+const directionValidators: ActionValueValidators = {
   value: createValidator(
     Field.AC_DIRECTION_VALUE,
     (action) =>
@@ -258,3 +258,18 @@ export const directionValidators: ActionValueValidators = {
     createNonSelectedRoleKeyError(DIRECTION)
   ),
 };
+
+export const sendKeyValidators = [
+  keyToSendValidators.value,
+  keyToSendValidators.variable,
+  keyToSendValidators.roleKey,
+  outerPauseValidators.variable,
+  outerPauseValidators.roleKey,
+  innerPauseValidators.variable,
+  innerPauseValidators.roleKey,
+  repeatValidators.variable,
+  repeatValidators.roleKey,
+  directionValidators.value,
+  directionValidators.variable,
+  directionValidators.roleKey,
+];

@@ -6,7 +6,7 @@ import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { ActionType } from './action-types';
 import { saveAction } from './action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
-import { isSendKeyAction, SendKeyAction } from './send-key/send-key';
+import { isSendKeyAction } from './send-key/send-key';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { ValidationContext } from '../../../validation/validation-context';
 import {

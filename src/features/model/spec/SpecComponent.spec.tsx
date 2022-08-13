@@ -11,6 +11,8 @@ import { SpecItemType } from './spec-item-type';
 import { saveEditingVariable } from '../variable/variable-reducers';
 import { createRangeVariable } from '../variable/data/variable';
 import { rangeVariableDomainMapperDelegate } from '../variable/data/range-variable-domain-mapper';
+import { InjectionContext } from '../../../di/injector-context';
+import { appDefaultInjectionContext } from '../../../app-default-injection-context';
 
 let user: UserEvent;
 
@@ -36,7 +38,9 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <SpecParentComponent />
+      <InjectionContext.Provider value={appDefaultInjectionContext}>
+        <SpecParentComponent />
+      </InjectionContext.Provider>
     </Provider>
   );
 });

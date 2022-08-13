@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { useAppSelector } from '../../../app/hooks';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { createSpec, Spec } from './data/spec-domain';
@@ -8,11 +8,7 @@ import { SpecEditingContext } from './spec-editing-context';
 import { specReactReducer } from './spec-reducers';
 import { SpecComponent } from './SpecComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
-import {
-  atLeastOneSpecItem,
-  specSelectorItemsCantBeEmpty,
-  specVariableMustBeSelected,
-} from './spec-validators';
+import { InjectionContext } from '../../../di/injector-context';
 
 type SpecInitFunction = (specId?: string) => Spec;
 
@@ -39,14 +35,11 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
     props.specId,
     getSpecInitFunction(specs, selectors)
   );
+  const injectionContext = useContext(InjectionContext);
 
   return (
     <ValidationComponent<Spec>
-      validators={[
-        atLeastOneSpecItem,
-        specSelectorItemsCantBeEmpty,
-        specVariableMustBeSelected,
-      ]}
+      validators={[...injectionContext.validators.spec]}
       editing={editing}
     >
       <SpecEditingContext.Provider
