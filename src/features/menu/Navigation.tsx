@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId, useRef } from 'react';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { useAppSelector } from '../../app/hooks';
 import { dragonflyExporter } from '../../data/exports/dragonfly/dragonfly-exporter';
@@ -9,6 +9,8 @@ import {
 } from '../../data/exports/export-type';
 import { jsonExporter } from '../../data/exports/json-exporter';
 import { simpleSaveFile } from '../../data/exports/simple-save-file';
+import { ImportResultType } from '../../data/imports/import-result';
+import { jsonImporter } from '../../data/imports/json-importer';
 
 export const Navigation = () => {
   const actions = useAppSelector((state) => state.action.saved);
@@ -18,32 +20,60 @@ export const Navigation = () => {
   const selectors = useAppSelector((state) => state.selector.saved);
   const specs = useAppSelector((state) => state.spec.saved);
   const variables = useAppSelector((state) => state.variable.saved);
-  const exportJson = (_e: React.MouseEvent<HTMLElement>) => {
-    const data = jsonExporter.export(
-      actions,
-      commands,
-      contexts,
-      roleKeys,
-      selectors,
-      specs,
-      variables
-    );
+  const importInputId = useId();
+  const importInputRef = useRef<HTMLInputElement | null>(null);
+
+  const exportJson = () => {
+    const data = jsonExporter.export({
+      actions: Object.values(actions),
+      commands: Object.values(commands),
+      contexts: Object.values(contexts),
+      roleKeys: Object.values(roleKeys),
+      selectors: Object.values(selectors),
+      specs: Object.values(specs),
+      variables: Object.values(variables),
+    });
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
-  const exportDragonfly = (_e: React.MouseEvent<HTMLElement>) => {
-    const data = dragonflyExporter.export(
-      actions,
-      commands,
-      contexts,
-      roleKeys,
-      selectors,
-      specs,
-      variables
-    );
+  const exportDragonfly = () => {
+    const data = dragonflyExporter.export({
+      actions: Object.values(actions),
+      commands: Object.values(commands),
+      contexts: Object.values(contexts),
+      roleKeys: Object.values(roleKeys),
+      selectors: Object.values(selectors),
+      specs: Object.values(specs),
+      variables: Object.values(variables),
+    });
     simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
+  };
+  const importFileClickHandler = () => {
+    importInputRef.current?.click();
+  };
+  const importFileChangeHandler = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const file = e.target.files?.item(0);
+    const fileContents = await file?.text();
+    if (fileContents) {
+      const importResult = jsonImporter.import(fileContents);
+      if (importResult.type === ImportResultType.VALID) {
+        // TODO: version adapters
+        // TODO: add it to redux
+      }
+    }
   };
   return (
     <Navbar bg="primary" variant="dark" expand="lg" sticky="top">
+      <input
+        type="file"
+        id={importInputId}
+        ref={importInputRef}
+        style={{ display: 'none' }}
+        onChange={importFileChangeHandler}
+      />
       <Container>
         <Navbar.Brand href="#home">🧙‍♂️ Sleight</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -58,7 +88,10 @@ export const Navigation = () => {
                 Open Element Set
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.3" disabled>
+              <NavDropdown.Item
+                href="#action/3.3"
+                onClick={importFileClickHandler}
+              >
                 Import Element Set
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.4" onClick={exportJson}>
@@ -75,7 +108,7 @@ export const Navigation = () => {
                 Export Talon
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.8" disabled>
-                Export Vocola 3
+                Export Vocola 2
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Edit" id="edit-dropdown">

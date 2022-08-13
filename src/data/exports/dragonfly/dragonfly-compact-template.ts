@@ -1,14 +1,7 @@
-import Handlebars from 'handlebars/runtime';
-
-const dragonflyCompactSource = `
+export const dragonflyCompactTemplate = `
 
 
 {{test}}
 
 
-
 `;
-
-export const dragonflyCompactTemplate = Handlebars.compile(
-  dragonflyCompactSource
-);
