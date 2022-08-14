@@ -1,7 +1,12 @@
+const selectorVarName = 'selector_{{#removeDashes}}{{id}}{{/removeDashes}}';
+
 export const dragonflyCompactTemplate = `
 
 
-{{test}}
+
+{{#selectors}}
+${selectorVarName} = "{{#trim}} {{#printSelectorItems}}{{id}}{{/printSelectorItems}} {{/trim}}"
+{{/selectors}}
 
 
 `;

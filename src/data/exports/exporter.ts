@@ -1,5 +1,5 @@
-import { SleightDataFormat } from '../json-format';
+import { SleightDataInternalFormat } from '../data-formats';
 
 export type Exporter = {
-  readonly export: (data: Omit<SleightDataFormat, 'version'>) => string[];
+  readonly export: (data: SleightDataInternalFormat) => string[];
 };

@@ -1,4 +1,4 @@
-import { SleightDataFormat } from '../json-format';
+import { SleightDataExportFormat } from '../data-formats';
 
 export enum ImportResultType {
   VALID,
@@ -7,7 +7,7 @@ export enum ImportResultType {
 
 type ValidImportResult = {
   readonly type: typeof ImportResultType.VALID;
-  readonly data: SleightDataFormat;
+  readonly data: SleightDataExportFormat;
 };
 
 type InvalidImportResult = {

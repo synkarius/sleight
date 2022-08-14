@@ -10,7 +10,7 @@ import { simpleSaveFile } from '../../data/exports/simple-save-file';
 import { ImportResultType } from '../../data/imports/import-result';
 import { InjectionContext } from '../../di/injector-context';
 
-export const Navigation = () => {
+export const Navigation: React.FC<{}> = () => {
   const actions = useAppSelector((state) => state.action.saved);
   const commands = useAppSelector((state) => state.command.saved);
   const contexts = useAppSelector((state) => state.context.saved);
@@ -24,25 +24,25 @@ export const Navigation = () => {
 
   const exportJson = () => {
     const data = injectionContext.exporters.json.export({
-      actions: Object.values(actions),
-      commands: Object.values(commands),
-      contexts: Object.values(contexts),
-      roleKeys: Object.values(roleKeys),
-      selectors: Object.values(selectors),
-      specs: Object.values(specs),
-      variables: Object.values(variables),
+      actions,
+      commands,
+      contexts,
+      roleKeys,
+      selectors,
+      specs,
+      variables,
     });
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
   const exportDragonfly = () => {
     const data = injectionContext.exporters.dragonfly.export({
-      actions: Object.values(actions),
-      commands: Object.values(commands),
-      contexts: Object.values(contexts),
-      roleKeys: Object.values(roleKeys),
-      selectors: Object.values(selectors),
-      specs: Object.values(specs),
-      variables: Object.values(variables),
+      actions,
+      commands,
+      contexts,
+      roleKeys,
+      selectors,
+      specs,
+      variables,
     });
     simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
   };
