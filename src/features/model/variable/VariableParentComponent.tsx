@@ -4,7 +4,7 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
 import { createTextVariable, Variable } from './data/variable';
-import { variableDomainMapper } from './data/variable-domain-mapper';
+import { VariableDomainMapper } from './data/variable-domain-mapper';
 import { VariableDTO } from './data/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
 import { variableReactReducer } from './variable-reducers';
@@ -14,7 +14,8 @@ type VariableInitFunction = (specId?: string) => Variable;
 
 const getVariableInitFunction = (
   savedVariableMap: Record<string, VariableDTO>,
-  savedSelectorMap: Record<string, SelectorDTO>
+  savedSelectorMap: Record<string, SelectorDTO>,
+  variableDomainMapper: VariableDomainMapper
 ): VariableInitFunction => {
   return (variableId?: string) => {
     if (variableId && savedVariableMap[variableId]) {
@@ -32,12 +33,16 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
 ) => {
   const variables = useAppSelector((state) => state.variable.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
+  const injectionContext = useContext(InjectionContext);
   const [editing, localVariableDispatch] = useReducer(
     variableReactReducer,
     props.variableId,
-    getVariableInitFunction(variables, selectors)
+    getVariableInitFunction(
+      variables,
+      selectors,
+      injectionContext.mappers.variable
+    )
   );
-  const injectionContext = useContext(InjectionContext);
 
   return (
     <ValidationComponent<Variable>

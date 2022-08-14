@@ -15,4 +15,6 @@ const roleKeyTextValidator: FieldValidator<RoleKey> = createValidator(
   "role key can't be empty"
 );
 
-export const roleKeyValidators = [roleKeyTextValidator];
+export const getRoleKeyValidators: () => FieldValidator<RoleKey>[] = () => [
+  roleKeyTextValidator,
+];

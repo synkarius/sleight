@@ -6,7 +6,7 @@ import { VariableType } from './variable-types';
 import { RangeVariableComponent } from './RangeVariableComponent';
 import { saveEditingVariable } from './variable-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
-import { createSelector, Selector } from '../selector/data/selector-domain';
+import { createSelector } from '../selector/data/selector-domain';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { Field } from '../../../validation/validation-field';
@@ -16,17 +16,17 @@ import {
   VariableReducerActionType,
 } from './variable-editing-context';
 import { ValidationContext } from '../../../validation/validation-context';
-import { variableDomainMapper } from './data/variable-domain-mapper';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
-import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { saveSelector } from '../selector/selector-reducers';
 import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { variableDefaultNamer } from './variable-default-namer';
+import { InjectionContext } from '../../../di/injector-context';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(VariableEditingContext);
+  const injectionContext = useContext(InjectionContext);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({
@@ -71,11 +71,15 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       // at least it's less this way
       if (props.variable.type === VariableType.Enum.CHOICE) {
         props.variable.items.forEach((item) => {
-          const selectorDTO = selectorDomainMapper.mapFromDomain(item.selector);
+          const selectorDTO = injectionContext.mappers.selector.mapFromDomain(
+            item.selector
+          );
           reduxDispatch(saveSelector(selectorDTO));
         });
       }
-      const variableDTO = variableDomainMapper.mapFromDomain(props.variable);
+      const variableDTO = injectionContext.mappers.variable.mapFromDomain(
+        props.variable
+      );
       reduxDispatch(saveEditingVariable(variableDTO));
       reduxDispatch(setEditorFocus());
     }

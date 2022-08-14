@@ -26,7 +26,7 @@ const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
     'spec role key must be selected'
   );
 
-export const commandValidators = [
+export const getCommandValidators: () => FieldValidator<Command>[] = () => [
   commandSpecVariableSelectedValidator,
   commandSpecRoleKeySelectedValidator,
 ];

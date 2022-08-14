@@ -5,7 +5,7 @@ import { utilViewFunctions } from '../util-mustache-fns';
 import { convertSleightInternalFormatToKeys } from '../../data-formats';
 import { dragonflyViewFunctions } from './dragonfly-mustache-helper-fns';
 
-export const dragonflyExporter: Exporter = {
+export const getDragonflyExporter: () => Exporter = () => ({
   export: (data) => {
     const render = Mustache.render(dragonflyCompactTemplate, {
       ...convertSleightInternalFormatToKeys(data),
@@ -14,4 +14,4 @@ export const dragonflyExporter: Exporter = {
     });
     return [render];
   },
-};
+});

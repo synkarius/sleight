@@ -4,7 +4,7 @@ export type Importer = {
   import: (data: string) => ImportResult;
 };
 
-export const jsonImporter: Importer = {
+export const getJsonImporter: () => Importer = () => ({
   import: (data: string): ImportResult => {
     try {
       JSON.parse(data);
@@ -19,4 +19,4 @@ export const jsonImporter: Importer = {
       };
     }
   },
-};
+});

@@ -80,7 +80,7 @@ const specVariableMustBeSelected: FieldValidator<Spec> = {
   },
 };
 
-export const specValidators = [
+export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,
   specVariableMustBeSelected,

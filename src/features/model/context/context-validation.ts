@@ -15,4 +15,6 @@ const contextMatcherValidator: FieldValidator<Context> = createValidator(
   "matcher can't be empty"
 );
 
-export const contextValidators = [contextMatcherValidator];
+export const getContextValidators: () => FieldValidator<Context>[] = () => [
+  contextMatcherValidator,
+];

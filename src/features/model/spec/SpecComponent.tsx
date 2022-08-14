@@ -16,15 +16,15 @@ import {
   SpecEditingContext,
   SpecReducerActionType,
 } from './spec-editing-context';
-import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
-import { specDomainMapper } from './data/spec-domain-mapper';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { specDefaultNamer } from './spec-default-namer';
+import { InjectionContext } from '../../../di/injector-context';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
+  const injectionContext = useContext(InjectionContext);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({
@@ -48,11 +48,13 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       props.spec.items.forEach((item) => {
         switch (item.itemType) {
           case SpecItemType.Enum.SELECTOR:
-            const sel = selectorDomainMapper.mapFromDomain(item.selector);
+            const sel = injectionContext.mappers.selector.mapFromDomain(
+              item.selector
+            );
             return reduxDispatch(saveSelector(sel));
         }
       });
-      const specRedux = specDomainMapper.mapFromDomain(props.spec);
+      const specRedux = injectionContext.mappers.spec.mapFromDomain(props.spec);
       reduxDispatch(saveEditingSpec(specRedux));
       reduxDispatch(setEditorFocus());
     }

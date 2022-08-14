@@ -259,7 +259,7 @@ const directionValidators: ActionValueValidators = {
   ),
 };
 
-export const sendKeyValidators = [
+export const getSendKeyValidators: () => FieldValidator<Action>[] = () => [
   keyToSendValidators.value,
   keyToSendValidators.variable,
   keyToSendValidators.roleKey,

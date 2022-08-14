@@ -10,7 +10,7 @@ import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
 import { createSelector } from '../../selector/data/selector-domain';
 import { saveSelector } from '../../selector/selector-reducers';
-import { choiceVariableDomainMapperDelegate } from '../../variable/data/choice-variable-domain-mapper';
+import { getChoiceVariableDomainMapper } from '../../variable/data/choice-variable-domain-mapper';
 import {
   ChoiceVariable,
   createChoiceItem,
@@ -37,7 +37,7 @@ beforeAll(() => {
     items: [createChoiceItem(choiceItemSelector)],
   };
   const choiceVariableDTO =
-    choiceVariableDomainMapperDelegate.mapFromDomain(choiceVariable);
+    getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
   store.dispatch(saveEditingVariable(choiceVariableDTO));
   // save a role key
   store.dispatch(

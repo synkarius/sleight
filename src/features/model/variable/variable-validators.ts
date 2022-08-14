@@ -62,7 +62,7 @@ const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
   },
 };
 
-export const variableValidators = [
+export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,

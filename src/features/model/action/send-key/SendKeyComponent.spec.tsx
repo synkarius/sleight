@@ -10,8 +10,8 @@ import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
 import { createSelector } from '../../selector/data/selector-domain';
 import { saveSelector } from '../../selector/selector-reducers';
-import { choiceVariableDomainMapperDelegate } from '../../variable/data/choice-variable-domain-mapper';
-import { rangeVariableDomainMapperDelegate } from '../../variable/data/range-variable-domain-mapper';
+import { getChoiceVariableDomainMapper } from '../../variable/data/choice-variable-domain-mapper';
+import { getRangeVariableDomainMapper } from '../../variable/data/range-variable-domain-mapper';
 import {
   ChoiceVariable,
   createChoiceItem,
@@ -37,7 +37,7 @@ beforeAll(() => {
     name: RANGE_VARIABLE_NAME,
   };
   const rangeVariableDTO =
-    rangeVariableDomainMapperDelegate.mapFromDomain(rangeVariable);
+    getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
   store.dispatch(saveEditingVariable(rangeVariableDTO));
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
@@ -47,7 +47,7 @@ beforeAll(() => {
     items: [createChoiceItem(choiceItemSelector)],
   };
   const choiceVariableDTO =
-    choiceVariableDomainMapperDelegate.mapFromDomain(choiceVariable);
+    getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
   store.dispatch(saveEditingVariable(choiceVariableDTO));
   // save a role key
   store.dispatch(

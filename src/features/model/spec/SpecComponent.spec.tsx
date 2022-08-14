@@ -10,9 +10,9 @@ import { saveRoleKey } from '../role-key/role-key-reducers';
 import { SpecItemType } from './spec-item-type';
 import { saveEditingVariable } from '../variable/variable-reducers';
 import { createRangeVariable } from '../variable/data/variable';
-import { rangeVariableDomainMapperDelegate } from '../variable/data/range-variable-domain-mapper';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getRangeVariableDomainMapper } from '../variable/data/range-variable-domain-mapper';
 
 let user: UserEvent;
 
@@ -30,7 +30,7 @@ beforeAll(() => {
     name: VARIABLE_NAME_1,
   };
   const rangeVariableDTO =
-    rangeVariableDomainMapperDelegate.mapFromDomain(rangeVariable);
+    getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
   store.dispatch(saveEditingVariable(rangeVariableDTO));
   user = userEvent.setup();
 });

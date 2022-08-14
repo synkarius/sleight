@@ -10,13 +10,13 @@ import { createSelector, Selector } from '../selector/data/selector-domain';
 import { saveSelector } from '../selector/selector-reducers';
 import { saveEditingSpec } from '../spec/spec-reducers';
 import { createSpec, createSpecItem } from '../spec/data/spec-domain';
-import { specDomainMapper } from '../spec/data/spec-domain-mapper';
-import { selectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { CommandParentComponent } from './CommandParentComponent';
 import { saveEditingContext } from '../context/context-reducers';
 import { createContext } from '../context/context';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getSelectorDomainMapper } from '../selector/data/selector-domain-mapper';
+import { getSpecDomainMapper } from '../spec/data/spec-domain-mapper';
 
 const SPEC_NAME = 'asdf-spec';
 const ROLE_KEY_NAME = 'asdf-rk';
@@ -28,7 +28,7 @@ let user: UserEvent;
 beforeAll(() => {
   // save a spec
   const selector = createSelector();
-  const selectorRedux = selectorDomainMapper.mapFromDomain(selector);
+  const selectorRedux = getSelectorDomainMapper().mapFromDomain(selector);
   store.dispatch(saveSelector(selectorRedux));
   const spec = createTestReduxSpec(selector);
   store.dispatch(
@@ -118,7 +118,7 @@ describe('command component tests', () => {
 const createTestReduxSpec = (selector: Selector) => {
   const spec = createSpec();
   const specItem = createSpecItem();
-  return specDomainMapper.mapFromDomain({
+  return getSpecDomainMapper().mapFromDomain({
     ...spec,
     items: [{ ...specItem, selector: selector }],
   });

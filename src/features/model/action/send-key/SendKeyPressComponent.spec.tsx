@@ -8,7 +8,7 @@ import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
 import { createRoleKey } from '../../role-key/role-key';
 import { saveRoleKey } from '../../role-key/role-key-reducers';
-import { rangeVariableDomainMapperDelegate } from '../../variable/data/range-variable-domain-mapper';
+import { getRangeVariableDomainMapper } from '../../variable/data/range-variable-domain-mapper';
 import { createRangeVariable } from '../../variable/data/variable';
 import { saveEditingVariable } from '../../variable/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
@@ -27,7 +27,7 @@ beforeAll(() => {
     name: VARIABLE_NAME,
   };
   const rangeVariableDTO =
-    rangeVariableDomainMapperDelegate.mapFromDomain(rangeVariable);
+    getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
   store.dispatch(saveEditingVariable(rangeVariableDTO));
   // save a role key
   store.dispatch(
