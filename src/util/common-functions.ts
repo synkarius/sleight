@@ -14,3 +14,8 @@ export const isSelected = (id?: string): boolean =>
   !!id && id !== SELECT_DEFAULT_VALUE;
 
 export const isTruthy = (t: any) => !!t;
+
+export const replaceNonAlphaNumeric = (
+  value: string,
+  replacement: string
+): string => value.replaceAll(/[^a-zA-Z\d]/g, replacement);
