@@ -218,4 +218,15 @@ describe('spec component tests', () => {
 
     expect(nameField).toHaveClass('is-invalid');
   });
+
+  it('should invalidate spec with non-alpha/space selector', async () => {
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const selectorInput = screen.getByRole('textbox', {
+      name: Field[Field.SP_ITEM_SELECTOR],
+    });
+    await user.type(selectorInput, '#');
+
+    expect(selectorInput).toHaveClass('is-invalid');
+  });
 });

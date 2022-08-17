@@ -10,7 +10,6 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
-import { Ided, Named } from '../../domain';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { Spec } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
@@ -90,9 +89,40 @@ const specVariableMustBeSelected: FieldValidator<Spec> = {
   },
 };
 
+const findNonAlphaSpaceSelectors = (spec: Spec): string[] => {
+  return spec.items
+    .flatMap(
+      (specItem) =>
+        (specItem.itemType === SpecItemType.Enum.SELECTOR &&
+          specItem.selector.items) ||
+        []
+    )
+    .filter((selectorItem) => !selectorItem.value.match(/^[a-zA-Z ]*$/))
+    .map((selectorItem) => selectorItem.id);
+};
+
+const specSelectorMustBeAlphaSpace: FieldValidator<Spec> = {
+  field: specItemSelectorFields,
+  isApplicable: (spec) =>
+    !!spec.items.find((item) => item.itemType === SpecItemType.Enum.SELECTOR),
+  validate: (spec) => {
+    const invalidIds = findNonAlphaSpaceSelectors(spec);
+    return invalidIds.length === 0
+      ? validResult(specItemSelectorFields)
+      : {
+          type: ValidationResultType.ID_LIST,
+          field: specItemSelectorFields,
+          code: ValidationErrorCode.SP_VAR_NON_ALPHASPACE_SELECTOR,
+          message: 'selectors must only be alphabetic or spaces',
+          ids: invalidIds,
+        };
+  },
+};
+
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
   nameTakenValidator,
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,
   specVariableMustBeSelected,
+  specSelectorMustBeAlphaSpace,
 ];

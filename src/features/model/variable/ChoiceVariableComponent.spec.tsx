@@ -95,4 +95,19 @@ describe('choice variable component tests', () => {
 
     expect(selectorInput).toHaveClass('is-invalid');
   });
+
+  it('should invalidate choice var with non-alpha/space selector', async () => {
+    const typeSelect = screen.getByRole('list', {
+      name: Field[Field.VAR_TYPE_SELECT],
+    });
+    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
+    await user.click(addChoiceItemButton);
+    const selectorInput = screen.getByRole('textbox', {
+      name: Field[Field.VAR_CHOICE_ITEM_SELECTOR],
+    });
+    await user.type(selectorInput, '$');
+
+    expect(selectorInput).toHaveClass('is-invalid');
+  });
 });

@@ -10,7 +10,6 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
-import { Ided, Named } from '../../domain';
 import {
   ChoiceVariable,
   isChoiceVariable,
@@ -45,7 +44,7 @@ const atLeastOneChoiceItem: FieldValidator<Variable> = createValidator(
   'at least one choice item must be added'
 );
 
-const findInvalidSelectorIds = (choiceVariable: ChoiceVariable): string[] => {
+const findEmptySelectorIds = (choiceVariable: ChoiceVariable): string[] => {
   return choiceVariable.items
     .flatMap((choiceItem) => choiceItem.selector.items)
     .filter((selectorItem) => isEmpty(selectorItem.value))
@@ -58,7 +57,7 @@ const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
   isApplicable: (variable) => isChoiceVariable(variable),
   validate: (variable) => {
     const invalidIds = isChoiceVariable(variable)
-      ? findInvalidSelectorIds(variable)
+      ? findEmptySelectorIds(variable)
       : [];
     return invalidIds.length === 0
       ? validResult(choiceItemSelectorFields)
@@ -72,9 +71,38 @@ const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
   },
 };
 
+const findNonAlphaOrSpaceSelectorIds = (
+  choiceVariable: ChoiceVariable
+): string[] => {
+  return choiceVariable.items
+    .flatMap((choiceItem) => choiceItem.selector.items)
+    .filter((selectorItem) => !selectorItem.value.match(/^[a-zA-Z ]*$/))
+    .map((selectorItem) => selectorItem.id);
+};
+
+const choiceSelectorItemsCantBeNonAlphaOrSpaces: FieldValidator<Variable> = {
+  field: choiceItemSelectorFields,
+  isApplicable: (variable) => isChoiceVariable(variable),
+  validate: (variable) => {
+    const invalidIds = isChoiceVariable(variable)
+      ? findNonAlphaOrSpaceSelectorIds(variable)
+      : [];
+    return invalidIds.length === 0
+      ? validResult(choiceItemSelectorFields)
+      : {
+          type: ValidationResultType.ID_LIST,
+          field: choiceItemSelectorFields,
+          code: ValidationErrorCode.VAR_NON_ALPHASPACE_SELECTOR,
+          message: 'selectors must only be alphabetic or spaces',
+          ids: invalidIds,
+        };
+  },
+};
+
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
   nameTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,
+  choiceSelectorItemsCantBeNonAlphaOrSpaces,
 ];
