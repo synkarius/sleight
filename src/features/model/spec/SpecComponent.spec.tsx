@@ -13,9 +13,13 @@ import { createRangeVariable } from '../variable/data/variable';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
 import { getRangeVariableDomainMapper } from '../variable/data/range-variable-domain-mapper';
+import { saveEditingSpec } from './spec-reducers';
+import { createSpec } from './data/spec-domain';
+import { getSpecDomainMapper } from './data/spec-domain-mapper';
 
 let user: UserEvent;
 
+const SPEC_NAME_1 = 'spec-name-1';
 const ROLE_KEY_NAME_1 = 'role-key-name-1';
 const VARIABLE_NAME_1 = 'variable-name-1';
 const SAVE = 'Save';
@@ -32,6 +36,12 @@ beforeAll(() => {
   const rangeVariableDTO =
     getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
   store.dispatch(saveEditingVariable(rangeVariableDTO));
+  const spec = {
+    ...createSpec(),
+    name: SPEC_NAME_1,
+  };
+  const specDTO = getSpecDomainMapper().mapFromDomain(spec);
+  store.dispatch(saveEditingSpec(specDTO));
   user = userEvent.setup();
 });
 
@@ -197,5 +207,15 @@ describe('spec component tests', () => {
     expect(optionalCheckbox).toBeChecked();
     expect(groupedCheckbox).toBeChecked();
     expect(groupedCheckbox).not.toBeDisabled();
+  });
+
+  it('should invalidate an already taken name', async () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.SP_NAME],
+    });
+    await user.click(nameField);
+    await user.type(nameField, SPEC_NAME_1);
+
+    expect(nameField).toHaveClass('is-invalid');
   });
 });

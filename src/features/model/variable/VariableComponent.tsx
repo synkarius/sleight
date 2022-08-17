@@ -21,6 +21,7 @@ import { saveSelector } from '../selector/selector-reducers';
 import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { variableDefaultNamer } from './variable-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
+import { getRelevantErrorMessage } from '../../../validation/field-validator';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -33,6 +34,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       type: VariableReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
+    validationContext.touch(Field.VAR_NAME);
   };
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -85,14 +87,17 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     }
   };
   const errorResults = validationContext.getErrorResults();
+  const nameError = getRelevantErrorMessage(errorResults, [Field.VAR_NAME]);
 
   return (
     <PanelComponent header="Create/Edit Variable">
-      <FormGroupRowComponent labelText="Name">
+      <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.VAR_NAME]}
           type="text"
           onChange={nameChangedHandler}
+          onBlur={() => validationContext.touch(Field.VAR_NAME)}
+          isInvalid={!!nameError}
           value={props.variable.name}
           placeholder={variableDefaultNamer.getDefaultName(props.variable)}
         />

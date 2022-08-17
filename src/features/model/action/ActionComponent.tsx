@@ -19,6 +19,7 @@ import { actionDefaultNamer } from './action-default-namer';
 import { Action } from './action';
 import { isMouseAction } from './mouse/mouse';
 import { MouseComponent } from './mouse/MouseComponent';
+import { getRelevantErrorMessage } from '../../../validation/field-validator';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -30,6 +31,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       type: ActionReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
+    validationContext.touch(Field.AC_NAME);
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatchFn({
@@ -55,13 +57,16 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   };
 
   const validationErrors = validationContext.getErrorResults();
+  const nameError = getRelevantErrorMessage(validationErrors, [Field.AC_NAME]);
   return (
     <PanelComponent header="Create/Edit Action">
-      <FormGroupRowComponent labelText="Name">
+      <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.AC_NAME]}
           type="text"
           onChange={nameChangedHandler}
+          onBlur={() => validationContext.touch(Field.AC_NAME)}
+          isInvalid={!!nameError}
           value={props.action.name}
           placeholder={actionDefaultNamer.getDefaultName(props.action)}
         />

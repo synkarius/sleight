@@ -17,11 +17,14 @@ import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
 import { getSelectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { getSpecDomainMapper } from '../spec/data/spec-domain-mapper';
+import { saveEditingCommand } from './command-reducers';
+import { createCommand } from './command';
 
 const SPEC_NAME = 'asdf-spec';
 const ROLE_KEY_NAME = 'asdf-rk';
 const CONTEXT_ID = 'asdf-ctx-id';
 const CONTEXT_NAME = 'asdf-ctx-name';
+const COMMAND_NAME = 'asdf-cmd-name';
 
 let user: UserEvent;
 
@@ -50,6 +53,13 @@ beforeAll(() => {
       ...createContext(),
       id: CONTEXT_ID,
       name: CONTEXT_NAME,
+    })
+  );
+  // save a command with a name (this command is invalid, but it's only used to validate a new command)
+  store.dispatch(
+    saveEditingCommand({
+      ...createCommand(),
+      name: COMMAND_NAME,
     })
   );
   user = userEvent.setup();
@@ -112,6 +122,16 @@ describe('command component tests', () => {
     await user.tab();
 
     expect(contextSelect).toHaveValue(CONTEXT_ID);
+  });
+
+  it('should invalidate an already taken name', async () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CMD_NAME],
+    });
+    await user.click(nameField);
+    await user.type(nameField, COMMAND_NAME);
+
+    expect(nameField).toHaveClass('is-invalid');
   });
 });
 

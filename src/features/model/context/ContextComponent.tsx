@@ -33,6 +33,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
       type: ContextReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
+    validationContext.touch(Field.CTX_NAME);
   };
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -72,14 +73,17 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
       : 'window title to match';
   const errorResults = validationContext.getErrorResults();
   const errorMessage = getRelevantErrorMessage(errorResults, [matcherField]);
+  const nameError = getRelevantErrorMessage(errorResults, [Field.CTX_NAME]);
 
   return (
     <PanelComponent header="Create/Edit Context">
-      <FormGroupRowComponent labelText="Name">
+      <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.CTX_NAME]}
           type="text"
           onChange={nameChangedHandler}
+          onBlur={() => validationContext.touch(Field.CTX_NAME)}
+          isInvalid={!!nameError}
           value={props.context.name}
           placeholder={contextDefaultNamer.getDefaultName(props.context)}
         />

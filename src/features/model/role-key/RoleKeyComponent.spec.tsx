@@ -7,10 +7,14 @@ import { Field } from '../../../validation/validation-field';
 import { RoleKeyParentComponent } from './RoleKeyParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { saveRoleKey } from './role-key-reducers';
+
+const RK_VALUE_1 = 'RK_VALUE_1';
 
 let user: UserEvent;
 
 beforeAll(() => {
+  store.dispatch(saveRoleKey({ id: 'asdf', value: RK_VALUE_1 }));
   user = userEvent.setup();
 });
 
@@ -50,5 +54,13 @@ describe('role key component tests', () => {
     await user.keyboard('a');
 
     expect(input).not.toHaveClass('is-invalid');
+  });
+
+  it('should invalidate duplicate role key', async () => {
+    const input = getRoleKeyInputField();
+    await user.click(input);
+    await user.type(input, RK_VALUE_1);
+
+    expect(input).toHaveClass('is-invalid');
   });
 });

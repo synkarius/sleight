@@ -33,6 +33,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       type: CommandReducerActionType.CHANGE_NAME,
       payload: e.target.value,
     });
+    validationContext.touch(Field.CMD_NAME);
   };
   const roleKeyChangedHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatchFn({
@@ -63,22 +64,25 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     variable: Field.CMD_SPEC_SPEC_SELECT,
     roleKey: Field.CMD_SPEC_RK_SELECT,
   };
+  const nameError = getRelevantErrorMessage(errorResults, [Field.CMD_NAME]);
   const commandSpecVariableIsInvalid = () =>
     errorResultFields.includes(specFields.variable);
   const commandSpecRoleKeyIsInvalid = () =>
     errorResultFields.includes(specFields.roleKey);
-  const errorMessage = getRelevantErrorMessage(errorResults, [
+  const specTypeErrorMessage = getRelevantErrorMessage(errorResults, [
     specFields.variable,
     specFields.roleKey,
   ]);
 
   return (
     <PanelComponent header="Create/Edit Command">
-      <FormGroupRowComponent labelText="Name">
+      <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.CMD_NAME]}
           type="text"
           onChange={nameChangedHandler}
+          onBlur={() => validationContext.touch(Field.CMD_NAME)}
+          isInvalid={!!nameError}
           value={props.command.name}
           placeholder={commandDefaultNamer.getDefaultName(props.command)}
         />
@@ -107,7 +111,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       <FormGroupRowComponent
         labelText="Spec Type"
         required={true}
-        errorMessage={errorMessage}
+        errorMessage={specTypeErrorMessage}
       >
         <CommandSpecTypeRadioGroupComponent
           commandSpecType={props.command.specType}

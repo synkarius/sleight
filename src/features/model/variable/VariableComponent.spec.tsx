@@ -8,12 +8,22 @@ import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from './variable-types';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { createRangeVariable } from './data/variable';
+import { getVariableDomainMapper } from './data/variable-domain-mapper';
+import { saveEditingVariable } from './variable-reducers';
+
+const SAVE = 'Save';
+const VARIABLE_1_NAME = 'VARIABLE_1_NAME';
 
 let user: UserEvent;
 
-const SAVE = 'Save';
-
 beforeAll(() => {
+  const variable = {
+    ...createRangeVariable(),
+    name: VARIABLE_1_NAME,
+  };
+  const variableDTO = getVariableDomainMapper().mapFromDomain(variable);
+  store.dispatch(saveEditingVariable(variableDTO));
   user = userEvent.setup();
 });
 
@@ -48,5 +58,15 @@ describe('variable component tests', () => {
     await user.click(saveButton);
 
     expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate an already taken name', async () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.VAR_NAME],
+    });
+    await user.click(nameField);
+    await user.type(nameField, VARIABLE_1_NAME);
+
+    expect(nameField).toHaveClass('is-invalid');
   });
 });

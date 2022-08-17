@@ -1,5 +1,6 @@
 import { isEmpty } from '../../../util/common-functions';
 import {
+  createNameTakenValidator,
   createValidator,
   FieldValidator,
 } from '../../../validation/field-validator';
@@ -9,12 +10,21 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
+import { Ided, Named } from '../../domain';
 import {
   ChoiceVariable,
   isChoiceVariable,
   isRangeVariable,
   Variable,
 } from './data/variable';
+import { VariableDTO } from './data/variable-dto';
+
+const nameTakenValidator = createNameTakenValidator<VariableDTO, Variable>(
+  Field.VAR_NAME,
+  (data) => data.variables,
+  'a variable already exists with this name',
+  ValidationErrorCode.VAR_NAME_TAKEN
+);
 
 const rangeMaxIsGreaterThanOrEqualsRangeMin: FieldValidator<Variable> =
   createValidator(
@@ -63,6 +73,7 @@ const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
 };
 
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
+  nameTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,

@@ -1,5 +1,6 @@
 import { alwaysTrue, isEmpty } from '../../../util/common-functions';
 import {
+  createNameTakenValidator,
   createValidator,
   FieldValidator,
 } from '../../../validation/field-validator';
@@ -9,9 +10,18 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
+import { Ided, Named } from '../../domain';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { Spec } from './data/spec-domain';
+import { SpecDTO } from './data/spec-dto';
 import { SpecItemType } from './spec-item-type';
+
+const nameTakenValidator = createNameTakenValidator<SpecDTO, Spec>(
+  Field.SP_NAME,
+  (data) => data.specs,
+  'a spec already exists with this name',
+  ValidationErrorCode.SP_NAME_TAKEN
+);
 
 const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
   Field.SP_ADD_ITEM_BUTTON,
@@ -81,6 +91,7 @@ const specVariableMustBeSelected: FieldValidator<Spec> = {
 };
 
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
+  nameTakenValidator,
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,
   specVariableMustBeSelected,

@@ -2,6 +2,7 @@ import { getDragonflyExporter } from './data/exports/dragonfly/dragonfly-exporte
 import { getJsonExporter } from './data/exports/json-exporter';
 import { getJsonImporter } from './data/imports/json-importer';
 import { Injected } from './di/injector-context';
+import { getActionValidators } from './features/model/action/action-validators';
 import { getSendKeyValidators } from './features/model/action/send-key/send-key-validators';
 import { getCommandValidators } from './features/model/command/command-validators';
 import { getContextValidators } from './features/model/context/context-validation';
@@ -21,7 +22,7 @@ export const appDefaultInjectionContext: Injected = {
     dragonfly: getDragonflyExporter(),
   },
   validators: {
-    action: getSendKeyValidators(),
+    action: [...getActionValidators(), ...getSendKeyValidators()],
     command: getCommandValidators(),
     context: getContextValidators(),
     roleKey: getRoleKeyValidators(),

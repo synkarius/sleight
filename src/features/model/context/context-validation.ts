@@ -1,11 +1,19 @@
 import { alwaysTrue, notEmpty } from '../../../util/common-functions';
 import {
+  createNameTakenValidator,
   createValidator,
   FieldValidator,
 } from '../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
 import { Context } from './context';
+
+const nameTakenValidator = createNameTakenValidator<Context, Context>(
+  Field.CTX_NAME,
+  (data) => data.contexts,
+  'a context already exists with this name',
+  ValidationErrorCode.CTX_NAME_TAKEN
+);
 
 const contextMatcherValidator: FieldValidator<Context> = createValidator(
   Field.CTX_MATCHER,
@@ -16,5 +24,6 @@ const contextMatcherValidator: FieldValidator<Context> = createValidator(
 );
 
 export const getContextValidators: () => FieldValidator<Context>[] = () => [
+  nameTakenValidator,
   contextMatcherValidator,
 ];

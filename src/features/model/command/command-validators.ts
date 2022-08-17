@@ -1,5 +1,6 @@
 import { isSelected } from '../../../util/common-functions';
 import {
+  createNameTakenValidator,
   createValidator,
   FieldValidator,
 } from '../../../validation/field-validator';
@@ -7,6 +8,13 @@ import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
 import { Command } from './command';
 import { CommandSpecType } from './command-spec-type';
+
+const nameTakenValidator = createNameTakenValidator<Command, Command>(
+  Field.CMD_NAME,
+  (data) => data.commands,
+  'a command already exists with this name',
+  ValidationErrorCode.CMD_NAME_TAKEN
+);
 
 const commandSpecVariableSelectedValidator: FieldValidator<Command> =
   createValidator(
@@ -27,6 +35,7 @@ const commandSpecRoleKeySelectedValidator: FieldValidator<Command> =
   );
 
 export const getCommandValidators: () => FieldValidator<Command>[] = () => [
+  nameTakenValidator,
   commandSpecVariableSelectedValidator,
   commandSpecRoleKeySelectedValidator,
 ];

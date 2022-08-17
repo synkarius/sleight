@@ -8,10 +8,22 @@ import { ActionType } from './action-types';
 import { ActionParentComponent } from './ActionParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { saveAction } from './action-reducers';
+import { createNumericValue } from './action-value/action-value';
+
+const ACTION_1_NAME = 'ACTION_1_NAME';
 
 let user: UserEvent;
 
 beforeAll(() => {
+  store.dispatch(
+    saveAction({
+      id: 'asdf',
+      name: ACTION_1_NAME,
+      type: ActionType.Enum.PAUSE,
+      centiseconds: createNumericValue(),
+    })
+  );
   user = userEvent.setup();
 });
 
@@ -59,5 +71,15 @@ describe('action component tests', () => {
 
     const saveButton = screen.getByText<HTMLButtonElement>('Save');
     expect(saveButton).not.toBeDisabled();
+  });
+
+  it('should invalidate an already taken name', async () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.AC_NAME],
+    });
+    await user.click(nameField);
+    await user.type(nameField, ACTION_1_NAME);
+
+    expect(nameField).toHaveClass('is-invalid');
   });
 });

@@ -19,6 +19,7 @@ import {
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { specDefaultNamer } from './spec-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
+import { getRelevantErrorMessage } from '../../../validation/field-validator';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -31,6 +32,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       type: SpecReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
+    validationContext.touch(Field.SP_NAME);
   };
 
   const addSpecItemHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,14 +65,21 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const noSpecItemsErrorMessage = errorResults.find(
     (result) => result.field === Field.SP_ADD_ITEM_BUTTON
   )?.message;
+  const nameError = getRelevantErrorMessage(errorResults, [Field.SP_NAME]);
 
   return (
     <PanelComponent header="Create/Edit Spec">
-      <FormGroupRowComponent labelText="Name" descriptionText="name of spec">
+      <FormGroupRowComponent
+        labelText="Name"
+        descriptionText="name of spec"
+        errorMessage={nameError}
+      >
         <FormControl
           aria-label={Field[Field.SP_NAME]}
           type="text"
           onChange={nameChangedHandler}
+          onBlur={() => validationContext.touch(Field.SP_NAME)}
+          isInvalid={!!nameError}
           value={props.spec.name}
           placeholder={specDefaultNamer.getDefaultName(props.spec)}
         />

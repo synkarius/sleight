@@ -7,10 +7,20 @@ import { Field } from '../../../validation/validation-field';
 import { ContextParentComponent } from './ContextParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { saveEditingContext } from './context-reducers';
+import { createContext } from './context';
+
+const CONTEXT_NAME = 'CONTEXT_NAME';
 
 let user: UserEvent;
 
 beforeAll(() => {
+  store.dispatch(
+    saveEditingContext({
+      ...createContext(),
+      name: CONTEXT_NAME,
+    })
+  );
   user = userEvent.setup();
 });
 
@@ -61,5 +71,15 @@ describe('context component tests', () => {
     await user.keyboard('a');
 
     expect(input).not.toHaveClass('is-invalid');
+  });
+
+  it('should invalidate an already taken name', async () => {
+    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CTX_NAME],
+    });
+    await user.click(nameField);
+    await user.type(nameField, CONTEXT_NAME);
+
+    expect(nameField).toHaveClass('is-invalid');
   });
 });
