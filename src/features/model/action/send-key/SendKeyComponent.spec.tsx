@@ -24,17 +24,34 @@ import { SendKeyMode } from './send-key-modes';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
-const ROLE_KEY_NAME = 'asdf-rk';
+const RANGE_ROLE_KEY_1 = 'rk-range-1';
+const CHOICE_ROLE_KEY_1 = 'rk-choice-1';
 const VARIABLE_RADIO = 1;
 const ROLE_KEY_RADIO = 2;
 type Radio = 0 | 1 | 2;
 let user: UserEvent;
 
 beforeAll(() => {
+  // save two role keys: one for range, one for choice
+  const roleKeyRange = createRoleKey();
+  store.dispatch(
+    saveRoleKey({
+      ...roleKeyRange,
+      value: RANGE_ROLE_KEY_1,
+    })
+  );
+  const roleKeyChoice = createRoleKey();
+  store.dispatch(
+    saveRoleKey({
+      ...roleKeyChoice,
+      value: CHOICE_ROLE_KEY_1,
+    })
+  );
   // save variables
   const rangeVariable = {
     ...createRangeVariable(),
     name: RANGE_VARIABLE_NAME,
+    roleKeyId: roleKeyRange.id,
   };
   const rangeVariableDTO =
     getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
@@ -44,18 +61,13 @@ beforeAll(() => {
   const choiceVariable: ChoiceVariable = {
     ...createChoiceVariable(),
     name: CHOICE_VARIABLE_NAME,
+    roleKeyId: roleKeyChoice.id,
     items: [createChoiceItem(choiceItemSelector)],
   };
   const choiceVariableDTO =
     getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
   store.dispatch(saveEditingVariable(choiceVariableDTO));
-  // save a role key
-  store.dispatch(
-    saveRoleKey({
-      ...createRoleKey(),
-      value: ROLE_KEY_NAME,
-    })
-  );
+
   user = userEvent.setup();
 });
 
@@ -162,7 +174,7 @@ describe('sendKey action component tests', () => {
     const select = screen.getByRole('list', {
       name: Field[Field.AC_KEY_TO_SEND_RK],
     });
-    await user.selectOptions(select, [ROLE_KEY_NAME]);
+    await user.selectOptions(select, [CHOICE_ROLE_KEY_1]);
 
     await user.tab();
 
@@ -225,7 +237,7 @@ describe('sendKey action component tests', () => {
     const select = screen.getByRole('list', {
       name: Field[Field.AC_OUTER_PAUSE_RK],
     });
-    await user.selectOptions(select, [ROLE_KEY_NAME]);
+    await user.selectOptions(select, [RANGE_ROLE_KEY_1]);
 
     await user.tab();
 

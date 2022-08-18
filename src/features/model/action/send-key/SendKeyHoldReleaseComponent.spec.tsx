@@ -28,24 +28,27 @@ type Radio = 0 | 1 | 2;
 let user: UserEvent;
 
 beforeAll(() => {
+  // save a role key
+  const roleKey = createRoleKey();
+  store.dispatch(
+    saveRoleKey({
+      ...roleKey,
+      value: ROLE_KEY_NAME,
+    })
+  );
   // save a variable
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
   const choiceVariable: ChoiceVariable = {
     ...createChoiceVariable(),
     name: VARIABLE_NAME,
+    roleKeyId: roleKey.id,
     items: [createChoiceItem(choiceItemSelector)],
   };
   const choiceVariableDTO =
     getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
   store.dispatch(saveEditingVariable(choiceVariableDTO));
-  // save a role key
-  store.dispatch(
-    saveRoleKey({
-      ...createRoleKey(),
-      value: ROLE_KEY_NAME,
-    })
-  );
+
   user = userEvent.setup();
 });
 

@@ -8,42 +8,21 @@ import {
 } from '../../data/exports/export-type';
 import { simpleSaveFile } from '../../data/exports/simple-save-file';
 import { ImportResultType } from '../../data/imports/import-result';
+import { useAllDataSelector } from '../../data/use-all-data-selector';
 import { InjectionContext } from '../../di/injector-context';
 
 export const Navigation: React.FC<{}> = () => {
-  const actions = useAppSelector((state) => state.action.saved);
-  const commands = useAppSelector((state) => state.command.saved);
-  const contexts = useAppSelector((state) => state.context.saved);
-  const roleKeys = useAppSelector((state) => state.roleKey.saved);
-  const selectors = useAppSelector((state) => state.selector.saved);
-  const specs = useAppSelector((state) => state.spec.saved);
-  const variables = useAppSelector((state) => state.variable.saved);
+  const allData = useAllDataSelector();
   const injectionContext = useContext(InjectionContext);
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);
 
   const exportJson = () => {
-    const data = injectionContext.exporters.json.export({
-      actions,
-      commands,
-      contexts,
-      roleKeys,
-      selectors,
-      specs,
-      variables,
-    });
+    const data = injectionContext.exporters.json.export(allData);
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
   const exportDragonfly = () => {
-    const data = injectionContext.exporters.dragonfly.export({
-      actions,
-      commands,
-      contexts,
-      roleKeys,
-      selectors,
-      specs,
-      variables,
-    });
+    const data = injectionContext.exporters.dragonfly.export(allData);
     simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
   };
   const importFileClickHandler = () => {

@@ -95,7 +95,7 @@ export const isVariableChoiceActionValue = (
 ): actionValue is VariableChoiceActionValue =>
   actionValue.variableType === VariableType.Enum.CHOICE;
 
-interface RoleKeyActionValue extends AbstractActionValue {
+export interface RoleKeyActionValue extends AbstractActionValue {
   readonly actionValueType: typeof ActionValueType.Enum.USE_ROLE_KEY;
   // if the user has chosen role key binding, this is the role key id
   readonly roleKeyId: string;

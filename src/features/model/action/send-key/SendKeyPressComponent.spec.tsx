@@ -21,21 +21,24 @@ type Radio = 0 | 1 | 2;
 let user: UserEvent;
 
 beforeAll(() => {
+  const roleKey = createRoleKey();
+  // save a role key
+  store.dispatch(
+    saveRoleKey({
+      ...roleKey,
+      value: ROLE_KEY_NAME,
+    })
+  );
   // save a variable
   const rangeVariable = {
     ...createRangeVariable(),
     name: VARIABLE_NAME,
+    roleKeyId: roleKey.id,
   };
   const rangeVariableDTO =
     getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
   store.dispatch(saveEditingVariable(rangeVariableDTO));
-  // save a role key
-  store.dispatch(
-    saveRoleKey({
-      ...createRoleKey(),
-      value: ROLE_KEY_NAME,
-    })
-  );
+
   user = userEvent.setup();
 });
 
