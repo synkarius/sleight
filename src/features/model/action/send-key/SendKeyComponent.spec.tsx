@@ -19,6 +19,10 @@ import {
   createRangeVariable,
 } from '../../variable/data/variable';
 import { saveEditingVariable } from '../../variable/variable-reducers';
+import {
+  VAR_FOR_RK_EXISTS_BUT_WRONG_TYPE,
+  VAR_FOR_RK_NOT_EXISTS,
+} from '../action-value/action-value-validation';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { SendKeyMode } from './send-key-modes';
 
@@ -26,13 +30,14 @@ const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
 const RANGE_ROLE_KEY_1 = 'rk-range-1';
 const CHOICE_ROLE_KEY_1 = 'rk-choice-1';
+const OTHER_ROLE_KEY_1 = 'rk-other';
 const VARIABLE_RADIO = 1;
 const ROLE_KEY_RADIO = 2;
 type Radio = 0 | 1 | 2;
 let user: UserEvent;
 
 beforeAll(() => {
-  // save two role keys: one for range, one for choice
+  // save role keys
   const roleKeyRange = createRoleKey();
   store.dispatch(
     saveRoleKey({
@@ -45,6 +50,13 @@ beforeAll(() => {
     saveRoleKey({
       ...roleKeyChoice,
       value: CHOICE_ROLE_KEY_1,
+    })
+  );
+  const roleKeyOther = createRoleKey();
+  store.dispatch(
+    saveRoleKey({
+      ...roleKeyOther,
+      value: OTHER_ROLE_KEY_1,
     })
   );
   // save variables
@@ -181,6 +193,40 @@ describe('sendKey action component tests', () => {
     expect(select).not.toHaveClass('is-invalid');
   });
 
+  it('should invalidate selected wrong-type key to send role key', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_KEY_TO_SEND_RADIO,
+      ROLE_KEY_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_KEY_TO_SEND_RK],
+    });
+    await user.selectOptions(select, [RANGE_ROLE_KEY_1]);
+    await user.tab();
+    const errorText = screen.getByText(VAR_FOR_RK_EXISTS_BUT_WRONG_TYPE);
+
+    expect(select).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+  });
+
+  it('should invalidate selected key to send role key attached to no variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_KEY_TO_SEND_RADIO,
+      ROLE_KEY_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_KEY_TO_SEND_RK],
+    });
+    await user.selectOptions(select, [OTHER_ROLE_KEY_1]);
+    await user.tab();
+    const errorText = screen.getByText(VAR_FOR_RK_NOT_EXISTS);
+
+    expect(select).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+  });
+
   it('should invalidate non-selected outer pause variable', async () => {
     await selectActionValueType(
       user,
@@ -242,6 +288,40 @@ describe('sendKey action component tests', () => {
     await user.tab();
 
     expect(select).not.toHaveClass('is-invalid');
+  });
+
+  it('should invalidate selected wrong-type outer pause role key', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_OUTER_PAUSE_RADIO,
+      ROLE_KEY_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_OUTER_PAUSE_RK],
+    });
+    await user.selectOptions(select, [CHOICE_ROLE_KEY_1]);
+    await user.tab();
+    const errorText = screen.getByText(VAR_FOR_RK_EXISTS_BUT_WRONG_TYPE);
+
+    expect(select).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+  });
+
+  it('should invalidate selected outer pause role key attached to no variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_OUTER_PAUSE_RADIO,
+      ROLE_KEY_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_OUTER_PAUSE_RK],
+    });
+    await user.selectOptions(select, [OTHER_ROLE_KEY_1]);
+    await user.tab();
+    const errorText = screen.getByText(VAR_FOR_RK_NOT_EXISTS);
+
+    expect(select).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
   });
 
   it('should reset valid status on change send key mode', async () => {
