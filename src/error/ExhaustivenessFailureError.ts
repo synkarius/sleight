@@ -8,7 +8,7 @@ import { SleightError } from './SleightError';
 export class ExhaustivenessFailureError extends SleightError {
   constructor(_n: never) {
     super(
-      ErrorCode.EXHAUSTIVENESS_FAIURE,
+      ErrorCode.EXHAUSTIVENESS_FAILURE,
       'this line should be unreachable -- this is a compile time error'
     );
   }

@@ -50,7 +50,7 @@ beforeAll(() => {
   const spec: SpecDTO = {
     id: 'asdf',
     name: SPEC_NAME_1,
-    roleKeyId: undefined,
+    roleKeyId: roleKey.id,
     items: [],
   };
   store.dispatch(saveEditingSpec(spec));

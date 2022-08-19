@@ -9,6 +9,10 @@ import { Field } from '../../../validation/validation-field';
 import { createRoleKey, RoleKey } from '../../model/role-key/role-key';
 import { saveRoleKey } from '../../model/role-key/role-key-reducers';
 import { CommandSpecType } from '../../model/command/command-spec-type';
+import { createSpec, Spec } from '../../model/spec/data/spec-domain';
+import { SpecDTO } from '../../model/spec/data/spec-dto';
+import { getSpecDomainMapper } from '../../model/spec/data/spec-domain-mapper';
+import { saveEditingSpec } from '../../model/spec/spec-reducers';
 
 let user: UserEvent;
 
@@ -17,6 +21,12 @@ const ROLE_KEY_NAME_1 = 'role-key-name-1';
 beforeAll(() => {
   const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
   store.dispatch(saveRoleKey(roleKey));
+  const spec: Spec = {
+    ...createSpec(),
+    roleKeyId: roleKey.id,
+  };
+  const specDTO: SpecDTO = getSpecDomainMapper().mapFromDomain(spec);
+  store.dispatch(saveEditingSpec(specDTO));
   user = userEvent.setup();
 });
 

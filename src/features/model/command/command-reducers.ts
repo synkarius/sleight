@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { WrongTypeError } from '../../../error/WrongTypeError';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
-import { Command } from './command';
+import { Command, copyCommand, isSelectedSpecCommand } from './command';
 import { commandDefaultNamer } from './command-default-namer';
 import {
   CommandReducerAction,
@@ -12,6 +14,7 @@ import {
   CommandReducerSpecTypeAction,
   CommandReducerStringAction,
 } from './command-editing-context';
+import { CommandSpecType } from './command-spec-type';
 
 export type CommandsState = {
   readonly saved: Record<string, Command>;
@@ -77,22 +80,30 @@ const changeEditingCommandSpecType = (
   state: Command,
   action: CommandReducerSpecTypeAction
 ): Command => {
-  return {
-    ...state,
-    specType: action.payload,
-  };
+  return action.payload === CommandSpecType.Enum.SPEC
+    ? {
+        ...copyCommand(state),
+        specType: action.payload,
+        specId: SELECT_DEFAULT_VALUE,
+      }
+    : {
+        ...copyCommand(state),
+        specType: action.payload,
+        specRoleKeyId: SELECT_DEFAULT_VALUE,
+      };
 };
-const changeEditingCommandSpecVariableId = (
-  state: Command,
+const changeEditingCommandSpecId = (
+  state: Command & { specType: typeof CommandSpecType.Enum.SPEC },
   action: CommandReducerStringAction
 ): Command => {
   return {
     ...state,
-    specVariableId: action.payload,
+
+    specId: action.payload,
   };
 };
 const changeEditingCommandSpecRoleKeyId = (
-  state: Command,
+  state: Command & { specType: typeof CommandSpecType.Enum.ROLE_KEY },
   action: CommandReducerStringAction
 ): Command => {
   return {
@@ -170,9 +181,15 @@ export const commandReactReducer = (
     case CommandReducerActionType.CHANGE_SPEC_TYPE:
       return changeEditingCommandSpecType(state, action);
     case CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID:
-      return changeEditingCommandSpecVariableId(state, action);
+      if (state.specType === CommandSpecType.Enum.SPEC) {
+        return changeEditingCommandSpecId(state, action);
+      }
+      throw new WrongTypeError(state.specType);
     case CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID:
-      return changeEditingCommandSpecRoleKeyId(state, action);
+      if (state.specType === CommandSpecType.Enum.ROLE_KEY) {
+        return changeEditingCommandSpecRoleKeyId(state, action);
+      }
+      throw new WrongTypeError(state.specType);
     case CommandReducerActionType.ADD_ACTION:
       return addActionToEditingCommand(state, action);
     case CommandReducerActionType.CHANGE_ACTION:

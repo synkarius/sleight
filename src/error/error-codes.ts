@@ -1,5 +1,7 @@
 export enum ErrorCode {
-  EXHAUSTIVENESS_FAIURE = 'this error should never happen at runtime',
+  EXHAUSTIVENESS_FAILURE = 'this error can never happen at runtime',
+
+  WRONG_TYPE_FAILURE = 'wrong type: this error should never happen at runtime',
 
   NOT_IMPLEMENTED = 'method not implemented',
 

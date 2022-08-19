@@ -1,3 +1,4 @@
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from './command';
 import { commandDefaultNamer } from './command-default-namer';
@@ -18,8 +19,7 @@ const createTestCommand = (id: string): Command => {
     roleKeyId: undefined,
     contextId: undefined,
     specType: CommandSpecType.Enum.SPEC,
-    specVariableId: undefined,
-    specRoleKeyId: undefined,
+    specId: SELECT_DEFAULT_VALUE,
     actionIds: [],
   };
 };
@@ -162,10 +162,16 @@ describe('command reducer', () => {
     });
 
     expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+    const expected: Command = {
+      id: obj.id,
+      name: '',
+      roleKeyId: undefined,
+      contextId: undefined,
+      actionIds: [],
       specType: CommandSpecType.Enum.ROLE_KEY,
-    });
+      specRoleKeyId: SELECT_DEFAULT_VALUE,
+    };
+    expect(actual).toEqual(expected);
   });
 
   it('should handle change spec id', () => {
@@ -179,12 +185,18 @@ describe('command reducer', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...createTestCommand(obj.id),
-      specVariableId: 'asdf',
+      specId: 'asdf',
     });
   });
 
   it('should handle change spec role key id', () => {
-    const obj = createCommand();
+    const obj: Command = {
+      id: 'aaa',
+      name: '',
+      actionIds: [],
+      specType: CommandSpecType.Enum.ROLE_KEY,
+      specRoleKeyId: SELECT_DEFAULT_VALUE,
+    };
 
     const actual = commandReactReducer(obj, {
       type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,
@@ -193,7 +205,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       specRoleKeyId: 'asdf',
     });
   });

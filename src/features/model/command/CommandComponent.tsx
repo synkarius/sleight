@@ -127,7 +127,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         {props.command.specType === CommandSpecType.Enum.SPEC && (
           <SpecDropdownComponent
             field={specFields.variable}
-            specId={props.command.specVariableId}
+            specId={props.command.specId}
             onChange={(e) => {
               editingContext.localDispatchFn({
                 type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
