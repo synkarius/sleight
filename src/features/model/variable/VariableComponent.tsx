@@ -10,7 +10,12 @@ import { createSelector } from '../selector/data/selector-domain';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { Field } from '../../../validation/validation-field';
-import { isChoiceVariable, isRangeVariable, Variable } from './data/variable';
+import {
+  isChoiceVariable,
+  isRangeVariable,
+  isTextVariable,
+  Variable,
+} from './data/variable';
 import {
   VariableEditingContext,
   VariableReducerActionType,
@@ -22,6 +27,7 @@ import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { variableDefaultNamer } from './variable-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
 import { getRelevantErrorMessage } from '../../../validation/field-validator';
+import { TextVariableComponent } from './TextVariableComponent';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -126,6 +132,9 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         </FormSelect>
         <FormText className="text-muted">kind of variable</FormText>
       </FormGroupRowComponent>
+      {isTextVariable(props.variable) && (
+        <TextVariableComponent text={props.variable} />
+      )}
       {isRangeVariable(props.variable) && (
         <RangeVariableComponent range={props.variable} />
       )}

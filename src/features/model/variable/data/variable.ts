@@ -11,12 +11,18 @@ export interface AbstractVariable
 
 export interface TextVariable extends AbstractVariable {
   readonly type: typeof VariableType.Enum.TEXT;
+  readonly defaultValue?: string;
 }
+
+export const isTextVariable = (
+  variable: AbstractVariable
+): variable is TextVariable => variable.type === VariableType.Enum.TEXT;
 
 export interface RangeVariable extends AbstractVariable {
   readonly type: typeof VariableType.Enum.RANGE;
   readonly beginInclusive: number;
   readonly endInclusive: number;
+  readonly defaultValue?: number;
 }
 
 export const isRangeVariable = (
@@ -31,6 +37,7 @@ export interface ChoiceItem extends RoleKeyed, Ided {
 export interface ChoiceVariable extends AbstractVariable {
   readonly type: typeof VariableType.Enum.CHOICE;
   readonly items: ChoiceItem[];
+  readonly defaultItemIndex?: number;
 }
 
 export const isChoiceVariable = (

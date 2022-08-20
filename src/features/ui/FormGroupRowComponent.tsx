@@ -8,10 +8,15 @@ export const FormGroupRowComponent: React.FC<{
   descriptionText?: string;
   errorMessage?: string;
   required?: boolean;
+  hidden?: boolean;
 }> = (props) => {
   const id = useId();
   return (
-    <FormGroup className="mb-3" controlId={id}>
+    <FormGroup
+      className="mb-3"
+      controlId={id}
+      style={{ display: props.hidden ? 'none' : undefined }}
+    >
       <FormLabel>
         <span>{props.labelText}</span>
         <RequiredAsteriskComponent required={!!props.required} />

@@ -15,6 +15,10 @@ export enum VariableReducerActionType {
   ADD_SELECTOR_ITEM,
   EDIT_SELECTOR_ITEM,
   DELETE_SELECTOR_ITEM,
+  TOGGLE_DEFAULT_ENABLED,
+  CHANGE_DEFAULT_TEXT,
+  CHANGE_DEFAULT_NUMBER,
+  CHANGE_DEFAULT_INDEX,
 }
 
 interface AbstractVariableReducerAction<T> {
@@ -22,12 +26,18 @@ interface AbstractVariableReducerAction<T> {
   readonly payload: T;
 }
 
+export interface VariableReducerNoPayloadAction
+  extends Omit<AbstractVariableReducerAction<any>, 'payload'> {
+  readonly type: typeof VariableReducerActionType.TOGGLE_DEFAULT_ENABLED;
+}
+
 export interface VariableReducerStringAction
   extends AbstractVariableReducerAction<string> {
   readonly type:
     | typeof VariableReducerActionType.CHANGE_NAME
     | typeof VariableReducerActionType.CHANGE_ROLE_KEY
-    | typeof VariableReducerActionType.DELETE_CHOICE_ITEM;
+    | typeof VariableReducerActionType.DELETE_CHOICE_ITEM
+    | typeof VariableReducerActionType.CHANGE_DEFAULT_TEXT;
 }
 
 export interface VariableReducerVariableTypeAction
@@ -39,7 +49,9 @@ export interface VariableReducerNumberAction
   extends AbstractVariableReducerAction<number> {
   readonly type:
     | typeof VariableReducerActionType.CHANGE_RANGE_MIN
-    | typeof VariableReducerActionType.CHANGE_RANGE_MAX;
+    | typeof VariableReducerActionType.CHANGE_RANGE_MAX
+    | typeof VariableReducerActionType.CHANGE_DEFAULT_NUMBER
+    | typeof VariableReducerActionType.CHANGE_DEFAULT_INDEX;
 }
 
 export interface VariableReducerAddChoiceItemAction
@@ -68,6 +80,7 @@ export interface VariableReducerDeleteSelectorItemAction
 }
 
 export type VariableReducerAction =
+  | VariableReducerNoPayloadAction
   | VariableReducerStringAction
   | VariableReducerVariableTypeAction
   | VariableReducerNumberAction

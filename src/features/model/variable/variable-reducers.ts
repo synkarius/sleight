@@ -20,10 +20,15 @@ import {
   Variable,
   RangeVariable,
   ChoiceVariable,
+  TextVariable,
+  isTextVariable,
+  isRangeVariable,
+  isChoiceVariable,
 } from './data/variable';
 import { VariableDTO } from './data/variable-dto';
 import { Ided, Named, RoleKeyed } from '../../domain';
 import { variableDefaultNamer } from './variable-default-namer';
+import { WrongTypeError } from '../../../error/WrongTypeError';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;
@@ -106,44 +111,42 @@ const changeEditingVariableType = (
 };
 
 const changeRangeMin = (
-  state: Variable,
+  state: RangeVariable,
   action: VariableReducerNumberAction
-): Variable => {
+): RangeVariable => {
   return {
-    ...(state as RangeVariable),
+    ...state,
     beginInclusive: action.payload,
   };
 };
 
 const changeRangeMax = (
-  state: Variable,
+  state: RangeVariable,
   action: VariableReducerNumberAction
-): Variable => {
+): RangeVariable => {
   return {
-    ...(state as RangeVariable),
+    ...state,
     endInclusive: action.payload,
   };
 };
 
 const addChoiceItem = (
-  state: Variable,
+  state: ChoiceVariable,
   action: VariableReducerAddChoiceItemAction
-): Variable => {
-  const choiceVariable = state as ChoiceVariable;
+): ChoiceVariable => {
   return {
-    ...choiceVariable,
-    items: [...choiceVariable.items, action.payload],
+    ...state,
+    items: [...state.items, action.payload],
   };
 };
 
 const editChoiceItemValue = (
-  state: Variable,
+  state: ChoiceVariable,
   action: VariableReducerEditChoiceItemAction
-): Variable => {
-  const choice = state as ChoiceVariable;
+): ChoiceVariable => {
   return {
-    ...choice,
-    items: choice.items.map((item) => {
+    ...state,
+    items: state.items.map((item) => {
       if (item.id === action.payload.choiceItemId) {
         return {
           ...item,
@@ -156,24 +159,22 @@ const editChoiceItemValue = (
 };
 
 const removeChoiceItem = (
-  state: Variable,
+  state: ChoiceVariable,
   action: VariableReducerStringAction
-): Variable => {
-  const choice = state as ChoiceVariable;
+): ChoiceVariable => {
   return {
-    ...choice,
-    items: choice.items.filter((item) => item.id !== action.payload),
+    ...state,
+    items: state.items.filter((item) => item.id !== action.payload),
   };
 };
 
 const addSelectorItem = (
-  state: Variable,
+  state: ChoiceVariable,
   action: VariableReducerAddSelectorItemAction
-): Variable => {
-  const choiceVariable = state as ChoiceVariable;
+): ChoiceVariable => {
   return {
-    ...choiceVariable,
-    items: choiceVariable.items.map((choiceItem) => {
+    ...state,
+    items: state.items.map((choiceItem) => {
       if (choiceItem.id === action.payload.choiceItemId) {
         return {
           ...choiceItem,
@@ -189,13 +190,12 @@ const addSelectorItem = (
 };
 
 const changeSelectorItem = (
-  state: Variable,
+  state: ChoiceVariable,
   action: VariableReducerChangeSelectorItemAction
-): Variable => {
-  const choiceVariable = state as ChoiceVariable;
+): ChoiceVariable => {
   return {
-    ...choiceVariable,
-    items: choiceVariable.items.map((specItem) => {
+    ...state,
+    items: state.items.map((specItem) => {
       if (specItem.id === action.payload.choiceItemId) {
         return {
           ...specItem,
@@ -219,13 +219,12 @@ const changeSelectorItem = (
 };
 
 const deleteSelectorItem = (
-  state: Variable,
+  state: ChoiceVariable,
   action: VariableReducerDeleteSelectorItemAction
-): Variable => {
-  const choiceVariable = state as ChoiceVariable;
+): ChoiceVariable => {
   return {
-    ...choiceVariable,
-    items: choiceVariable.items.map((specItem) => {
+    ...state,
+    items: state.items.map((specItem) => {
       if (specItem.id === action.payload.choiceItemId) {
         return {
           ...specItem,
@@ -243,6 +242,50 @@ const deleteSelectorItem = (
   };
 };
 
+const toggleDefaultEnabled = (state: Variable): Variable => {
+  const variableType = state.type;
+  switch (variableType) {
+    case VariableType.Enum.TEXT:
+      return {
+        ...state,
+        defaultValue: state.defaultValue === undefined ? '' : undefined,
+      };
+    case VariableType.Enum.RANGE:
+      return {
+        ...state,
+        defaultValue: state.defaultValue === undefined ? 0 : undefined,
+      };
+    case VariableType.Enum.CHOICE:
+      return {
+        ...state,
+        defaultItemIndex: state.defaultItemIndex === undefined ? 0 : undefined,
+      };
+    default:
+      throw new ExhaustivenessFailureError(variableType);
+  }
+};
+
+const changeDefaultText = (
+  state: TextVariable,
+  action: VariableReducerStringAction
+): TextVariable => ({
+  ...state,
+  defaultValue: action.payload,
+});
+
+const changeDefaultNumber = (
+  state: RangeVariable,
+  action: VariableReducerNumberAction
+): RangeVariable => ({ ...state, defaultValue: action.payload });
+
+const changeDefaultIndex = (
+  state: ChoiceVariable,
+  action: VariableReducerNumberAction
+): ChoiceVariable => ({
+  ...state,
+  defaultItemIndex: action.payload,
+});
+
 export const variableReactReducer = (
   state: Variable,
   action: VariableReducerAction
@@ -256,21 +299,62 @@ export const variableReactReducer = (
     case VariableReducerActionType.CHANGE_TYPE:
       return changeEditingVariableType(state, action);
     case VariableReducerActionType.CHANGE_RANGE_MIN:
-      return changeRangeMin(state, action);
+      if (isRangeVariable(state)) {
+        return changeRangeMin(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.CHANGE_RANGE_MAX:
-      return changeRangeMax(state, action);
+      if (isRangeVariable(state)) {
+        return changeRangeMax(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.ADD_CHOICE_ITEM:
-      return addChoiceItem(state, action);
+      if (isChoiceVariable(state)) {
+        return addChoiceItem(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.EDIT_CHOICE_ITEM:
-      return editChoiceItemValue(state, action);
+      if (isChoiceVariable(state)) {
+        return editChoiceItemValue(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.DELETE_CHOICE_ITEM:
-      return removeChoiceItem(state, action);
+      if (isChoiceVariable(state)) {
+        return removeChoiceItem(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.ADD_SELECTOR_ITEM:
-      return addSelectorItem(state, action);
+      if (isChoiceVariable(state)) {
+        return addSelectorItem(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.EDIT_SELECTOR_ITEM:
-      return changeSelectorItem(state, action);
+      if (isChoiceVariable(state)) {
+        return changeSelectorItem(state, action);
+      }
+      throw new WrongTypeError(state.type);
     case VariableReducerActionType.DELETE_SELECTOR_ITEM:
-      return deleteSelectorItem(state, action);
+      if (isChoiceVariable(state)) {
+        return deleteSelectorItem(state, action);
+      }
+      throw new WrongTypeError(state.type);
+    case VariableReducerActionType.TOGGLE_DEFAULT_ENABLED:
+      return toggleDefaultEnabled(state);
+    case VariableReducerActionType.CHANGE_DEFAULT_TEXT:
+      if (isTextVariable(state)) {
+        return changeDefaultText(state, action);
+      }
+      throw new WrongTypeError(state.type);
+    case VariableReducerActionType.CHANGE_DEFAULT_NUMBER:
+      if (isRangeVariable(state)) {
+        return changeDefaultNumber(state, action);
+      }
+      throw new WrongTypeError(state.type);
+    case VariableReducerActionType.CHANGE_DEFAULT_INDEX:
+      if (isChoiceVariable(state)) {
+        return changeDefaultIndex(state, action);
+      }
+      throw new WrongTypeError(state.type);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }
