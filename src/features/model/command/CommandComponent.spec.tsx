@@ -34,7 +34,8 @@ const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';
 const SPEC_NO_VAR_NAME = 'asdf-spec-1';
 const SPEC_WITH_VAR_NAME = 'asdf-spec-2';
-const ROLE_KEY_NAME = 'asdf-rk';
+const ROLE_KEY_1 = 'asdf-rk-1';
+const ROLE_KEY_2 = 'asdf-rk-2';
 const CONTEXT_ID = 'asdf-ctx-id';
 const CONTEXT_NAME = 'asdf-ctx-name';
 const COMMAND_NAME = 'asdf-cmd-name';
@@ -42,6 +43,13 @@ const COMMAND_NAME = 'asdf-cmd-name';
 let user: UserEvent;
 
 beforeAll(() => {
+  // save a role key
+  store.dispatch(
+    saveRoleKey({
+      ...createRoleKey(),
+      value: ROLE_KEY_1,
+    })
+  );
   // save variable
   const rangeVariable = createRangeVariable();
   const rangeVariableDTO =
@@ -72,13 +80,6 @@ beforeAll(() => {
     ],
   };
   store.dispatch(saveEditingSpec(specWithVar));
-  // save a role key
-  store.dispatch(
-    saveRoleKey({
-      ...createRoleKey(),
-      value: ROLE_KEY_NAME,
-    })
-  );
   // save a context
   store.dispatch(
     saveEditingContext({
