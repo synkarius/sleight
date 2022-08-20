@@ -41,8 +41,10 @@ export enum Field {
   CMD_CONTEXT,
   // command: spec
   CMD_SPEC_RADIO,
+  CMD_ACTION_SELECT,
   CMD_SPEC_SPEC_SELECT,
   CMD_SPEC_RK_SELECT,
+  CMD_SAVE,
   // context:
   CTX_MATCHER,
   CTX_NAME,

@@ -215,13 +215,12 @@ describe('command reducer', () => {
 
     const actual = commandReactReducer(obj, {
       type: CommandReducerActionType.ADD_ACTION,
-      payload: 'asdf',
     });
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      actionIds: [...obj.actionIds, 'asdf'],
+      actionIds: [...obj.actionIds, SELECT_DEFAULT_VALUE],
     });
   });
 

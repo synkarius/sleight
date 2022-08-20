@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, FormControl, FormText } from 'react-bootstrap';
+import { Button, Col, FormControl, FormText } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
@@ -21,6 +21,7 @@ import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 import { commandDefaultNamer } from './command-default-namer';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
+import { SELECT_DEFAULT_VALUE } from '../common/consts';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
@@ -46,7 +47,6 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     if (actions.length > 0) {
       editingContext.localDispatchFn({
         type: CommandReducerActionType.ADD_ACTION,
-        payload: actions[0].id,
       });
     }
   };
@@ -72,6 +72,9 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const specTypeErrorMessage = getRelevantErrorMessage(errorResults, [
     specFields.variable,
     specFields.roleKey,
+  ]);
+  const onSaveErrorMessage = getRelevantErrorMessage(errorResults, [
+    Field.CMD_SAVE,
   ]);
 
   return (
@@ -183,6 +186,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           key={actionId + '-' + index}
         >
           <ActionDropdownComponent
+            field={Field.CMD_ACTION_SELECT}
             actionId={actionId}
             onChange={(e) => {
               editingContext.localDispatchFn({
@@ -196,6 +200,11 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           />
         </VerticalMoveableComponent>
       ))}
+      <Col sm="12" className="mb-3">
+        {onSaveErrorMessage && (
+          <span className="small text-danger">{onSaveErrorMessage}</span>
+        )}
+      </Col>
       <Button
         onClick={submitHandler}
         variant="primary"

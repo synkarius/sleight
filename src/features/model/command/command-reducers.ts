@@ -11,6 +11,7 @@ import {
   CommandReducerActionType,
   CommandReducerDeleteAction,
   CommandReducerMoveAction,
+  CommandReducerNoPayloadAction,
   CommandReducerSpecTypeAction,
   CommandReducerStringAction,
 } from './command-editing-context';
@@ -111,13 +112,10 @@ const changeEditingCommandSpecRoleKeyId = (
     specRoleKeyId: action.payload,
   };
 };
-const addActionToEditingCommand = (
-  state: Command,
-  action: CommandReducerStringAction
-): Command => {
+const addActionToEditingCommand = (state: Command): Command => {
   return {
     ...state,
-    actionIds: [...state.actionIds, action.payload],
+    actionIds: [...state.actionIds, SELECT_DEFAULT_VALUE],
   };
 };
 const changeEditingCommandActionId = (
@@ -191,7 +189,7 @@ export const commandReactReducer = (
       }
       throw new WrongTypeError(state.specType);
     case CommandReducerActionType.ADD_ACTION:
-      return addActionToEditingCommand(state, action);
+      return addActionToEditingCommand(state);
     case CommandReducerActionType.CHANGE_ACTION:
       return changeEditingCommandActionId(state, action);
     case CommandReducerActionType.MOVE_ACTION:

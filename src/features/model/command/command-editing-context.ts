@@ -30,6 +30,11 @@ type AbstractCommandReducerAction<T> = {
   payload: T;
 };
 
+export interface CommandReducerNoPayloadAction
+  extends Omit<AbstractCommandReducerAction<any>, 'payload'> {
+  type: typeof CommandReducerActionType.ADD_ACTION;
+}
+
 export interface CommandReducerStringAction
   extends AbstractCommandReducerAction<string> {
   type:
@@ -37,8 +42,7 @@ export interface CommandReducerStringAction
     | typeof CommandReducerActionType.CHANGE_ROLE_KEY
     | typeof CommandReducerActionType.CHANGE_CONTEXT
     | typeof CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID
-    | typeof CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID
-    | typeof CommandReducerActionType.ADD_ACTION;
+    | typeof CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID;
 }
 export interface CommandReducerSpecTypeAction
   extends AbstractCommandReducerAction<CommandSpecType.Type> {
@@ -57,6 +61,7 @@ export interface CommandReducerDeleteAction
   type: typeof CommandReducerActionType.DELETE_ACTION;
 }
 export type CommandReducerAction =
+  | CommandReducerNoPayloadAction
   | CommandReducerStringAction
   | CommandReducerSpecTypeAction
   | CommandReducerActionIdAction
