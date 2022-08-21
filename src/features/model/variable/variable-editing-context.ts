@@ -18,7 +18,7 @@ export enum VariableReducerActionType {
   TOGGLE_DEFAULT_ENABLED,
   CHANGE_DEFAULT_TEXT,
   CHANGE_DEFAULT_NUMBER,
-  CHANGE_DEFAULT_INDEX,
+  CHANGE_DEFAULT_CHOICE,
 }
 
 interface AbstractVariableReducerAction<T> {
@@ -37,7 +37,8 @@ export interface VariableReducerStringAction
     | typeof VariableReducerActionType.CHANGE_NAME
     | typeof VariableReducerActionType.CHANGE_ROLE_KEY
     | typeof VariableReducerActionType.DELETE_CHOICE_ITEM
-    | typeof VariableReducerActionType.CHANGE_DEFAULT_TEXT;
+    | typeof VariableReducerActionType.CHANGE_DEFAULT_TEXT
+    | typeof VariableReducerActionType.CHANGE_DEFAULT_CHOICE;
 }
 
 export interface VariableReducerVariableTypeAction
@@ -50,8 +51,7 @@ export interface VariableReducerNumberAction
   readonly type:
     | typeof VariableReducerActionType.CHANGE_RANGE_MIN
     | typeof VariableReducerActionType.CHANGE_RANGE_MAX
-    | typeof VariableReducerActionType.CHANGE_DEFAULT_NUMBER
-    | typeof VariableReducerActionType.CHANGE_DEFAULT_INDEX;
+    | typeof VariableReducerActionType.CHANGE_DEFAULT_NUMBER;
 }
 
 export interface VariableReducerAddChoiceItemAction

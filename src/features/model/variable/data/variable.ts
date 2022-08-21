@@ -37,7 +37,7 @@ export interface ChoiceItem extends RoleKeyed, Ided {
 export interface ChoiceVariable extends AbstractVariable {
   readonly type: typeof VariableType.Enum.CHOICE;
   readonly items: ChoiceItem[];
-  readonly defaultItemIndex?: number;
+  readonly defaultValue?: string;
 }
 
 export const isChoiceVariable = (

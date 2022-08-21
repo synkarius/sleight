@@ -245,20 +245,16 @@ const deleteSelectorItem = (
 const toggleDefaultEnabled = (state: Variable): Variable => {
   const variableType = state.type;
   switch (variableType) {
-    case VariableType.Enum.TEXT:
-      return {
-        ...state,
-        defaultValue: state.defaultValue === undefined ? '' : undefined,
-      };
     case VariableType.Enum.RANGE:
       return {
         ...state,
         defaultValue: state.defaultValue === undefined ? 0 : undefined,
       };
+    case VariableType.Enum.TEXT:
     case VariableType.Enum.CHOICE:
       return {
         ...state,
-        defaultItemIndex: state.defaultItemIndex === undefined ? 0 : undefined,
+        defaultValue: state.defaultValue === undefined ? '' : undefined,
       };
     default:
       throw new ExhaustivenessFailureError(variableType);
@@ -280,10 +276,10 @@ const changeDefaultNumber = (
 
 const changeDefaultIndex = (
   state: ChoiceVariable,
-  action: VariableReducerNumberAction
+  action: VariableReducerStringAction
 ): ChoiceVariable => ({
   ...state,
-  defaultItemIndex: action.payload,
+  defaultValue: action.payload,
 });
 
 export const variableReactReducer = (
@@ -350,7 +346,7 @@ export const variableReactReducer = (
         return changeDefaultNumber(state, action);
       }
       throw new WrongTypeError(state.type);
-    case VariableReducerActionType.CHANGE_DEFAULT_INDEX:
+    case VariableReducerActionType.CHANGE_DEFAULT_CHOICE:
       if (isChoiceVariable(state)) {
         return changeDefaultIndex(state, action);
       }

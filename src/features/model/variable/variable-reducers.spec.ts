@@ -9,6 +9,7 @@ import {
   createRangeVariable,
   createTextVariable,
   RangeVariable,
+  TextVariable,
 } from './data/variable';
 import { VariableDTO } from './data/variable-dto';
 import { VariableReducerActionType } from './variable-editing-context';
@@ -366,5 +367,110 @@ describe('variable reducer', () => {
         },
       ],
     });
+  });
+
+  it('should handle toggle text variable default', () => {
+    const objDefaultDisabled: TextVariable = {
+      ...createTextVariable(),
+      defaultValue: undefined,
+    };
+
+    const actualEnabled = variableReactReducer(objDefaultDisabled, {
+      type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
+    });
+
+    expect(actualEnabled.defaultValue).not.toBeUndefined();
+
+    const objDefaultEnabled: TextVariable = {
+      ...createTextVariable(),
+      defaultValue: '',
+    };
+
+    const actualDisabled = variableReactReducer(objDefaultEnabled, {
+      type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
+    });
+
+    expect(actualDisabled.defaultValue).toBeUndefined();
+  });
+
+  it('should handle toggle range variable default', () => {
+    const objDefaultDisabled: RangeVariable = {
+      ...createRangeVariable(),
+      defaultValue: undefined,
+    };
+
+    const actualEnabled = variableReactReducer(objDefaultDisabled, {
+      type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
+    });
+
+    expect(actualEnabled.defaultValue).not.toBeUndefined();
+
+    const objDefaultEnabled: RangeVariable = {
+      ...createRangeVariable(),
+      defaultValue: 0,
+    };
+
+    const actualDisabled = variableReactReducer(objDefaultEnabled, {
+      type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
+    });
+
+    expect(actualDisabled.defaultValue).toBeUndefined();
+  });
+
+  it('should handle toggle choice variable default', () => {
+    const objDefaultDisabled: ChoiceVariable = {
+      ...createChoiceVariable(),
+      defaultValue: undefined,
+    };
+
+    const actualEnabled = variableReactReducer(objDefaultDisabled, {
+      type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
+    });
+
+    expect(actualEnabled.defaultValue).not.toBeUndefined();
+
+    const objDefaultEnabled: ChoiceVariable = {
+      ...createChoiceVariable(),
+      defaultValue: '',
+    };
+
+    const actualDisabled = variableReactReducer(objDefaultEnabled, {
+      type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
+    });
+
+    expect(actualDisabled.defaultValue).toBeUndefined();
+  });
+
+  it('should handle change text variable default', () => {
+    const obj = createTextVariable();
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_DEFAULT_TEXT,
+      payload: 'asdf',
+    });
+
+    expect(actual.defaultValue).toBe('asdf');
+  });
+
+  it('should handle change range variable default', () => {
+    const obj = createRangeVariable();
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_DEFAULT_NUMBER,
+      payload: 10,
+    });
+
+    expect(actual.defaultValue).toBe(10);
+  });
+
+  it('should handle change choice variable default', () => {
+    const obj = createChoiceVariable();
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.CHANGE_DEFAULT_CHOICE,
+      payload: 'asdf',
+    });
+
+    expect(actual.defaultValue).toBe('asdf');
   });
 });

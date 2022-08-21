@@ -52,7 +52,7 @@ export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
         items: domain.items.map((item) =>
           choiceItemDomainMapper.mapFromDomain(item)
         ),
-        defaultItemIndex: domain.defaultItemIndex,
+        defaultValue: domain.defaultValue,
       }),
       mapToDomain: (
         dto: ChoiceVariableDTO,
@@ -65,7 +65,7 @@ export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
         items: dto.items.map((item) =>
           choiceItemDomainMapper.mapToDomain(item, selectorDtos)
         ),
-        defaultItemIndex: dto.defaultItemIndex,
+        defaultValue: dto.defaultValue,
       }),
     };
   };

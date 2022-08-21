@@ -67,4 +67,37 @@ describe('range variable component tests', () => {
 
     expect(maxInput).toHaveClass('is-invalid');
   });
+
+  it("should show default number input when 'Use Default' is checked", async () => {
+    const typeSelect = screen.getByRole('list', {
+      name: Field[Field.VAR_TYPE_SELECT],
+    });
+    await user.selectOptions(typeSelect, VariableType.Enum.RANGE);
+    const useDefaultCheckbox = screen.getByRole('checkbox', {
+      name: 'Use Default',
+    });
+    await user.click(useDefaultCheckbox);
+    const defaultInput = screen.getByRole(NUMBER_TEXT_BOX, {
+      name: Field[Field.VAR_RANGE_DEFAULT_VALUE],
+    });
+
+    expect(defaultInput).toBeVisible();
+  });
+
+  it("should hide default number input when 'Use Default' is unchecked", async () => {
+    const typeSelect = screen.getByRole('list', {
+      name: Field[Field.VAR_TYPE_SELECT],
+    });
+    await user.selectOptions(typeSelect, VariableType.Enum.RANGE);
+    const useDefaultCheckbox = screen.getByRole('checkbox', {
+      name: 'Use Default',
+    });
+    await user.click(useDefaultCheckbox);
+    await user.click(useDefaultCheckbox);
+    const defaultInput = screen.queryByRole(NUMBER_TEXT_BOX, {
+      name: Field[Field.VAR_RANGE_DEFAULT_VALUE],
+    });
+
+    expect(defaultInput).not.toBeInTheDocument();
+  });
 });

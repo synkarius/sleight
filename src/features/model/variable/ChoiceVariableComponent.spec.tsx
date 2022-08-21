@@ -8,6 +8,7 @@ import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from './variable-types';
 import { InjectionContext } from '../../../di/injector-context';
 import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { TEXT_BOX } from '../common/accessibility-roles';
 
 let user: UserEvent;
 
@@ -109,5 +110,38 @@ describe('choice variable component tests', () => {
     await user.type(selectorInput, '$');
 
     expect(selectorInput).toHaveClass('is-invalid');
+  });
+
+  it("should show default textbox when 'Use Default' is checked", async () => {
+    const typeSelect = screen.getByRole('list', {
+      name: Field[Field.VAR_TYPE_SELECT],
+    });
+    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    const useDefaultCheckbox = screen.getByRole('checkbox', {
+      name: 'Use Default',
+    });
+    await user.click(useDefaultCheckbox);
+    const defaultInput = screen.getByRole(TEXT_BOX, {
+      name: Field[Field.VAR_CHOICE_DEFAULT_VALUE],
+    });
+
+    expect(defaultInput).toBeVisible();
+  });
+
+  it("should hide default textbox when 'Use Default' is unchecked", async () => {
+    const typeSelect = screen.getByRole('list', {
+      name: Field[Field.VAR_TYPE_SELECT],
+    });
+    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    const useDefaultCheckbox = screen.getByRole('checkbox', {
+      name: 'Use Default',
+    });
+    await user.click(useDefaultCheckbox);
+    await user.click(useDefaultCheckbox);
+    const defaultInput = screen.queryByRole(TEXT_BOX, {
+      name: Field[Field.VAR_CHOICE_DEFAULT_VALUE],
+    });
+
+    expect(defaultInput).not.toBeInTheDocument();
   });
 });

@@ -27,7 +27,7 @@ export interface ChoiceItemDTO extends RoleKeyed, Ided {
 export interface ChoiceVariableDTO extends AbstractVariableDTO {
   readonly type: typeof VariableType.Enum.CHOICE;
   readonly items: ChoiceItemDTO[];
-  readonly defaultItemIndex?: number;
+  readonly defaultValue?: string;
 }
 
 export type VariableDTO =

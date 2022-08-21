@@ -42,19 +42,19 @@ export const TextVariableComponent: React.FC<{ text: TextVariable }> = (
           />
         </Col>
       </Row>
-      <FormGroupRowComponent
-        labelText="Default Value"
-        descriptionText="value for when variable is optional in a spec"
-        hidden={props.text.defaultValue === undefined}
-      >
-        <FormControl
-          type="text"
-          onChange={defaultValueChangedHandler}
-          value={props.text.defaultValue}
-          role="textbox"
-          aria-label={Field[Field.VAR_TEXT_DEFAULT_VALUE]}
-        />
-      </FormGroupRowComponent>
+      {props.text.defaultValue !== undefined && (
+        <FormGroupRowComponent
+          labelText="Default Value"
+          descriptionText="value for when variable is optional in a spec"
+        >
+          <FormControl
+            type="text"
+            onChange={defaultValueChangedHandler}
+            value={props.text.defaultValue}
+            aria-label={Field[Field.VAR_TEXT_DEFAULT_VALUE]}
+          />
+        </FormGroupRowComponent>
+      )}
     </>
   );
 };
