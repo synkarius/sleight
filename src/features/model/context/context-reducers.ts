@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { Context } from './context';
 import { contextDefaultNamer } from './context-default-namer';
 import {

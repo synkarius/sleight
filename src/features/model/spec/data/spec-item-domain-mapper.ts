@@ -1,4 +1,4 @@
-import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
 import { SpecItemType } from '../spec-item-type';
 import { SpecItem } from './spec-domain';
 import { SpecItemDTO } from './spec-dto';

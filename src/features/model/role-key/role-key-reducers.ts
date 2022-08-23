@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { RoleKey } from './role-key';
 import {
   RoleKeyReducerActionType,

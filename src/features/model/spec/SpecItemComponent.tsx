@@ -16,7 +16,7 @@ import { SelectorComponent } from '../selector/SelectorComponent';
 import { VerticalMoveableComponent } from '../../ui/VerticalMoveableComponent';
 import { RequiredAsteriskComponent } from '../../ui/RequiredAsteriskComponent';
 import { SpecItemType } from './spec-item-type';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { SpecItem } from './data/spec-domain';
 import { ValidationContext } from '../../../validation/validation-context';
 import {

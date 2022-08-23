@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { NotImplementedError } from '../../../error/NotImplementedError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
+import { NotImplementedError } from '../../../error/not-implemented-error';
 import { Action } from './action';
 import { actionDefaultNamer } from './action-default-namer';
 import {

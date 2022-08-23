@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { MoveDirection } from '../common/move-direction';
 import { Spec, SpecItem, VariableSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';

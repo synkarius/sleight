@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { VariableType } from './variable-types';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import {
   VariableReducerAction,
   VariableReducerActionType,
@@ -28,7 +28,7 @@ import {
 import { VariableDTO } from './data/variable-dto';
 import { Ided, Named, RoleKeyed } from '../../domain';
 import { variableDefaultNamer } from './variable-default-namer';
-import { WrongTypeError } from '../../../error/WrongTypeError';
+import { WrongTypeError } from '../../../error/wrong-type-error';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;

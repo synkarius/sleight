@@ -1,5 +1,5 @@
-import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFailureError';
-import { UnhandledFieldError } from '../../../../error/UnhandledFieldError';
+import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
+import { UnhandledFieldError } from '../../../../error/unhandled-field-error';
 import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { Action } from '../action';

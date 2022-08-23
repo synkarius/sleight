@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
-import { WrongTypeError } from '../../../error/WrongTypeError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
+import { WrongTypeError } from '../../../error/wrong-type-error';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
 import { Command, copyCommand, isSelectedSpecCommand } from './command';

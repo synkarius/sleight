@@ -1,5 +1,5 @@
 import { ErrorCode } from './error-codes';
-import { SleightError } from './SleightError';
+import { SleightError } from './sleight-error';
 
 /**
  * This error prevents data corruption due to dev mistakes.

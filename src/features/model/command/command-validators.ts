@@ -1,4 +1,4 @@
-import { NotImplementedError } from '../../../error/NotImplementedError';
+import { NotImplementedError } from '../../../error/not-implemented-error';
 import { isSelected } from '../../../util/common-functions';
 import {
   createNameTakenValidator,
@@ -28,6 +28,11 @@ import {
   isSelectedSpecCommand,
 } from './command';
 import { SpecDTO } from '../spec/data/spec-dto';
+import { CrossSliceValidatorConfig } from '../../../validation/cross-slice/cross-slice-validator-config';
+import { retainActionsSpecsAndSingleCommand } from '../../../validation/cross-slice/data-transform-fn';
+import { ValidateAllFunction } from '../../../validation/cross-slice/validate-all-fn';
+import { createCrossSliceValidator } from '../../../validation/cross-slice/cross-slice-validator-factory';
+import { MapUtil } from '../../../util/map-util';
 
 const nameTakenValidator = createNameTakenValidator<Command, Command>(
   Field.CMD_NAME,
@@ -104,13 +109,19 @@ const extractVariablesFromAction = (
 };
 
 const CMD_SAVE = Field.CMD_SAVE;
-const specsProvideVariablesToCoverActions: FieldValidator<Command> = {
-  field: CMD_SAVE,
-  isApplicable: (command) => isSelectedSpecCommand(command),
-  validate: (command, data) => {
+const specsProvideVariablesToCoverActionsConfig: CrossSliceValidatorConfig<Command> =
+  {
+    field: CMD_SAVE,
+    isApplicable: (command) => isSelectedSpecCommand(command),
+    dataTransformFn: retainActionsSpecsAndSingleCommand,
+    sliceSpecificErrorMessage:
+      "actions' variables are inadequately covered by spec",
+  };
+const specsProvideVariablesToCoverActionsFn: ValidateAllFunction = (data) => {
+  const invalidCommand = Object.values(data.commands).find((command) => {
     if (isSelectedSpecCommand(command)) {
       const variablesInActions = command.actionIds
-        .map((actionId) => data.actions[actionId])
+        .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
         .flatMap(extractVariablesFromAction)
         .filter(isVariableActionValue)
         .map((actionValue) => actionValue.variableId);
@@ -121,19 +132,26 @@ const specsProvideVariablesToCoverActions: FieldValidator<Command> = {
         const specDoesntCoverActions = !!variablesInActions.find(
           (variableId) => !variablesInSpec.includes(variableId)
         );
-        if (specDoesntCoverActions) {
-          return {
-            type: ValidationResultType.BASIC,
-            field: CMD_SAVE,
-            code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
-            message: "actions' variables are inadequately covered by spec",
-          };
-        }
+        return specDoesntCoverActions;
       }
+      // TODO: this `true` is the result of the spec not being found, which should never happen
+      // -- should use something other than Record for map access
+      return true;
     }
-    return validResult(CMD_SAVE);
-  },
+  });
+  return !invalidCommand
+    ? validResult(CMD_SAVE)
+    : {
+        type: ValidationResultType.BASIC,
+        field: CMD_SAVE,
+        code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
+        message: "actions' variables are inadequately covered by spec",
+      };
 };
+const specsProvideVariablesToCoverActions = createCrossSliceValidator(
+  specsProvideVariablesToCoverActionsConfig,
+  specsProvideVariablesToCoverActionsFn
+);
 
 /**
  * This validator is probably complete, but not including it until role key design

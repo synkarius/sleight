@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { VariableDTO } from '../variable/data/variable-dto';
 import { Spec, SpecItem } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';

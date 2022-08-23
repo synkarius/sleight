@@ -1,4 +1,4 @@
-import { ExhaustivenessFailureError } from '../../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
 import { SelectorDTO } from '../../selector/data/selector-dto';
 import { VariableType } from '../variable-types';
 import { getChoiceVariableDomainMapper } from './choice-variable-domain-mapper';

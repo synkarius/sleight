@@ -1,4 +1,4 @@
-import { ExhaustivenessFailureError } from '../../../error/ExhaustivenessFailureError';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { ElementType } from '../../../features/model/common/element-types';
 import { ContextType } from '../../../features/model/context/context-types';
 import { SelectorDTO } from '../../../features/model/selector/data/selector-dto';
