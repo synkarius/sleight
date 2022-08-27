@@ -101,16 +101,18 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const enteredValueFieldName = Field[props.fields.value];
   const isChecked = (actionValueType: string): boolean =>
     props.actionValue.actionValueType === actionValueType;
+  const variableId = isVariableActionValue(props.actionValue)
+    ? props.actionValue.variableId
+    : undefined;
 
   return (
     <FormGroupRowComponent
       labelText={props.labelText}
       descriptionText={props.descriptionText}
-      errorMessage={errorResults([
-        props.fields.value,
-        props.fields.variable,
-        props.fields.roleKey,
-      ])}
+      errorMessage={errorResults(
+        [props.fields.value, props.fields.variable, props.fields.roleKey],
+        variableId
+      )}
       required={props.required}
     >
       <div role="radiogroup" aria-label={Field[props.fields.radio]}>
@@ -179,7 +181,12 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           selectedVariableId={props.actionValue.variableId}
           onChange={(e) => variableIdChangedFn(e.target.value)}
           onBlur={(_e) => touchVariable()}
-          isInvalid={!!errorResults([props.fields.variable])}
+          isInvalid={
+            !!errorResults(
+              [props.fields.variable],
+              props.actionValue.variableId
+            )
+          }
           variableTypeFilter={[props.actionValue.variableType]}
         />
       )}

@@ -14,7 +14,7 @@ import { Variable } from './model/variable/data/variable';
 // Some validations have to be run cross-slice. This file is a place to keep those organized.
 
 export const getCrossSliceActionValidators = (): FieldValidator<Action>[] => [
-  // getActionSideSpecAdequacyValidator(),
+  getActionSideSpecAdequacyValidator(),
 ];
 export const getCrossSliceCommandValidators = (): FieldValidator<Command>[] => [
   getCommandSideSpecAdequacyValidator(),
@@ -24,7 +24,7 @@ export const getCrossSliceContextValidators =
 export const getCrossSliceRoleKeyValidators =
   (): FieldValidator<RoleKey>[] => [];
 export const getCrossSliceSpecValidators = (): FieldValidator<Spec>[] => [
-  // getSpecSideSpecAdequacyValidator(),
+  getSpecSideSpecAdequacyValidator(),
 ];
 export const getCrossSliceVariableValidators =
   (): FieldValidator<Variable>[] => [];

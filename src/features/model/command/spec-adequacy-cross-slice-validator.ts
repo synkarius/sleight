@@ -128,6 +128,7 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
         .map((variableId) => MapUtil.getOrThrow(data.variables, variableId));
 
       const variableActionValuesInActions = command.actionIds
+        .filter((actionId) => actionId !== SELECT_DEFAULT_VALUE)
         .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
         .flatMap(extractVariablesFromAction);
 
@@ -156,9 +157,9 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
           .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
           .map((action) => action.name)
           .join('", "');
-        const noncoveredVariableNames = noncoveredVariables
-          .map((v) => v.name)
-          .join('", "');
+        const noncoveredVariableNames = Array.from(
+          new Set(noncoveredVariables.map((v) => v.name))
+        ).join('", "');
 
         switch (config.editingElementType) {
           case ElementType.Enum.ACTION:
@@ -171,9 +172,9 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
               type: ValidationResultType.MULTI_FIELD,
               code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
               message:
-                `this action is used in the command "${command.name}" which would` +
-                ' have inadequate spec-action coverage in this state, due to the following' +
-                ` variables: "${noncoveredVariableNames}"`,
+                `this action is used in the command "${command.name}" which, due to` +
+                ` spec "${spec.name}" would have inadeque variable coverage of the following` +
+                ` variables in this state: "${noncoveredVariableNames}"`,
               ids: noncoveredVariables.map((v) => v.id),
             };
           case ElementType.Enum.COMMAND:

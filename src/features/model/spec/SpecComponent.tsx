@@ -128,6 +128,13 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           )}
         </Col>
       </div>
+      {!!errorResults([Field.SP_SAVE]) && (
+        <Col sm="12" className="mb-3">
+          <span className="text-danger small">
+            {errorResults([Field.SP_SAVE])}
+          </span>
+        </Col>
+      )}
 
       <Col sm="12" className="mb-1">
         <Button

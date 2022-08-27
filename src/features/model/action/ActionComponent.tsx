@@ -111,13 +111,6 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       {isMouseAction(props.action) && (
         <MouseComponent mouseAction={props.action} />
       )}
-      {!!errorResults([Field.AC_SAVE]) && (
-        <Col sm="12" className="mb-3">
-          <span className="text-danger small">
-            {errorResults([Field.AC_SAVE])}
-          </span>
-        </Col>
-      )}
       <Button
         onClick={submitHandler}
         variant="primary"
