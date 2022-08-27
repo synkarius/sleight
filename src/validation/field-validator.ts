@@ -1,6 +1,5 @@
 import { Field } from './validation-field';
 import {
-  ErrorValidationResult,
   ValidationResult,
   ValidationResultType,
   validResult,
@@ -10,35 +9,31 @@ import { SleightDataInternalFormat } from '../data/data-formats';
 import { Ided, Named } from '../features/domain';
 import { alwaysTrue } from '../util/common-functions';
 
-export type FieldValidator<T> = {
-  readonly field: Field;
+export enum ValidatorType {
+  FIELD,
+  FIELDS,
+}
+
+interface AbstractValidator<T> {
+  readonly validatorType: ValidatorType;
   readonly isApplicable: (t: T) => boolean;
   readonly validate: (
     t: T,
     data: Readonly<SleightDataInternalFormat>
   ) => ValidationResult;
-};
+}
 
-/**
- * To be used in tsx files to get the error message where
- * multiple validators apply.
- * @param errorResults
- * @param validators
- * @returns
- */
-export const getRelevantErrorMessage = (
-  errorResults: ErrorValidationResult[],
-  fields: Field[]
-): string | undefined => {
-  for (let i = 0; i < fields.length; i++) {
-    for (let k = 0; k < errorResults.length; k++) {
-      if (fields[i] === errorResults[k].field) {
-        return errorResults[k].message;
-      }
-    }
-  }
-  return undefined;
-};
+interface SingleFieldValidator<T> extends AbstractValidator<T> {
+  readonly validatorType: typeof ValidatorType.FIELD;
+  readonly field: Field;
+}
+
+interface FieldsValidator<T> extends AbstractValidator<T> {
+  readonly validatorType: typeof ValidatorType.FIELDS;
+  readonly fields: Field[];
+}
+
+export type FieldValidator<T> = SingleFieldValidator<T> | FieldsValidator<T>;
 
 export const createValidator = <T>(
   field: Field,
@@ -48,6 +43,7 @@ export const createValidator = <T>(
   message: string
 ): FieldValidator<T> => {
   return {
+    validatorType: ValidatorType.FIELD,
     field: field,
     isApplicable: isApplicable,
     validate: (t) => {
@@ -75,6 +71,7 @@ export const createNameTakenValidator = <
   code: ValidationErrorCode
 ): FieldValidator<D> => {
   return {
+    validatorType: ValidatorType.FIELD,
     field: field,
     isApplicable: alwaysTrue,
     validate: (action, data): ValidationResult => {

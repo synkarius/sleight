@@ -2,6 +2,7 @@ import { alwaysTrue, notEmpty } from '../../../util/common-functions';
 import {
   createValidator,
   FieldValidator,
+  ValidatorType,
 } from '../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
@@ -15,6 +16,7 @@ import { RoleKey } from './role-key';
 const rkValueField = Field.RK_ROLE_KEY;
 
 const noDuplicatesValidator: FieldValidator<RoleKey> = {
+  validatorType: ValidatorType.FIELD,
   field: rkValueField,
   isApplicable: alwaysTrue,
   validate: (action, data): ValidationResult => {

@@ -5,11 +5,11 @@ export enum ValidationResultType {
   VALID,
   BASIC,
   ID_LIST,
+  MULTI_FIELD,
 }
 
 interface AbstractValidationResult {
   readonly type: ValidationResultType;
-  readonly field: Field;
 }
 
 /**
@@ -17,6 +17,7 @@ interface AbstractValidationResult {
  */
 interface ValidValidationResult extends AbstractValidationResult {
   readonly type: typeof ValidationResultType.VALID;
+  readonly field: Field;
 }
 
 export const validResult = (field: Field): ValidValidationResult => ({
@@ -35,6 +36,7 @@ interface AbstractInvalidValidationResult extends AbstractValidationResult {
  */
 interface BasicValidationResult extends AbstractInvalidValidationResult {
   readonly type: typeof ValidationResultType.BASIC;
+  readonly field: Field;
 }
 
 /**
@@ -44,11 +46,19 @@ interface BasicValidationResult extends AbstractInvalidValidationResult {
 export interface IdListValidationResult
   extends AbstractInvalidValidationResult {
   readonly type: typeof ValidationResultType.ID_LIST;
+  readonly field: Field;
+  readonly ids: string[];
+}
+
+interface MultiFieldValidationResult extends AbstractInvalidValidationResult {
+  readonly type: typeof ValidationResultType.MULTI_FIELD;
+  readonly errorHighlightFields: Field[];
   readonly ids: string[];
 }
 
 export type ErrorValidationResult =
   | BasicValidationResult
-  | IdListValidationResult;
+  | IdListValidationResult
+  | MultiFieldValidationResult;
 
 export type ValidationResult = ValidValidationResult | ErrorValidationResult;

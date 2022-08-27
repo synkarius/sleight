@@ -1,5 +1,11 @@
 import React, { useContext } from 'react';
-import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  FormControl,
+  FormSelect,
+  FormText,
+} from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
@@ -19,7 +25,7 @@ import { actionDefaultNamer } from './action-default-namer';
 import { Action } from './action';
 import { isMouseAction } from './mouse/mouse';
 import { MouseComponent } from './mouse/MouseComponent';
-import { getRelevantErrorMessage } from '../../../validation/field-validator';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -56,17 +62,22 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     }
   };
 
-  const validationErrors = validationContext.getErrorResults();
-  const nameError = getRelevantErrorMessage(validationErrors, [Field.AC_NAME]);
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  const AC_NAME = Field.AC_NAME;
+
   return (
     <PanelComponent header="Create/Edit Action">
-      <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
+      <FormGroupRowComponent
+        labelText="Name"
+        errorMessage={errorResults([AC_NAME])}
+      >
         <FormControl
-          aria-label={Field[Field.AC_NAME]}
+          aria-label={Field[AC_NAME]}
           type="text"
           onChange={nameChangedHandler}
-          onBlur={() => validationContext.touch(Field.AC_NAME)}
-          isInvalid={!!nameError}
+          onBlur={() => validationContext.touch(AC_NAME)}
+          isInvalid={!!errorResults([AC_NAME])}
           value={props.action.name}
           placeholder={actionDefaultNamer.getDefaultName(props.action)}
         />
@@ -100,11 +111,18 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       {isMouseAction(props.action) && (
         <MouseComponent mouseAction={props.action} />
       )}
+      {!!errorResults([Field.AC_SAVE]) && (
+        <Col sm="12" className="mb-3">
+          <span className="text-danger small">
+            {errorResults([Field.AC_SAVE])}
+          </span>
+        </Col>
+      )}
       <Button
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={validationErrors.length > 0}
+        disabled={fullErrorResults.length > 0}
       >
         Save
       </Button>

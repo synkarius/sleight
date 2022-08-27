@@ -14,10 +14,20 @@ export interface SelectorSpecItem extends AbstractSpecItem {
   readonly selector: Selector;
 }
 
+export const isSelectorSpecItem = (
+  specItem: AbstractSpecItem
+): specItem is SelectorSpecItem =>
+  specItem.itemType === SpecItemType.Enum.SELECTOR;
+
 export interface VariableSpecItem extends AbstractSpecItem {
   readonly itemType: typeof SpecItemType.Enum.VARIABLE;
   readonly variableId: string;
 }
+
+export const isVariableSpecItem = (
+  specItem: AbstractSpecItem
+): specItem is VariableSpecItem =>
+  specItem.itemType === SpecItemType.Enum.VARIABLE;
 
 export type SpecItem = SelectorSpecItem | VariableSpecItem;
 

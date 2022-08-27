@@ -5,6 +5,9 @@ export enum Field {
   AC_NAME,
   AC_TYPE,
   AC_ROLE_KEY,
+  AC_SAVE,
+  // action: pause
+  AC_CENTISECONDS_VAR,
   // action: send key :
   AC_SEND_KEY_MODE,
   // action: mouse
@@ -59,6 +62,7 @@ export enum Field {
   SP_ITEM_TYPE_SELECT,
   SP_ITEM_SELECTOR,
   SP_ITEM_VARIABLE,
+  SP_SAVE,
   // variable:
   VAR_NAME,
   VAR_ROLE_KEY,

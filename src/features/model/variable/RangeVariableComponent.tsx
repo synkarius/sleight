@@ -4,7 +4,6 @@ import {
   Form,
   FormControl,
   FormGroup,
-  FormLabel,
   FormText,
   Row,
 } from 'react-bootstrap';
@@ -16,6 +15,7 @@ import { RangeVariable } from './data/variable';
 import { Field } from '../../../validation/validation-field';
 import { ValidationContext } from '../../../validation/validation-context';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 
 export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   props
@@ -55,9 +55,9 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   };
 
   const rangeMax = Field.VAR_RANGE_MAX;
-  const rangeIsInvalidErrorMessage = validationContext
-    .getErrorResults()
-    .find((errorResult) => errorResult.field === rangeMax)?.message;
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  const rangeIsInvalidErrorMessage = errorResults([rangeMax]);
 
   return (
     <>

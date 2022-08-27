@@ -29,6 +29,7 @@ import { saveAction } from '../action/action-reducers';
 import { EnterValueType } from '../action/action-value/action-value';
 import { ActionValueType } from '../action/action-value/action-value-type';
 import { VariableType } from '../variable/variable-types';
+import { CommandSpecType } from './command-spec-type';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';
@@ -109,11 +110,14 @@ beforeAll(() => {
     },
   };
   store.dispatch(saveAction(actionWithVar));
-  // save a command with a name (this command is invalid, but it's only used to validate a new command)
+  // save a command with a name
   store.dispatch(
     saveEditingCommand({
       ...createCommand(),
       name: COMMAND_NAME,
+      specType: CommandSpecType.Enum.SPEC,
+      specId: specWithNoVar.id,
+      actionIds: [actionWithNoVar.id],
     })
   );
   user = userEvent.setup();
@@ -188,6 +192,43 @@ describe('command component tests', () => {
     expect(nameField).toHaveClass('is-invalid');
   });
 
+  it('should validate on save if spec has no variables and actions are empty', async () => {
+    const specSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+    });
+    // select a spec with no variables
+    await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);
+    // then just save
+    const saveButton = screen.getByText('Save');
+    await user.click(saveButton);
+
+    const errorText = screen.queryByText(getInadequateSpecsRegex());
+
+    expect(saveButton).not.toBeDisabled();
+    expect(errorText).not.toBeInTheDocument();
+  });
+
+  it('should validate on save if spec has unused variables and actions are empty', async () => {
+    const specSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+    });
+    // select a spec with variables
+    await user.selectOptions(specSelect, [SPEC_WITH_VAR_NAME]);
+    // then just save
+    const saveButton = screen.getByText('Save');
+    await user.click(saveButton);
+
+    const errorText = screen.queryByText(getInadequateSpecsRegex());
+
+    expect(saveButton).not.toBeDisabled();
+    expect(errorText).not.toBeInTheDocument();
+  });
+
+  /*
+   * Scenario:
+   * - spec: provides no var
+   * - action: requires var
+   */
   it('should invalidate on save if spec var coverage of actions is inadequate', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.CMD_SPEC_SPEC_SELECT],
@@ -204,14 +245,17 @@ describe('command component tests', () => {
     const saveButton = screen.getByText('Save');
     await user.click(saveButton);
 
-    const errorText = screen.getByText(
-      "actions' variables are inadequately covered by spec"
-    );
+    const errorText = screen.getByText(getInadequateSpecsRegex());
 
     expect(saveButton).toBeDisabled();
     expect(errorText).toBeInTheDocument();
   });
 
+  /*
+   * Scenario:
+   * - spec: provides var
+   * - action: requires var
+   */
   it('should validate on save if spec var coverage of actions is adequate', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.CMD_SPEC_SPEC_SELECT],
@@ -228,50 +272,69 @@ describe('command component tests', () => {
     const saveButton = screen.getByText('Save');
     await user.click(saveButton);
 
-    const errorText = screen.queryByText(
-      "actions' variables are inadequately covered by spec"
-    );
+    const errorText = screen.queryByText(getInadequateSpecsRegex());
 
     expect(saveButton).not.toBeDisabled();
     expect(errorText).not.toBeInTheDocument();
   });
 
-  it('should validate on save if spec has no variables and actions are empty', async () => {
-    const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
-    });
-    // select a spec with no variables
-    await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);
-    // then just save
-    const saveButton = screen.getByText('Save');
-    await user.click(saveButton);
-
-    const errorText = screen.queryByText(
-      "actions' variables are inadequately covered by spec"
-    );
-
-    expect(saveButton).not.toBeDisabled();
-    expect(errorText).not.toBeInTheDocument();
-  });
-
-  it('should validate on save if spec has unused variables and actions are empty', async () => {
+  /*
+   * Scenario:
+   * - spec: provides var
+   * - action: requires no var
+   */
+  it('should validate on save if spec has unused variables and actions require no variables', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.CMD_SPEC_SPEC_SELECT],
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [SPEC_WITH_VAR_NAME]);
-    // then just save
+    const addActionButton = screen.getByText<HTMLButtonElement>('Add Action');
+    await user.click(addActionButton);
+    const actionSelect = screen.getByRole('list', {
+      name: Field[Field.CMD_ACTION_SELECT],
+    });
+    // select an action with no variables
+    await user.selectOptions(actionSelect, ACTION_NO_VAR_NAME);
     const saveButton = screen.getByText('Save');
     await user.click(saveButton);
 
-    const errorText = screen.queryByText(
-      "actions' variables are inadequately covered by spec"
-    );
+    const errorText = screen.queryByText(getInadequateSpecsRegex());
+
+    expect(saveButton).not.toBeDisabled();
+    expect(errorText).not.toBeInTheDocument();
+  });
+
+  /*
+   * Scenario:
+   * - spec: provides no var
+   * - action: requires no var
+   */
+  it('should validate on save if spec and action both have no vars', async () => {
+    const specSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+    });
+    // select a spec with no variables
+    await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);
+    const addActionButton = screen.getByText<HTMLButtonElement>('Add Action');
+    await user.click(addActionButton);
+    // select an action with variables
+    const actionSelect = screen.getByRole('list', {
+      name: Field[Field.CMD_ACTION_SELECT],
+    });
+    await user.selectOptions(actionSelect, ACTION_NO_VAR_NAME);
+    const saveButton = screen.getByText('Save');
+    await user.click(saveButton);
+
+    const errorText = screen.queryByText(getInadequateSpecsRegex());
 
     expect(saveButton).not.toBeDisabled();
     expect(errorText).not.toBeInTheDocument();
   });
 });
+
+const getInadequateSpecsRegex = () =>
+  /this command's spec \(.*\) does not provide variables adequate/;
 
 const createTestReduxSpec = (selector: Selector) => {
   const spec = createSpec();

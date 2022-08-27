@@ -26,8 +26,8 @@ import { saveSelector } from '../selector/selector-reducers';
 import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { variableDefaultNamer } from './variable-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
-import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { TextVariableComponent } from './TextVariableComponent';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -92,8 +92,10 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       reduxDispatch(setEditorFocus());
     }
   };
-  const errorResults = validationContext.getErrorResults();
-  const nameError = getRelevantErrorMessage(errorResults, [Field.VAR_NAME]);
+
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  const nameError = errorResults([Field.VAR_NAME]);
 
   return (
     <PanelComponent header="Create/Edit Variable">
@@ -145,7 +147,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={errorResults.length > 0}
+        disabled={fullErrorResults.length > 0}
       >
         Save
       </Button>

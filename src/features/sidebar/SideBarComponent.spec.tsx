@@ -24,7 +24,7 @@ import { Action } from '../model/action/action';
 
 let user: UserEvent;
 
-const ACTION_NAME_1 = 'action-name-1';
+const ACTION_NAME_1 = 'pause-action-name-1';
 const COMMAND_NAME_1 = 'command-name-1';
 const CONTEXT_NAME_1 = 'context-name-1';
 const ROLE_KEY_NAME_1 = 'role-key-name-1';
@@ -41,8 +41,6 @@ beforeAll(() => {
     name: ACTION_NAME_1,
   };
   store.dispatch(saveAction(action));
-  const command: Command = { ...createCommand(), name: COMMAND_NAME_1 };
-  store.dispatch(saveEditingCommand(command));
   const context: Context = { ...createContext(), name: CONTEXT_NAME_1 };
   store.dispatch(saveEditingContext(context));
   const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
@@ -53,6 +51,13 @@ beforeAll(() => {
     roleKeyId: roleKey.id,
     items: [],
   };
+  const command: Command = {
+    ...createCommand(),
+    name: COMMAND_NAME_1,
+    specType: CommandSpecType.Enum.SPEC,
+    specId: spec.id,
+  };
+  store.dispatch(saveEditingCommand(command));
   store.dispatch(saveEditingSpec(spec));
   const variable = { ...createRangeVariable(), name: VARIABLE_NAME_1 };
   store.dispatch(saveEditingVariable(variable));

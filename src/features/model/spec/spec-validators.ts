@@ -3,6 +3,7 @@ import {
   createNameTakenValidator,
   createValidator,
   FieldValidator,
+  ValidatorType,
 } from '../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
@@ -43,6 +44,7 @@ const findInvalidSelectorIds = (spec: Spec): string[] => {
 
 const specItemSelectorFields = Field.SP_ITEM_SELECTOR;
 const specSelectorItemsCantBeEmpty: FieldValidator<Spec> = {
+  validatorType: ValidatorType.FIELD,
   field: specItemSelectorFields,
   isApplicable: (spec) =>
     !!spec.items.find((item) => item.itemType === SpecItemType.Enum.SELECTOR),
@@ -72,6 +74,7 @@ const findSpecItemsWithUnselectedVariables = (spec: Spec): string[] => {
 
 const specItemVariableFields = Field.SP_ITEM_VARIABLE;
 const specVariableMustBeSelected: FieldValidator<Spec> = {
+  validatorType: ValidatorType.FIELD,
   field: specItemVariableFields,
   isApplicable: (spec) =>
     !!spec.items.find((item) => item.itemType === SpecItemType.Enum.VARIABLE),
@@ -102,6 +105,7 @@ const findNonAlphaSpaceSelectors = (spec: Spec): string[] => {
 };
 
 const specSelectorMustBeAlphaSpace: FieldValidator<Spec> = {
+  validatorType: ValidatorType.FIELD,
   field: specItemSelectorFields,
   isApplicable: (spec) =>
     !!spec.items.find((item) => item.itemType === SpecItemType.Enum.SELECTOR),

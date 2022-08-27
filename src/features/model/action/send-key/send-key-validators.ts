@@ -2,6 +2,7 @@ import { isSelected } from '../../../../util/common-functions';
 import {
   createValidator,
   FieldValidator,
+  ValidatorType,
 } from '../../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../../validation/validation-error-code';
 import { Field } from '../../../../validation/validation-field';
@@ -83,6 +84,7 @@ const keyToSendValidators: ActionValueValidators = {
     createNonSelectedRoleKeyError(KEY_TO_SEND)
   ),
   roleKeyedElementExists: {
+    validatorType: ValidatorType.FIELD,
     field: KTS_RK,
     isApplicable: (action) =>
       isSendKeyAction(action) && isRoleKeyActionValue(action.keyToSend),
@@ -134,6 +136,7 @@ const outerPauseValidators: ActionValueValidators = {
     createNonSelectedRoleKeyError(OUTER_PAUSE)
   ),
   roleKeyedElementExists: {
+    validatorType: ValidatorType.FIELD,
     field: OP_RK,
     isApplicable: (action) =>
       isSendKeyAction(action) && isRoleKeyActionValue(action.outerPause),
@@ -191,6 +194,7 @@ const innerPauseValidators: ActionValueValidators = {
     createNonSelectedRoleKeyError(INNER_PAUSE)
   ),
   roleKeyedElementExists: {
+    validatorType: ValidatorType.FIELD,
     field: IP_RK,
     isApplicable: (action) =>
       isSendKeyAction(action) &&
@@ -254,6 +258,7 @@ const repeatValidators: ActionValueValidators = {
     createNonSelectedRoleKeyError(REPEAT)
   ),
   roleKeyedElementExists: {
+    validatorType: ValidatorType.FIELD,
     field: RPT_RK,
     isApplicable: (action) =>
       isSendKeyAction(action) &&
@@ -335,6 +340,7 @@ const directionValidators: ActionValueValidators = {
     createNonSelectedRoleKeyError(DIRECTION)
   ),
   roleKeyedElementExists: {
+    validatorType: ValidatorType.FIELD,
     field: DIR_RK,
     isApplicable: (action) =>
       isSendKeyAction(action) &&

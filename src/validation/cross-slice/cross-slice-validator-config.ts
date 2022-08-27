@@ -1,13 +1,13 @@
+import { ElementType } from '../../features/model/common/element-types';
 import { Field } from '../validation-field';
-import { DataTransformFunction } from './data-transform-fn';
 
-export type CrossSliceValidatorConfig<E> = {
-  /** triggers validation on touch */
-  field: Field;
-  /** determines applicability per type */
-  isApplicable: (element: E) => boolean;
-  /** alter the data in some (immutable) way before validating */
-  dataTransformFn: DataTransformFunction<E>;
-  /** error message for one of the 'sides' of the validation */
-  sliceSpecificErrorMessage?: string;
+export type ValidationConfig = {
+  /**
+   * `fields` which cause a validation when touched
+   */
+  touchTriggersValidationFields: Field[];
+  /**
+   * metadata to construct error messages/results
+   */
+  editingElementType: ElementType.Type;
 };

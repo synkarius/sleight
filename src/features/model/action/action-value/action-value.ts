@@ -68,7 +68,7 @@ export const isVariableActionValue = (
 ): actionValue is AbstractVariableActionValue =>
   actionValue.actionValueType === ActionValueType.Enum.USE_VARIABLE;
 
-interface VariableTextActionValue extends AbstractVariableActionValue {
+export interface VariableTextActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.TEXT;
 }
 
@@ -77,7 +77,7 @@ export const isVariableTextActionValue = (
 ): actionValue is VariableTextActionValue =>
   actionValue.variableType === VariableType.Enum.TEXT;
 
-interface VariableRangeActionValue extends AbstractVariableActionValue {
+export interface VariableRangeActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.RANGE;
 }
 
@@ -86,7 +86,7 @@ export const isVariableRangeActionValue = (
 ): actionValue is VariableRangeActionValue =>
   actionValue.variableType === VariableType.Enum.RANGE;
 
-interface VariableChoiceActionValue extends AbstractVariableActionValue {
+export interface VariableChoiceActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.CHOICE;
 }
 

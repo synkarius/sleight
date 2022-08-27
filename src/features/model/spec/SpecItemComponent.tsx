@@ -40,7 +40,7 @@ export const SpecItemComponent: React.FC<{
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
 
-  const errorResults = validationContext.getErrorResults();
+  const fullErrorResults = validationContext.getErrorResults();
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSpecItemType = event.target.value as SpecItemType.Type;
     switch (newSpecItemType) {
@@ -128,8 +128,8 @@ export const SpecItemComponent: React.FC<{
       ? props.specItem.selector
       : undefined;
   const getVariableErrorMessage = () => {
-    for (let i = 0; i < errorResults.length; i++) {
-      const errorResult = errorResults[i];
+    for (let i = 0; i < fullErrorResults.length; i++) {
+      const errorResult = fullErrorResults[i];
       if (
         errorResult.type === ValidationResultType.ID_LIST &&
         errorResult.ids.includes(props.specItem.id)

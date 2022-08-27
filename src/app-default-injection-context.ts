@@ -2,6 +2,14 @@ import { getDragonflyExporter } from './data/exports/dragonfly/dragonfly-exporte
 import { getJsonExporter } from './data/exports/json-exporter';
 import { getJsonImporter } from './data/imports/json-importer';
 import { Injected } from './di/injector-context';
+import {
+  getCrossSliceActionValidators,
+  getCrossSliceCommandValidators,
+  getCrossSliceContextValidators,
+  getCrossSliceRoleKeyValidators,
+  getCrossSliceSpecValidators,
+  getCrossSliceVariableValidators,
+} from './features/cross-slice-validation-fns';
 import { getActionValidators } from './features/model/action/action-validators';
 import { getSendKeyValidators } from './features/model/action/send-key/send-key-validators';
 import { getCommandValidators } from './features/model/command/command-validators';
@@ -22,12 +30,19 @@ export const appDefaultInjectionContext: Injected = {
     dragonfly: getDragonflyExporter(),
   },
   validators: {
-    action: [...getActionValidators(), ...getSendKeyValidators()],
-    command: getCommandValidators(),
-    context: getContextValidators(),
-    roleKey: getRoleKeyValidators(),
-    spec: getSpecValidators(),
-    variable: getVariableValidators(),
+    action: [
+      ...getActionValidators(),
+      ...getSendKeyValidators(),
+      ...getCrossSliceActionValidators(),
+    ],
+    command: [...getCommandValidators(), ...getCrossSliceCommandValidators()],
+    context: [...getContextValidators(), ...getCrossSliceContextValidators()],
+    roleKey: [...getRoleKeyValidators(), ...getCrossSliceRoleKeyValidators()],
+    spec: [...getSpecValidators(), ...getCrossSliceSpecValidators()],
+    variable: [
+      ...getVariableValidators(),
+      ...getCrossSliceVariableValidators(),
+    ],
   },
   mappers: {
     selector: getSelectorDomainMapper(),

@@ -1,15 +1,9 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  Form,
-  FormControl,
-  FormSelect,
-  FormText,
-} from 'react-bootstrap';
+import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
-import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
@@ -71,9 +65,9 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     props.context.type === ContextType.Enum.EXECUTABLE_NAME
       ? 'executable to match'
       : 'window title to match';
-  const errorResults = validationContext.getErrorResults();
-  const errorMessage = getRelevantErrorMessage(errorResults, [matcherField]);
-  const nameError = getRelevantErrorMessage(errorResults, [Field.CTX_NAME]);
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  const nameError = errorResults([Field.CTX_NAME]);
 
   return (
     <PanelComponent header="Create/Edit Context">
@@ -116,27 +110,23 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         labelText="Matcher"
         descriptionText={matcherHelpText}
         required={true}
+        errorMessage={errorResults([matcherField])}
       >
         <FormControl
           type="text"
           onChange={matcherChangedHandler}
           onBlur={(_e) => validationContext.touch(matcherField)}
           value={props.context.matcher}
-          isInvalid={errorResults
-            .map((result) => result.field)
-            .includes(matcherField)}
+          isInvalid={!!errorResults([matcherField])}
           role="textbox"
           aria-label={Field[matcherField]}
         />
-        <Form.Control.Feedback type="invalid">
-          {errorMessage}
-        </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={errorResults.length > 0}
+        disabled={fullErrorResults.length > 0}
       >
         Save
       </Button>

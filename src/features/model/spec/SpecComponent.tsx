@@ -19,7 +19,7 @@ import {
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { specDefaultNamer } from './spec-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
-import { getRelevantErrorMessage } from '../../../validation/field-validator';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -61,11 +61,11 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       reduxDispatch(setEditorFocus());
     }
   };
-  const errorResults = validationContext.getErrorResults();
-  const noSpecItemsErrorMessage = errorResults.find(
-    (result) => result.field === Field.SP_ADD_ITEM_BUTTON
-  )?.message;
-  const nameError = getRelevantErrorMessage(errorResults, [Field.SP_NAME]);
+
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  const noSpecItemsErrorMessage = errorResults([Field.SP_ADD_ITEM_BUTTON]);
+  const nameError = errorResults([Field.SP_NAME]);
 
   return (
     <PanelComponent header="Create/Edit Spec">
@@ -134,7 +134,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           variant="primary"
           size="lg"
           onClick={saveSpecHandler}
-          disabled={errorResults.length > 0}
+          disabled={fullErrorResults.length > 0}
         >
           Save
         </Button>

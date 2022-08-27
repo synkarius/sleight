@@ -9,6 +9,7 @@ import {
 } from 'react-bootstrap';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { createSelector } from '../selector/data/selector-domain';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
@@ -51,10 +52,9 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
     });
   };
 
-  const errorResults = validationContext.getErrorResults();
-  const noChoiceItemsErrorMessage = errorResults.find(
-    (result) => result.field === addItemButton
-  )?.message;
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  const noChoiceItemsErrorMessage = errorResults([addItemButton]);
 
   return (
     <>

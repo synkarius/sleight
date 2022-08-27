@@ -3,7 +3,6 @@ import { Button, Col, FormControl, FormText } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
-import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
@@ -21,7 +20,7 @@ import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 import { commandDefaultNamer } from './command-default-namer';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
@@ -57,25 +56,19 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       reduxDispatch(setEditorFocus());
     }
   };
-  const errorResults = validationContext.getErrorResults();
-  const errorResultFields = errorResults.map((result) => result.field);
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
   const specFields = {
     radio: Field.CMD_SPEC_RADIO,
     variable: Field.CMD_SPEC_SPEC_SELECT,
     roleKey: Field.CMD_SPEC_RK_SELECT,
   };
-  const nameError = getRelevantErrorMessage(errorResults, [Field.CMD_NAME]);
-  const commandSpecVariableIsInvalid = () =>
-    errorResultFields.includes(specFields.variable);
-  const commandSpecRoleKeyIsInvalid = () =>
-    errorResultFields.includes(specFields.roleKey);
-  const specTypeErrorMessage = getRelevantErrorMessage(errorResults, [
+  const nameError = errorResults([Field.CMD_NAME]);
+  const specTypeErrorMessage = errorResults([
     specFields.variable,
     specFields.roleKey,
   ]);
-  const onSaveErrorMessage = getRelevantErrorMessage(errorResults, [
-    Field.CMD_SAVE,
-  ]);
+  const onSaveErrorMessage = errorResults([Field.CMD_SAVE]);
 
   return (
     <PanelComponent header="Create/Edit Command">
@@ -139,7 +132,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
               validationContext.touch(specFields.variable);
             }}
             onBlur={(_e) => validationContext.touch(specFields.variable)}
-            isInvalid={commandSpecVariableIsInvalid()}
+            isInvalid={!!errorResults([specFields.variable])}
           />
         )}
         {props.command.specType === CommandSpecType.Enum.ROLE_KEY && (
@@ -154,7 +147,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
               validationContext.touch(specFields.roleKey);
             }}
             onBlur={(_e) => validationContext.touch(specFields.roleKey)}
-            isInvalid={commandSpecRoleKeyIsInvalid()}
+            isInvalid={!!errorResults([specFields.roleKey])}
           />
         )}
       </FormGroupRowComponent>
@@ -196,8 +189,16 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
                   newActionId: e.target.value,
                 },
               });
+              validationContext.touch(Field.CMD_ACTION_SELECT);
             }}
+            onBlur={() => validationContext.touch(Field.CMD_ACTION_SELECT)}
+            isInvalid={!!errorResults([Field.CMD_ACTION_SELECT], actionId)}
           />
+          {errorResults([Field.CMD_ACTION_SELECT], actionId) && (
+            <span className="small text-danger">
+              {errorResults([Field.CMD_ACTION_SELECT], actionId)}
+            </span>
+          )}
         </VerticalMoveableComponent>
       ))}
       <Col sm="12" className="mb-3">
@@ -209,7 +210,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={errorResults.length > 0}
+        disabled={fullErrorResults.length > 0}
       >
         Save
       </Button>

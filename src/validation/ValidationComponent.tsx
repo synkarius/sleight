@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
 import { useAllDataSelector } from '../data/use-all-data-selector';
-import { FieldValidator } from './field-validator';
+import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
+import { listsIntersect } from '../util/common-functions';
+import { FieldValidator, ValidatorType } from './field-validator';
 import { ValidationContext } from './validation-context';
 import { Field } from './validation-field';
 import {
@@ -23,6 +25,22 @@ type ValidationProps<E> = {
 type ValidationPropsComponent = <E>(
   props: ValidationProps<E>
 ) => React.ReactElement<ValidationProps<E>>;
+
+const isTouched = (
+  validator: FieldValidator<any>,
+  touched: Field[]
+): boolean => {
+  const validatorType = validator.validatorType;
+  switch (validatorType) {
+    case ValidatorType.FIELD:
+      return touched.includes(validator.field);
+    case ValidatorType.FIELDS:
+      return listsIntersect(validator.fields, touched);
+    default:
+      throw new ExhaustivenessFailureError(validatorType);
+  }
+};
+
 /**
  * Controls local validation.
  *
@@ -41,7 +59,7 @@ export const ValidationComponent: ValidationPropsComponent = (props) => {
   const validate = (mode: ValidateMode): ErrorValidationResult[] => {
     // submit means everything is touched
     return props.validators
-      .filter((v) => mode === ValidateMode.SUBMIT || touched.includes(v.field))
+      .filter((v) => mode === ValidateMode.SUBMIT || isTouched(v, touched))
       .filter((v) => v.isApplicable(props.editing))
       .map((v) => v.validate(props.editing, allData))
       .filter(

@@ -4,7 +4,6 @@ import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
 import { RoleKeyDropdownComponent } from '../../role-key/RoleKeyDropdownComponent';
 import { ActionValueType } from './action-value-type';
-import { getRelevantErrorMessage } from '../../../../validation/field-validator';
 import { ValidationContext } from '../../../../validation/validation-context';
 import {
   ActionEditingContext,
@@ -23,6 +22,7 @@ import {
   TextActionValue,
 } from './action-value';
 import { SELECT_DEFAULT_VALUE } from '../../common/consts';
+import { processErrorResults } from '../../../../validation/validation-result-processing';
 
 type ActionValueFields = {
   readonly radio: Field;
@@ -96,29 +96,21 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     touchRoleKey();
   };
 
-  const errorResults = validationContext.getErrorResults();
-  const errorResultFields = errorResults.map((result) => result.field);
-  const enteredValueIsInvalid = () =>
-    errorResultFields.includes(props.fields.value);
-  const variableSelectionIsInvalid = () =>
-    errorResultFields.includes(props.fields.variable);
-  const roleKeySelectionIsInvalid = () =>
-    errorResultFields.includes(props.fields.roleKey);
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
   const enteredValueFieldName = Field[props.fields.value];
-  const errorMessage = getRelevantErrorMessage(errorResults, [
-    props.fields.value,
-    props.fields.variable,
-    props.fields.roleKey,
-  ]);
-  const isChecked = (actionValueType: string): boolean => {
-    return props.actionValue.actionValueType === actionValueType;
-  };
+  const isChecked = (actionValueType: string): boolean =>
+    props.actionValue.actionValueType === actionValueType;
 
   return (
     <FormGroupRowComponent
       labelText={props.labelText}
       descriptionText={props.descriptionText}
-      errorMessage={errorMessage}
+      errorMessage={errorResults([
+        props.fields.value,
+        props.fields.variable,
+        props.fields.roleKey,
+      ])}
       required={props.required}
     >
       <div role="radiogroup" aria-label={Field[props.fields.radio]}>
@@ -143,7 +135,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             value={props.actionValue.value}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={enteredValueIsInvalid()}
+            isInvalid={!!errorResults([props.fields.value])}
             name={enteredValueFieldName}
             role="textbox"
             aria-label={enteredValueFieldName}
@@ -157,7 +149,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             min={0}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={enteredValueIsInvalid()}
+            isInvalid={!!errorResults([props.fields.value])}
             name={enteredValueFieldName}
             role="input"
             aria-label={enteredValueFieldName}
@@ -170,7 +162,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             aria-label={Field[props.fields.value]}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={enteredValueIsInvalid()}
+            isInvalid={!!errorResults([props.fields.value])}
             role="list"
           >
             <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
@@ -187,7 +179,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           selectedVariableId={props.actionValue.variableId}
           onChange={(e) => variableIdChangedFn(e.target.value)}
           onBlur={(_e) => touchVariable()}
-          isInvalid={variableSelectionIsInvalid()}
+          isInvalid={!!errorResults([props.fields.variable])}
           variableTypeFilter={[props.actionValue.variableType]}
         />
       )}
@@ -196,7 +188,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           roleKeyId={props.actionValue.roleKeyId}
           onChange={(e) => roleKeyIdChangedFn(e.target.value)}
           onBlur={(_e) => touchRoleKey()}
-          isInvalid={roleKeySelectionIsInvalid()}
+          isInvalid={!!errorResults([props.fields.roleKey])}
           field={props.fields.roleKey}
         />
       )}

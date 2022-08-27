@@ -3,6 +3,7 @@ import {
   createNameTakenValidator,
   createValidator,
   FieldValidator,
+  ValidatorType,
 } from '../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
@@ -53,6 +54,7 @@ const findEmptySelectorIds = (choiceVariable: ChoiceVariable): string[] => {
 
 const choiceItemSelectorFields = Field.VAR_CHOICE_ITEM_SELECTOR;
 const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
+  validatorType: ValidatorType.FIELD,
   field: choiceItemSelectorFields,
   isApplicable: (variable) => isChoiceVariable(variable),
   validate: (variable) => {
@@ -81,6 +83,7 @@ const findNonAlphaOrSpaceSelectorIds = (
 };
 
 const choiceSelectorItemsCantBeNonAlphaOrSpaces: FieldValidator<Variable> = {
+  validatorType: ValidatorType.FIELD,
   field: choiceItemSelectorFields,
   isApplicable: (variable) => isChoiceVariable(variable),
   validate: (variable) => {

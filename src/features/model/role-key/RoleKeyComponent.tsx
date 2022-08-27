@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { Button, Form, FormControl } from 'react-bootstrap';
+import { Button, FormControl } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
-import { getRelevantErrorMessage } from '../../../validation/field-validator';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
@@ -34,9 +34,9 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
     }
   };
 
+  const errorResults = processErrorResults(validationContext.getErrorResults());
   const roleKeyField = Field.RK_ROLE_KEY;
-  const errorResults = validationContext.getErrorResults();
-  const errorMessage = getRelevantErrorMessage(errorResults, [roleKeyField]);
+  const roleKeyError = errorResults([roleKeyField]);
 
   return (
     <PanelComponent header="Create/Edit Role Key">
@@ -44,27 +44,23 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
         labelText="Role"
         descriptionText="what concept this key identifies"
         required={true}
+        errorMessage={roleKeyError}
       >
         <FormControl
           type="text"
           onChange={valueChangedHandler}
           onBlur={(_e) => validationContext.touch(roleKeyField)}
           value={props.roleKey.value}
-          isInvalid={errorResults
-            .map((result) => result.field)
-            .includes(roleKeyField)}
+          isInvalid={!!roleKeyError}
           role="textbox"
           aria-label={Field[roleKeyField]}
         />
-        <Form.Control.Feedback type="invalid">
-          {errorMessage}
-        </Form.Control.Feedback>
       </FormGroupRowComponent>
       <Button
         onClick={submitHandler}
         variant="primary"
         size="lg"
-        disabled={errorResults.length > 0}
+        disabled={!!roleKeyError}
       >
         Save
       </Button>
