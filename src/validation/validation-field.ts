@@ -7,33 +7,36 @@ export enum Field {
   AC_ROLE_KEY,
   AC_SAVE,
   // action: pause
+  AC_CENTISECONDS_RADIO,
+  AC_CENTISECONDS_VALUE,
   AC_CENTISECONDS_VAR,
+  AC_CENTISECONDS_RK,
   // action: send key :
   AC_SEND_KEY_MODE,
   // action: mouse
   AC_MOUSE_ACTION_TYPE,
   AC_MOUSE_MOVEMENT_TYPE,
-  // action: key to send
+  // action: send key : direction
   AC_DIRECTION_RADIO,
   AC_DIRECTION_VALUE,
   AC_DIRECTION_VAR,
   AC_DIRECTION_RK,
-  // action: inner pause
+  // action: send key : inner pause
   AC_INNER_PAUSE_RADIO,
   AC_INNER_PAUSE_VALUE,
   AC_INNER_PAUSE_VAR,
   AC_INNER_PAUSE_RK,
-  // action: key to send
+  // action: send key : key to send
   AC_KEY_TO_SEND_RADIO,
   AC_KEY_TO_SEND_VALUE,
   AC_KEY_TO_SEND_VAR,
   AC_KEY_TO_SEND_RK,
-  // action: outer pause
+  // action: send key : outer pause
   AC_OUTER_PAUSE_RADIO,
   AC_OUTER_PAUSE_VALUE,
   AC_OUTER_PAUSE_VAR,
   AC_OUTER_PAUSE_RK,
-  // action: repeat
+  // action: send key : repeat
   AC_REPEAT_RADIO,
   AC_REPEAT_VALUE,
   AC_REPEAT_VAR,

@@ -14,6 +14,7 @@ import {
   ActionReducerMouseMovementTypePayloadAction,
 } from './action-editing-context';
 import { ActionType } from './action-types';
+import { getActionValueUpdater } from './action-value/action-value-reducer-updaters/default-action-value-updater';
 import {
   copyIntoMouseClickAction,
   copyIntoMouseHoldAction,
@@ -31,7 +32,6 @@ import {
 } from './send-key/send-key';
 import { SendKeyMode } from './send-key/send-key-modes';
 import { SendKeyModifiers } from './send-key/send-key-modifiers';
-import { changeSendKey } from './send-key/send-key-reducers-support';
 
 export type ActionsState = {
   saved: Record<string, Action>;
@@ -198,6 +198,8 @@ const changeEditingActionName = (
   return { ...state, name: action.payload.trim() === '' ? '' : action.payload };
 };
 
+const changeActionValue = getActionValueUpdater();
+
 export const actionReactReducer = (
   state: Action,
   action: ActionReducerAction
@@ -210,7 +212,7 @@ export const actionReactReducer = (
     case ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE:
     case ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID:
     case ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID:
-      return changeSendKey(state, action);
+      return changeActionValue(state, action);
     case ActionReducerActionType.CHANGE_MODIFIERS:
       return toggleModifier(state, action);
     case ActionReducerActionType.CHANGE_NAME:

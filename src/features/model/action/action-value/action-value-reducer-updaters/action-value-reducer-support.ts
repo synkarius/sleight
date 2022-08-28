@@ -1,35 +1,20 @@
-import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
-import { UnhandledFieldError } from '../../../../error/unhandled-field-error';
-import { SELECT_DEFAULT_VALUE } from '../../common/consts';
-import { VariableType } from '../../variable/variable-types';
-import { Action } from '../action';
-
+import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { VariableType } from '../../../variable/variable-types';
 import {
   ActionReducerActionType,
   ActionReducerActionValueTypePayloadAction,
   ActionReducerChangePayloadAction,
-} from '../action-editing-context';
+} from '../../action-editing-context';
 import {
   EnterValueType,
   EnumActionValue,
   NumericActionValue,
   TextActionValue,
-} from '../action-value/action-value';
-import { ActionValueType } from '../action-value/action-value-type';
-import {
-  SendKeyAction,
-  SendKeyHoldReleaseAction,
-  SendKeyPressAction,
-} from './send-key';
-import {
-  directionGroup,
-  innerPauseGroup,
-  keyToSendGroup,
-  outerPauseGroup,
-  repeatGroup,
-} from './send-key-action-value-type-name-groups';
+} from '../action-value';
+import { ActionValueType } from '../action-value-type';
 
-const changeTextActionValueType = (
+export const changeTextActionValueType = (
   action: ActionReducerActionValueTypePayloadAction
 ): TextActionValue => {
   const actionValueType = action.payload.actionValueType;
@@ -56,7 +41,7 @@ const changeTextActionValueType = (
   }
 };
 
-const changeNumericActionValueType = (
+export const changeNumericActionValueType = (
   action: ActionReducerActionValueTypePayloadAction
 ): NumericActionValue => {
   const actionValueType = action.payload.actionValueType;
@@ -83,7 +68,7 @@ const changeNumericActionValueType = (
   }
 };
 
-const changeEnumActionValueType = (
+export const changeEnumActionValueType = (
   action: ActionReducerActionValueTypePayloadAction
 ): EnumActionValue => {
   const actionValueType = action.payload.actionValueType;
@@ -110,7 +95,7 @@ const changeEnumActionValueType = (
   }
 };
 
-const changeActionValue = <
+export const changeActionValueValue = <
   T extends TextActionValue | NumericActionValue | EnumActionValue
 >(
   actionValue: T,
@@ -146,54 +131,4 @@ const changeActionValue = <
     default:
       throw new ExhaustivenessFailureError(actionType);
   }
-};
-
-export const changeSendKey = (
-  state: Action,
-  action:
-    | ActionReducerChangePayloadAction
-    | ActionReducerActionValueTypePayloadAction
-): SendKeyAction => {
-  if (Object.values(keyToSendGroup).includes(action.payload.field)) {
-    const ska = state as SendKeyAction;
-    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...ska, keyToSend: changeEnumActionValueType(action) }
-      : {
-          ...ska,
-          keyToSend: changeActionValue(ska.keyToSend, action),
-        };
-  } else if (Object.values(outerPauseGroup).includes(action.payload.field)) {
-    const ska = state as SendKeyAction;
-    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...ska, outerPause: changeNumericActionValueType(action) }
-      : {
-          ...ska,
-          outerPause: changeActionValue(ska.outerPause, action),
-        };
-  } else if (Object.values(innerPauseGroup).includes(action.payload.field)) {
-    const skpa = state as SendKeyPressAction;
-    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...skpa, innerPause: changeNumericActionValueType(action) }
-      : {
-          ...skpa,
-          innerPause: changeActionValue(skpa.innerPause, action),
-        };
-  } else if (Object.values(repeatGroup).includes(action.payload.field)) {
-    const skpa = state as SendKeyPressAction;
-    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...skpa, repeat: changeNumericActionValueType(action) }
-      : {
-          ...skpa,
-          repeat: changeActionValue(skpa.repeat, action),
-        };
-  } else if (Object.values(directionGroup).includes(action.payload.field)) {
-    const skhra = state as SendKeyHoldReleaseAction;
-    return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      ? { ...skhra, direction: changeEnumActionValueType(action) }
-      : {
-          ...skhra,
-          direction: changeActionValue(skhra.direction, action),
-        };
-  }
-  throw new UnhandledFieldError(action.payload.field);
 };

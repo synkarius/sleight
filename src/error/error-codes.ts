@@ -3,9 +3,9 @@ export enum ErrorCode {
 
   MAP_KEY_MISSING = 'map key not found',
 
-  NOT_IMPLEMENTED = 'method not implemented',
+  MISSING_DELEGATE = 'missing delegate',
 
-  UNHANDLED_FIELD = 'unhandled field',
+  NOT_IMPLEMENTED = 'method not implemented',
 
   WRONG_TYPE_FAILURE = 'wrong type: this error should never happen at runtime',
 }

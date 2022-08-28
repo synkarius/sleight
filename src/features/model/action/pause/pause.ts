@@ -12,6 +12,9 @@ export interface PauseAction extends AbstractAction {
   readonly centiseconds: NumericActionValue;
 }
 
+export const isPauseAction = (action: AbstractAction): action is PauseAction =>
+  action.type === ActionType.Enum.PAUSE;
+
 export const createPauseAction = (): PauseAction => {
   return {
     id: getRandomId(),

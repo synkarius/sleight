@@ -26,6 +26,8 @@ import { Action } from './action';
 import { isMouseAction } from './mouse/mouse';
 import { MouseComponent } from './mouse/MouseComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { isPauseAction } from './pause/pause';
+import { PauseComponent } from './pause/PauseComponent';
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -110,6 +112,9 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       )}
       {isMouseAction(props.action) && (
         <MouseComponent mouseAction={props.action} />
+      )}
+      {isPauseAction(props.action) && (
+        <PauseComponent pauseAction={props.action} />
       )}
       <Button
         onClick={submitHandler}
