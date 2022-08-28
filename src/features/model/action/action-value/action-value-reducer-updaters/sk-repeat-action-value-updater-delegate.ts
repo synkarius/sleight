@@ -1,6 +1,6 @@
 import { ActionReducerActionType } from '../../action-editing-context';
 import { isSendKeyAction, isSendKeyPressAction } from '../../send-key/send-key';
-import { repeatGroup } from '../../send-key/send-key-action-value-type-name-groups';
+import { repeatGroup } from '../../send-key/send-key-action-value-field-groups';
 import {
   changeActionValueValue,
   changeNumericActionValueType,

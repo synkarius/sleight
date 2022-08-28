@@ -3,7 +3,7 @@ import {
   isSendKeyAction,
   isSendKeyHoldReleaseAction,
 } from '../../send-key/send-key';
-import { directionGroup } from '../../send-key/send-key-action-value-type-name-groups';
+import { directionGroup } from '../../send-key/send-key-action-value-field-groups';
 import {
   changeActionValueValue,
   changeEnumActionValueType,

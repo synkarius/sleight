@@ -15,6 +15,10 @@ import {
   isSendKeyPressAction,
   SendKeyAction,
 } from './send-key';
+import {
+  keyToSendGroup,
+  outerPauseGroup,
+} from './send-key-action-value-field-groups';
 import { SendKeyMode } from './send-key-modes';
 import { SendKeyModifiers } from './send-key-modifiers';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
@@ -70,12 +74,7 @@ export const SendKeyComponent: React.FC<{
         }}
         labelText="Key to Send"
         descriptionText="key to send"
-        fields={{
-          radio: Field.AC_KEY_TO_SEND_RADIO,
-          value: Field.AC_KEY_TO_SEND_VALUE,
-          variable: Field.AC_KEY_TO_SEND_VAR,
-          roleKey: Field.AC_KEY_TO_SEND_RK,
-        }}
+        fields={keyToSendGroup}
         required={true}
       />
       <ExpandCollapseComponent
@@ -116,12 +115,7 @@ export const SendKeyComponent: React.FC<{
           actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
           descriptionText="time to pause after keystroke, in centiseconds"
-          fields={{
-            radio: Field.AC_OUTER_PAUSE_RADIO,
-            value: Field.AC_OUTER_PAUSE_VALUE,
-            variable: Field.AC_OUTER_PAUSE_VAR,
-            roleKey: Field.AC_OUTER_PAUSE_RK,
-          }}
+          fields={outerPauseGroup}
         />
 
         {/* TODO: use the type guards in components

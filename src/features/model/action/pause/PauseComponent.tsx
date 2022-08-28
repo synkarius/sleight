@@ -1,7 +1,7 @@
 import React from 'react';
-import { Field } from '../../../../validation/validation-field';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
 import { PauseAction } from './pause';
+import { centisecondsGroup } from './pause-action-value-field-group';
 
 export const PauseComponent: React.FC<{ pauseAction: PauseAction }> = (
   props
@@ -11,12 +11,7 @@ export const PauseComponent: React.FC<{ pauseAction: PauseAction }> = (
       actionValue={props.pauseAction.centiseconds}
       labelText="Centiseconds"
       descriptionText="time to pause in centiseconds"
-      fields={{
-        radio: Field.AC_CENTISECONDS_RADIO,
-        value: Field.AC_CENTISECONDS_VALUE,
-        variable: Field.AC_CENTISECONDS_VAR,
-        roleKey: Field.AC_CENTISECONDS_RK,
-      }}
+      fields={centisecondsGroup}
     />
   );
 };

@@ -1,10 +1,12 @@
-import { isEmpty } from '../../../util/common-functions';
+import { alwaysTrue, isEmpty } from '../../../util/common-functions';
+import { MapUtil } from '../../../util/map-util';
 import {
   createNameTakenValidator,
   createValidator,
   FieldValidator,
   ValidatorType,
 } from '../../../validation/field-validator';
+import { extractVariablesFromAction } from '../../../validation/support/extract-variables-from-actions';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
 import {
@@ -102,10 +104,39 @@ const choiceSelectorItemsCantBeNonAlphaOrSpaces: FieldValidator<Variable> = {
   },
 };
 
+const VAR_TYPE_SELECT = Field.VAR_TYPE_SELECT;
+const usedVariableTypesValidator: FieldValidator<Variable> = {
+  validatorType: ValidatorType.FIELD,
+  field: VAR_TYPE_SELECT,
+  isApplicable: alwaysTrue,
+  validate: (variable, data) => {
+    const variableIdsInActions = Object.values(data.actions)
+      .flatMap(extractVariablesFromAction)
+      .filter((vav) => vav.variableId);
+    if (variableIdsInActions.find((vav) => vav.variableId === variable.id)) {
+      const actionNames = variableIdsInActions
+        .map((vav) => vav.actionId)
+        .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
+        .map((action) => action.name)
+        .join('", "');
+      return {
+        field: VAR_TYPE_SELECT,
+        type: ValidationResultType.BASIC,
+        code: ValidationErrorCode.VAR_USED_BUT_TYPE_CHANGED,
+        message:
+          'this variable is currently used (in the actions' +
+          ` "${actionNames}"), so its type cannot be changed`,
+      };
+    }
+    return validResult(VAR_TYPE_SELECT);
+  },
+};
+
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
   nameTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,
   choiceSelectorItemsCantBeNonAlphaOrSpaces,
+  usedVariableTypesValidator,
 ];

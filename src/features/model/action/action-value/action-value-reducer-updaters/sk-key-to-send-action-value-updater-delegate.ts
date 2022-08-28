@@ -1,6 +1,6 @@
 import { ActionReducerActionType } from '../../action-editing-context';
 import { isSendKeyAction } from '../../send-key/send-key';
-import { keyToSendGroup } from '../../send-key/send-key-action-value-type-name-groups';
+import { keyToSendGroup } from '../../send-key/send-key-action-value-field-groups';
 import {
   changeActionValueValue,
   changeEnumActionValueType,

@@ -23,13 +23,7 @@ import {
 } from './action-value';
 import { SELECT_DEFAULT_VALUE } from '../../common/consts';
 import { processErrorResults } from '../../../../validation/validation-result-processing';
-
-type ActionValueFields = {
-  readonly radio: Field;
-  readonly value: Field;
-  readonly variable: Field;
-  readonly roleKey: Field;
-};
+import { ActionValueFieldGroup } from './action-value-type-name-group';
 
 type EnumActionValueWithEnumValues = EnumActionValue & {
   readonly enumValues: string[];
@@ -41,7 +35,7 @@ type AVCProps = {
     | TextActionValue
     | NumericActionValue
     | EnumActionValueWithEnumValues;
-  readonly fields: ActionValueFields;
+  readonly fields: ActionValueFieldGroup;
   // display
   readonly labelText: string;
   readonly descriptionText: string;
