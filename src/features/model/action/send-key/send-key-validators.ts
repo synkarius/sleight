@@ -1,4 +1,4 @@
-import { isSelected } from '../../../../util/common-functions';
+import { isDefined, isSelected } from '../../../../util/common-functions';
 import {
   createValidator,
   FieldValidator,
@@ -367,22 +367,11 @@ const directionValidators: ActionValueValidators = {
   },
 };
 
-export const getSendKeyValidators: () => FieldValidator<Action>[] = () => [
-  keyToSendValidators.value!,
-  keyToSendValidators.variable,
-  keyToSendValidators.roleKeySelected,
-  keyToSendValidators.roleKeyedElementExists,
-  outerPauseValidators.variable,
-  outerPauseValidators.roleKeySelected,
-  outerPauseValidators.roleKeyedElementExists,
-  innerPauseValidators.variable,
-  innerPauseValidators.roleKeySelected,
-  innerPauseValidators.roleKeyedElementExists,
-  repeatValidators.variable,
-  repeatValidators.roleKeySelected,
-  repeatValidators.roleKeyedElementExists,
-  directionValidators.value!,
-  directionValidators.variable,
-  directionValidators.roleKeySelected,
-  directionValidators.roleKeyedElementExists,
-];
+export const getSendKeyValidators: () => FieldValidator<Action>[] = () =>
+  [
+    ...Object.values(keyToSendValidators),
+    ...Object.values(outerPauseValidators),
+    ...Object.values(innerPauseValidators),
+    ...Object.values(repeatValidators),
+    ...Object.values(directionValidators),
+  ].filter(isDefined);

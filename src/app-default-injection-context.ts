@@ -11,6 +11,7 @@ import {
   getCrossSliceVariableValidators,
 } from './features/cross-slice-validation-fns';
 import { getActionValidators } from './features/model/action/action-validators';
+import { getPauseValidators } from './features/model/action/pause/pause-validators';
 import { getSendKeyValidators } from './features/model/action/send-key/send-key-validators';
 import { getCommandValidators } from './features/model/command/command-validators';
 import { getContextValidators } from './features/model/context/context-validation';
@@ -33,6 +34,7 @@ export const appDefaultInjectionContext: Injected = {
     action: [
       ...getActionValidators(),
       ...getSendKeyValidators(),
+      ...getPauseValidators(),
       ...getCrossSliceActionValidators(),
     ],
     command: [...getCommandValidators(), ...getCrossSliceCommandValidators()],

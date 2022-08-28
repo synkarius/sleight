@@ -12,7 +12,6 @@ import { ActionType } from './action-types';
 import {
   createEnumValue,
   createNumericValue,
-  createTextValue,
 } from './action-value/action-value';
 
 const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
