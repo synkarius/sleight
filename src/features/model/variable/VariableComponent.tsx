@@ -119,12 +119,18 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         />
         <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Type">
+      <FormGroupRowComponent
+        labelText="Type"
+        descriptionText="kind of variable"
+        errorMessage={errorResults([Field.VAR_TYPE_SELECT])}
+      >
         <FormSelect
           aria-label={Field[Field.VAR_TYPE_SELECT]}
           onChange={typeChangedHandler}
+          onBlur={() => validationContext.touch(Field.VAR_TYPE_SELECT)}
           value={props.variable.type}
           role={LIST}
+          isInvalid={!!errorResults([Field.VAR_TYPE_SELECT])}
         >
           {VariableType.values().map((vt) => (
             <option key={vt} value={vt} role={LIST_ITEM}>
@@ -132,7 +138,6 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
             </option>
           ))}
         </FormSelect>
-        <FormText className="text-muted">kind of variable</FormText>
       </FormGroupRowComponent>
       {isTextVariable(props.variable) && (
         <TextVariableComponent text={props.variable} />

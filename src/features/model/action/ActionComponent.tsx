@@ -29,6 +29,8 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { isPauseAction } from './pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
 
+const AC_NAME = Field.AC_NAME;
+
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
@@ -39,7 +41,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       type: ActionReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
-    validationContext.touch(Field.AC_NAME);
+    validationContext.touch(AC_NAME);
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatchFn({
@@ -66,7 +68,6 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const AC_NAME = Field.AC_NAME;
 
   return (
     <PanelComponent header="Create/Edit Action">

@@ -110,23 +110,29 @@ const usedVariableTypesValidator: FieldValidator<Variable> = {
   field: VAR_TYPE_SELECT,
   isApplicable: alwaysTrue,
   validate: (variable, data) => {
-    const variableIdsInActions = Object.values(data.actions)
-      .flatMap(extractVariablesFromAction)
-      .filter((vav) => vav.variableId);
-    if (variableIdsInActions.find((vav) => vav.variableId === variable.id)) {
-      const actionNames = variableIdsInActions
-        .map((vav) => vav.actionId)
-        .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
-        .map((action) => action.name)
-        .join('", "');
-      return {
-        field: VAR_TYPE_SELECT,
-        type: ValidationResultType.BASIC,
-        code: ValidationErrorCode.VAR_USED_BUT_TYPE_CHANGED,
-        message:
-          'this variable is currently used (in the actions' +
-          ` "${actionNames}"), so its type cannot be changed`,
-      };
+    const preChangedVariable = MapUtil.get(data.variables, variable.id);
+    if (preChangedVariable && preChangedVariable.type !== variable.type) {
+      const variableIdsInActions = Object.values(data.actions)
+        .flatMap(extractVariablesFromAction)
+        .filter((vav) => vav.variableId);
+      const variableIsUsed = !!variableIdsInActions
+        .map((vav) => vav.variableId)
+        .find((id) => id === variable.id);
+      if (variableIsUsed) {
+        const actionNames = variableIdsInActions
+          .map((vav) => vav.actionId)
+          .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
+          .map((action) => action.name)
+          .join('", "');
+        return {
+          field: VAR_TYPE_SELECT,
+          type: ValidationResultType.BASIC,
+          code: ValidationErrorCode.VAR_USED_BUT_TYPE_CHANGED,
+          message:
+            'this variable is currently used (in the action(s)' +
+            ` "${actionNames}"), so its type cannot be changed`,
+        };
+      }
     }
     return validResult(VAR_TYPE_SELECT);
   },
