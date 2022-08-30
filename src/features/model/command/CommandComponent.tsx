@@ -18,15 +18,18 @@ import {
 import { saveEditingCommand } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
-import { commandDefaultNamer } from './command-default-namer';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { InjectionContext } from '../../../di/injector-context';
+import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(CommandEditingContext);
+  const injectionContext = useContext(InjectionContext);
+  const commandDefaultNamer = injectionContext.default.namers.command;
 
   const nameChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({
@@ -194,17 +197,13 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             onBlur={() => validationContext.touch(Field.CMD_ACTION_SELECT)}
             isInvalid={!!errorResults([Field.CMD_ACTION_SELECT], actionId)}
           />
-          {errorResults([Field.CMD_ACTION_SELECT], actionId) && (
-            <span className="small text-danger">
-              {errorResults([Field.CMD_ACTION_SELECT], actionId)}
-            </span>
-          )}
+          <ErrorTextComponent
+            errorMessage={errorResults([Field.CMD_ACTION_SELECT], actionId)}
+          />
         </VerticalMoveableComponent>
       ))}
       <Col sm="12" className="mb-3">
-        {onSaveErrorMessage && (
-          <span className="small text-danger">{onSaveErrorMessage}</span>
-        )}
+        <ErrorTextComponent errorMessage={onSaveErrorMessage} />
       </Col>
       <Button
         onClick={submitHandler}

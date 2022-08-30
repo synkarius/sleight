@@ -10,7 +10,9 @@ import {
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { USE_DEFAULT } from '../common/consts';
 import { createSelector } from '../selector/data/selector-domain';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
 import { ChoiceVariable, createChoiceItem } from './data/variable';
@@ -42,6 +44,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
     editingContext.localDispatchFn({
       type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
     });
+    validationContext.touch(Field.VAR_USE_DEFAULT);
   };
   const defaultValueChangedHandler = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -71,13 +74,10 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
             Add Choice Item
           </Button>
         </Col>
-        {noChoiceItemsErrorMessage && (
-          <Col sm="12" className="mb-3">
-            <span className="small text-danger">
-              {noChoiceItemsErrorMessage}
-            </span>
-          </Col>
-        )}
+        <ErrorTextComponent
+          errorMessage={noChoiceItemsErrorMessage}
+          row={true}
+        />
       </div>
       <FormGroup as={Row} controlId={choicesId}>
         {props.choice.items.map((choiceItem, index) => (
@@ -94,11 +94,16 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
             <Form.Check
               type="checkbox"
               id={checkboxId}
-              label="Use Default"
+              label={USE_DEFAULT}
               onChange={defaultEnabledChangedHandler}
+              onBlur={() => validationContext.touch(Field.VAR_USE_DEFAULT)}
               checked={props.choice.defaultValue !== undefined}
+              isInvalid={!!errorResults([Field.VAR_USE_DEFAULT])}
             />
           </Col>
+          <ErrorTextComponent
+            errorMessage={errorResults([Field.VAR_USE_DEFAULT])}
+          />
         </Row>
         {props.choice.defaultValue !== undefined && (
           <FormGroupRowComponent

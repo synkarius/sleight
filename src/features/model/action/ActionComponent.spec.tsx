@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { ActionType } from './action-types';
 import { ActionParentComponent } from './ActionParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { saveAction } from './action-reducers';
 import { createNumericValue } from './action-value/action-value';
 
@@ -30,7 +30,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <ActionParentComponent />
       </InjectionContext.Provider>
     </Provider>

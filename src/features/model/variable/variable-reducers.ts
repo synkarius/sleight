@@ -27,8 +27,8 @@ import {
 } from './data/variable';
 import { VariableDTO } from './data/variable-dto';
 import { Ided, Named, RoleKeyed } from '../../domain';
-import { variableDefaultNamer } from './variable-default-namer';
 import { WrongTypeError } from '../../../error/wrong-type-error';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;
@@ -39,6 +39,9 @@ const initialState: VariablesState = {
   saved: {},
   editingId: undefined,
 };
+
+const injected = getDefaultInjectionContext();
+const variableDefaultNamer = injected.default.namers.variable;
 
 const addDefaults = (variable: VariableDTO): VariableDTO => {
   return {

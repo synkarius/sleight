@@ -6,7 +6,7 @@ import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { ContextParentComponent } from './ContextParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { saveEditingContext } from './context-reducers';
 import { createContext } from './context';
 
@@ -27,7 +27,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <ContextParentComponent />
       </InjectionContext.Provider>
     </Provider>

@@ -14,7 +14,7 @@ import { CommandParentComponent } from './CommandParentComponent';
 import { saveEditingContext } from '../context/context-reducers';
 import { createContext } from '../context/context';
 import { InjectionContext } from '../../../di/injector-context';
-import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { getSelectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { getSpecDomainMapper } from '../spec/data/spec-domain-mapper';
 import { saveEditingCommand } from './command-reducers';
@@ -126,7 +126,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <CommandParentComponent />
       </InjectionContext.Provider>
     </Provider>

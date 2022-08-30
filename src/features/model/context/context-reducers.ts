@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { Context } from './context';
-import { contextDefaultNamer } from './context-default-namer';
 import {
   ContextReducerAction,
   ContextReducerActionType,
@@ -18,6 +18,9 @@ const initialState: ContextsState = {
   saved: {},
   editingId: undefined,
 };
+
+const injected = getDefaultInjectionContext();
+const contextDefaultNamer = injected.default.namers.context;
 
 const addDefaults = (context: Context): Context => {
   return {

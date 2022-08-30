@@ -17,15 +17,16 @@ import {
   SpecReducerActionType,
 } from './spec-editing-context';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
-import { specDefaultNamer } from './spec-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const specDefaultNamer = injectionContext.default.namers.spec;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({
@@ -123,18 +124,13 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           </Button>
         </Col>
         <Col sm="12" className="mb-3">
-          {noSpecItemsErrorMessage && (
-            <span className="small text-danger">{noSpecItemsErrorMessage}</span>
-          )}
+          <ErrorTextComponent errorMessage={noSpecItemsErrorMessage} />
         </Col>
       </div>
-      {!!errorResults([Field.SP_SAVE]) && (
-        <Col sm="12" className="mb-3">
-          <span className="text-danger small">
-            {errorResults([Field.SP_SAVE])}
-          </span>
-        </Col>
-      )}
+      <ErrorTextComponent
+        errorMessage={errorResults([Field.SP_SAVE])}
+        row={true}
+      />
 
       <Col sm="12" className="mb-1">
         <Button

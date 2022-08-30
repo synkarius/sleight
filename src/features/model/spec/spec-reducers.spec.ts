@@ -1,7 +1,7 @@
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { MoveDirection } from '../common/move-direction';
 import { createSpec, createSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
-import { specDefaultNamer } from './spec-default-namer';
 import { SpecReducerActionType } from './spec-editing-context';
 import { SpecItemType } from './spec-item-type';
 import {
@@ -33,6 +33,9 @@ const createTestSpecRedux = (from?: {
     ],
   };
 };
+
+const injected = getDefaultInjectionContext();
+const specDefaultNamer = injected.default.namers.spec;
 
 describe('spec reducer', () => {
   it('should handle initial state', () => {

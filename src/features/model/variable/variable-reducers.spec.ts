@@ -1,3 +1,4 @@
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import {
   createSelector,
   createSelectorItem,
@@ -35,6 +36,9 @@ const createTestVariable = (id: string): VariableDTO => {
   };
 };
 
+const injected = getDefaultInjectionContext();
+const variableDefaultNamer = injected.default.namers.variable;
+
 describe('variable reducer', () => {
   const initialState: VariablesState = {
     saved: {},
@@ -67,7 +71,10 @@ describe('variable reducer', () => {
     const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
 
     const expected: Record<string, VariableDTO> = {};
-    expected[obj.id] = { ...obj, name: 'text-var-VARIABLE_ID_1' };
+    expected[obj.id] = {
+      ...obj,
+      name: variableDefaultNamer.getDefaultName(obj),
+    };
 
     expect(actual.saved).toEqual(expected);
   });

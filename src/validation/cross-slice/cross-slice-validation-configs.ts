@@ -33,3 +33,13 @@ export const specAdequacyConfigForSpec: ValidationConfig = {
   touchTriggersValidationFields: [Field.SP_ITEM_VARIABLE],
   editingElementType: ElementType.Enum.SPEC,
 };
+
+export const optionalityConfigForSpec: ValidationConfig = {
+  touchTriggersValidationFields: [Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL],
+  editingElementType: ElementType.Enum.SPEC,
+};
+
+export const optionalityConfigForVariable: ValidationConfig = {
+  touchTriggersValidationFields: [Field.VAR_USE_DEFAULT],
+  editingElementType: ElementType.Enum.VARIABLE,
+};

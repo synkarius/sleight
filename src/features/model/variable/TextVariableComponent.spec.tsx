@@ -5,10 +5,9 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
-import { VariableType } from './variable-types';
-import { NUMBER_TEXT_BOX, TEXT_BOX } from '../common/accessibility-roles';
+import { TEXT_BOX } from '../common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
-import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 
 let user: UserEvent;
 
@@ -19,7 +18,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <VariableParentComponent />
       </InjectionContext.Provider>
     </Provider>

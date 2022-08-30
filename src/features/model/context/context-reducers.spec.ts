@@ -8,7 +8,10 @@ import {
 } from './context-reducers';
 import { ContextType } from './context-types';
 import { ContextReducerActionType } from './context-editing-context';
-import { contextDefaultNamer } from './context-default-namer';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+
+const injected = getDefaultInjectionContext();
+const contextDefaultNamer = injected.default.namers.context;
 
 describe('context reducer', () => {
   it('should handle initial state', () => {

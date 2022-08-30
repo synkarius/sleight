@@ -7,7 +7,7 @@ import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from './variable-types';
 import { InjectionContext } from '../../../di/injector-context';
-import { appDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { createRangeVariable } from './data/variable';
 import { getVariableDomainMapper } from './data/variable-domain-mapper';
 import { saveEditingVariable } from './variable-reducers';
@@ -126,7 +126,7 @@ const getVarUsedErrorMsgRegex = () =>
 const doRender = (variableId?: string) => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <VariableParentComponent variableId={variableId} />
       </InjectionContext.Provider>
     </Provider>

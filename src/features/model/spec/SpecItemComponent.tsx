@@ -29,6 +29,7 @@ import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { ValidationResultType } from '../../../validation/validation-result';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
+import { processErrorResults } from '../../../validation/validation-result-processing';
 
 export const SpecItemComponent: React.FC<{
   specItem: SpecItem;
@@ -40,7 +41,6 @@ export const SpecItemComponent: React.FC<{
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
 
-  const fullErrorResults = validationContext.getErrorResults();
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSpecItemType = event.target.value as SpecItemType.Type;
     switch (newSpecItemType) {
@@ -127,6 +127,9 @@ export const SpecItemComponent: React.FC<{
     props.specItem.itemType === SpecItemType.Enum.SELECTOR
       ? props.specItem.selector
       : undefined;
+
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
   const getVariableErrorMessage = () => {
     for (let i = 0; i < fullErrorResults.length; i++) {
       const errorResult = fullErrorResults[i];
@@ -192,18 +195,26 @@ export const SpecItemComponent: React.FC<{
           />
         </FormGroupRowComponent>
       )}
-      <FormGroupRowComponent labelText="Spec Item Optionality">
+      <FormGroupRowComponent
+        labelText="Spec Item Optionality"
+        errorMessage={errorResults([Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL])}
+      >
         <FormCheck
           type="switch"
           id={optionalId}
           label="Optional"
           checked={props.specItem.optional}
-          onChange={(_e) =>
+          onChange={(_e) => {
             editingContext.localDispatchFn({
               type: SpecReducerActionType.TOGGLE_SPEC_ITEM_OPTIONAL,
               payload: props.specItem.id,
-            })
+            });
+            validationContext.touch(Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL);
+          }}
+          onBlur={() =>
+            validationContext.touch(Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL)
           }
+          isInvalid={!!errorResults([Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL])}
         />
         <FormCheck
           type="switch"

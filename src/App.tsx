@@ -4,12 +4,12 @@ import { SidebarComponent } from './features/sidebar/SidebarComponent';
 import { Col, Row } from 'react-bootstrap';
 import { EditorComponent } from './features/menu/editor/EditorComponent';
 import { InjectionContext } from './di/injector-context';
-import { appDefaultInjectionContext } from './app-default-injection-context';
+import { getDefaultInjectionContext } from './app-default-injection-context';
 
 function App() {
   return (
     <div>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <Navigation />
         <Row>
           <Col sm="4">

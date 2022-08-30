@@ -24,7 +24,6 @@ import { ValidationContext } from '../../../validation/validation-context';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { saveSelector } from '../selector/selector-reducers';
 import { LIST, LIST_ITEM } from '../common/accessibility-roles';
-import { variableDefaultNamer } from './variable-default-namer';
 import { InjectionContext } from '../../../di/injector-context';
 import { TextVariableComponent } from './TextVariableComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
@@ -34,6 +33,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(VariableEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const variableDefaultNamer = injectionContext.default.namers.variable;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({

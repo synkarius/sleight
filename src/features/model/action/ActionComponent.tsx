@@ -1,11 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Button,
-  Col,
-  FormControl,
-  FormSelect,
-  FormText,
-} from 'react-bootstrap';
+import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
@@ -21,13 +15,13 @@ import {
 } from './action-editing-context';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
-import { actionDefaultNamer } from './action-default-namer';
 import { Action } from './action';
 import { isMouseAction } from './mouse/mouse';
 import { MouseComponent } from './mouse/MouseComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { isPauseAction } from './pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
+import { InjectionContext } from '../../../di/injector-context';
 
 const AC_NAME = Field.AC_NAME;
 
@@ -35,6 +29,8 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
+  const injectionContext = useContext(InjectionContext);
+  const actionDefaultNamer = injectionContext.default.namers.action;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatchFn({

@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { appDefaultInjectionContext } from '../../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../../app-default-injection-context';
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
@@ -84,7 +84,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={appDefaultInjectionContext}>
+      <InjectionContext.Provider value={getDefaultInjectionContext()}>
         <ActionParentComponent />
       </InjectionContext.Provider>
     </Provider>

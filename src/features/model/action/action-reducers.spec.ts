@@ -10,8 +10,11 @@ import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionType } from './action-types';
 import { createNumericValue } from './action-value/action-value';
 import { ActionReducerActionType } from './action-editing-context';
-import { actionDefaultNamer } from './action-default-namer';
 import { Action } from './action';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+
+const injected = getDefaultInjectionContext();
+const actionDefaultNamer = injected.default.namers.action;
 
 describe('action reducer', () => {
   const initialState: ActionsState = {

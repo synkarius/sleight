@@ -1,17 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { WrongTypeError } from '../../../error/wrong-type-error';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
-import { Command, copyCommand, isSelectedSpecCommand } from './command';
-import { commandDefaultNamer } from './command-default-namer';
+import { Command, copyCommand } from './command';
 import {
   CommandReducerAction,
   CommandReducerActionIdAction,
   CommandReducerActionType,
   CommandReducerDeleteAction,
   CommandReducerMoveAction,
-  CommandReducerNoPayloadAction,
   CommandReducerSpecTypeAction,
   CommandReducerStringAction,
 } from './command-editing-context';
@@ -26,6 +25,9 @@ const initialState: CommandsState = {
   saved: {},
   editingId: undefined,
 };
+
+const injected = getDefaultInjectionContext();
+const commandDefaultNamer = injected.default.namers.command;
 
 const addDefaults = (command: Command): Command => {
   return {

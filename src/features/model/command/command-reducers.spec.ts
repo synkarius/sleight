@@ -1,7 +1,7 @@
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from './command';
-import { commandDefaultNamer } from './command-default-namer';
 import { CommandReducerActionType } from './command-editing-context';
 import {
   CommandsState,
@@ -23,6 +23,9 @@ const createTestCommand = (id: string): Command => {
     actionIds: [],
   };
 };
+
+const injected = getDefaultInjectionContext();
+const commandDefaultNamer = injected.default.namers.command;
 
 describe('command reducer', () => {
   it('should handle initial state', () => {

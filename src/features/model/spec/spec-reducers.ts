@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { MoveDirection } from '../common/move-direction';
 import { Spec, SpecItem, VariableSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
-import { specDefaultNamer } from './spec-default-namer';
 import {
   SpecReducerStringAction,
   SpecReducerActionType,
@@ -32,6 +32,9 @@ const specItemIdMatches: (
   specItemId: string
 ) => (specItem: SpecItem) => boolean = (specItemId) => (specItem) =>
   specItem.id === specItemId;
+
+const injected = getDefaultInjectionContext();
+const specDefaultNamer = injected.default.namers.spec;
 
 const addDefaults = (spec: SpecDTO): SpecDTO => {
   return {

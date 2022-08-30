@@ -2,8 +2,10 @@ import React from 'react';
 import { Exporter } from '../data/exports/exporter';
 import { Importer } from '../data/imports/json-importer';
 import { DomainMapper } from '../data/mapper';
+import { Ided } from '../features/domain';
 import { Action } from '../features/model/action/action';
 import { Command } from '../features/model/command/command';
+import { DefaultNamer } from '../features/model/common/default-namer';
 import { Context } from '../features/model/context/context';
 import { RoleKey } from '../features/model/role-key/role-key';
 import { Selector } from '../features/model/selector/data/selector-domain';
@@ -12,6 +14,7 @@ import { Spec } from '../features/model/spec/data/spec-domain';
 import { SpecDomainMapper } from '../features/model/spec/data/spec-domain-mapper';
 import { Variable } from '../features/model/variable/data/variable';
 import { VariableDomainMapper } from '../features/model/variable/data/variable-domain-mapper';
+import { VarIdedAndTyped } from '../features/model/variable/variable-default-namer';
 import { FieldValidator } from '../validation/field-validator';
 
 export type Injected = {
@@ -34,6 +37,15 @@ export type Injected = {
     selector: DomainMapper<Selector, SelectorDTO>;
     spec: SpecDomainMapper;
     variable: VariableDomainMapper;
+  };
+  default: {
+    namers: {
+      action: DefaultNamer<Action>;
+      command: DefaultNamer<Command>;
+      context: DefaultNamer<Context>;
+      spec: DefaultNamer<Ided>;
+      variable: DefaultNamer<VarIdedAndTyped>;
+    };
   };
 };
 

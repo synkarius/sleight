@@ -16,6 +16,8 @@ import { Field } from '../../../validation/validation-field';
 import { ValidationContext } from '../../../validation/validation-context';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { USE_DEFAULT } from '../common/consts';
+import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 
 export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   props
@@ -44,6 +46,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
     editingContext.localDispatchFn({
       type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
     });
+    validationContext.touch(Field.VAR_USE_DEFAULT);
   };
   const defaultValueChangedHandler = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -94,11 +97,16 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
             <Form.Check
               type="checkbox"
               id={checkboxId}
-              label="Use Default"
+              label={USE_DEFAULT}
               onChange={defaultEnabledChangedHandler}
+              onBlur={() => validationContext.touch(Field.VAR_USE_DEFAULT)}
               checked={props.range.defaultValue !== undefined}
+              isInvalid={!!errorResults([Field.VAR_USE_DEFAULT])}
             />
           </Col>
+          <ErrorTextComponent
+            errorMessage={errorResults([Field.VAR_USE_DEFAULT])}
+          />
         </Row>
         {props.range.defaultValue !== undefined && (
           <FormGroupRowComponent

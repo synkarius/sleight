@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
+import { InjectionContext } from '../../../di/injector-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
@@ -9,7 +10,6 @@ import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
-import { contextDefaultNamer } from './context-default-namer';
 import {
   ContextEditingContext,
   ContextReducerActionType,
@@ -21,6 +21,8 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const contextEditingContext = useContext(ContextEditingContext);
+  const injectionContext = useContext(InjectionContext);
+  const contextDefaultNamer = injectionContext.default.namers.context;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     contextEditingContext.localDispatchFn({
