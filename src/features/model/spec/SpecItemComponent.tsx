@@ -30,6 +30,7 @@ import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { ValidationResultType } from '../../../validation/validation-result';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 
 export const SpecItemComponent: React.FC<{
   specItem: SpecItem;
@@ -130,19 +131,14 @@ export const SpecItemComponent: React.FC<{
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const getVariableErrorMessage = () => {
-    for (let i = 0; i < fullErrorResults.length; i++) {
-      const errorResult = fullErrorResults[i];
-      if (
-        errorResult.type === ValidationResultType.ID_LIST &&
-        errorResult.ids.includes(props.specItem.id)
-      ) {
-        return errorResult.message;
-      }
-    }
-    return undefined;
-  };
-  const variableErrorMessage = getVariableErrorMessage();
+  const variableError = errorResults(
+    [Field.SP_ITEM_VARIABLE],
+    props.specItem.id
+  );
+  const optionalityError = errorResults(
+    [Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL],
+    props.specItem.id
+  );
 
   return (
     <VerticalMoveableComponent
@@ -184,21 +180,18 @@ export const SpecItemComponent: React.FC<{
         <FormGroupRowComponent
           labelText="Variable"
           descriptionText="which variable to use for this spec item"
-          errorMessage={variableErrorMessage}
+          errorMessage={variableError}
         >
           <VariablesDropdownComponent
             field={Field.SP_ITEM_VARIABLE}
             selectedVariableId={props.specItem.variableId}
             onChange={variableChangedHandler}
             onBlur={(_e) => validationContext.touch(Field.SP_ITEM_VARIABLE)}
-            isInvalid={!!variableErrorMessage}
+            isInvalid={!!variableError}
           />
         </FormGroupRowComponent>
       )}
-      <FormGroupRowComponent
-        labelText="Spec Item Optionality"
-        errorMessage={errorResults([Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL])}
-      >
+      <FormGroupRowComponent labelText="Spec Item Optionality">
         <FormCheck
           type="switch"
           id={optionalId}
@@ -214,7 +207,7 @@ export const SpecItemComponent: React.FC<{
           onBlur={() =>
             validationContext.touch(Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL)
           }
-          isInvalid={!!errorResults([Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL])}
+          isInvalid={!!optionalityError}
         />
         <FormCheck
           type="switch"
@@ -229,6 +222,7 @@ export const SpecItemComponent: React.FC<{
           }
           disabled={!props.specItem.optional}
         />
+        <ErrorTextComponent errorMessage={optionalityError} />
       </FormGroupRowComponent>
     </VerticalMoveableComponent>
   );

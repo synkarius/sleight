@@ -12,7 +12,7 @@ export const identity = <T>(t: T) => t;
 
 export const notFalsy = (t: unknown) => !!t;
 
-export const isDefined = <T>(t: T | undefined): t is T => notFalsy(t);
+export const isDefined = <T>(t: T | undefined): t is T => t !== undefined;
 
 export const singletonArray = <T>(t: T): T[] => [t];
 

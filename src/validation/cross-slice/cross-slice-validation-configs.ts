@@ -35,7 +35,10 @@ export const specAdequacyConfigForSpec: ValidationConfig = {
 };
 
 export const optionalityConfigForSpec: ValidationConfig = {
-  touchTriggersValidationFields: [Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL],
+  touchTriggersValidationFields: [
+    Field.SP_ITEM_VARIABLE,
+    Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL,
+  ],
   editingElementType: ElementType.Enum.SPEC,
 };
 
