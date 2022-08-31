@@ -59,7 +59,7 @@ const specOptionalityValidatorFn: ValidatorFn<Spec> = (specs, data, config) => {
         .filter(isDefined)
     )
     .filter(isDefined);
-  if (invalid.length) {
+  if (!!invalid.length) {
     switch (config.editingElementType) {
       case ElementType.Enum.SPEC:
         const varsNoDefaults = Array.from(
@@ -87,6 +87,7 @@ const specOptionalityValidatorFn: ValidatorFn<Spec> = (specs, data, config) => {
             'a default is required because the following specs use this' +
             ` variable in optional variable spec items: "${specsOptional}"`,
         };
+      default:
     }
   }
   return validResult(config.touchTriggersValidationFields[0]);

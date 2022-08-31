@@ -9,7 +9,7 @@ import { createRoleKey, RoleKey } from '../role-key/role-key';
 import { saveRoleKey } from '../role-key/role-key-reducers';
 import { SpecItemType } from './spec-item-type';
 import { saveEditingVariable } from '../variable/variable-reducers';
-import { createRangeVariable } from '../variable/data/variable';
+import { createRangeVariable, RangeVariable } from '../variable/data/variable';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { saveEditingSpec } from './spec-reducers';
@@ -29,14 +29,24 @@ import {
 } from '../selector/data/selector-domain';
 
 let user: UserEvent;
-
-const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
-const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';
-const SPEC_WITH_VARIABLE_ID = 'spec-id-2';
-const SPEC_WITH_VARIABLE_NAME = 'spec-name-2';
+// spec adequacy:
+const SPEC_WITH_SELECTOR_ID = 'spec-with-selector-id-1';
+const SPEC_WITH_SELECTOR_NAME = 'spec-with-selector-name-1';
+const SPEC_WITH_VARIABLE_ID = 'spec-with-variable-id-2';
+const SPEC_WITH_VARIABLE_NAME = 'spec-with-variable-name-2';
+// optionality:
+const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-3';
+const SPEC_WITH_VARIABLE_OPTIONAL_NAME = 'spec-with-variable-optional-name-3';
+const SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID =
+  'spec-with-variable-not-optional-id-4';
+const SPEC_WITH_VARIABLE_NOT_OPTIONAL_NAME =
+  'spec-with-variable-not-optional-name-4';
+// mixed
+const VARIABLE_ID = 'non-default-variable-id-1';
+const VARIABLE_NAME = 'non-default-variable-name-1';
+const DEFAULT_VARIABLE_ID = 'default-variable-id-2';
+const DEFAULT_VARIABLE_NAME = 'default-variable-name-2';
 const ROLE_KEY_NAME_1 = 'role-key-name-1';
-const VARIABLE_ID_1 = 'variable-id-1';
-const VARIABLE_NAME_1 = 'variable-name-1';
 const SAVE = 'Save';
 const ADD_NEW_SPEC_ITEM = 'Add New Spec Item';
 const GTE1_ERROR_MESSAGE = 'at least one spec item must be added';
@@ -48,14 +58,26 @@ beforeAll(() => {
   // save role key
   const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
   store.dispatch(saveRoleKey(roleKey));
-  // save variable
-  const rangeVariable = {
+  // save variables
+  // no default
+  const rangeVariable: RangeVariable = {
     ...createRangeVariable(),
-    id: VARIABLE_ID_1,
-    name: VARIABLE_NAME_1,
+    id: VARIABLE_ID,
+    name: VARIABLE_NAME,
+    defaultValue: undefined,
   };
   const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
   store.dispatch(saveEditingVariable(rangeVariableDTO));
+  // with default
+  const variableWithDefault: RangeVariable = {
+    ...createRangeVariable(),
+    id: DEFAULT_VARIABLE_ID,
+    name: DEFAULT_VARIABLE_NAME,
+    defaultValue: 234,
+  };
+  const variableWithDefaultDTO =
+    variableMapper.mapFromDomain(variableWithDefault);
+  store.dispatch(saveEditingVariable(variableWithDefaultDTO));
 
   // save actions
   const action1: PauseAction = {
@@ -119,6 +141,8 @@ beforeEach(async () => {
   store.dispatch(saveEditingSpec(specDTO1));
   const selectorDTO1 = selectorMapper.mapFromDomain(selectorSpecItem.selector);
   store.dispatch(saveSelector(selectorDTO1));
+
+  // spec w/ variable
   const specWithVariable: Spec = {
     id: SPEC_WITH_VARIABLE_ID,
     name: SPEC_WITH_VARIABLE_NAME,
@@ -126,12 +150,44 @@ beforeEach(async () => {
       {
         ...createSpecItem(),
         itemType: SpecItemType.Enum.VARIABLE,
-        variableId: VARIABLE_ID_1,
+        variableId: VARIABLE_ID,
       },
     ],
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariable);
   store.dispatch(saveEditingSpec(specDTO2));
+
+  // spec w/ variable; optional
+  const specWithVariableOptional: Spec = {
+    id: SPEC_WITH_VARIABLE_OPTIONAL_ID,
+    name: SPEC_WITH_VARIABLE_OPTIONAL_NAME,
+    items: [
+      {
+        ...createSpecItem(),
+        itemType: SpecItemType.Enum.VARIABLE,
+        variableId: DEFAULT_VARIABLE_ID,
+        optional: true,
+      },
+    ],
+  };
+  const specDTO3 = specMapper.mapFromDomain(specWithVariableOptional);
+  store.dispatch(saveEditingSpec(specDTO3));
+
+  // spec w/ variable; not optional
+  const specWithVariableNotOptional: Spec = {
+    id: SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID,
+    name: SPEC_WITH_VARIABLE_NOT_OPTIONAL_NAME,
+    items: [
+      {
+        ...createSpecItem(),
+        itemType: SpecItemType.Enum.VARIABLE,
+        variableId: VARIABLE_ID,
+        optional: false,
+      },
+    ],
+  };
+  const specDTO4 = specMapper.mapFromDomain(specWithVariableNotOptional);
+  store.dispatch(saveEditingSpec(specDTO4));
 });
 
 const doRender = (specId?: string) => {
@@ -237,7 +293,7 @@ describe('spec component tests', () => {
     const variableTypeSelect = screen.getByRole('list', {
       name: Field[Field.SP_ITEM_VARIABLE],
     });
-    await user.selectOptions(variableTypeSelect, VARIABLE_NAME_1);
+    await user.selectOptions(variableTypeSelect, VARIABLE_NAME);
     await user.tab();
 
     const errorSpan = screen.queryByText(GTE1_ERROR_MESSAGE);
@@ -411,7 +467,7 @@ describe('spec component tests', () => {
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.SP_ITEM_VARIABLE],
     });
-    await user.selectOptions(variableSelect, VARIABLE_NAME_1);
+    await user.selectOptions(variableSelect, VARIABLE_NAME);
     const saveButton = screen.getByRole('button', {
       name: SAVE,
     });
@@ -422,7 +478,118 @@ describe('spec component tests', () => {
     expect(errorText).not.toBeInTheDocument();
     expect(saveButton).not.toBeDisabled();
   });
+
+  it('should validate spec optional + var default', async () => {
+    doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    await user.click(saveButton);
+
+    const errorText = screen.queryByText(getSpecAdequacyErrorRegex());
+
+    expect(errorText).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+  });
+
+  it('should validate spec not optional + var not default', async () => {
+    doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    await user.click(saveButton);
+
+    const errorText = screen.queryByText(getSpecAdequacyErrorRegex());
+
+    expect(errorText).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+  });
+
+  it('should invalidate spec optional + var not default, via var select', async () => {
+    // start with optional spec + default var
+    doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
+
+    const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.SP_ITEM_VARIABLE],
+    });
+    // change to non-default var
+    await user.selectOptions(variableSelect, VARIABLE_NAME);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    const errorText = screen.getByText(getOptionalityErrorRegex());
+
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should validate spec not optional + var default, via var select', async () => {
+    // start with non-optional spec with non-default var
+    doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
+
+    const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.SP_ITEM_VARIABLE],
+    });
+    // change to default var
+    await user.selectOptions(variableSelect, [DEFAULT_VARIABLE_NAME]);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    const errorText = screen.queryByText(getOptionalityErrorRegex());
+
+    expect(errorText).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+  });
+
+  it('should validate spec not optional + var default, via optional switch', async () => {
+    // start with optional spec + default var
+    doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
+
+    const optionalSwitch = screen.getByLabelText('Optional');
+    // change to non-optional spec
+    await user.click(optionalSwitch);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    const errorText = screen.queryByText(getOptionalityErrorRegex());
+
+    expect(errorText).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+  });
+
+  it('should invalidate spec optional + var not default, via optional switch', async () => {
+    // start with non-optional spec with non-default var
+    doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
+
+    const optionalSwitch = screen.getByLabelText('Optional');
+    // change to optional spec
+    await user.click(optionalSwitch);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    const errorText = screen.getByText(getOptionalityErrorRegex());
+
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
 });
+
+/*
+ * 4 scenarios:
+ * x- spec optional    ; var default     > valid
+ * x- spec optional    ; var no-default  > invalid
+ * x- spec no-optional ; var default     > valid
+ * x- spec no-optional ; var no-default  > valid
+ */
 
 const getSpecAdequacyErrorRegex = () =>
   /this spec is used in the command ".+" in which it/;
+
+const getOptionalityErrorRegex = () =>
+  /optional variable spec items require variables with defaults/;
