@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useId } from 'react';
 import { FormCheck, FormControl, FormSelect } from 'react-bootstrap';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
@@ -45,6 +45,9 @@ type AVCProps = {
 export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
+  const enterValueId = useId();
+  const useVariableId = useId();
+  const useRoleKeyId = useId();
 
   const typeChangedFn = (type: string) => {
     editingContext.localDispatchFn({
@@ -98,6 +101,11 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const variableId = isVariableActionValue(props.actionValue)
     ? props.actionValue.variableId
     : undefined;
+  const radioButtonData = [
+    { id: enterValueId, actionValueType: ActionValueType.Enum.ENTER_VALUE },
+    { id: useVariableId, actionValueType: ActionValueType.Enum.USE_VARIABLE },
+    { id: useRoleKeyId, actionValueType: ActionValueType.Enum.USE_ROLE_KEY },
+  ];
 
   return (
     <FormGroupRowComponent
@@ -110,17 +118,18 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       required={props.required}
     >
       <div role="radiogroup" aria-label={Field[props.fields.radio]}>
-        {ActionValueType.values().map((actionValueType) => (
+        {radioButtonData.map((d) => (
           <FormCheck
             inline
-            label={actionValueType}
-            key={actionValueType}
+            label={d.actionValueType}
+            key={d.actionValueType}
             type="radio"
             role="radio"
-            checked={isChecked(actionValueType)}
-            aria-checked={isChecked(actionValueType)}
-            tabIndex={isChecked(actionValueType) ? 0 : -1}
-            onChange={(_e) => typeChangedFn(actionValueType)}
+            id={d.id}
+            checked={isChecked(d.actionValueType)}
+            aria-checked={isChecked(d.actionValueType)}
+            tabIndex={isChecked(d.actionValueType) ? 0 : -1}
+            onChange={(_e) => typeChangedFn(d.actionValueType)}
           />
         ))}
       </div>
