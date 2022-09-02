@@ -76,7 +76,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     validationContext.touch(Field.VAR_TYPE_SELECT);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    const isValid = validationContext.validateForm();
+    const isValid = validationContext.validateForSave();
     if (isValid) {
       // TODO: this still creates orphans... damnit... clear them
       // at least it's less this way
@@ -153,7 +153,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       )}
       {isSaved && (
         <Button
-          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          onClick={() => editingContext.deleteModalConfig.setShow(true)}
           variant="danger"
           size="lg"
           className="me-3"
@@ -162,7 +162,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        onClick={() => reduxDispatch(setEditorFocus())}
         className="me-3"
         variant="warning"
         size="lg"

@@ -56,7 +56,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     }
   };
   const submitHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
-    const formIsValid = validationContext.validateForm();
+    const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveCommand(props.command));
       reduxDispatch(setEditorFocus());
@@ -210,7 +210,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       </Col>
       {isSaved && (
         <Button
-          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          onClick={() => editingContext.deleteModalConfig.setShow(true)}
           variant="danger"
           size="lg"
           className="me-3"

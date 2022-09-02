@@ -17,7 +17,7 @@ import { getSendKeyValidators } from './features/model/action/send-key/send-key-
 import { getDefaultCommandNamer } from './features/model/command/command-default-namer';
 import { getCommandValidators } from './features/model/command/command-validators';
 import { getDefaultContextNamer } from './features/model/context/context-default-namer';
-import { getContextValidators } from './features/model/context/context-validation';
+import { getContextValidators } from './features/model/context/context-validators';
 import { getRoleKeyValidators } from './features/model/role-key/role-key-validation';
 import { getSelectorDomainMapper } from './features/model/selector/data/selector-domain-mapper';
 import { getSpecDomainMapper } from './features/model/spec/data/spec-domain-mapper';

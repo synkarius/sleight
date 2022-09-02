@@ -6,6 +6,7 @@ export enum Field {
   AC_TYPE,
   AC_ROLE_KEY,
   AC_SAVE,
+  AC_DELETE,
   // action: pause
   AC_CENTISECONDS_RADIO,
   AC_CENTISECONDS_VALUE,
@@ -51,11 +52,13 @@ export enum Field {
   CMD_SPEC_SPEC_SELECT,
   CMD_SPEC_RK_SELECT,
   CMD_SAVE,
+  CMD_DELETE,
   // context:
   CTX_MATCHER,
   CTX_NAME,
   CTX_ROLE_KEY,
   CTX_TYPE,
+  CTX_DELETE,
   // role key: role key
   RK_ROLE_KEY,
   // spec:
@@ -67,6 +70,7 @@ export enum Field {
   SP_ITEM_VARIABLE,
   SP_TOGGLE_SPEC_ITEM_OPTIONAL,
   SP_SAVE,
+  SP_DELETE,
   // variable:
   VAR_NAME,
   VAR_ROLE_KEY,
@@ -79,4 +83,5 @@ export enum Field {
   VAR_CHOICE_ITEM_SELECTOR,
   VAR_CHOICE_DEFAULT_VALUE,
   VAR_ADD_ITEM_BUTTON,
+  VAR_DELETE,
 }

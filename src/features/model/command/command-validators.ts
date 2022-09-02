@@ -1,4 +1,4 @@
-import { isSelected } from '../../../util/common-functions';
+import { alwaysTrue, isSelected } from '../../../util/common-functions';
 import {
   createNameTakenValidator,
   createValidator,
@@ -67,50 +67,9 @@ const commmandSpecRoleKeyExistenceValidator: FieldValidator<Command> = {
   },
 };
 
-/**
- * This validator is probably complete, but not including it until role key design
- * problems are worked out.
- */
-// const specsProvideRoledKeyedVariablesToCoverActions: FieldValidator<Command> = {
-//   field: CMD_SAVE,
-//   isApplicable: (command) => isRoleKeyedSpecCommand(command),
-//   validate: (command, data) => {
-//     if (isRoleKeyedSpecCommand(command)) {
-//       const variablesInActions = command.actionIds
-//         .map((actionId) => data.actions[actionId])
-//         .flatMap(extractVariablesFromAction)
-//         .filter(isVariableActionValue)
-//         .map((actionValue) => actionValue.variableId);
-//       if (data.roleKeys[command.specRoleKeyId]) {
-//         const roleKeyForSpec = data.roleKeys[command.specRoleKeyId];
-//         // TODO: filter for only exported role keys here
-//         const variablesInSpec = Object.values(data.specs)
-//           .filter((spec) => spec.roleKeyId === roleKeyForSpec.id)
-//           .flatMap((spec) => spec.items)
-//           .filter((item) => item.itemType === SpecItemType.Enum.VARIABLE)
-//           .map((specItem) => specItem.itemId);
-//         const specDoesntCoverActions = !!variablesInActions.find(
-//           (variableId) => !variablesInSpec.includes(variableId)
-//         );
-//         if (specDoesntCoverActions) {
-//           return {
-//             type: ValidationResultType.BASIC,
-//             field: CMD_SAVE,
-//             code: ValidationErrorCode.CMD_INADEQUATE_RK_VAR_COVERAGE,
-//             message:
-//               "actions' role keys' variables are inadequately covered by spec",
-//           };
-//         }
-//       }
-//     }
-//     return validResult(CMD_SAVE);
-//   },
-// };
-
 export const getCommandValidators: () => FieldValidator<Command>[] = () => [
   nameTakenValidator,
   commandSpecVariableSelectedValidator,
   commandSpecRoleKeySelectedValidator,
   commmandSpecRoleKeyExistenceValidator,
-  // specsProvideRoledKeyedVariablesToCoverActions,
 ];

@@ -64,7 +64,7 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
       >
         <VariableComponent variable={editing} />
         <DeleteModal
-          deleting={editing.name}
+          deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
         />

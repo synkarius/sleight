@@ -47,7 +47,7 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
       >
         <ContextComponent context={editing} />
         <DeleteModal
-          deleting={editing.name}
+          deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
         />

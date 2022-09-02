@@ -8,6 +8,7 @@ import { ValidationErrorCode } from './validation-error-code';
 import { SleightDataInternalFormat } from '../data/data-formats';
 import { Ided, Named } from '../features/domain';
 import { alwaysTrue } from '../util/common-functions';
+import { ValidateMode } from './ValidationComponent';
 
 export enum ValidatorType {
   FIELD,
@@ -26,6 +27,7 @@ interface AbstractValidator<T> {
 interface SingleFieldValidator<T> extends AbstractValidator<T> {
   readonly validatorType: typeof ValidatorType.FIELD;
   readonly field: Field;
+  readonly exclusiveValidationMode?: ValidateMode;
 }
 
 interface FieldsValidator<T> extends AbstractValidator<T> {

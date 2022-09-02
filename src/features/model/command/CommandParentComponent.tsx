@@ -47,7 +47,7 @@ export const CommandParentComponent: React.FC<{ commandId?: string }> = (
       >
         <CommandComponent command={editing} />
         <DeleteModal
-          deleting={editing.name}
+          deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
         />

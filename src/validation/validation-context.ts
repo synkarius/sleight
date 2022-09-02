@@ -4,7 +4,8 @@ import { ErrorValidationResult } from './validation-result';
 
 interface ValidationData {
   readonly touch: (field: Field) => void;
-  readonly validateForm: () => boolean;
+  readonly validateForSave: () => boolean;
+  readonly validateForDelete: () => ErrorValidationResult[];
   readonly getErrorResults: () => ErrorValidationResult[];
 }
 

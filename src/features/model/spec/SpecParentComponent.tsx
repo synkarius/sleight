@@ -56,7 +56,7 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
       <SpecEditingContext.Provider value={{ localDispatch, deleteModalConfig }}>
         <SpecComponent spec={editing} />
         <DeleteModal
-          deleting={editing.name}
+          deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
         />

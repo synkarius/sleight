@@ -47,7 +47,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
     validationContext.touch(Field.SP_ADD_ITEM_BUTTON);
   };
   const saveSpecHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    const isValid = validationContext.validateForm();
+    const isValid = validationContext.validateForSave();
     if (isValid) {
       // TODO: this still creates orphans... damnit... clear them
       // at least it's less this way
@@ -137,7 +137,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       <Col sm="12" className="mb-1">
         {isSaved && (
           <Button
-            onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+            onClick={() => editingContext.deleteModalConfig.setShow(true)}
             variant="danger"
             size="lg"
             className="me-3"

@@ -27,7 +27,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
     validationContext.touch(Field.RK_ROLE_KEY);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    const formIsValid = validationContext.validateForm();
+    const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveRoleKey(props.roleKey));
       reduxDispatch(setEditorFocus());

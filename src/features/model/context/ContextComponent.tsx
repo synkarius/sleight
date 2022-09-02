@@ -58,7 +58,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     validationContext.touch(Field.CTX_MATCHER);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    const isValid = validationContext.validateForm();
+    const isValid = validationContext.validateForSave();
     if (isValid) {
       reduxDispatch(saveContext(props.context));
       reduxDispatch(setEditorFocus());
@@ -129,7 +129,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
       </FormGroupRowComponent>
       {isSaved && (
         <Button
-          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          onClick={() => editingContext.deleteModalConfig.setShow(true)}
           variant="danger"
           size="lg"
           className="me-3"

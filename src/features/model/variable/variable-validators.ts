@@ -13,6 +13,7 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
+import { ValidateMode } from '../../../validation/ValidationComponent';
 import {
   ChoiceVariable,
   isChoiceVariable,
@@ -138,6 +139,31 @@ const usedVariableTypesValidator: FieldValidator<Variable> = {
   },
 };
 
+const deletionValidator: FieldValidator<Variable> = {
+  validatorType: ValidatorType.FIELD,
+  exclusiveValidationMode: ValidateMode.DELETE,
+  field: Field.VAR_DELETE,
+  isApplicable: alwaysTrue,
+  validate: (variable, data) => {
+    const actionsUsingVariable = Object.values(data.actions)
+      .flatMap(extractVariablesFromAction)
+      .filter((vav) => vav.variableId === variable.id)
+      .map((vav) => MapUtil.getOrThrow(data.actions, vav.actionId))
+      .map((action) => action.name);
+    const actionsStr = actionsUsingVariable.join('", "');
+    return actionsUsingVariable.length === 0
+      ? validResult(Field.VAR_DELETE)
+      : {
+          type: ValidationResultType.BASIC,
+          field: Field.VAR_DELETE,
+          code: ValidationErrorCode.VAR_USED_AND_DELETE_ATTEMPTED,
+          message:
+            'cannot delete: this variable is used in action(s):' +
+            ` "${actionsStr}"`,
+        };
+  },
+};
+
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
   nameTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
@@ -145,4 +171,5 @@ export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
   choiceSelectorItemsCantBeEmpty,
   choiceSelectorItemsCantBeNonAlphaOrSpaces,
   usedVariableTypesValidator,
+  deletionValidator,
 ];

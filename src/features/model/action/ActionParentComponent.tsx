@@ -53,7 +53,7 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
           /** editing.name is fine here because the modal won't show unless
            * the element is saved, and the element can't be saved without a name
            */
-          deleting={editing.name}
+          deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
         />

@@ -11,9 +11,10 @@ import {
   ValidationResultType,
 } from './validation-result';
 
-enum ValidateMode {
-  SUBMIT,
+export enum ValidateMode {
   TOUCH,
+  SUBMIT,
+  DELETE,
 }
 
 // generic props
@@ -42,6 +43,32 @@ const isTouched = (
 };
 
 /**
+ * when a validator can be used:
+ * - mode: touch -> any except delete, but only if touched
+ * - mode: submit -> any except delete
+ * - mode: delete -> delete validators only
+ */
+const shouldUseValidator = (
+  mode: ValidateMode,
+  validator: FieldValidator<any>,
+  touched: Field[]
+): boolean => {
+  const isDeletionValidator =
+    validator.validatorType === ValidatorType.FIELD &&
+    validator.exclusiveValidationMode === ValidateMode.DELETE;
+  switch (mode) {
+    case ValidateMode.DELETE:
+      return isDeletionValidator;
+    case ValidateMode.SUBMIT:
+      return !isDeletionValidator;
+    case ValidateMode.TOUCH:
+      return !isDeletionValidator && isTouched(validator, touched);
+    default:
+      throw new ExhaustivenessFailureError(mode);
+  }
+};
+
+/**
  * Controls local validation.
  *
  * Must specify domain object type being validated.
@@ -59,7 +86,7 @@ export const ValidationComponent: ValidationPropsComponent = (props) => {
   const validate = (mode: ValidateMode): ErrorValidationResult[] => {
     // submit means everything is touched
     return props.validators
-      .filter((v) => mode === ValidateMode.SUBMIT || isTouched(v, touched))
+      .filter((v) => shouldUseValidator(mode, v, touched))
       .filter((v) => v.isApplicable(props.editing))
       .map((v) => v.validate(props.editing, allData))
       .filter(
@@ -86,7 +113,8 @@ export const ValidationComponent: ValidationPropsComponent = (props) => {
     <ValidationContext.Provider
       value={{
         touch: addToTouched,
-        validateForm: validateOnSubmit,
+        validateForSave: validateOnSubmit,
+        validateForDelete: () => validate(ValidateMode.DELETE),
         getErrorResults: () => [...results],
       }}
     >
