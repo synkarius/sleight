@@ -8,20 +8,20 @@ import { createRoleKey } from '../role-key/role-key';
 import { saveRoleKey } from '../role-key/role-key-reducers';
 import { createSelector, Selector } from '../selector/data/selector-domain';
 import { saveSelector } from '../selector/selector-reducers';
-import { saveEditingSpec } from '../spec/spec-reducers';
+import { saveSpec } from '../spec/spec-reducers';
 import { createSpec, createSpecItem, Spec } from '../spec/data/spec-domain';
 import { CommandParentComponent } from './CommandParentComponent';
-import { saveEditingContext } from '../context/context-reducers';
+import { saveContext } from '../context/context-reducers';
 import { createContext } from '../context/context';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { getSelectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { getSpecDomainMapper } from '../spec/data/spec-domain-mapper';
-import { saveEditingCommand } from './command-reducers';
+import { saveCommand } from './command-reducers';
 import { createCommand } from './command';
 import { createRangeVariable } from '../variable/data/variable';
 import { getVariableDomainMapper } from '../variable/data/variable-domain-mapper';
-import { saveEditingVariable } from '../variable/variable-reducers';
+import { saveVariable } from '../variable/variable-reducers';
 import { SpecItemType } from '../spec/spec-item-type';
 import { SpecDTO } from '../spec/data/spec-dto';
 import { createPauseAction, PauseAction } from '../action/pause/pause';
@@ -55,14 +55,14 @@ beforeAll(() => {
   const rangeVariable = createRangeVariable();
   const rangeVariableDTO =
     getVariableDomainMapper().mapFromDomain(rangeVariable);
-  store.dispatch(saveEditingVariable(rangeVariableDTO));
+  store.dispatch(saveVariable(rangeVariableDTO));
   // save specs
   const selector = createSelector();
   const selectorRedux = getSelectorDomainMapper().mapFromDomain(selector);
   store.dispatch(saveSelector(selectorRedux));
   const specWithNoVar = createTestReduxSpec(selector);
   store.dispatch(
-    saveEditingSpec({
+    saveSpec({
       ...specWithNoVar,
       name: SPEC_NO_VAR_NAME,
     })
@@ -80,10 +80,10 @@ beforeAll(() => {
       },
     ],
   };
-  store.dispatch(saveEditingSpec(specWithVar));
+  store.dispatch(saveSpec(specWithVar));
   // save a context
   store.dispatch(
-    saveEditingContext({
+    saveContext({
       ...createContext(),
       id: CONTEXT_ID,
       name: CONTEXT_NAME,
@@ -112,7 +112,7 @@ beforeAll(() => {
   store.dispatch(saveAction(actionWithVar));
   // save a command with a name
   store.dispatch(
-    saveEditingCommand({
+    saveCommand({
       ...createCommand(),
       name: COMMAND_NAME,
       specType: CommandSpecType.Enum.SPEC,

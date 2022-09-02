@@ -20,7 +20,7 @@ export const ChoiceItemComponent: React.FC<{
   const changechoiceItemValueHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.EDIT_CHOICE_ITEM,
       payload: {
         choiceItemId: props.choiceItem.id,
@@ -29,13 +29,13 @@ export const ChoiceItemComponent: React.FC<{
     });
   };
   const removeChoiceItemHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.DELETE_CHOICE_ITEM,
       payload: props.choiceItem.id,
     });
   };
   const addSelectorItemHandler = () => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.ADD_SELECTOR_ITEM,
       payload: {
         choiceItemId: props.choiceItem.id,
@@ -44,7 +44,7 @@ export const ChoiceItemComponent: React.FC<{
     });
   };
   const changeSelectorItemHandler = (selectorItemId: string, value: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.EDIT_SELECTOR_ITEM,
       payload: {
         choiceItemId: props.choiceItem.id,
@@ -54,7 +54,7 @@ export const ChoiceItemComponent: React.FC<{
     });
   };
   const deleteSelectorItemHandler = (selectorItemId: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.DELETE_SELECTOR_ITEM,
       payload: {
         choiceItemId: props.choiceItem.id,

@@ -50,7 +50,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const useRoleKeyId = useId();
 
   const typeChangedFn = (type: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         field: props.fields.radio,
@@ -61,7 +61,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   };
   const touchEnteredValue = () => validationContext.touch(props.fields.value);
   const enteredValueChangedFn = (value: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
         field: props.fields.value,
@@ -72,7 +72,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   };
   const touchVariable = () => validationContext.touch(props.fields.variable);
   const variableIdChangedFn = (id: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
         field: props.fields.variable,
@@ -83,7 +83,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   };
   const touchRoleKey = () => validationContext.touch(props.fields.roleKey);
   const roleKeyIdChangedFn = (id: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
       payload: {
         field: props.fields.roleKey,

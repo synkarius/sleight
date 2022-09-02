@@ -32,7 +32,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
   const addItemButton = Field.VAR_ADD_ITEM_BUTTON;
   const addHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     // TODO: this way creates selector orphans -- process them out somewhere
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.ADD_CHOICE_ITEM,
       payload: createChoiceItem(createSelector()),
     });
@@ -41,7 +41,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
   const defaultEnabledChangedHandler = (
     _e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
     });
     validationContext.touch(Field.VAR_USE_DEFAULT);
@@ -49,7 +49,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
   const defaultValueChangedHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_DEFAULT_CHOICE,
       payload: e.target.value,
     });

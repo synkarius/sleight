@@ -16,7 +16,7 @@ import { VariableDTO } from './data/variable-dto';
 import { VariableReducerActionType } from './variable-editing-context';
 import {
   VariablesState,
-  saveEditingVariable,
+  saveVariable,
   selectVariable,
   variableReduxReducer,
   variableReactReducer,
@@ -57,7 +57,7 @@ describe('variable reducer', () => {
       name: 'asdf',
     };
 
-    const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
+    const actual = variableReduxReducer(initialState, saveVariable(obj));
 
     const expected: Record<string, VariableDTO> = {};
     expected[obj.id] = obj;
@@ -68,7 +68,7 @@ describe('variable reducer', () => {
   it('should handle save with default name', () => {
     const obj = createTestVariable(VARIABLE_ID_1);
 
-    const actual = variableReduxReducer(initialState, saveEditingVariable(obj));
+    const actual = variableReduxReducer(initialState, saveVariable(obj));
 
     const expected: Record<string, VariableDTO> = {};
     expected[obj.id] = {

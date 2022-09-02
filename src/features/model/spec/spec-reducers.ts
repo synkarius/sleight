@@ -50,13 +50,16 @@ const specsSlice = createSlice({
     selectSpec: (state, action: PayloadAction<string | undefined>) => {
       state.editingId = action.payload;
     },
-    saveEditingSpec: (state, action: PayloadAction<SpecDTO>) => {
+    saveSpec: (state, action: PayloadAction<SpecDTO>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
+    },
+    deleteSpec: (state, action: PayloadAction<string>) => {
+      delete state.saved[action.payload];
     },
   },
 });
 
-export const { selectSpec, saveEditingSpec } = specsSlice.actions;
+export const { selectSpec, saveSpec, deleteSpec } = specsSlice.actions;
 export const specReduxReducer = specsSlice.reducer;
 
 const changeEditingSpecName = (

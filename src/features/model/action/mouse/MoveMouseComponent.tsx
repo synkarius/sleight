@@ -17,7 +17,7 @@ export const MoveMouseComponent: React.FC<{
   const editingContext = useContext(ActionEditingContext);
 
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE,
       payload: event.target.value as MouseMovementType.Type,
     });

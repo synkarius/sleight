@@ -1,8 +1,10 @@
 import React from 'react';
+import { DeleteModalConfig } from '../../ui/DeleteModal';
 
 interface EditingData<P> {
   // P is a payload
-  localDispatchFn: React.Dispatch<P>;
+  localDispatch: React.Dispatch<P>;
+  deleteModalConfig: DeleteModalConfig;
 }
 
 /**

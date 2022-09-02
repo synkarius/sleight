@@ -63,10 +63,13 @@ const actionsSlice = createSlice({
     saveAction: (state, action: PayloadAction<Action>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
     },
+    deleteAction: (state, action: PayloadAction<string>) => {
+      delete state.saved[action.payload];
+    },
   },
 });
 
-export const { selectAction, saveAction } = actionsSlice.actions;
+export const { selectAction, saveAction, deleteAction } = actionsSlice.actions;
 export const actionReduxReducer = actionsSlice.reducer;
 
 const toggleModifier = (

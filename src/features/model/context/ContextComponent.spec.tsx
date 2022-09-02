@@ -7,7 +7,7 @@ import { Field } from '../../../validation/validation-field';
 import { ContextParentComponent } from './ContextParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../app-default-injection-context';
-import { saveEditingContext } from './context-reducers';
+import { saveContext } from './context-reducers';
 import { createContext } from './context';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
@@ -16,7 +16,7 @@ let user: UserEvent;
 
 beforeAll(() => {
   store.dispatch(
-    saveEditingContext({
+    saveContext({
       ...createContext(),
       name: CONTEXT_NAME,
     })

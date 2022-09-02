@@ -14,7 +14,7 @@ import {
   createRangeVariable,
   createTextVariable,
 } from '../../variable/data/variable';
-import { saveEditingVariable } from '../../variable/variable-reducers';
+import { saveVariable } from '../../variable/variable-reducers';
 import {
   VAR_FOR_RK_EXISTS_BUT_WRONG_TYPE,
   VAR_FOR_RK_NOT_EXISTS,
@@ -61,14 +61,14 @@ beforeAll(() => {
   };
   const rangeVariableDTO =
     getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
-  store.dispatch(saveEditingVariable(rangeVariableDTO));
+  store.dispatch(saveVariable(rangeVariableDTO));
   const textVariable = {
     ...createTextVariable(),
     roleKeyId: textRoleKey.id,
   };
   const textVariableDTO =
     getTextVariableDomainMapper().mapFromDomain(textVariable);
-  store.dispatch(saveEditingVariable(textVariableDTO));
+  store.dispatch(saveVariable(textVariableDTO));
 
   user = userEvent.setup();
 });

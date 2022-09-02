@@ -7,15 +7,15 @@ import { store } from '../../app/store';
 import { ElementType } from '../model/common/element-types';
 import { saveAction } from '../model/action/action-reducers';
 import { createPauseAction } from '../model/action/pause/pause';
-import { saveEditingCommand } from '../model/command/command-reducers';
+import { saveCommand } from '../model/command/command-reducers';
 import { Command, createCommand } from '../model/command/command';
 import { Context, createContext } from '../model/context/context';
-import { saveEditingContext } from '../model/context/context-reducers';
+import { saveContext } from '../model/context/context-reducers';
 import { createRoleKey, RoleKey } from '../model/role-key/role-key';
 import { saveRoleKey } from '../model/role-key/role-key-reducers';
 import { SpecDTO } from '../model/spec/data/spec-dto';
-import { saveEditingSpec } from '../model/spec/spec-reducers';
-import { saveEditingVariable } from '../model/variable/variable-reducers';
+import { saveSpec } from '../model/spec/spec-reducers';
+import { saveVariable } from '../model/variable/variable-reducers';
 import { Field } from '../../validation/validation-field';
 import { TEXT_BOX } from '../model/common/accessibility-roles';
 import { CommandSpecType } from '../model/command/command-spec-type';
@@ -42,7 +42,7 @@ beforeAll(() => {
   };
   store.dispatch(saveAction(action));
   const context: Context = { ...createContext(), name: CONTEXT_NAME_1 };
-  store.dispatch(saveEditingContext(context));
+  store.dispatch(saveContext(context));
   const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
   store.dispatch(saveRoleKey(roleKey));
   const spec: SpecDTO = {
@@ -57,10 +57,10 @@ beforeAll(() => {
     specType: CommandSpecType.Enum.SPEC,
     specId: spec.id,
   };
-  store.dispatch(saveEditingCommand(command));
-  store.dispatch(saveEditingSpec(spec));
+  store.dispatch(saveCommand(command));
+  store.dispatch(saveSpec(spec));
   const variable = { ...createRangeVariable(), name: VARIABLE_NAME_1 };
-  store.dispatch(saveEditingVariable(variable));
+  store.dispatch(saveVariable(variable));
   //
   user = userEvent.setup();
 });

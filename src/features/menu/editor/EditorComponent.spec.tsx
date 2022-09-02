@@ -12,7 +12,7 @@ import { CommandSpecType } from '../../model/command/command-spec-type';
 import { createSpec, Spec } from '../../model/spec/data/spec-domain';
 import { SpecDTO } from '../../model/spec/data/spec-dto';
 import { getSpecDomainMapper } from '../../model/spec/data/spec-domain-mapper';
-import { saveEditingSpec } from '../../model/spec/spec-reducers';
+import { saveSpec } from '../../model/spec/spec-reducers';
 
 let user: UserEvent;
 
@@ -26,7 +26,7 @@ beforeAll(() => {
     roleKeyId: roleKey.id,
   };
   const specDTO: SpecDTO = getSpecDomainMapper().mapFromDomain(spec);
-  store.dispatch(saveEditingSpec(specDTO));
+  store.dispatch(saveSpec(specDTO));
   user = userEvent.setup();
 });
 

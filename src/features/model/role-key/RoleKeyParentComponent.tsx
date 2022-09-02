@@ -35,7 +35,13 @@ export const RoleKeyParentComponent: React.FC<{ roleKeyId?: string }> = (
       editing={editing}
     >
       <RoleKeyEditingContext.Provider
-        value={{ localDispatchFn: localDispatch }}
+        value={{
+          localDispatch,
+          deleteModalConfig: {
+            show: false,
+            setShow: (_) => {},
+          },
+        }}
       >
         <RoleKeyComponent roleKey={editing} />
       </RoleKeyEditingContext.Provider>

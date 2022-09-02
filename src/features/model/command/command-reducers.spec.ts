@@ -6,7 +6,7 @@ import { CommandReducerActionType } from './command-editing-context';
 import {
   CommandsState,
   selectCommand,
-  saveEditingCommand,
+  saveCommand,
   commandReduxReducer,
   commandReactReducer,
 } from './command-reducers';
@@ -43,7 +43,7 @@ describe('command reducer', () => {
       editingId: undefined,
     };
 
-    const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
+    const actual = commandReduxReducer(initialState, saveCommand(obj));
 
     const expected: Record<string, Command> = {};
     expected[obj.id] = {
@@ -62,7 +62,7 @@ describe('command reducer', () => {
       editingId: undefined,
     };
 
-    const actual = commandReduxReducer(initialState, saveEditingCommand(obj));
+    const actual = commandReduxReducer(initialState, saveCommand(obj));
 
     const expected: Record<string, Command> = {};
     expected[obj.id] = obj;

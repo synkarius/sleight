@@ -43,13 +43,17 @@ const commandsSlice = createSlice({
     selectCommand: (state, action: PayloadAction<string | undefined>) => {
       state.editingId = action.payload;
     },
-    saveEditingCommand: (state, action: PayloadAction<Command>) => {
+    saveCommand: (state, action: PayloadAction<Command>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
+    },
+    deleteCommand: (state, action: PayloadAction<string>) => {
+      delete state.saved[action.payload];
     },
   },
 });
 
-export const { selectCommand, saveEditingCommand } = commandsSlice.actions;
+export const { selectCommand, saveCommand, deleteCommand } =
+  commandsSlice.actions;
 export const commandReduxReducer = commandsSlice.reducer;
 
 const changeEditingCommandName = (

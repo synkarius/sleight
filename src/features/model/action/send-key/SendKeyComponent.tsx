@@ -35,14 +35,14 @@ export const SendKeyComponent: React.FC<{
   const editingContext = useContext(ActionEditingContext);
 
   const modeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_SEND_KEY_MODE,
       payload: event.target.value as SendKeyMode.Type,
     });
     validationContext.touch(Field.AC_SEND_KEY_MODE);
   };
   const modifierToggledHandler = (modifier: SendKeyModifiers) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_MODIFIERS,
       payload: modifier,
     });

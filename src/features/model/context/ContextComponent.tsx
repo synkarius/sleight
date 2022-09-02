@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
+import { useSaved } from '../../../data/use-saved';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
@@ -8,24 +9,26 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
+import { ElementType } from '../common/element-types';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
 import {
   ContextEditingContext,
   ContextReducerActionType,
 } from './context-editing-context';
-import { saveEditingContext } from './context-reducers';
+import { saveContext } from './context-reducers';
 import { ContextType } from './context-types';
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
-  const contextEditingContext = useContext(ContextEditingContext);
+  const editingContext = useContext(ContextEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const isSaved = useSaved(ElementType.Enum.CONTEXT, props.context.id);
   const contextDefaultNamer = injectionContext.default.namers.context;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    contextEditingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ContextReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
@@ -34,13 +37,13 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    contextEditingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ContextReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    contextEditingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ContextReducerActionType.CHANGE_TYPE,
       payload: event.target.value,
     });
@@ -48,7 +51,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const matcherChangedHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    contextEditingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ContextReducerActionType.CHANGE_MATCHER,
       payload: event.target.value,
     });
@@ -57,7 +60,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForm();
     if (isValid) {
-      reduxDispatch(saveEditingContext(props.context));
+      reduxDispatch(saveContext(props.context));
       reduxDispatch(setEditorFocus());
     }
   };
@@ -124,6 +127,24 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
           aria-label={Field[matcherField]}
         />
       </FormGroupRowComponent>
+      {isSaved && (
+        <Button
+          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          variant="danger"
+          size="lg"
+          className="me-3"
+        >
+          Delete
+        </Button>
+      )}
+      <Button
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        className="me-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
+      </Button>
       <Button
         onClick={submitHandler}
         variant="primary"
@@ -131,14 +152,6 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         disabled={fullErrorResults.length > 0}
       >
         Save
-      </Button>
-      <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
-        className="mx-3"
-        variant="warning"
-        size="lg"
-      >
-        Cancel
       </Button>
     </PanelComponent>
   );

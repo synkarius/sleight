@@ -46,7 +46,7 @@ export const SpecItemComponent: React.FC<{
     const newSpecItemType = event.target.value as SpecItemType.Type;
     switch (newSpecItemType) {
       case SpecItemType.Enum.SELECTOR:
-        editingContext.localDispatchFn({
+        editingContext.localDispatch({
           type: SpecReducerActionType.CHANGE_SPEC_ITEM_TYPE,
           payload: {
             specItemId: props.specItem.id,
@@ -56,7 +56,7 @@ export const SpecItemComponent: React.FC<{
         });
         break;
       case SpecItemType.Enum.VARIABLE:
-        editingContext.localDispatchFn({
+        editingContext.localDispatch({
           type: SpecReducerActionType.CHANGE_SPEC_ITEM_TYPE,
           payload: {
             specItemId: props.specItem.id,
@@ -71,7 +71,7 @@ export const SpecItemComponent: React.FC<{
     validationContext.touch(Field.SP_ITEM_TYPE_SELECT);
   };
   const variableChangedHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.CHANGE_SPEC_ITEM_VARIABLE_ID,
       payload: {
         specItemId: props.specItem.id,
@@ -81,7 +81,7 @@ export const SpecItemComponent: React.FC<{
     validationContext.touch(Field.SP_ITEM_VARIABLE);
   };
   const specItemMovedHandler = (moveDirection: MoveDirection) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.CHANGE_SPEC_ITEM_ORDER,
       payload: {
         specItemId: props.specItem.id,
@@ -90,13 +90,13 @@ export const SpecItemComponent: React.FC<{
     });
   };
   const deleteSpecItemHandler = () => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.DELETE_SPEC_ITEM,
       payload: props.specItem.id,
     });
   };
   const addSelectorItemHandler = () => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.ADD_SELECTOR_ITEM,
       payload: {
         specItemId: props.specItem.id,
@@ -105,7 +105,7 @@ export const SpecItemComponent: React.FC<{
     });
   };
   const changeSelectorItemHandler = (selectorItemId: string, value: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.CHANGE_SELECTOR_ITEM,
       payload: {
         specItemId: props.specItem.id,
@@ -115,7 +115,7 @@ export const SpecItemComponent: React.FC<{
     });
   };
   const deleteSelectorItemHandler = (selectorItemId: string) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.DELETE_SELECTOR_ITEM,
       payload: {
         specItemId: props.specItem.id,
@@ -198,7 +198,7 @@ export const SpecItemComponent: React.FC<{
           label="Optional"
           checked={props.specItem.optional}
           onChange={(_e) => {
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: SpecReducerActionType.TOGGLE_SPEC_ITEM_OPTIONAL,
               payload: props.specItem.id,
             });
@@ -215,7 +215,7 @@ export const SpecItemComponent: React.FC<{
           label="Grouped"
           checked={props.specItem.grouped}
           onChange={(_e) =>
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: SpecReducerActionType.TOGGLE_SPEC_ITEM_GROUPED,
               payload: props.specItem.id,
             })

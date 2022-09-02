@@ -18,7 +18,7 @@ import {
   createChoiceVariable,
   createTextVariable,
 } from '../../variable/data/variable';
-import { saveEditingVariable } from '../../variable/variable-reducers';
+import { saveVariable } from '../../variable/variable-reducers';
 import {
   VAR_FOR_RK_EXISTS_BUT_WRONG_TYPE,
   VAR_FOR_RK_NOT_EXISTS,
@@ -69,14 +69,14 @@ beforeAll(() => {
   };
   const choiceVariableDTO =
     getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
-  store.dispatch(saveEditingVariable(choiceVariableDTO));
+  store.dispatch(saveVariable(choiceVariableDTO));
   const textVariable = {
     ...createTextVariable(),
     roleKeyId: textRoleKey.id,
   };
   const textVariableDTO =
     getTextVariableDomainMapper().mapFromDomain(textVariable);
-  store.dispatch(saveEditingVariable(textVariableDTO));
+  store.dispatch(saveVariable(textVariableDTO));
 
   user = userEvent.setup();
 });

@@ -21,7 +21,7 @@ export const TextVariableComponent: React.FC<{ text: TextVariable }> = (
   const defaultEnabledChangedHandler = (
     _e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
     });
     validationContext.touch(Field.VAR_USE_DEFAULT);
@@ -29,7 +29,7 @@ export const TextVariableComponent: React.FC<{ text: TextVariable }> = (
   const defaultValueChangedHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_DEFAULT_TEXT,
       payload: e.target.value,
     });

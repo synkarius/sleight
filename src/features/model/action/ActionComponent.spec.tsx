@@ -14,18 +14,18 @@ import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionValueType } from './action-value/action-value-type';
 import { VariableType } from '../variable/variable-types';
 import { createRangeVariable } from '../variable/data/variable';
-import { saveEditingVariable } from '../variable/variable-reducers';
+import { saveVariable } from '../variable/variable-reducers';
 import { createSpecItem, Spec, SpecItem } from '../spec/data/spec-domain';
 import { SpecItemType } from '../spec/spec-item-type';
 import {
   createSelector,
   createSelectorItem,
 } from '../selector/data/selector-domain';
-import { saveEditingSpec } from '../spec/spec-reducers';
+import { saveSpec } from '../spec/spec-reducers';
 import { saveSelector } from '../selector/selector-reducers';
 import { Command, createCommand } from '../command/command';
 import { CommandSpecType } from '../command/command-spec-type';
-import { saveEditingCommand } from '../command/command-reducers';
+import { saveCommand } from '../command/command-reducers';
 import { LIST } from '../common/accessibility-roles';
 import { act } from 'react-dom/test-utils';
 
@@ -55,7 +55,7 @@ beforeAll(() => {
     name: VARIABLE_NAME_1,
   };
   const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
-  store.dispatch(saveEditingVariable(rangeVariableDTO));
+  store.dispatch(saveVariable(rangeVariableDTO));
 
   // save specs
   const selectorSpecItem: SpecItem = {
@@ -72,7 +72,7 @@ beforeAll(() => {
     items: [selectorSpecItem],
   };
   const specDTO1 = specMapper.mapFromDomain(specWithSelector);
-  store.dispatch(saveEditingSpec(specDTO1));
+  store.dispatch(saveSpec(specDTO1));
   const selectorDTO1 = selectorMapper.mapFromDomain(selectorSpecItem.selector);
   store.dispatch(saveSelector(selectorDTO1));
   const specWithVariable: Spec = {
@@ -87,7 +87,7 @@ beforeAll(() => {
     ],
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariable);
-  store.dispatch(saveEditingSpec(specDTO2));
+  store.dispatch(saveSpec(specDTO2));
 
   // save commands
   const command1: Command = {
@@ -96,14 +96,14 @@ beforeAll(() => {
     specId: SPEC_WITH_SELECTOR_ID,
     actionIds: [ACTION_NO_VARS],
   };
-  store.dispatch(saveEditingCommand(command1));
+  store.dispatch(saveCommand(command1));
   const command2: Command = {
     ...createCommand(),
     specType: CommandSpecType.Enum.SPEC,
     specId: SPEC_WITH_VARIABLE_ID,
     actionIds: [ACTION_WITH_VARS],
   };
-  store.dispatch(saveEditingCommand(command2));
+  store.dispatch(saveCommand(command2));
 
   user = userEvent.setup();
 });

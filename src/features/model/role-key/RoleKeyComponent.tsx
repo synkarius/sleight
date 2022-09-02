@@ -20,7 +20,7 @@ export const RoleKeyComponent: React.FC<{ roleKey: RoleKey }> = (props) => {
   const editingContext = useContext(RoleKeyEditingContext);
 
   const valueChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: RoleKeyReducerActionType.CHANGE_VALUE,
       payload: event.target.value,
     });

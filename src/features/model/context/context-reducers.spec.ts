@@ -3,7 +3,7 @@ import {
   ContextsState,
   selectContext,
   contextReduxReducer,
-  saveEditingContext,
+  saveContext,
   contextReactReducer,
 } from './context-reducers';
 import { ContextType } from './context-types';
@@ -29,10 +29,7 @@ describe('context reducer', () => {
       editingId: undefined,
     };
 
-    const actual = contextReduxReducer(
-      prereducerState,
-      saveEditingContext(obj)
-    );
+    const actual = contextReduxReducer(prereducerState, saveContext(obj));
 
     const expected: Record<string, Context> = {};
     expected[obj.id] = {
@@ -54,10 +51,7 @@ describe('context reducer', () => {
       editingId: undefined,
     };
 
-    const actual = contextReduxReducer(
-      prereducerState,
-      saveEditingContext(obj)
-    );
+    const actual = contextReduxReducer(prereducerState, saveContext(obj));
 
     const expected: Record<string, Context> = {};
     expected[obj.id] = {

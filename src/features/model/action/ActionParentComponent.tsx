@@ -1,12 +1,14 @@
-import React, { useContext, useReducer } from 'react';
-import { useAppSelector } from '../../../app/hooks';
+import React, { useContext, useReducer, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
+import { DeleteModal } from '../../ui/DeleteModal';
 import { Action } from './action';
 import { ActionEditingContext } from './action-editing-context';
-import { actionReactReducer } from './action-reducers';
+import { actionReactReducer, deleteAction } from './action-reducers';
 import { ActionComponent } from './ActionComponent';
 import { createSendKeyPressAction } from './send-key/send-key';
+import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 
 const init = (
   savedMap: Record<string, Action>
@@ -22,6 +24,7 @@ const init = (
 export const ActionParentComponent: React.FC<{ actionId?: string }> = (
   props
 ) => {
+  const reduxDispatch = useAppDispatch();
   const savedMap = useAppSelector((state) => state.action.saved);
   const [editing, localDispatch] = useReducer(
     actionReactReducer,
@@ -29,14 +32,31 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
     init(savedMap)
   );
   const injectionContext = useContext(InjectionContext);
+  const [show, setShow] = useState(false);
+
+  const handleDelete = () => {
+    reduxDispatch(deleteAction(editing.id));
+    reduxDispatch(setEditorFocus());
+  };
+  const deleteModalConfig = { show, setShow };
 
   return (
     <ValidationComponent<Action>
       validators={[...injectionContext.validators.action]}
       editing={editing}
     >
-      <ActionEditingContext.Provider value={{ localDispatchFn: localDispatch }}>
+      <ActionEditingContext.Provider
+        value={{ localDispatch, deleteModalConfig }}
+      >
         <ActionComponent action={editing} />
+        <DeleteModal
+          /** editing.name is fine here because the modal won't show unless
+           * the element is saved, and the element can't be saved without a name
+           */
+          deleting={editing.name}
+          config={deleteModalConfig}
+          deleteFn={handleDelete}
+        />
       </ActionEditingContext.Provider>
     </ValidationComponent>
   );

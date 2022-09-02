@@ -15,13 +15,15 @@ import {
   CommandEditingContext,
   CommandReducerActionType,
 } from './command-editing-context';
-import { saveEditingCommand } from './command-reducers';
+import { saveCommand } from './command-reducers';
 import { CommandSpecType } from './command-spec-type';
 import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { InjectionContext } from '../../../di/injector-context';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
+import { useSaved } from '../../../data/use-saved';
+import { ElementType } from '../common/element-types';
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
@@ -29,17 +31,18 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(CommandEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const isSaved = useSaved(ElementType.Enum.COMMAND, props.command.id);
   const commandDefaultNamer = injectionContext.default.namers.command;
 
   const nameChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: CommandReducerActionType.CHANGE_NAME,
       payload: e.target.value,
     });
     validationContext.touch(Field.CMD_NAME);
   };
   const roleKeyChangedHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: CommandReducerActionType.CHANGE_ROLE_KEY,
       payload: e.target.value,
     });
@@ -47,7 +50,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const addActionHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     const actions = Object.values(actionsSaved);
     if (actions.length > 0) {
-      editingContext.localDispatchFn({
+      editingContext.localDispatch({
         type: CommandReducerActionType.ADD_ACTION,
       });
     }
@@ -55,7 +58,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const submitHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     const formIsValid = validationContext.validateForm();
     if (formIsValid) {
-      reduxDispatch(saveEditingCommand(props.command));
+      reduxDispatch(saveCommand(props.command));
       reduxDispatch(setEditorFocus());
     }
   };
@@ -100,7 +103,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           field={Field.CMD_CONTEXT}
           contextId={props.command.contextId}
           onChange={(e) => {
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: CommandReducerActionType.CHANGE_CONTEXT,
               payload: e.target.value,
             });
@@ -116,7 +119,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           commandSpecType={props.command.specType}
           radioGroupName={Field[specFields.radio]}
           typeChangedFn={(value) => {
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: CommandReducerActionType.CHANGE_SPEC_TYPE,
               payload: value as CommandSpecType.Type,
             });
@@ -128,7 +131,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             field={specFields.variable}
             specId={props.command.specId}
             onChange={(e) => {
-              editingContext.localDispatchFn({
+              editingContext.localDispatch({
                 type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
                 payload: e.target.value,
               });
@@ -143,7 +146,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             field={specFields.roleKey}
             roleKeyId={props.command.specRoleKeyId}
             onChange={(e) => {
-              editingContext.localDispatchFn({
+              editingContext.localDispatch({
                 type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,
                 payload: e.target.value,
               });
@@ -168,13 +171,13 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       {props.command.actionIds.map((actionId, index) => (
         <VerticalMoveableComponent
           moveFn={(direction) => {
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: CommandReducerActionType.MOVE_ACTION,
               payload: { index: index, direction: direction },
             });
           }}
           deleteFn={() => {
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: CommandReducerActionType.DELETE_ACTION,
               payload: index,
             });
@@ -185,7 +188,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
             field={Field.CMD_ACTION_SELECT}
             actionId={actionId}
             onChange={(e) => {
-              editingContext.localDispatchFn({
+              editingContext.localDispatch({
                 type: CommandReducerActionType.CHANGE_ACTION,
                 payload: {
                   index: index,
@@ -205,6 +208,24 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       <Col sm="12" className="mb-3">
         <ErrorTextComponent errorMessage={onSaveErrorMessage} />
       </Col>
+      {isSaved && (
+        <Button
+          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          variant="danger"
+          size="lg"
+          className="me-3"
+        >
+          Delete
+        </Button>
+      )}
+      <Button
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        className="me-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
+      </Button>
       <Button
         onClick={submitHandler}
         variant="primary"
@@ -212,14 +233,6 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         disabled={fullErrorResults.length > 0}
       >
         Save
-      </Button>
-      <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
-        className="mx-3"
-        variant="warning"
-        size="lg"
-      >
-        Cancel
       </Button>
     </PanelComponent>
   );

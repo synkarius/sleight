@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { ActionType } from './action-types';
@@ -22,6 +22,8 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { isPauseAction } from './pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
 import { InjectionContext } from '../../../di/injector-context';
+import { useSaved } from '../../../data/use-saved';
+import { ElementType } from '../common/element-types';
 
 const AC_NAME = Field.AC_NAME;
 
@@ -30,17 +32,18 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const isSaved = useSaved(ElementType.Enum.ACTION, props.action.id);
   const actionDefaultNamer = injectionContext.default.namers.action;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
     validationContext.touch(AC_NAME);
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_TYPE,
       payload: event.target.value as ActionType.Type,
     });
@@ -49,7 +52,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
@@ -113,6 +116,25 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       {isPauseAction(props.action) && (
         <PauseComponent pauseAction={props.action} />
       )}
+
+      {isSaved && (
+        <Button
+          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          variant="danger"
+          size="lg"
+          className="me-3"
+        >
+          Delete
+        </Button>
+      )}
+      <Button
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        className="me-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
+      </Button>
       <Button
         onClick={submitHandler}
         variant="primary"
@@ -120,14 +142,6 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         disabled={fullErrorResults.length > 0}
       >
         Save
-      </Button>
-      <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
-        className="mx-3"
-        variant="warning"
-        size="lg"
-      >
-        Cancel
       </Button>
     </PanelComponent>
   );

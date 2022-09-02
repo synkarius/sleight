@@ -1,10 +1,12 @@
-import React, { useContext, useReducer } from 'react';
-import { useAppSelector } from '../../../app/hooks';
+import React, { useContext, useReducer, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
+import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
+import { DeleteModal } from '../../ui/DeleteModal';
 import { Command, createCommand } from './command';
 import { CommandEditingContext } from './command-editing-context';
-import { commandReactReducer } from './command-reducers';
+import { commandReactReducer, deleteCommand } from './command-reducers';
 import { CommandComponent } from './CommandComponent';
 
 const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
@@ -25,16 +27,30 @@ export const CommandParentComponent: React.FC<{ commandId?: string }> = (
     props.commandId,
     init(savedMap)
   );
+  const reduxDispatch = useAppDispatch();
   const injectionContext = useContext(InjectionContext);
+  const [show, setShow] = useState(false);
+
+  const handleDelete = () => {
+    reduxDispatch(deleteCommand(editing.id));
+    reduxDispatch(setEditorFocus());
+  };
+  const deleteModalConfig = { show, setShow };
+
   return (
     <ValidationComponent<Command>
       validators={[...injectionContext.validators.command]}
       editing={editing}
     >
       <CommandEditingContext.Provider
-        value={{ localDispatchFn: localDispatch }}
+        value={{ localDispatch, deleteModalConfig }}
       >
         <CommandComponent command={editing} />
+        <DeleteModal
+          deleting={editing.name}
+          config={deleteModalConfig}
+          deleteFn={handleDelete}
+        />
       </CommandEditingContext.Provider>
     </ValidationComponent>
   );

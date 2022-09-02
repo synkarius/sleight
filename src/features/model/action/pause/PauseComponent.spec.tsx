@@ -18,7 +18,7 @@ import {
   createChoiceVariable,
   createRangeVariable,
 } from '../../variable/data/variable';
-import { saveEditingVariable } from '../../variable/variable-reducers';
+import { saveVariable } from '../../variable/variable-reducers';
 import { ActionType } from '../action-types';
 import {
   VAR_FOR_RK_EXISTS_BUT_WRONG_TYPE,
@@ -67,7 +67,7 @@ beforeAll(() => {
   };
   const rangeVariableDTO =
     getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
-  store.dispatch(saveEditingVariable(rangeVariableDTO));
+  store.dispatch(saveVariable(rangeVariableDTO));
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
   const choiceVariable: ChoiceVariable = {
@@ -78,7 +78,7 @@ beforeAll(() => {
   };
   const choiceVariableDTO =
     getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
-  store.dispatch(saveEditingVariable(choiceVariableDTO));
+  store.dispatch(saveVariable(choiceVariableDTO));
 
   user = userEvent.setup();
 });

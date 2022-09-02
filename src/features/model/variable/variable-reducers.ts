@@ -57,13 +57,17 @@ const variablesSlice = createSlice({
     selectVariable: (state, action: PayloadAction<string | undefined>) => {
       state.editingId = action.payload;
     },
-    saveEditingVariable: (state, action: PayloadAction<VariableDTO>) => {
+    saveVariable: (state, action: PayloadAction<VariableDTO>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
+    },
+    deleteVariable: (state, action: PayloadAction<string>) => {
+      delete state.saved[action.payload];
     },
   },
 });
 
-export const { saveEditingVariable, selectVariable } = variablesSlice.actions;
+export const { saveVariable, selectVariable, deleteVariable } =
+  variablesSlice.actions;
 export const variableReduxReducer = variablesSlice.reducer;
 
 const copyVariable = (

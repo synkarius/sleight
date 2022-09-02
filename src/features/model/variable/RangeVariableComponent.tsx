@@ -28,13 +28,13 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   const checkboxId = useId();
 
   const minChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_RANGE_MIN,
       payload: +event.target.value,
     });
   };
   const maxChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_RANGE_MAX,
       payload: +event.target.value,
     });
@@ -43,7 +43,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   const defaultEnabledChangedHandler = (
     _e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.TOGGLE_DEFAULT_ENABLED,
     });
     validationContext.touch(Field.VAR_USE_DEFAULT);
@@ -51,7 +51,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   const defaultValueChangedHandler = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_DEFAULT_NUMBER,
       payload: +e.target.value,
     });

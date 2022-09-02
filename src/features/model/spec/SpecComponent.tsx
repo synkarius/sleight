@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Button, Col, FormControl } from 'react-bootstrap';
-import { saveEditingSpec } from './spec-reducers';
+import { saveSpec } from './spec-reducers';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { SpecItemComponent } from './SpecItemComponent';
@@ -20,16 +20,19 @@ import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { InjectionContext } from '../../../di/injector-context';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
+import { useSaved } from '../../../data/use-saved';
+import { ElementType } from '../common/element-types';
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const isSaved = useSaved(ElementType.Enum.SPEC, props.spec.id);
   const specDefaultNamer = injectionContext.default.namers.spec;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
@@ -37,7 +40,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   };
 
   const addSpecItemHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: SpecReducerActionType.ADD_SPEC_ITEM,
       payload: createSpecItem(),
     });
@@ -58,7 +61,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
         }
       });
       const specRedux = injectionContext.mappers.spec.mapFromDomain(props.spec);
-      reduxDispatch(saveEditingSpec(specRedux));
+      reduxDispatch(saveSpec(specRedux));
       reduxDispatch(setEditorFocus());
     }
   };
@@ -93,7 +96,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           field={Field.SP_ROLE_KEY}
           roleKeyId={props.spec.roleKeyId}
           onChange={(e) =>
-            editingContext.localDispatchFn({
+            editingContext.localDispatch({
               type: SpecReducerActionType.CHANGE_ROLE_KEY,
               payload: e.target.value,
             })
@@ -131,8 +134,25 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
         errorMessage={errorResults([Field.SP_SAVE])}
         row={true}
       />
-
       <Col sm="12" className="mb-1">
+        {isSaved && (
+          <Button
+            onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+            variant="danger"
+            size="lg"
+            className="me-3"
+          >
+            Delete
+          </Button>
+        )}
+        <Button
+          onClick={(_e) => reduxDispatch(setEditorFocus())}
+          className="me-3"
+          variant="warning"
+          size="lg"
+        >
+          Cancel
+        </Button>
         <Button
           variant="primary"
           size="lg"
@@ -140,14 +160,6 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           disabled={fullErrorResults.length > 0}
         >
           Save
-        </Button>
-        <Button
-          onClick={(_e) => reduxDispatch(setEditorFocus())}
-          className="mx-3"
-          variant="warning"
-          size="lg"
-        >
-          Cancel
         </Button>
       </Col>
     </PanelComponent>

@@ -8,11 +8,11 @@ import { SpecParentComponent } from './SpecParentComponent';
 import { createRoleKey, RoleKey } from '../role-key/role-key';
 import { saveRoleKey } from '../role-key/role-key-reducers';
 import { SpecItemType } from './spec-item-type';
-import { saveEditingVariable } from '../variable/variable-reducers';
+import { saveVariable } from '../variable/variable-reducers';
 import { createRangeVariable, RangeVariable } from '../variable/data/variable';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../app-default-injection-context';
-import { saveEditingSpec } from './spec-reducers';
+import { saveSpec } from './spec-reducers';
 import { createSpecItem, Spec, SpecItem } from './data/spec-domain';
 import { saveSelector } from '../selector/selector-reducers';
 import { createPauseAction, PauseAction } from '../action/pause/pause';
@@ -22,7 +22,7 @@ import { VariableType } from '../variable/variable-types';
 import { saveAction } from '../action/action-reducers';
 import { Command, createCommand } from '../command/command';
 import { CommandSpecType } from '../command/command-spec-type';
-import { saveEditingCommand } from '../command/command-reducers';
+import { saveCommand } from '../command/command-reducers';
 import {
   createSelector,
   createSelectorItem,
@@ -67,7 +67,7 @@ beforeAll(() => {
     defaultValue: undefined,
   };
   const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
-  store.dispatch(saveEditingVariable(rangeVariableDTO));
+  store.dispatch(saveVariable(rangeVariableDTO));
   // with default
   const variableWithDefault: RangeVariable = {
     ...createRangeVariable(),
@@ -77,7 +77,7 @@ beforeAll(() => {
   };
   const variableWithDefaultDTO =
     variableMapper.mapFromDomain(variableWithDefault);
-  store.dispatch(saveEditingVariable(variableWithDefaultDTO));
+  store.dispatch(saveVariable(variableWithDefaultDTO));
 
   // save actions
   const action1: PauseAction = {
@@ -105,14 +105,14 @@ beforeAll(() => {
     specId: SPEC_WITH_SELECTOR_ID,
     actionIds: [action2.id],
   };
-  store.dispatch(saveEditingCommand(command1));
+  store.dispatch(saveCommand(command1));
   const command2: Command = {
     ...createCommand(),
     specType: CommandSpecType.Enum.SPEC,
     specId: SPEC_WITH_VARIABLE_ID,
     actionIds: [action1.id],
   };
-  store.dispatch(saveEditingCommand(command2));
+  store.dispatch(saveCommand(command2));
 
   user = userEvent.setup();
 });
@@ -138,7 +138,7 @@ beforeEach(async () => {
     items: [selectorSpecItem],
   };
   const specDTO1 = specMapper.mapFromDomain(specWithSelector);
-  store.dispatch(saveEditingSpec(specDTO1));
+  store.dispatch(saveSpec(specDTO1));
   const selectorDTO1 = selectorMapper.mapFromDomain(selectorSpecItem.selector);
   store.dispatch(saveSelector(selectorDTO1));
 
@@ -155,7 +155,7 @@ beforeEach(async () => {
     ],
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariable);
-  store.dispatch(saveEditingSpec(specDTO2));
+  store.dispatch(saveSpec(specDTO2));
 
   // spec w/ variable; optional
   const specWithVariableOptional: Spec = {
@@ -171,7 +171,7 @@ beforeEach(async () => {
     ],
   };
   const specDTO3 = specMapper.mapFromDomain(specWithVariableOptional);
-  store.dispatch(saveEditingSpec(specDTO3));
+  store.dispatch(saveSpec(specDTO3));
 
   // spec w/ variable; not optional
   const specWithVariableNotOptional: Spec = {
@@ -187,7 +187,7 @@ beforeEach(async () => {
     ],
   };
   const specDTO4 = specMapper.mapFromDomain(specWithVariableNotOptional);
-  store.dispatch(saveEditingSpec(specDTO4));
+  store.dispatch(saveSpec(specDTO4));
 });
 
 const doRender = (specId?: string) => {
@@ -579,14 +579,6 @@ describe('spec component tests', () => {
     expect(saveButton).toBeDisabled();
   });
 });
-
-/*
- * 4 scenarios:
- * x- spec optional    ; var default     > valid
- * x- spec optional    ; var no-default  > invalid
- * x- spec no-optional ; var default     > valid
- * x- spec no-optional ; var no-default  > valid
- */
 
 const getSpecAdequacyErrorRegex = () =>
   /this spec is used in the command ".+" in which it/;

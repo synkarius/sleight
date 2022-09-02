@@ -10,7 +10,7 @@ import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../app-default-injection-context';
 import { createRangeVariable } from './data/variable';
 import { getVariableDomainMapper } from './data/variable-domain-mapper';
-import { saveEditingVariable } from './variable-reducers';
+import { saveVariable } from './variable-reducers';
 import { createPauseAction, PauseAction } from '../action/pause/pause';
 import { ActionValueType } from '../action/action-value/action-value-type';
 import { saveAction } from '../action/action-reducers';
@@ -30,14 +30,14 @@ beforeAll(() => {
     name: VARIABLE_1_NAME,
   };
   const variable1DTO = getVariableDomainMapper().mapFromDomain(variable1);
-  store.dispatch(saveEditingVariable(variable1DTO));
+  store.dispatch(saveVariable(variable1DTO));
   const variable2 = {
     ...createRangeVariable(),
     id: VARIABLE_2_ID,
     name: VARIABLE_2_NAME,
   };
   const variable2DTO = getVariableDomainMapper().mapFromDomain(variable2);
-  store.dispatch(saveEditingVariable(variable2DTO));
+  store.dispatch(saveVariable(variable2DTO));
   const action: PauseAction = {
     ...createPauseAction(),
     centiseconds: {

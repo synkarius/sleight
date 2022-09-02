@@ -4,7 +4,7 @@ import { FormControl, FormText, Button, FormSelect } from 'react-bootstrap';
 import { ChoiceVariableComponent } from './ChoiceVariableComponent';
 import { VariableType } from './variable-types';
 import { RangeVariableComponent } from './RangeVariableComponent';
-import { saveEditingVariable } from './variable-reducers';
+import { saveVariable } from './variable-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { createSelector } from '../selector/data/selector-domain';
 import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
@@ -27,16 +27,19 @@ import { LIST, LIST_ITEM } from '../common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
 import { TextVariableComponent } from './TextVariableComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { useSaved } from '../../../data/use-saved';
+import { ElementType } from '../common/element-types';
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(VariableEditingContext);
   const injectionContext = useContext(InjectionContext);
+  const isSaved = useSaved(ElementType.Enum.VARIABLE, props.variable.id);
   const variableDefaultNamer = injectionContext.default.namers.variable;
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_NAME,
       payload: event.target.value,
     });
@@ -45,7 +48,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    editingContext.localDispatchFn({
+    editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
@@ -54,7 +57,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     const newVariableType = event.target.value as VariableType.Type;
     switch (newVariableType) {
       case VariableType.Enum.CHOICE:
-        editingContext.localDispatchFn({
+        editingContext.localDispatch({
           type: VariableReducerActionType.CHANGE_TYPE,
           payload: {
             variableType: newVariableType,
@@ -63,7 +66,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         });
         break;
       default:
-        editingContext.localDispatchFn({
+        editingContext.localDispatch({
           type: VariableReducerActionType.CHANGE_TYPE,
           payload: {
             variableType: newVariableType,
@@ -88,7 +91,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       const variableDTO = injectionContext.mappers.variable.mapFromDomain(
         props.variable
       );
-      reduxDispatch(saveEditingVariable(variableDTO));
+      reduxDispatch(saveVariable(variableDTO));
       reduxDispatch(setEditorFocus());
     }
   };
@@ -148,6 +151,24 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       {isChoiceVariable(props.variable) && (
         <ChoiceVariableComponent choice={props.variable} />
       )}
+      {isSaved && (
+        <Button
+          onClick={(_e) => editingContext.deleteModalConfig.setShow(true)}
+          variant="danger"
+          size="lg"
+          className="me-3"
+        >
+          Delete
+        </Button>
+      )}
+      <Button
+        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        className="me-3"
+        variant="warning"
+        size="lg"
+      >
+        Cancel
+      </Button>
       <Button
         onClick={submitHandler}
         variant="primary"
@@ -155,14 +176,6 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         disabled={fullErrorResults.length > 0}
       >
         Save
-      </Button>
-      <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
-        className="mx-3"
-        variant="warning"
-        size="lg"
-      >
-        Cancel
       </Button>
     </PanelComponent>
   );

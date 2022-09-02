@@ -7,7 +7,7 @@ import { SpecItemType } from './spec-item-type';
 import {
   SpecsState,
   selectSpec,
-  saveEditingSpec,
+  saveSpec,
   specReduxReducer,
   specReactReducer,
 } from './spec-reducers';
@@ -57,7 +57,7 @@ describe('spec reducer', () => {
       saved: {},
       editingId: undefined,
     };
-    const actual = specReduxReducer(prereducerState, saveEditingSpec(obj));
+    const actual = specReduxReducer(prereducerState, saveSpec(obj));
 
     const expected: Record<string, SpecDTO> = {};
     expected[obj.id] = createTestSpecRedux({
@@ -82,7 +82,7 @@ describe('spec reducer', () => {
       saved: {},
       editingId: undefined,
     };
-    const actual = specReduxReducer(prereducerState, saveEditingSpec(obj));
+    const actual = specReduxReducer(prereducerState, saveSpec(obj));
 
     const expected: Record<string, SpecDTO> = {};
     expected[obj.id] = createTestSpecRedux({
