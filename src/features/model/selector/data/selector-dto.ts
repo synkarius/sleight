@@ -1,9 +1,9 @@
-import { RoleKeyed, Ided } from '../../../domain';
+import { Ided } from '../../../domain';
 
-export interface SelectorItemDTO extends RoleKeyed, Ided {
+export interface SelectorItemDTO extends Ided {
   readonly value: string;
 }
 
-export interface SelectorDTO extends RoleKeyed, Ided {
+export interface SelectorDTO extends Ided {
   readonly items: SelectorItemDTO[];
 }

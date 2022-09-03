@@ -16,7 +16,6 @@ const getChoiceItemDomainMapper: () => ChoiceItemDomainMapper = () => {
   return {
     mapFromDomain: (domain: ChoiceItem): ChoiceItemDTO => ({
       id: domain.id,
-      roleKeyId: domain.roleKeyId,
       selectorId: domain.selector.id,
       value: domain.value,
     }),
@@ -25,7 +24,6 @@ const getChoiceItemDomainMapper: () => ChoiceItemDomainMapper = () => {
       selectorDtos: Readonly<Record<string, SelectorDTO>>
     ): ChoiceItem => ({
       id: dto.id,
-      roleKeyId: dto.roleKeyId,
       selector: selectorDomainMapper.mapToDomain(selectorDtos[dto.selectorId]),
       value: dto.value,
     }),
@@ -48,7 +46,7 @@ export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
         id: domain.id,
         name: domain.name,
         type: domain.type,
-        roleKeyId: domain.roleKeyId,
+        roleKey: domain.roleKey,
         items: domain.items.map((item) =>
           choiceItemDomainMapper.mapFromDomain(item)
         ),
@@ -61,7 +59,7 @@ export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
         id: dto.id,
         name: dto.name,
         type: dto.type,
-        roleKeyId: dto.roleKeyId,
+        roleKey: dto.roleKey,
         items: dto.items.map((item) =>
           choiceItemDomainMapper.mapToDomain(item, selectorDtos)
         ),

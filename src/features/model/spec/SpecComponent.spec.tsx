@@ -5,8 +5,6 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { SpecParentComponent } from './SpecParentComponent';
-import { createRoleKey, RoleKey } from '../role-key/role-key';
-import { saveRoleKey } from '../role-key/role-key-reducers';
 import { SpecItemType } from './spec-item-type';
 import { saveVariable } from '../variable/variable-reducers';
 import { createRangeVariable, RangeVariable } from '../variable/data/variable';
@@ -21,7 +19,6 @@ import { ActionValueType } from '../action/action-value/action-value-type';
 import { VariableType } from '../variable/variable-types';
 import { saveAction } from '../action/action-reducers';
 import { Command, createCommand } from '../command/command';
-import { CommandSpecType } from '../command/command-spec-type';
 import { saveCommand } from '../command/command-reducers';
 import {
   createSelector,
@@ -55,9 +52,6 @@ beforeAll(() => {
   const injected = getDefaultInjectionContext();
   const variableMapper = injected.mappers.variable;
 
-  // save role key
-  const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
-  store.dispatch(saveRoleKey(roleKey));
   // save variables
   // no default
   const rangeVariable: RangeVariable = {
@@ -101,14 +95,12 @@ beforeAll(() => {
   // save commands
   const command1: Command = {
     ...createCommand(),
-    specType: CommandSpecType.Enum.SPEC,
     specId: SPEC_WITH_SELECTOR_ID,
     actionIds: [action2.id],
   };
   store.dispatch(saveCommand(command1));
   const command2: Command = {
     ...createCommand(),
-    specType: CommandSpecType.Enum.SPEC,
     specId: SPEC_WITH_VARIABLE_ID,
     actionIds: [action1.id],
   };
@@ -136,6 +128,7 @@ beforeEach(async () => {
     id: SPEC_WITH_SELECTOR_ID,
     name: SPEC_WITH_SELECTOR_NAME,
     items: [selectorSpecItem],
+    roleKey: '',
   };
   const specDTO1 = specMapper.mapFromDomain(specWithSelector);
   store.dispatch(saveSpec(specDTO1));
@@ -153,6 +146,7 @@ beforeEach(async () => {
         variableId: VARIABLE_ID,
       },
     ],
+    roleKey: '',
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariable);
   store.dispatch(saveSpec(specDTO2));
@@ -169,6 +163,7 @@ beforeEach(async () => {
         optional: true,
       },
     ],
+    roleKey: '',
   };
   const specDTO3 = specMapper.mapFromDomain(specWithVariableOptional);
   store.dispatch(saveSpec(specDTO3));
@@ -185,6 +180,7 @@ beforeEach(async () => {
         optional: false,
       },
     ],
+    roleKey: '',
   };
   const specDTO4 = specMapper.mapFromDomain(specWithVariableNotOptional);
   store.dispatch(saveSpec(specDTO4));

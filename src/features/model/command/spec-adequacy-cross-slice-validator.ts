@@ -1,5 +1,4 @@
 import { SleightDataInternalFormat } from '../../../data/data-formats';
-import { NotImplementedError } from '../../../error/not-implemented-error';
 import { Predicate, singletonArray } from '../../../util/common-functions';
 import { MapUtil } from '../../../util/map-util';
 import {
@@ -31,23 +30,12 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { Action } from '../action/action';
-import { ActionType } from '../action/action-types';
-import {
-  EnumActionValue,
-  NumericActionValue,
-  TextActionValue,
-  VariableChoiceActionValue,
-  VariableRangeActionValue,
-  VariableTextActionValue,
-} from '../action/action-value/action-value';
-import { ActionValueType } from '../action/action-value/action-value-type';
-import { SendKeyMode } from '../action/send-key/send-key-modes';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { ElementType } from '../common/element-types';
 import { Spec } from '../spec/data/spec-domain';
 import { SpecItemType } from '../spec/spec-item-type';
 import { VariableDTO } from '../variable/data/variable-dto';
-import { Command, isSelectedSpecCommand } from './command';
+import { Command } from './command';
 
 type ActionAndField = {
   actionId: string;
@@ -61,96 +49,94 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
   config: ValidationConfig
 ): ValidationResult => {
   for (const command of commands) {
-    if (isSelectedSpecCommand(command)) {
-      const spec = MapUtil.getOrThrow(data.specs, command.specId);
-      const variablesInSpec = spec.items
-        .filter((item) => item.itemType === SpecItemType.Enum.VARIABLE)
-        .map((specItem) => specItem.itemId)
-        .filter((variableId) => variableId !== SELECT_DEFAULT_VALUE)
-        .map((variableId) => MapUtil.getOrThrow(data.variables, variableId));
+    const spec = MapUtil.getOrThrow(data.specs, command.specId);
+    const variablesInSpec = spec.items
+      .filter((item) => item.itemType === SpecItemType.Enum.VARIABLE)
+      .map((specItem) => specItem.itemId)
+      .filter((variableId) => variableId !== SELECT_DEFAULT_VALUE)
+      .map((variableId) => MapUtil.getOrThrow(data.variables, variableId));
 
-      const variableActionValuesInActions = command.actionIds
-        .filter((actionId) => actionId !== SELECT_DEFAULT_VALUE)
+    const variableActionValuesInActions = command.actionIds
+      .filter((actionId) => actionId !== SELECT_DEFAULT_VALUE)
+      .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
+      .flatMap(extractVariablesFromAction);
+
+    // get variables which are in the command's actions but not its specs
+    const noncoveredVariables: NonCoveredVariable[] =
+      variableActionValuesInActions
+        .filter((vav) => vav.variableId !== SELECT_DEFAULT_VALUE)
+        .filter((vav) => {
+          return !variablesInSpec
+            .map((variable) => variable.id)
+            .includes(vav.variableId);
+        })
+        .map((vav): NonCoveredVariable => {
+          const variable = MapUtil.getOrThrow(data.variables, vav.variableId);
+          return {
+            ...variable,
+            actionId: vav.actionId,
+            field: vav.field,
+          };
+        });
+
+    if (noncoveredVariables.length > 0) {
+      const noncoveredActionNames = Array.from(
+        new Set(noncoveredVariables.map((v) => v.actionId))
+      )
         .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
-        .flatMap(extractVariablesFromAction);
+        .map((action) => action.name)
+        .join('", "');
+      const noncoveredVariableNames = Array.from(
+        new Set(noncoveredVariables.map((v) => v.name))
+      ).join('", "');
 
-      // get variables which are in the command's actions but not its specs
-      const noncoveredVariables: NonCoveredVariable[] =
-        variableActionValuesInActions
-          .filter((vav) => vav.variableId !== SELECT_DEFAULT_VALUE)
-          .filter((vav) => {
-            return !variablesInSpec
-              .map((variable) => variable.id)
-              .includes(vav.variableId);
-          })
-          .map((vav): NonCoveredVariable => {
-            const variable = MapUtil.getOrThrow(data.variables, vav.variableId);
-            return {
-              ...variable,
-              actionId: vav.actionId,
-              field: vav.field,
-            };
-          });
-
-      if (noncoveredVariables.length > 0) {
-        const noncoveredActionNames = Array.from(
-          new Set(noncoveredVariables.map((v) => v.actionId))
-        )
-          .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
-          .map((action) => action.name)
-          .join('", "');
-        const noncoveredVariableNames = Array.from(
-          new Set(noncoveredVariables.map((v) => v.name))
-        ).join('", "');
-
-        switch (config.editingElementType) {
-          case ElementType.Enum.ACTION:
-            return {
-              /*
-               * On the action editor screen, we highlight cases where there are
-               * variables used which aren't in the spec.
-               */
-              errorHighlightFields: noncoveredVariables.map((v) => v.field),
-              type: ValidationResultType.MULTI_FIELD,
-              code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
-              message:
-                `this action is used in the command "${command.name}" which, due to` +
-                ` spec "${spec.name}" would have inadeque variable coverage of the following` +
-                ` variables in this state: "${noncoveredVariableNames}"`,
-              ids: noncoveredVariables.map((v) => v.id),
-            };
-          case ElementType.Enum.COMMAND:
-            return {
-              /*
-               * On the command editor screen, we highlight actions which have
-               * variables not covered by the spec.
-               */
-              errorHighlightFields: [Field.CMD_ACTION_SELECT],
-              type: ValidationResultType.MULTI_FIELD,
-              code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
-              message:
-                `this command's spec ("${spec.name}") does not provide variables adequate` +
-                ` to cover some of its actions ("${noncoveredActionNames}"); specifically ` +
-                ` missing variables: "${noncoveredVariableNames}"`,
-              ids: noncoveredVariables.map((v) => v.actionId),
-            };
-          case ElementType.Enum.SPEC:
-            return {
-              /**
-               * On the spec editor screen, there's no way to highlight _which_ spec item is
-               * missing
-               */
-              field: Field.SP_SAVE,
-              type: ValidationResultType.BASIC,
-              code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
-              message:
-                `this spec is used in the command "${command.name}" in which it` +
-                ` would have inadequate spec-action coverage in this state, due to the` +
-                ` following variables: "${noncoveredVariableNames}"; these variables` +
-                ` are used in the actions: "${noncoveredActionNames}"`,
-            };
-          default:
-        }
+      switch (config.editingElementType) {
+        case ElementType.Enum.ACTION:
+          return {
+            /*
+             * On the action editor screen, we highlight cases where there are
+             * variables used which aren't in the spec.
+             */
+            errorHighlightFields: noncoveredVariables.map((v) => v.field),
+            type: ValidationResultType.MULTI_FIELD,
+            code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
+            message:
+              `this action is used in the command "${command.name}" which, due to` +
+              ` spec "${spec.name}" would have inadeque variable coverage of the following` +
+              ` variables in this state: "${noncoveredVariableNames}"`,
+            ids: noncoveredVariables.map((v) => v.id),
+          };
+        case ElementType.Enum.COMMAND:
+          return {
+            /*
+             * On the command editor screen, we highlight actions which have
+             * variables not covered by the spec.
+             */
+            errorHighlightFields: [Field.CMD_ACTION_SELECT],
+            type: ValidationResultType.MULTI_FIELD,
+            code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
+            message:
+              `this command's spec ("${spec.name}") does not provide variables adequate` +
+              ` to cover some of its actions ("${noncoveredActionNames}"); specifically ` +
+              ` missing variables: "${noncoveredVariableNames}"`,
+            ids: noncoveredVariables.map((v) => v.actionId),
+          };
+        case ElementType.Enum.SPEC:
+          return {
+            /**
+             * On the spec editor screen, there's no way to highlight _which_ spec item is
+             * missing
+             */
+            field: Field.SP_SAVE,
+            type: ValidationResultType.BASIC,
+            code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
+            message:
+              `this spec is used in the command "${command.name}" in which it` +
+              ` would have inadequate spec-action coverage in this state, due to the` +
+              ` following variables: "${noncoveredVariableNames}"; these variables` +
+              ` are used in the actions: "${noncoveredActionNames}"`,
+          };
+        default:
       }
     }
   }
@@ -160,7 +146,7 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
 
 const commandRequiresSpecAdequacyValidation: Predicate<Command> = (
   command: Command
-) => isSelectedSpecCommand(command) && command.specId !== SELECT_DEFAULT_VALUE;
+) => command.specId !== SELECT_DEFAULT_VALUE;
 
 // spec-action adequacy: action side
 export const getActionSideSpecAdequacyValidator: () => FieldValidator<Action> =

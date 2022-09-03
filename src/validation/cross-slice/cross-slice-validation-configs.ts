@@ -23,7 +23,7 @@ export const specAdequacyConfigForAction: ValidationConfig = {
 
 export const specAdequacyConfigForCommand: ValidationConfig = {
   touchTriggersValidationFields: [
-    Field.CMD_SPEC_SPEC_SELECT,
+    Field.CMD_SPEC_SELECT,
     Field.CMD_ACTION_SELECT,
   ],
   editingElementType: ElementType.Enum.COMMAND,

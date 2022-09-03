@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
-import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { ActionType } from './action-types';
 import { saveAction } from './action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
@@ -26,6 +25,7 @@ import { useSaved } from '../../../data/use-saved';
 import { ElementType } from '../common/element-types';
 
 const AC_NAME = Field.AC_NAME;
+const AC_ROLE_KEY = Field.AC_ROLE_KEY;
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -50,7 +50,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     validationContext.touch(Field.AC_TYPE);
   };
   const roleKeyChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ROLE_KEY,
@@ -72,6 +72,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     <PanelComponent header="Create/Edit Action">
       <FormGroupRowComponent
         labelText="Name"
+        descriptionText="name of action"
         errorMessage={errorResults([AC_NAME])}
       >
         <FormControl
@@ -83,15 +84,20 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
           value={props.action.name}
           placeholder={actionDefaultNamer.getDefaultName(props.action)}
         />
-        <FormText className="text-muted">name of action</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Role Key">
-        <RoleKeyDropdownComponent
-          field={Field.AC_ROLE_KEY}
-          roleKeyId={props.action.roleKeyId}
+      <FormGroupRowComponent
+        labelText="Role Key"
+        descriptionText="role of action"
+        errorMessage={errorResults([AC_ROLE_KEY])}
+      >
+        <FormControl
+          aria-label={Field[AC_ROLE_KEY]}
+          type="text"
           onChange={roleKeyChangedHandler}
+          onBlur={() => validationContext.touch(AC_ROLE_KEY)}
+          isInvalid={!!errorResults([AC_ROLE_KEY])}
+          value={props.action.roleKey}
         />
-        <FormText className="text-muted">role of action</FormText>
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type" descriptionText="type of action">
         <FormSelect

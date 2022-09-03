@@ -6,9 +6,6 @@ import App from '../../../App';
 import { store } from '../../../app/store';
 import { ElementType } from '../../model/common/element-types';
 import { Field } from '../../../validation/validation-field';
-import { createRoleKey, RoleKey } from '../../model/role-key/role-key';
-import { saveRoleKey } from '../../model/role-key/role-key-reducers';
-import { CommandSpecType } from '../../model/command/command-spec-type';
 import { createSpec, Spec } from '../../model/spec/data/spec-domain';
 import { SpecDTO } from '../../model/spec/data/spec-dto';
 import { getSpecDomainMapper } from '../../model/spec/data/spec-domain-mapper';
@@ -16,14 +13,12 @@ import { saveSpec } from '../../model/spec/spec-reducers';
 
 let user: UserEvent;
 
-const ROLE_KEY_NAME_1 = 'role-key-name-1';
+const SPEC_NAME_1 = 'spec-name-1';
 
 beforeAll(() => {
-  const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
-  store.dispatch(saveRoleKey(roleKey));
   const spec: Spec = {
     ...createSpec(),
-    roleKeyId: roleKey.id,
+    name: SPEC_NAME_1,
   };
   const specDTO: SpecDTO = getSpecDomainMapper().mapFromDomain(spec);
   store.dispatch(saveSpec(specDTO));
@@ -76,15 +71,11 @@ describe('editor mode focus tests', () => {
 
   it('command should clear on save', async () => {
     await clickToCreateNew(ElementType.Enum.COMMAND);
-    const specTypeRoleKeyRadio = screen.getByRole('radio', {
-      name: CommandSpecType.Enum.ROLE_KEY,
-    });
-    await user.click(specTypeRoleKeyRadio);
-    const roleKeySelect = screen.getByRole('list', {
-      name: Field[Field.CMD_SPEC_RK_SELECT],
+    const specSelect = screen.getByRole('list', {
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // minimal info to save
-    await user.selectOptions(roleKeySelect, ROLE_KEY_NAME_1);
+    await user.selectOptions(specSelect, SPEC_NAME_1);
     const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
     await user.click(saveButton);
 
@@ -116,29 +107,6 @@ describe('editor mode focus tests', () => {
 
   it('context should clear on cancel', async () => {
     await clickToCreateNew(ElementType.Enum.CONTEXT);
-    const cancelButton = screen.getByText<HTMLButtonElement>(CANCEL);
-    await user.click(cancelButton);
-
-    expect(cancelButton).not.toBeInTheDocument();
-  });
-
-  // role key
-
-  it('role key should clear on save', async () => {
-    await clickToCreateNew(ElementType.Enum.ROLE_KEY);
-    const valueField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.RK_ROLE_KEY],
-    });
-    // minimal info to save
-    await user.type(valueField, 'd');
-    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
-    await user.click(saveButton);
-
-    expect(saveButton).not.toBeInTheDocument();
-  });
-
-  it('role key should clear on cancel', async () => {
-    await clickToCreateNew(ElementType.Enum.ROLE_KEY);
     const cancelButton = screen.getByText<HTMLButtonElement>(CANCEL);
     await user.click(cancelButton);
 

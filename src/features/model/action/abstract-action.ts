@@ -12,6 +12,6 @@ export const copyAction = (action: AbstractAction) => {
     id: action.id,
     name: action.name,
     type: action.type,
-    roleKeyId: action.roleKeyId,
+    roleKey: action.roleKey,
   };
 };

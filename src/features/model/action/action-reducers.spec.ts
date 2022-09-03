@@ -123,7 +123,7 @@ describe('action reducer', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      roleKeyId: 'asdf',
+      roleKey: 'asdf',
     });
   });
 
@@ -138,7 +138,7 @@ describe('action reducer', () => {
     const expectedAction: PauseAction = {
       id: obj.id,
       name: '',
-      roleKeyId: undefined,
+      roleKey: '',
       type: ActionType.Enum.PAUSE,
       centiseconds: createNumericValue(),
     };

@@ -8,7 +8,6 @@ import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { VerticalMoveableComponent } from '../../ui/VerticalMoveableComponent';
 import { ActionDropdownComponent } from '../action/ActionDropdownComponent';
-import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { SpecDropdownComponent } from '../spec/SpecDropdownComponent';
 import { Command } from './command';
 import {
@@ -16,14 +15,15 @@ import {
   CommandReducerActionType,
 } from './command-editing-context';
 import { saveCommand } from './command-reducers';
-import { CommandSpecType } from './command-spec-type';
-import { CommandSpecTypeRadioGroupComponent } from './CommandSpecTypeRadioGroupComponent';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { InjectionContext } from '../../../di/injector-context';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 import { useSaved } from '../../../data/use-saved';
 import { ElementType } from '../common/element-types';
+
+const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
+const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
 
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
@@ -41,7 +41,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     });
     validationContext.touch(Field.CMD_NAME);
   };
-  const roleKeyChangedHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const roleKeyChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({
       type: CommandReducerActionType.CHANGE_ROLE_KEY,
       payload: e.target.value,
@@ -64,16 +64,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   };
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const specFields = {
-    radio: Field.CMD_SPEC_RADIO,
-    variable: Field.CMD_SPEC_SPEC_SELECT,
-    roleKey: Field.CMD_SPEC_RK_SELECT,
-  };
   const nameError = errorResults([Field.CMD_NAME]);
-  const specTypeErrorMessage = errorResults([
-    specFields.variable,
-    specFields.roleKey,
-  ]);
   const onSaveErrorMessage = errorResults([Field.CMD_SAVE]);
 
   return (
@@ -90,13 +81,19 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         />
         <FormText className="text-muted">name of command</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Role Key">
-        <RoleKeyDropdownComponent
-          field={Field.CMD_ROLE_KEY}
-          roleKeyId={props.command.roleKeyId}
+      <FormGroupRowComponent
+        labelText="Role Key"
+        descriptionText="role of command"
+        errorMessage={errorResults([CMD_ROLE_KEY])}
+      >
+        <FormControl
+          aria-label={Field[CMD_ROLE_KEY]}
+          type="text"
           onChange={roleKeyChangedHandler}
+          onBlur={() => validationContext.touch(CMD_ROLE_KEY)}
+          isInvalid={!!errorResults([CMD_ROLE_KEY])}
+          value={props.command.roleKey}
         />
-        <FormText className="text-muted">role of command</FormText>
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Context">
         <ContextDropdownComponent
@@ -111,51 +108,23 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent
-        labelText="Spec Type"
+        labelText="Spec"
         required={true}
-        errorMessage={specTypeErrorMessage}
+        errorMessage={errorResults([CMD_SPEC_SELECT])}
       >
-        <CommandSpecTypeRadioGroupComponent
-          commandSpecType={props.command.specType}
-          radioGroupName={Field[specFields.radio]}
-          typeChangedFn={(value) => {
+        <SpecDropdownComponent
+          field={CMD_SPEC_SELECT}
+          specId={props.command.specId}
+          onChange={(e) => {
             editingContext.localDispatch({
-              type: CommandReducerActionType.CHANGE_SPEC_TYPE,
-              payload: value as CommandSpecType.Type,
+              type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
+              payload: e.target.value,
             });
-            validationContext.touch(specFields.radio);
+            validationContext.touch(CMD_SPEC_SELECT);
           }}
+          onBlur={(_e) => validationContext.touch(CMD_SPEC_SELECT)}
+          isInvalid={!!errorResults([CMD_SPEC_SELECT])}
         />
-        {props.command.specType === CommandSpecType.Enum.SPEC && (
-          <SpecDropdownComponent
-            field={specFields.variable}
-            specId={props.command.specId}
-            onChange={(e) => {
-              editingContext.localDispatch({
-                type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
-                payload: e.target.value,
-              });
-              validationContext.touch(specFields.variable);
-            }}
-            onBlur={(_e) => validationContext.touch(specFields.variable)}
-            isInvalid={!!errorResults([specFields.variable])}
-          />
-        )}
-        {props.command.specType === CommandSpecType.Enum.ROLE_KEY && (
-          <RoleKeyDropdownComponent
-            field={specFields.roleKey}
-            roleKeyId={props.command.specRoleKeyId}
-            onChange={(e) => {
-              editingContext.localDispatch({
-                type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,
-                payload: e.target.value,
-              });
-              validationContext.touch(specFields.roleKey);
-            }}
-            onBlur={(_e) => validationContext.touch(specFields.roleKey)}
-            isInvalid={!!errorResults([specFields.roleKey])}
-          />
-        )}
       </FormGroupRowComponent>
       <div>
         <Button

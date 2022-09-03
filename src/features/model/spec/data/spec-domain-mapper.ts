@@ -18,7 +18,7 @@ export const getSpecDomainMapper: () => SpecDomainMapper = () => {
       return {
         id: dto.id,
         name: dto.name,
-        roleKeyId: dto.roleKeyId,
+        roleKey: dto.roleKey,
         items: dto.items.map((item) =>
           specItemDomainMapper.mapToDomain(item, selectorDtos)
         ),
@@ -28,7 +28,7 @@ export const getSpecDomainMapper: () => SpecDomainMapper = () => {
       return {
         id: domain.id,
         name: domain.name,
-        roleKeyId: domain.roleKeyId,
+        roleKey: domain.roleKey,
         items: domain.items.map((dSpecItem) =>
           specItemDomainMapper.mapFromDomain(dSpecItem)
         ),

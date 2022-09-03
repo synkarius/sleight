@@ -21,7 +21,7 @@ const createTestSpecRedux = (from?: {
   return {
     id: from?.id ?? 'asdf-id',
     name: from?.name ?? '',
-    roleKeyId: undefined,
+    roleKey: '',
     items: [
       {
         id: from?.specItemId ?? 'asdf-id',
@@ -156,7 +156,7 @@ describe('spec reducer', () => {
 
     expect(actual).toEqual({
       ...obj,
-      roleKeyId: 'asdf',
+      roleKey: 'asdf',
     });
   });
 

@@ -30,7 +30,7 @@ const VARIABLE_RK_1 = 'VARIABLE_RK_1';
 const createTestVariable = (id: string): VariableDTO => {
   return {
     id: id,
-    roleKeyId: undefined,
+    roleKey: '',
     name: '',
     type: VariableType.Enum.TEXT,
   };
@@ -134,7 +134,7 @@ describe('variable reducer', () => {
 
     expect(actual).toEqual({
       ...obj,
-      roleKeyId: 'asdf',
+      roleKey: 'asdf',
     });
   });
 
@@ -142,7 +142,7 @@ describe('variable reducer', () => {
     const obj: RangeVariable = {
       ...createRangeVariable(),
       name: VARIABLE_NAME_1,
-      roleKeyId: VARIABLE_RK_1,
+      roleKey: VARIABLE_RK_1,
     };
 
     const actual = variableReactReducer(obj, {
@@ -154,7 +154,7 @@ describe('variable reducer', () => {
       ...createTextVariable(),
       id: obj.id,
       name: VARIABLE_NAME_1,
-      roleKeyId: VARIABLE_RK_1,
+      roleKey: VARIABLE_RK_1,
     });
   });
 
@@ -162,7 +162,7 @@ describe('variable reducer', () => {
     const obj = {
       ...createTextVariable(),
       name: VARIABLE_NAME_1,
-      roleKeyId: VARIABLE_RK_1,
+      roleKey: VARIABLE_RK_1,
     };
 
     const actual = variableReactReducer(obj, {
@@ -174,7 +174,7 @@ describe('variable reducer', () => {
       ...createRangeVariable(),
       id: obj.id,
       name: VARIABLE_NAME_1,
-      roleKeyId: VARIABLE_RK_1,
+      roleKey: VARIABLE_RK_1,
     });
   });
 
@@ -182,7 +182,7 @@ describe('variable reducer', () => {
     const obj = {
       ...createRangeVariable(),
       name: VARIABLE_NAME_1,
-      roleKeyId: VARIABLE_RK_1,
+      roleKey: VARIABLE_RK_1,
     };
     const selector = createSelector();
 
@@ -195,7 +195,7 @@ describe('variable reducer', () => {
       ...createChoiceVariable(),
       id: obj.id,
       name: VARIABLE_NAME_1,
-      roleKeyId: VARIABLE_RK_1,
+      roleKey: VARIABLE_RK_1,
     });
   });
 

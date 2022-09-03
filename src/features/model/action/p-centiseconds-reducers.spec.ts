@@ -2,13 +2,20 @@ import { actionReactReducer } from './action-reducers';
 import { ActionValueType } from './action-value/action-value-type';
 import { ActionReducerActionType } from './action-editing-context';
 import { Field } from '../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { EnterValueType } from './action-value/action-value';
 import { createPauseAction, PauseAction } from './pause/pause';
+import { VariableType } from '../variable/variable-types';
 
 describe('action reducer: action.centiseconds', () => {
   it('should handle change action.centiseconds.actionValueType', () => {
-    const obj = createTestPauseAction();
+    const obj: PauseAction = {
+      ...createPauseAction(),
+      centiseconds: {
+        actionValueType: ActionValueType.Enum.USE_VARIABLE,
+        variableType: VariableType.Enum.RANGE,
+        variableId: 'asdf',
+      },
+    };
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
@@ -70,37 +77,4 @@ describe('action reducer: action.centiseconds', () => {
       },
     });
   });
-
-  it('should handle change action.centiseconds.roleKeyId', () => {
-    const obj = createPauseAction();
-
-    const actual = actionReactReducer(obj, {
-      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
-      payload: {
-        field: Field.AC_CENTISECONDS_RK,
-        value: 'asdf',
-      },
-    });
-
-    expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
-      ...obj,
-      centiseconds: {
-        ...obj.centiseconds,
-        roleKeyId: 'asdf',
-      },
-    });
-  });
 });
-
-const createTestPauseAction = (): PauseAction => {
-  const obj = createPauseAction();
-  return {
-    ...obj,
-    centiseconds: {
-      ...obj.centiseconds,
-      actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
-      roleKeyId: SELECT_DEFAULT_VALUE,
-    },
-  };
-};

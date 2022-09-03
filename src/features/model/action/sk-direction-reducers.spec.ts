@@ -8,10 +8,18 @@ import { ActionReducerActionType } from './action-editing-context';
 import { Field } from '../../../validation/validation-field';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { EnterValueType } from './action-value/action-value';
+import { VariableType } from '../variable/variable-types';
 
 describe('action reducer: action.direction', () => {
   it('should handle change action.direction.actionValueType', () => {
-    const obj = createTestSendKeyAction();
+    const obj: SendKeyHoldReleaseAction = {
+      ...createSendKeyHoldReleaseAction(),
+      direction: {
+        actionValueType: ActionValueType.Enum.USE_VARIABLE,
+        variableType: VariableType.Enum.CHOICE,
+        variableId: 'asdf',
+      },
+    };
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
@@ -73,37 +81,4 @@ describe('action reducer: action.direction', () => {
       },
     });
   });
-
-  it('should handle change action.direction.roleKeyId', () => {
-    const obj = createSendKeyHoldReleaseAction();
-
-    const actual = actionReactReducer(obj, {
-      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
-      payload: {
-        field: Field.AC_DIRECTION_RK,
-        value: 'asdf',
-      },
-    });
-
-    expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
-      ...obj,
-      direction: {
-        ...obj.direction,
-        roleKeyId: 'asdf',
-      },
-    });
-  });
 });
-
-const createTestSendKeyAction = (): SendKeyHoldReleaseAction => {
-  const obj = createSendKeyHoldReleaseAction();
-  return {
-    ...obj,
-    direction: {
-      ...obj.direction,
-      actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
-      roleKeyId: SELECT_DEFAULT_VALUE,
-    },
-  };
-};

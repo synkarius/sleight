@@ -33,7 +33,7 @@ describe('context reducer', () => {
 
     const expected: Record<string, Context> = {};
     expected[obj.id] = {
-      roleKeyId: undefined,
+      roleKey: '',
       id: obj.id,
       name: contextDefaultNamer.getDefaultName(obj),
       type: ContextType.Enum.EXECUTABLE_NAME,
@@ -55,7 +55,7 @@ describe('context reducer', () => {
 
     const expected: Record<string, Context> = {};
     expected[obj.id] = {
-      roleKeyId: undefined,
+      roleKey: '',
       id: obj.id,
       name: 'asdf',
       type: ContextType.Enum.EXECUTABLE_NAME,
@@ -123,7 +123,7 @@ describe('context reducer', () => {
 
     expect(actual).toEqual({
       ...obj,
-      roleKeyId: 'asdf',
+      roleKey: 'asdf',
     });
   });
 

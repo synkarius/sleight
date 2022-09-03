@@ -4,12 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { createRoleKey } from '../role-key/role-key';
-import { saveRoleKey } from '../role-key/role-key-reducers';
 import { createSelector, Selector } from '../selector/data/selector-domain';
 import { saveSelector } from '../selector/selector-reducers';
 import { saveSpec } from '../spec/spec-reducers';
-import { createSpec, createSpecItem, Spec } from '../spec/data/spec-domain';
+import { createSpec, createSpecItem } from '../spec/data/spec-domain';
 import { CommandParentComponent } from './CommandParentComponent';
 import { saveContext } from '../context/context-reducers';
 import { createContext } from '../context/context';
@@ -29,14 +27,11 @@ import { saveAction } from '../action/action-reducers';
 import { EnterValueType } from '../action/action-value/action-value';
 import { ActionValueType } from '../action/action-value/action-value-type';
 import { VariableType } from '../variable/variable-types';
-import { CommandSpecType } from './command-spec-type';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';
 const SPEC_NO_VAR_NAME = 'asdf-spec-1';
 const SPEC_WITH_VAR_NAME = 'asdf-spec-2';
-const ROLE_KEY_1 = 'asdf-rk-1';
-const ROLE_KEY_2 = 'asdf-rk-2';
 const CONTEXT_ID = 'asdf-ctx-id';
 const CONTEXT_NAME = 'asdf-ctx-name';
 const COMMAND_NAME = 'asdf-cmd-name';
@@ -44,13 +39,6 @@ const COMMAND_NAME = 'asdf-cmd-name';
 let user: UserEvent;
 
 beforeAll(() => {
-  // save a role key
-  store.dispatch(
-    saveRoleKey({
-      ...createRoleKey(),
-      value: ROLE_KEY_1,
-    })
-  );
   // save variable
   const rangeVariable = createRangeVariable();
   const rangeVariableDTO =
@@ -115,7 +103,6 @@ beforeAll(() => {
     saveCommand({
       ...createCommand(),
       name: COMMAND_NAME,
-      specType: CommandSpecType.Enum.SPEC,
       specId: specWithNoVar.id,
       actionIds: [actionWithNoVar.id],
     })
@@ -154,7 +141,7 @@ describe('command component tests', () => {
 
   it('should invalidate unselected spec', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     await user.click(specSelect);
     await user.tab();
@@ -164,7 +151,7 @@ describe('command component tests', () => {
 
   it('should validate selected spec', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);
     await user.tab();
@@ -194,7 +181,7 @@ describe('command component tests', () => {
 
   it('should validate on save if spec has no variables and actions are empty', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // select a spec with no variables
     await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);
@@ -210,7 +197,7 @@ describe('command component tests', () => {
 
   it('should validate on save if spec has unused variables and actions are empty', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [SPEC_WITH_VAR_NAME]);
@@ -231,7 +218,7 @@ describe('command component tests', () => {
    */
   it('should invalidate on save if spec var coverage of actions is inadequate', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // select a spec with no variables
     await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);
@@ -258,7 +245,7 @@ describe('command component tests', () => {
    */
   it('should validate on save if spec var coverage of actions is adequate', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [SPEC_WITH_VAR_NAME]);
@@ -285,7 +272,7 @@ describe('command component tests', () => {
    */
   it('should validate on save if spec has unused variables and actions require no variables', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [SPEC_WITH_VAR_NAME]);
@@ -312,7 +299,7 @@ describe('command component tests', () => {
    */
   it('should validate on save if spec and action both have no vars', async () => {
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SPEC_SELECT],
+      name: Field[Field.CMD_SPEC_SELECT],
     });
     // select a spec with no variables
     await user.selectOptions(specSelect, [SPEC_NO_VAR_NAME]);

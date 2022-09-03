@@ -10,7 +10,6 @@ import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { ElementType } from '../common/element-types';
-import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { Context } from './context';
 import {
   ContextEditingContext,
@@ -18,6 +17,8 @@ import {
 } from './context-editing-context';
 import { saveContext } from './context-reducers';
 import { ContextType } from './context-types';
+
+const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -35,7 +36,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     validationContext.touch(Field.CTX_NAME);
   };
   const roleKeyChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     editingContext.localDispatch({
       type: ContextReducerActionType.CHANGE_ROLE_KEY,
@@ -88,13 +89,19 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         />
         <FormText className="text-muted">name of context</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Role Key">
-        <RoleKeyDropdownComponent
-          field={Field.CTX_ROLE_KEY}
-          roleKeyId={props.context.roleKeyId}
+      <FormGroupRowComponent
+        labelText="Role Key"
+        descriptionText="role of context"
+        errorMessage={errorResults([CTX_ROLE_KEY])}
+      >
+        <FormControl
+          aria-label={Field[CTX_ROLE_KEY]}
+          type="text"
           onChange={roleKeyChangedHandler}
+          onBlur={() => validationContext.touch(CTX_ROLE_KEY)}
+          isInvalid={!!errorResults([CTX_ROLE_KEY])}
+          value={props.context.roleKey}
         />
-        <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type">
         <FormSelect

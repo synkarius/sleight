@@ -1,11 +1,11 @@
 import { getRandomId } from '../../../../util/random-id';
-import { RoleKeyed, Ided } from '../../../domain';
+import { Ided } from '../../../domain';
 
 /**
  * A string with a role key; represents a single spoken
  * word or phrase.
  */
-export interface SelectorItem extends RoleKeyed, Ided {
+export interface SelectorItem extends Ided {
   readonly value: string;
 }
 
@@ -14,14 +14,13 @@ export interface SelectorItem extends RoleKeyed, Ided {
  * a group are alternates. One can be said in place of
  * another.
  */
-export interface Selector extends RoleKeyed, Ided {
+export interface Selector extends Ided {
   readonly items: SelectorItem[];
 }
 
 export const createSelectorItem = (): SelectorItem => {
   return {
     id: getRandomId(),
-    roleKeyId: undefined,
     value: '',
   };
 };
@@ -29,7 +28,6 @@ export const createSelectorItem = (): SelectorItem => {
 export const createSelector = (): Selector => {
   return {
     id: getRandomId(),
-    roleKeyId: undefined,
     items: [createSelectorItem()],
   };
 };

@@ -6,7 +6,6 @@ import {
   getCrossSliceActionValidators,
   getCrossSliceCommandValidators,
   getCrossSliceContextValidators,
-  getCrossSliceRoleKeyValidators,
   getCrossSliceSpecValidators,
   getCrossSliceVariableValidators,
 } from './features/cross-slice-validation-fns';
@@ -18,7 +17,6 @@ import { getDefaultCommandNamer } from './features/model/command/command-default
 import { getCommandValidators } from './features/model/command/command-validators';
 import { getDefaultContextNamer } from './features/model/context/context-default-namer';
 import { getContextValidators } from './features/model/context/context-validators';
-import { getRoleKeyValidators } from './features/model/role-key/role-key-validation';
 import { getSelectorDomainMapper } from './features/model/selector/data/selector-domain-mapper';
 import { getSpecDomainMapper } from './features/model/spec/data/spec-domain-mapper';
 import { getDefaultSpecNamer } from './features/model/spec/spec-default-namer';
@@ -53,10 +51,6 @@ export const getDefaultInjectionContext = (): Injected => {
         context: [
           ...getContextValidators(),
           ...getCrossSliceContextValidators(),
-        ],
-        roleKey: [
-          ...getRoleKeyValidators(),
-          ...getCrossSliceRoleKeyValidators(),
         ],
         spec: [...getSpecValidators(), ...getCrossSliceSpecValidators()],
         variable: [

@@ -10,24 +10,11 @@ import {
   commandReduxReducer,
   commandReactReducer,
 } from './command-reducers';
-import { CommandSpecType } from './command-spec-type';
-
-const createTestCommand = (id: string): Command => {
-  return {
-    id: id,
-    name: '',
-    roleKeyId: undefined,
-    contextId: undefined,
-    specType: CommandSpecType.Enum.SPEC,
-    specId: SELECT_DEFAULT_VALUE,
-    actionIds: [],
-  };
-};
-
-const injected = getDefaultInjectionContext();
-const commandDefaultNamer = injected.default.namers.command;
 
 describe('command reducer', () => {
+  const injected = getDefaultInjectionContext();
+  const commandDefaultNamer = injected.default.namers.command;
+
   it('should handle initial state', () => {
     expect(commandReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
@@ -47,7 +34,7 @@ describe('command reducer', () => {
 
     const expected: Record<string, Command> = {};
     expected[obj.id] = {
-      ...createTestCommand(obj.id),
+      ...obj,
       name: commandDefaultNamer.getDefaultName(obj),
     };
 
@@ -106,7 +93,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       name: 'asdf',
     });
   });
@@ -121,7 +108,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       name: '',
     });
   });
@@ -136,8 +123,8 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
-      roleKeyId: 'asdf',
+      ...obj,
+      roleKey: 'asdf',
     });
   });
 
@@ -151,30 +138,9 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       contextId: 'asdf',
     });
-  });
-
-  it('should handle change spec type', () => {
-    const obj = createCommand();
-
-    const actual = commandReactReducer(obj, {
-      type: CommandReducerActionType.CHANGE_SPEC_TYPE,
-      payload: CommandSpecType.Enum.ROLE_KEY,
-    });
-
-    expect(actual).not.toBe(obj);
-    const expected: Command = {
-      id: obj.id,
-      name: '',
-      roleKeyId: undefined,
-      contextId: undefined,
-      actionIds: [],
-      specType: CommandSpecType.Enum.ROLE_KEY,
-      specRoleKeyId: SELECT_DEFAULT_VALUE,
-    };
-    expect(actual).toEqual(expected);
   });
 
   it('should handle change spec id', () => {
@@ -187,29 +153,8 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
-      specId: 'asdf',
-    });
-  });
-
-  it('should handle change spec role key id', () => {
-    const obj: Command = {
-      id: 'aaa',
-      name: '',
-      actionIds: [],
-      specType: CommandSpecType.Enum.ROLE_KEY,
-      specRoleKeyId: SELECT_DEFAULT_VALUE,
-    };
-
-    const actual = commandReactReducer(obj, {
-      type: CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID,
-      payload: 'asdf',
-    });
-
-    expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
       ...obj,
-      specRoleKeyId: 'asdf',
+      specId: 'asdf',
     });
   });
 
@@ -259,7 +204,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       actionIds: ['asdf-2', 'asdf-1', 'asdf-3'],
     });
   });
@@ -277,7 +222,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       actionIds: ['asdf-1', 'asdf-3', 'asdf-2'],
     });
   });
@@ -295,16 +240,16 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       actionIds: ['asdf-1', 'asdf-2', 'asdf-3'],
     });
   });
 
   it('should handle move action down out of bounds', () => {
-    const obj = createCommand();
-    obj.actionIds.push('asdf-1');
-    obj.actionIds.push('asdf-2');
-    obj.actionIds.push('asdf-3');
+    const obj: Command = {
+      ...createCommand(),
+      actionIds: ['asdf-1', 'asdf-2', 'asdf-3'],
+    };
 
     const actual = commandReactReducer(obj, {
       type: CommandReducerActionType.MOVE_ACTION,
@@ -313,7 +258,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       actionIds: ['asdf-1', 'asdf-2', 'asdf-3'],
     });
   });
@@ -330,7 +275,7 @@ describe('command reducer', () => {
 
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
-      ...createTestCommand(obj.id),
+      ...obj,
       actionIds: ['asdf-2'],
     });
   });

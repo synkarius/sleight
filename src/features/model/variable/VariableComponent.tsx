@@ -7,7 +7,6 @@ import { RangeVariableComponent } from './RangeVariableComponent';
 import { saveVariable } from './variable-reducers';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { createSelector } from '../selector/data/selector-domain';
-import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { Field } from '../../../validation/validation-field';
 import {
@@ -30,6 +29,8 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { useSaved } from '../../../data/use-saved';
 import { ElementType } from '../common/element-types';
 
+const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
+
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
@@ -46,7 +47,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     validationContext.touch(Field.VAR_NAME);
   };
   const roleKeyChangedHandler = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     editingContext.localDispatch({
       type: VariableReducerActionType.CHANGE_ROLE_KEY,
@@ -114,13 +115,19 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         />
         <FormText className="text-muted">name of variable</FormText>
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Role Key">
-        <RoleKeyDropdownComponent
-          field={Field.VAR_ROLE_KEY}
-          roleKeyId={props.variable.roleKeyId}
+      <FormGroupRowComponent
+        labelText="Role Key"
+        descriptionText="role of variable"
+        errorMessage={errorResults([VAR_ROLE_KEY])}
+      >
+        <FormControl
+          aria-label={Field[VAR_ROLE_KEY]}
+          type="text"
           onChange={roleKeyChangedHandler}
+          onBlur={() => validationContext.touch(VAR_ROLE_KEY)}
+          isInvalid={!!errorResults([VAR_ROLE_KEY])}
+          value={props.variable.roleKey}
         />
-        <FormText className="text-muted">role of variable</FormText>
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Type"

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
@@ -24,10 +24,8 @@ import {
 import { saveSpec } from '../spec/spec-reducers';
 import { saveSelector } from '../selector/selector-reducers';
 import { Command, createCommand } from '../command/command';
-import { CommandSpecType } from '../command/command-spec-type';
 import { saveCommand } from '../command/command-reducers';
 import { LIST } from '../common/accessibility-roles';
-import { act } from 'react-dom/test-utils';
 
 const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
 const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';
@@ -70,6 +68,7 @@ beforeAll(() => {
     id: SPEC_WITH_SELECTOR_ID,
     name: SPEC_WITH_SELECTOR_NAME,
     items: [selectorSpecItem],
+    roleKey: '',
   };
   const specDTO1 = specMapper.mapFromDomain(specWithSelector);
   store.dispatch(saveSpec(specDTO1));
@@ -85,6 +84,7 @@ beforeAll(() => {
         variableId: VARIABLE_ID_1,
       },
     ],
+    roleKey: '',
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariable);
   store.dispatch(saveSpec(specDTO2));
@@ -92,16 +92,16 @@ beforeAll(() => {
   // save commands
   const command1: Command = {
     ...createCommand(),
-    specType: CommandSpecType.Enum.SPEC,
     specId: SPEC_WITH_SELECTOR_ID,
     actionIds: [ACTION_NO_VARS],
+    roleKey: '',
   };
   store.dispatch(saveCommand(command1));
   const command2: Command = {
     ...createCommand(),
-    specType: CommandSpecType.Enum.SPEC,
     specId: SPEC_WITH_VARIABLE_ID,
     actionIds: [ACTION_WITH_VARS],
+    roleKey: '',
   };
   store.dispatch(saveCommand(command2));
 

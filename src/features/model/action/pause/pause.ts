@@ -20,7 +20,7 @@ export const createPauseAction = (): PauseAction => {
     id: getRandomId(),
     name: '',
     type: ActionType.Enum.PAUSE,
-    roleKeyId: undefined,
+    roleKey: '',
     centiseconds: createNumericValue(),
   };
 };

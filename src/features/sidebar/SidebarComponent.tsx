@@ -5,7 +5,6 @@ import { selectCommand } from '../model/command/command-reducers';
 import { ElementType } from '../model/common/element-types';
 import { selectContext } from '../model/context/context-reducers';
 import { selectVariable } from '../model/variable/variable-reducers';
-import { selectRoleKey } from '../model/role-key/role-key-reducers';
 import { selectSpec } from '../model/spec/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { SidebarSection } from './sidebar';
@@ -16,7 +15,6 @@ export const SidebarComponent = () => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
   const commandsSaved = useAppSelector((state) => state.command.saved);
   const contextsSaved = useAppSelector((state) => state.context.saved);
-  const roleKeysSaved = useAppSelector((state) => state.roleKey.saved);
   const specsSaved = useAppSelector((state) => state.spec.saved);
   const variablesSaved = useAppSelector((state) => state.variable.saved);
 
@@ -56,20 +54,6 @@ export const SidebarComponent = () => {
       reduxDispatch(setEditorFocus(ElementType.Enum.CONTEXT));
     },
   };
-  const roleKeySection: SidebarSection = {
-    type: ElementType.Enum.ROLE_KEY,
-    items: Object.values(roleKeysSaved).map((rk) => {
-      return { id: rk.id, name: rk.value };
-    }),
-    createFn: () => {
-      reduxDispatch(selectRoleKey());
-      reduxDispatch(setEditorFocus(ElementType.Enum.ROLE_KEY));
-    },
-    selectFn: (id) => {
-      reduxDispatch(selectRoleKey(id));
-      reduxDispatch(setEditorFocus(ElementType.Enum.ROLE_KEY));
-    },
-  };
   const specSection: SidebarSection = {
     type: ElementType.Enum.SPEC,
     items: Object.values(specsSaved),
@@ -99,7 +83,6 @@ export const SidebarComponent = () => {
     actionSection,
     commandSection,
     contextSection,
-    roleKeySection,
     specSection,
     variableSection,
   ];

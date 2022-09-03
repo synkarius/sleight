@@ -34,10 +34,8 @@ describe('selector reducer', () => {
     const expected: Record<string, Selector> = {};
     expected[newObject.id] = {
       id: newObject.id,
-      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: undefined,
           id: expect.any(String),
           value: '',
         },
@@ -68,7 +66,6 @@ describe('selector reducer', () => {
     const newSelector2 = createSelector();
     const newSelectorItem1: SelectorItem = {
       ...createSelectorItem(),
-      roleKeyId: 'some-rk-id',
       value: 'some-value',
     };
 
@@ -91,15 +88,12 @@ describe('selector reducer', () => {
     const expected: Record<string, Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
-      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: undefined,
           id: expect.any(String),
           value: '',
         },
         {
-          roleKeyId: 'some-rk-id',
           id: expect.any(String),
           value: 'some-value',
         },
@@ -107,10 +101,8 @@ describe('selector reducer', () => {
     };
     expected[newSelector2.id] = {
       id: newSelector2.id,
-      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: undefined,
           id: expect.any(String),
           value: '',
         },
@@ -130,7 +122,6 @@ describe('selector reducer', () => {
         items: [
           {
             ...newSelector1.items[0],
-            roleKeyId: 'some-id',
             value: 'some-value',
           },
         ],
@@ -148,10 +139,8 @@ describe('selector reducer', () => {
     const expected: Record<string, Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
-      roleKeyId: undefined,
       items: [
         {
-          roleKeyId: 'some-id',
           id: newSelector1.items[0].id,
           value: 'zxcv',
         },
@@ -179,7 +168,6 @@ describe('selector reducer', () => {
     const expected: Record<string, Selector> = {};
     expected[newSelector1.id] = {
       id: newSelector1.id,
-      roleKeyId: undefined,
       items: [],
     };
 

@@ -19,7 +19,7 @@ export interface RangeVariableDTO extends AbstractVariableDTO {
   readonly defaultValue?: number;
 }
 
-export interface ChoiceItemDTO extends RoleKeyed, Ided {
+export interface ChoiceItemDTO extends Ided {
   readonly selectorId: string;
   readonly value: string;
 }

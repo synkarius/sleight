@@ -7,7 +7,6 @@ import {
   getSpecSideSpecAdequacyValidator,
 } from './model/command/spec-adequacy-cross-slice-validator';
 import { Context } from './model/context/context';
-import { RoleKey } from './model/role-key/role-key';
 import { Spec } from './model/spec/data/spec-domain';
 import { Variable } from './model/variable/data/variable';
 import {
@@ -25,8 +24,6 @@ export const getCrossSliceCommandValidators = (): FieldValidator<Command>[] => [
 ];
 export const getCrossSliceContextValidators =
   (): FieldValidator<Context>[] => [];
-export const getCrossSliceRoleKeyValidators =
-  (): FieldValidator<RoleKey>[] => [];
 export const getCrossSliceSpecValidators = (): FieldValidator<Spec>[] => [
   getSpecSideSpecAdequacyValidator(),
   getSpecItemOptionalityValidator(),

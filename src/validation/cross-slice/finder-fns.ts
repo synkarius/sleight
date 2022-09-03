@@ -1,10 +1,7 @@
 import { getDefaultInjectionContext } from '../../app-default-injection-context';
 import { SleightDataInternalFormat } from '../../data/data-formats';
 import { Action } from '../../features/model/action/action';
-import {
-  Command,
-  isSelectedSpecCommand,
-} from '../../features/model/command/command';
+import { Command } from '../../features/model/command/command';
 import { Spec } from '../../features/model/spec/data/spec-domain';
 import { SpecItemType } from '../../features/model/spec/spec-item-type';
 import { Variable } from '../../features/model/variable/data/variable';
@@ -30,9 +27,9 @@ export const givenSpecFindCommands: FinderFn<Spec, Command> = (
   editing: Spec,
   data: SleightDataInternalFormat
 ): Command[] => {
-  return Object.values(data.commands)
-    .filter(isSelectedSpecCommand)
-    .filter((command) => command.specId === editing.id);
+  return Object.values(data.commands).filter(
+    (command) => command.specId === editing.id
+  );
 };
 
 export const givenSpecFindVariables: FinderFn<Spec, Variable> = (

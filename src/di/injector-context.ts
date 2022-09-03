@@ -7,7 +7,6 @@ import { Action } from '../features/model/action/action';
 import { Command } from '../features/model/command/command';
 import { DefaultNamer } from '../features/model/common/default-namer';
 import { Context } from '../features/model/context/context';
-import { RoleKey } from '../features/model/role-key/role-key';
 import { Selector } from '../features/model/selector/data/selector-domain';
 import { SelectorDTO } from '../features/model/selector/data/selector-dto';
 import { Spec } from '../features/model/spec/data/spec-domain';
@@ -29,7 +28,6 @@ export type Injected = {
     action: FieldValidator<Action>[];
     command: FieldValidator<Command>[];
     context: FieldValidator<Context>[];
-    roleKey: FieldValidator<RoleKey>[];
     spec: FieldValidator<Spec>[];
     variable: FieldValidator<Variable>[];
   };

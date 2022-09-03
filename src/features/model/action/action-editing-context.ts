@@ -10,7 +10,6 @@ import { SendKeyModifiers } from './send-key/send-key-modifiers';
 export enum ActionReducerActionType {
   CHANGE_ACTION_TYPE,
   CHANGE_ACTION_VALUE_ENTERED_VALUE,
-  CHANGE_ACTION_VALUE_ROLE_KEY_ID,
   CHANGE_ACTION_VALUE_TYPE,
   CHANGE_ACTION_VALUE_VARIABLE_ID,
   CHANGE_MODIFIERS,
@@ -71,7 +70,6 @@ export interface ActionReducerChangePayloadAction
   extends AbstractActionReducerAction<ActionValueChange> {
   type:
     | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE
-    | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID
     | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID;
 }
 export type ActionReducerAction =

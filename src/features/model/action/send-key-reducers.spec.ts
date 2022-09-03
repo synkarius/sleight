@@ -18,7 +18,7 @@ const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
   return {
     id: id,
     name: '',
-    roleKeyId: undefined,
+    roleKey: '',
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: {
@@ -40,7 +40,7 @@ const createTestSendKeyHoldReleaseAction = (
   return {
     id: id,
     name: '',
-    roleKeyId: undefined,
+    roleKey: '',
     type: ActionType.Enum.SEND_KEY,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: {

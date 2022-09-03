@@ -49,7 +49,7 @@ export const createSpec = () => {
   return {
     id: getRandomId(),
     name: '',
-    roleKeyId: undefined,
+    roleKey: '',
     items: [],
   };
 };

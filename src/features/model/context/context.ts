@@ -13,9 +13,9 @@ export interface Context
 
 export const createContext = (): Context => {
   return {
-    roleKeyId: undefined,
     id: getRandomId(),
     name: '',
+    roleKey: '',
     type: ContextType.Enum.EXECUTABLE_NAME,
     matcher: '',
   };

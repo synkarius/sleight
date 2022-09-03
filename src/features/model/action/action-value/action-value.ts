@@ -95,31 +95,13 @@ export const isVariableChoiceActionValue = (
 ): actionValue is VariableChoiceActionValue =>
   actionValue.variableType === VariableType.Enum.CHOICE;
 
-export interface RoleKeyActionValue extends AbstractActionValue {
-  readonly actionValueType: typeof ActionValueType.Enum.USE_ROLE_KEY;
-  // if the user has chosen role key binding, this is the role key id
-  readonly roleKeyId: string;
-}
-
-export const isRoleKeyActionValue = (
-  actionValue: AbstractActionValue
-): actionValue is RoleKeyActionValue =>
-  actionValue.actionValueType === ActionValueType.Enum.USE_ROLE_KEY;
-
-export type TextActionValue =
-  | EnterTextActionValue
-  | VariableTextActionValue
-  | RoleKeyActionValue;
+export type TextActionValue = EnterTextActionValue | VariableTextActionValue;
 
 export type NumericActionValue =
   | EnterNumberActionValue
-  | VariableRangeActionValue
-  | RoleKeyActionValue;
+  | VariableRangeActionValue;
 
-export type EnumActionValue =
-  | EnterEnumActionValue
-  | VariableChoiceActionValue
-  | RoleKeyActionValue;
+export type EnumActionValue = EnterEnumActionValue | VariableChoiceActionValue;
 
 //========================================
 //========================================

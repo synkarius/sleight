@@ -47,10 +47,8 @@ export enum Field {
   CMD_ROLE_KEY,
   CMD_CONTEXT,
   // command: spec
-  CMD_SPEC_RADIO,
+  CMD_SPEC_SELECT,
   CMD_ACTION_SELECT,
-  CMD_SPEC_SPEC_SELECT,
-  CMD_SPEC_RK_SELECT,
   CMD_SAVE,
   CMD_DELETE,
   // context:

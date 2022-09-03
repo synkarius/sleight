@@ -11,14 +11,11 @@ import { saveCommand } from '../model/command/command-reducers';
 import { Command, createCommand } from '../model/command/command';
 import { Context, createContext } from '../model/context/context';
 import { saveContext } from '../model/context/context-reducers';
-import { createRoleKey, RoleKey } from '../model/role-key/role-key';
-import { saveRoleKey } from '../model/role-key/role-key-reducers';
 import { SpecDTO } from '../model/spec/data/spec-dto';
 import { saveSpec } from '../model/spec/spec-reducers';
 import { saveVariable } from '../model/variable/variable-reducers';
 import { Field } from '../../validation/validation-field';
 import { TEXT_BOX } from '../model/common/accessibility-roles';
-import { CommandSpecType } from '../model/command/command-spec-type';
 import { createRangeVariable } from '../model/variable/data/variable';
 import { Action } from '../model/action/action';
 
@@ -27,7 +24,6 @@ let user: UserEvent;
 const ACTION_NAME_1 = 'pause-action-name-1';
 const COMMAND_NAME_1 = 'command-name-1';
 const CONTEXT_NAME_1 = 'context-name-1';
-const ROLE_KEY_NAME_1 = 'role-key-name-1';
 const SPEC_NAME_1 = 'spec-name-1';
 const VARIABLE_NAME_1 = 'variable-name-1';
 
@@ -43,18 +39,15 @@ beforeAll(() => {
   store.dispatch(saveAction(action));
   const context: Context = { ...createContext(), name: CONTEXT_NAME_1 };
   store.dispatch(saveContext(context));
-  const roleKey: RoleKey = { ...createRoleKey(), value: ROLE_KEY_NAME_1 };
-  store.dispatch(saveRoleKey(roleKey));
   const spec: SpecDTO = {
     id: 'asdf',
     name: SPEC_NAME_1,
-    roleKeyId: roleKey.id,
+    roleKey: '',
     items: [],
   };
   const command: Command = {
     ...createCommand(),
     name: COMMAND_NAME_1,
-    specType: CommandSpecType.Enum.SPEC,
     specId: spec.id,
   };
   store.dispatch(saveCommand(command));
@@ -228,14 +221,10 @@ describe('side bar component tests', () => {
     });
     await user.type(nameField, savedName);
     // minimal info to save
-    const specTypeRoleKeyRadio = screen.getByRole('radio', {
-      name: CommandSpecType.Enum.ROLE_KEY,
+    const specSelect = screen.getByRole('list', {
+      name: Field[Field.CMD_SPEC_SELECT],
     });
-    await user.click(specTypeRoleKeyRadio);
-    const roleKeySelect = screen.getByRole('list', {
-      name: Field[Field.CMD_SPEC_RK_SELECT],
-    });
-    await user.selectOptions(roleKeySelect, ROLE_KEY_NAME_1);
+    await user.selectOptions(specSelect, SPEC_NAME_1);
     // save
     const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
     await user.click(saveButton);
@@ -319,76 +308,6 @@ describe('side bar component tests', () => {
      */
     const createButton = screen.getByRole<HTMLButtonElement>('link', {
       name: 'Create New Context',
-    });
-    const section = createButton.parentElement as HTMLElement;
-    const sidebarSavedItem = within(section).getByRole('button', {
-      name: savedName,
-    });
-
-    expect(sidebarSavedItem).toBeInTheDocument();
-  });
-
-  // role key
-
-  it('should handle create new role key ', async () => {
-    await clickToCreateNew(ElementType.Enum.ROLE_KEY);
-
-    const header = screen.getByText('Create/Edit Role Key');
-    const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.RK_ROLE_KEY],
-    });
-
-    expect(header).toBeInTheDocument();
-    expect(nameField).toBeInTheDocument();
-    expect(nameField).toHaveValue('');
-  });
-
-  it('should handle select role key ', async () => {
-    await clickToSelect(ElementType.Enum.ROLE_KEY, ROLE_KEY_NAME_1);
-
-    const header = screen.getByText('Create/Edit Role Key');
-    const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.RK_ROLE_KEY],
-    });
-
-    expect(header).toBeInTheDocument();
-    expect(nameField).toBeInTheDocument();
-    expect(nameField).toHaveValue(ROLE_KEY_NAME_1);
-  });
-
-  it('should handle select and then create new role key ', async () => {
-    await clickToSelect(ElementType.Enum.ROLE_KEY, ROLE_KEY_NAME_1);
-    const createButton = screen.getByText('Create New Role Key');
-    await user.click(createButton);
-
-    const header = screen.getByText('Create/Edit Role Key');
-    const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.RK_ROLE_KEY],
-    });
-
-    expect(header).toBeInTheDocument();
-    expect(nameField).toBeInTheDocument();
-    expect(nameField).toHaveValue('');
-  });
-
-  it('should display saved role key', async () => {
-    await clickToCreateNew(ElementType.Enum.ROLE_KEY);
-    // add a name for display
-    const savedName = 'role-key-1';
-    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.RK_ROLE_KEY],
-    });
-    await user.type(nameField, savedName);
-    // minimal info to save
-    // save
-    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
-    await user.click(saveButton);
-    /* Get saved item which is in the same sidebar/accordion group as the "create" button.
-     * Slightly violates RTL methodology, but RTL has no "sibling" functionality.
-     * It's still "as your user would access it", so still RTL philosophy.
-     */
-    const createButton = screen.getByRole<HTMLButtonElement>('link', {
-      name: 'Create New Role Key',
     });
     const section = createButton.parentElement as HTMLElement;
     const sidebarSavedItem = within(section).getByRole('button', {

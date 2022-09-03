@@ -64,7 +64,7 @@ const changeEditingContextRoleKey = (
 ): Context => {
   return {
     ...state,
-    roleKeyId: action.payload,
+    roleKey: action.payload,
   };
 };
 const changeEditingContextType = (

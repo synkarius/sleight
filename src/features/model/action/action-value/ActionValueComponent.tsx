@@ -2,7 +2,6 @@ import React, { useContext, useId } from 'react';
 import { FormCheck, FormControl, FormSelect } from 'react-bootstrap';
 import { FormGroupRowComponent } from '../../../ui/FormGroupRowComponent';
 import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
-import { RoleKeyDropdownComponent } from '../../role-key/RoleKeyDropdownComponent';
 import { ActionValueType } from './action-value-type';
 import { ValidationContext } from '../../../../validation/validation-context';
 import {
@@ -16,7 +15,6 @@ import {
   isEnterNumberActionValue,
   isEnterTextActionValue,
   isEnterValueActionValue,
-  isRoleKeyActionValue,
   isVariableActionValue,
   NumericActionValue,
   TextActionValue,
@@ -47,7 +45,6 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const editingContext = useContext(ActionEditingContext);
   const enterValueId = useId();
   const useVariableId = useId();
-  const useRoleKeyId = useId();
 
   const typeChangedFn = (type: string) => {
     editingContext.localDispatch({
@@ -81,17 +78,6 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     });
     touchVariable();
   };
-  const touchRoleKey = () => validationContext.touch(props.fields.roleKey);
-  const roleKeyIdChangedFn = (id: string) => {
-    editingContext.localDispatch({
-      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
-      payload: {
-        field: props.fields.roleKey,
-        value: id,
-      },
-    });
-    touchRoleKey();
-  };
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
@@ -104,7 +90,6 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const radioButtonData = [
     { id: enterValueId, actionValueType: ActionValueType.Enum.ENTER_VALUE },
     { id: useVariableId, actionValueType: ActionValueType.Enum.USE_VARIABLE },
-    { id: useRoleKeyId, actionValueType: ActionValueType.Enum.USE_ROLE_KEY },
   ];
 
   return (
@@ -112,7 +97,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       labelText={props.labelText}
       descriptionText={props.descriptionText}
       errorMessage={errorResults(
-        [props.fields.value, props.fields.variable, props.fields.roleKey],
+        [props.fields.value, props.fields.variable],
         variableId
       )}
       required={props.required}
@@ -191,15 +176,6 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             )
           }
           variableTypeFilter={[props.actionValue.variableType]}
-        />
-      )}
-      {isRoleKeyActionValue(props.actionValue) && (
-        <RoleKeyDropdownComponent
-          roleKeyId={props.actionValue.roleKeyId}
-          onChange={(e) => roleKeyIdChangedFn(e.target.value)}
-          onBlur={(_e) => touchRoleKey()}
-          isInvalid={!!errorResults([props.fields.roleKey])}
-          field={props.fields.roleKey}
         />
       )}
     </FormGroupRowComponent>

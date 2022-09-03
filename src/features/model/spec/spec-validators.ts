@@ -12,7 +12,6 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { ValidateMode } from '../../../validation/ValidationComponent';
-import { isSelectedSpecCommand } from '../command/command';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { Spec } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
@@ -132,7 +131,6 @@ const deletionValidator: FieldValidator<Spec> = {
   isApplicable: alwaysTrue,
   validate: (spec, data) => {
     const commandsUsingSpec = Object.values(data.commands)
-      .filter(isSelectedSpecCommand)
       .filter((command) => command.specId === spec.id)
       .map((command) => command.name);
     const commandsStr = commandsUsingSpec.join('", "');

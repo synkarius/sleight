@@ -29,7 +29,7 @@ export const isRangeVariable = (
   variable: AbstractVariable
 ): variable is RangeVariable => variable.type === VariableType.Enum.RANGE;
 
-export interface ChoiceItem extends RoleKeyed, Ided {
+export interface ChoiceItem extends Ided {
   readonly selector: Selector;
   readonly value: string;
 }
@@ -56,7 +56,7 @@ export const createTextVariable = (): TextVariable => {
     id: getRandomId(),
     type: VariableType.Enum.TEXT,
     name: '',
-    roleKeyId: undefined,
+    roleKey: '',
   };
 };
 
@@ -65,7 +65,7 @@ export const createRangeVariable = (): RangeVariable => {
     id: getRandomId(),
     type: VariableType.Enum.RANGE,
     name: '',
-    roleKeyId: undefined,
+    roleKey: '',
     beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
     endInclusive: END_INCLUSIVE_DEFAULT,
   };
@@ -73,7 +73,6 @@ export const createRangeVariable = (): RangeVariable => {
 
 export const createChoiceItem = (selector: Selector): ChoiceItem => {
   return {
-    roleKeyId: undefined,
     id: getRandomId(),
     selector: selector,
     value: '',
@@ -85,7 +84,7 @@ export const createChoiceVariable = (): ChoiceVariable => {
     id: getRandomId(),
     type: VariableType.Enum.CHOICE,
     name: '',
-    roleKeyId: undefined,
+    roleKey: '',
     items: [],
   };
 };

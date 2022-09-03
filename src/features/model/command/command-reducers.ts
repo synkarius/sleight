@@ -4,17 +4,15 @@ import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failur
 import { WrongTypeError } from '../../../error/wrong-type-error';
 import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
-import { Command, copyCommand } from './command';
+import { Command } from './command';
 import {
   CommandReducerAction,
   CommandReducerActionIdAction,
   CommandReducerActionType,
   CommandReducerDeleteAction,
   CommandReducerMoveAction,
-  CommandReducerSpecTypeAction,
   CommandReducerStringAction,
 } from './command-editing-context';
-import { CommandSpecType } from './command-spec-type';
 
 export type CommandsState = {
   readonly saved: Record<string, Command>;
@@ -71,7 +69,7 @@ const changeEditingCommandRoleKey = (
 ): Command => {
   return {
     ...state,
-    roleKeyId: action.payload,
+    roleKey: action.payload,
   };
 };
 const changeEditingCommandContext = (
@@ -83,39 +81,13 @@ const changeEditingCommandContext = (
     contextId: action.payload,
   };
 };
-const changeEditingCommandSpecType = (
-  state: Command,
-  action: CommandReducerSpecTypeAction
-): Command => {
-  return action.payload === CommandSpecType.Enum.SPEC
-    ? {
-        ...copyCommand(state),
-        specType: action.payload,
-        specId: SELECT_DEFAULT_VALUE,
-      }
-    : {
-        ...copyCommand(state),
-        specType: action.payload,
-        specRoleKeyId: SELECT_DEFAULT_VALUE,
-      };
-};
 const changeEditingCommandSpecId = (
-  state: Command & { specType: typeof CommandSpecType.Enum.SPEC },
+  state: Command,
   action: CommandReducerStringAction
 ): Command => {
   return {
     ...state,
-
     specId: action.payload,
-  };
-};
-const changeEditingCommandSpecRoleKeyId = (
-  state: Command & { specType: typeof CommandSpecType.Enum.ROLE_KEY },
-  action: CommandReducerStringAction
-): Command => {
-  return {
-    ...state,
-    specRoleKeyId: action.payload,
   };
 };
 const addActionToEditingCommand = (state: Command): Command => {
@@ -182,18 +154,8 @@ export const commandReactReducer = (
       return changeEditingCommandRoleKey(state, action);
     case CommandReducerActionType.CHANGE_CONTEXT:
       return changeEditingCommandContext(state, action);
-    case CommandReducerActionType.CHANGE_SPEC_TYPE:
-      return changeEditingCommandSpecType(state, action);
     case CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID:
-      if (state.specType === CommandSpecType.Enum.SPEC) {
-        return changeEditingCommandSpecId(state, action);
-      }
-      throw new WrongTypeError(state.specType);
-    case CommandReducerActionType.CHANGE_SPEC_ROLE_KEY_ID:
-      if (state.specType === CommandSpecType.Enum.ROLE_KEY) {
-        return changeEditingCommandSpecRoleKeyId(state, action);
-      }
-      throw new WrongTypeError(state.specType);
+      return changeEditingCommandSpecId(state, action);
     case CommandReducerActionType.ADD_ACTION:
       return addActionToEditingCommand(state);
     case CommandReducerActionType.CHANGE_ACTION:

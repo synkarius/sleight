@@ -74,7 +74,7 @@ const copyVariable = (
   variable: Ided & Named & RoleKeyed
 ): Ided & Named & RoleKeyed => {
   return {
-    roleKeyId: variable.roleKeyId,
+    roleKey: variable.roleKey,
     id: variable.id,
     name: variable.name,
   };
@@ -96,7 +96,7 @@ const changeEditingVariableRoleKey = (
 ): Variable => {
   return {
     ...state,
-    roleKeyId: action.payload,
+    roleKey: action.payload,
   };
 };
 

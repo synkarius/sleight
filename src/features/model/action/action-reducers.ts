@@ -194,7 +194,7 @@ const changeEditingActionRoleKey = (
   state: Action,
   action: ActionReducerStringPayloadAction
 ): Action => {
-  return { ...state, roleKeyId: action.payload };
+  return { ...state, roleKey: action.payload };
 };
 
 const changeEditingActionName = (
@@ -216,7 +216,6 @@ export const actionReactReducer = (
       return changeEditingActionType(state, action);
     case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
     case ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE:
-    case ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID:
     case ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID:
       return changeActionValue(state, action);
     case ActionReducerActionType.CHANGE_MODIFIERS:

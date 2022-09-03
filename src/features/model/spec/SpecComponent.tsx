@@ -5,7 +5,6 @@ import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../ui/PanelComponent';
 import { SpecItemComponent } from './SpecItemComponent';
 import { saveSelector } from '../selector/selector-reducers';
-import { RoleKeyDropdownComponent } from '../role-key/RoleKeyDropdownComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { SpecPreviewComponent } from './SpecPreviewComponent';
 import { Field } from '../../../validation/validation-field';
@@ -23,6 +22,8 @@ import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 import { useSaved } from '../../../data/use-saved';
 import { ElementType } from '../common/element-types';
 
+const SP_ROLE_KEY = Field.SP_ROLE_KEY;
+
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
@@ -38,7 +39,15 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
     });
     validationContext.touch(Field.SP_NAME);
   };
-
+  const roleKeyChangedHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    editingContext.localDispatch({
+      type: SpecReducerActionType.CHANGE_ROLE_KEY,
+      payload: event.target.value,
+    });
+    validationContext.touch(SP_ROLE_KEY);
+  };
   const addSpecItemHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     editingContext.localDispatch({
       type: SpecReducerActionType.ADD_SPEC_ITEM,
@@ -90,17 +99,16 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Role Key"
-        descriptionText="role of variable"
+        descriptionText="role of spec"
+        errorMessage={errorResults([SP_ROLE_KEY])}
       >
-        <RoleKeyDropdownComponent
-          field={Field.SP_ROLE_KEY}
-          roleKeyId={props.spec.roleKeyId}
-          onChange={(e) =>
-            editingContext.localDispatch({
-              type: SpecReducerActionType.CHANGE_ROLE_KEY,
-              payload: e.target.value,
-            })
-          }
+        <FormControl
+          aria-label={Field[SP_ROLE_KEY]}
+          type="text"
+          onChange={roleKeyChangedHandler}
+          onBlur={() => validationContext.touch(SP_ROLE_KEY)}
+          isInvalid={!!errorResults([SP_ROLE_KEY])}
+          value={props.spec.roleKey}
         />
       </FormGroupRowComponent>
       <SpecPreviewComponent spec={props.spec} />

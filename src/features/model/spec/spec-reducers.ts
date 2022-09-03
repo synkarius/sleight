@@ -75,7 +75,7 @@ const changeEditingSpecRoleKey = (
   state: Spec,
   action: SpecReducerStringAction
 ): Spec => {
-  return { ...state, roleKeyId: action.payload };
+  return { ...state, roleKey: action.payload };
 };
 const addSpecItem = (state: Spec, action: SpecReducerAddAction): Spec => {
   return {

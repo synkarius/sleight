@@ -6,12 +6,19 @@ import { actionReactReducer } from './action-reducers';
 import { ActionValueType } from './action-value/action-value-type';
 import { ActionReducerActionType } from './action-editing-context';
 import { Field } from '../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { EnterValueType } from './action-value/action-value';
+import { VariableType } from '../variable/variable-types';
 
 describe('action reducer: action.innerPause', () => {
   it('should handle change action.innerPause.actionValueType', () => {
-    const obj = createTestSendKeyAction();
+    const obj: SendKeyPressAction = {
+      ...createSendKeyPressAction(),
+      innerPause: {
+        actionValueType: ActionValueType.Enum.USE_VARIABLE,
+        variableType: VariableType.Enum.RANGE,
+        variableId: 'asdf',
+      },
+    };
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
@@ -73,37 +80,4 @@ describe('action reducer: action.innerPause', () => {
       },
     });
   });
-
-  it('should handle change action.innerPause.roleKeyId', () => {
-    const obj = createSendKeyPressAction();
-
-    const actual = actionReactReducer(obj, {
-      type: ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID,
-      payload: {
-        field: Field.AC_INNER_PAUSE_RK,
-        value: 'asdf',
-      },
-    });
-
-    expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
-      ...obj,
-      innerPause: {
-        ...obj.innerPause,
-        roleKeyId: 'asdf',
-      },
-    });
-  });
 });
-
-const createTestSendKeyAction = (): SendKeyPressAction => {
-  const obj = createSendKeyPressAction();
-  return {
-    ...obj,
-    innerPause: {
-      ...obj.innerPause,
-      actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
-      roleKeyId: SELECT_DEFAULT_VALUE,
-    },
-  };
-};

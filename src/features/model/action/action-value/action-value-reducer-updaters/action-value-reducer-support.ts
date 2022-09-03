@@ -31,11 +31,6 @@ export const changeTextActionValueType = (
         variableType: VariableType.Enum.TEXT,
         variableId: SELECT_DEFAULT_VALUE,
       };
-    case ActionValueType.Enum.USE_ROLE_KEY:
-      return {
-        actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
-        roleKeyId: SELECT_DEFAULT_VALUE,
-      };
     default:
       throw new ExhaustivenessFailureError(actionValueType);
   }
@@ -58,11 +53,6 @@ export const changeNumericActionValueType = (
         variableType: VariableType.Enum.RANGE,
         variableId: SELECT_DEFAULT_VALUE,
       };
-    case ActionValueType.Enum.USE_ROLE_KEY:
-      return {
-        actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
-        roleKeyId: SELECT_DEFAULT_VALUE,
-      };
     default:
       throw new ExhaustivenessFailureError(actionValueType);
   }
@@ -84,11 +74,6 @@ export const changeEnumActionValueType = (
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.CHOICE,
         variableId: SELECT_DEFAULT_VALUE,
-      };
-    case ActionValueType.Enum.USE_ROLE_KEY:
-      return {
-        actionValueType: ActionValueType.Enum.USE_ROLE_KEY,
-        roleKeyId: SELECT_DEFAULT_VALUE,
       };
     default:
       throw new ExhaustivenessFailureError(actionValueType);
@@ -122,11 +107,6 @@ export const changeActionValueValue = <
       return {
         ...actionValue,
         variableId: action.payload.value,
-      };
-    case ActionReducerActionType.CHANGE_ACTION_VALUE_ROLE_KEY_ID:
-      return {
-        ...actionValue,
-        roleKeyId: action.payload.value,
       };
     default:
       throw new ExhaustivenessFailureError(actionType);

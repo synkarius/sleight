@@ -1,6 +1,5 @@
 import { useAppSelector } from '../app/hooks';
 import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
-import { NotImplementedError } from '../error/not-implemented-error';
 import { ElementType } from '../features/model/common/element-types';
 
 /** custom hook to determine if there is a saved element with the given id */
@@ -24,8 +23,6 @@ export const useSaved = (
       return !!specs[id];
     case ElementType.Enum.VARIABLE:
       return !!variables[id];
-    case ElementType.Enum.ROLE_KEY:
-      throw new NotImplementedError('useSaved');
     default:
       throw new ExhaustivenessFailureError(elementType);
   }
