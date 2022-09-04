@@ -7,7 +7,7 @@ import {
   innerPauseGroup,
   repeatGroup,
   directionGroup,
-} from '../../features/model/action/send-key/send-key-action-value-field-groups';
+} from '../../ui/model/action/send-key/send-key-action-value-field-groups';
 
 export const specAdequacyConfigForAction: ValidationConfig = {
   touchTriggersValidationFields: [

@@ -1,6 +1,6 @@
 import { NotImplementedError } from '../../error/not-implemented-error';
-import { Action } from '../../features/model/action/action';
-import { ActionType } from '../../features/model/action/action-types';
+import { Action } from '../../ui/model/action/action';
+import { ActionType } from '../../ui/model/action/action-types';
 import {
   EnumActionValue,
   NumericActionValue,
@@ -8,9 +8,9 @@ import {
   VariableChoiceActionValue,
   VariableRangeActionValue,
   VariableTextActionValue,
-} from '../../features/model/action/action-value/action-value';
-import { ActionValueType } from '../../features/model/action/action-value/action-value-type';
-import { SendKeyMode } from '../../features/model/action/send-key/send-key-modes';
+} from '../../ui/model/action/action-value/action-value';
+import { ActionValueType } from '../../ui/model/action/action-value/action-value-type';
+import { SendKeyMode } from '../../ui/model/action/send-key/send-key-modes';
 import { Field } from '../validation-field';
 
 type ActionAndField = {

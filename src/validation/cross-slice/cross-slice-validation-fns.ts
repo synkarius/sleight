@@ -1,18 +1,18 @@
 import { FieldValidator } from '../field-validator';
-import { Action } from '../../features/model/action/action';
-import { Command } from '../../features/model/command/command';
+import { Action } from '../../ui/model/action/action';
+import { Command } from '../../ui/model/command/command';
 import {
   getActionSideSpecAdequacyValidator,
   getCommandSideSpecAdequacyValidator,
   getSpecSideSpecAdequacyValidator,
-} from '../../features/model/command/spec-adequacy-cross-slice-validator';
-import { Context } from '../../features/model/context/context';
-import { Spec } from '../../features/model/spec/data/spec-domain';
-import { Variable } from '../../features/model/variable/data/variable';
+} from '../../ui/model/command/spec-adequacy-cross-slice-validator';
+import { Context } from '../../ui/model/context/context';
+import { Spec } from '../../ui/model/spec/data/spec-domain';
+import { Variable } from '../../ui/model/variable/data/variable';
 import {
   getSpecItemOptionalityValidator,
   getVariableOptionalityValidator,
-} from '../../features/model/variable/optionality-cross-slice-validator';
+} from '../../ui/model/variable/optionality-cross-slice-validator';
 
 // Some validations have to be run cross-slice. This file is a place to keep those organized.
 

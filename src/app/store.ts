@@ -1,11 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { editorFocusReducer } from '../features/menu/editor/editor-focus-reducers';
-import { actionReduxReducer } from '../features/model/action/action-reducers';
-import { commandReduxReducer } from '../features/model/command/command-reducers';
-import { contextReduxReducer } from '../features/model/context/context-reducers';
-import { variableReduxReducer } from '../features/model/variable/variable-reducers';
-import { selectorReduxReducer } from '../features/model/selector/selector-reducers';
-import { specReduxReducer } from '../features/model/spec/spec-reducers';
+import { editorFocusReducer } from '../ui/other-components/menu/editor/editor-focus-reducers';
+import { actionReduxReducer } from '../ui/model/action/action-reducers';
+import { commandReduxReducer } from '../ui/model/command/command-reducers';
+import { contextReduxReducer } from '../ui/model/context/context-reducers';
+import { variableReduxReducer } from '../ui/model/variable/variable-reducers';
+import { selectorReduxReducer } from '../ui/model/selector/selector-reducers';
+import { specReduxReducer } from '../ui/model/spec/spec-reducers';
 
 export const store = configureStore({
   reducer: {

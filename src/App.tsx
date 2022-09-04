@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navigation } from './features/menu/Navigation';
-import { SidebarComponent } from './features/sidebar/SidebarComponent';
+import { Navigation } from './ui/other-components/menu/Navigation';
+import { SidebarComponent } from './ui/other-components/sidebar/SidebarComponent';
 import { Col, Row } from 'react-bootstrap';
-import { EditorComponent } from './features/menu/editor/EditorComponent';
+import { EditorComponent } from './ui/other-components/menu/editor/EditorComponent';
 import { InjectionContext } from './di/injector-context';
 import { getDefaultInjectionContext } from './di/app-default-injection-context';
 

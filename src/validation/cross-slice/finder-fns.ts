@@ -1,10 +1,10 @@
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { SleightDataInternalFormat } from '../../data/data-formats';
-import { Action } from '../../features/model/action/action';
-import { Command } from '../../features/model/command/command';
-import { Spec } from '../../features/model/spec/data/spec-domain';
-import { SpecItemType } from '../../features/model/spec/spec-item-type';
-import { Variable } from '../../features/model/variable/data/variable';
+import { Action } from '../../ui/model/action/action';
+import { Command } from '../../ui/model/command/command';
+import { Spec } from '../../ui/model/spec/data/spec-domain';
+import { SpecItemType } from '../../ui/model/spec/spec-item-type';
+import { Variable } from '../../ui/model/variable/data/variable';
 
 /**
  * Given the editing element, finds one or more validated elements.

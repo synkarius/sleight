@@ -1,16 +1,13 @@
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { SleightDataInternalFormat } from '../../data/data-formats';
-import { Action } from '../../features/model/action/action';
-import { Command } from '../../features/model/command/command';
-import { SelectorDTO } from '../../features/model/selector/data/selector-dto';
-import {
-  isSelectorSpecItem,
-  Spec,
-} from '../../features/model/spec/data/spec-domain';
+import { Action } from '../../ui/model/action/action';
+import { Command } from '../../ui/model/command/command';
+import { SelectorDTO } from '../../ui/model/selector/data/selector-dto';
+import { isSelectorSpecItem, Spec } from '../../ui/model/spec/data/spec-domain';
 import {
   isChoiceVariable,
   Variable,
-} from '../../features/model/variable/data/variable';
+} from '../../ui/model/variable/data/variable';
 
 /**
  * Makes a copy of the relevant Redux slices.

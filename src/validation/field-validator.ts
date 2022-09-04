@@ -6,7 +6,7 @@ import {
 } from './validation-result';
 import { ValidationErrorCode } from './validation-error-code';
 import { SleightDataInternalFormat } from '../data/data-formats';
-import { Ided, Named } from '../features/domain';
+import { Ided, Named } from '../ui/domain';
 import { alwaysTrue } from '../common/common-functions';
 import { ValidateMode } from './ValidationComponent';
 

@@ -1,9 +1,9 @@
-import { Action } from '../features/model/action/action';
-import { Command } from '../features/model/command/command';
-import { Context } from '../features/model/context/context';
-import { SelectorDTO } from '../features/model/selector/data/selector-dto';
-import { SpecDTO } from '../features/model/spec/data/spec-dto';
-import { VariableDTO } from '../features/model/variable/data/variable-dto';
+import { Action } from '../ui/model/action/action';
+import { Command } from '../ui/model/command/command';
+import { Context } from '../ui/model/context/context';
+import { SelectorDTO } from '../ui/model/selector/data/selector-dto';
+import { SpecDTO } from '../ui/model/spec/data/spec-dto';
+import { VariableDTO } from '../ui/model/variable/data/variable-dto';
 
 export type SleightDataExportFormat = {
   readonly version: string;
