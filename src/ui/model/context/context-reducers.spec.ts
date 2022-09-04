@@ -5,6 +5,7 @@ import {
   contextReduxReducer,
   saveContext,
   contextReactReducer,
+  deleteContext,
 } from './context-reducers';
 import { ContextType } from './context-types';
 import { ContextReducerActionType } from './context-editing-context';
@@ -86,6 +87,19 @@ describe('context reducer', () => {
     const actual = contextReduxReducer(prereducerState, selectContext());
 
     expect(actual).toEqual({ saved: {}, editingId: undefined });
+  });
+
+  it('should handle delete', () => {
+    const obj = createContext();
+
+    const preReducerState: ContextsState = {
+      saved: { [obj.id]: obj },
+      editingId: undefined,
+    };
+
+    const actual = contextReduxReducer(preReducerState, deleteContext(obj.id));
+
+    expect(actual.saved).toEqual({});
   });
 
   it('should handle change name', () => {

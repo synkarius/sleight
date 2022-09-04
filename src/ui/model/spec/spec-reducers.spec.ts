@@ -10,6 +10,7 @@ import {
   saveSpec,
   specReduxReducer,
   specReactReducer,
+  deleteSpec,
 } from './spec-reducers';
 
 const createTestSpecRedux = (from?: {
@@ -34,10 +35,10 @@ const createTestSpecRedux = (from?: {
   };
 };
 
-const injected = getDefaultInjectionContext();
-const specDefaultNamer = injected.default.namers.spec;
-
 describe('spec reducer', () => {
+  const injected = getDefaultInjectionContext();
+  const specDefaultNamer = injected.default.namers.spec;
+
   it('should handle initial state', () => {
     expect(specReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
@@ -116,6 +117,19 @@ describe('spec reducer', () => {
     const actual = specReduxReducer(prereducerState, selectSpec(undefined));
 
     expect(actual.editingId).toBeUndefined();
+  });
+
+  it('should handle delete', () => {
+    const obj = createSpec();
+
+    const preReducerState: SpecsState = {
+      saved: { [obj.id]: obj },
+      editingId: undefined,
+    };
+
+    const actual = specReduxReducer(preReducerState, deleteSpec(obj.id));
+
+    expect(actual.saved).toEqual({});
   });
 
   it('should handle change name', () => {

@@ -5,6 +5,7 @@ import {
   saveAction,
   actionReduxReducer,
   actionReactReducer,
+  deleteAction,
 } from './action-reducers';
 import { createPauseAction, PauseAction } from './pause/pause';
 import { ActionType } from './action-types';
@@ -80,6 +81,19 @@ describe('action reducer', () => {
     const actual = actionReduxReducer(preReducerState, selectAction(undefined));
 
     expect(actual.editingId).toBeUndefined();
+  });
+
+  it('should handle delete', () => {
+    const obj = createPauseAction();
+
+    const preReducerState: ActionsState = {
+      saved: { [obj.id]: obj },
+      editingId: undefined,
+    };
+
+    const actual = actionReduxReducer(preReducerState, deleteAction(obj.id));
+
+    expect(actual.saved).toEqual(initialState.saved);
   });
 
   it('should handle change name', () => {

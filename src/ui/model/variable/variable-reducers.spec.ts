@@ -20,6 +20,7 @@ import {
   selectVariable,
   variableReduxReducer,
   variableReactReducer,
+  deleteVariable,
 } from './variable-reducers';
 import { VariableType } from './variable-types';
 
@@ -36,14 +37,15 @@ const createTestVariable = (id: string): VariableDTO => {
   };
 };
 
-const injected = getDefaultInjectionContext();
-const variableDefaultNamer = injected.default.namers.variable;
-
 describe('variable reducer', () => {
+  const injected = getDefaultInjectionContext();
+  const variableDefaultNamer = injected.default.namers.variable;
+
   const initialState: VariablesState = {
     saved: {},
     editingId: undefined,
   };
+
   it('should handle initial state', () => {
     expect(variableReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
@@ -94,6 +96,22 @@ describe('variable reducer', () => {
 
     const actual = variableReduxReducer(prereducerState, selectVariable());
     expect(actual.editingId).toBeUndefined();
+  });
+
+  it('should handle delete', () => {
+    const obj = createTextVariable();
+
+    const preReducerState: VariablesState = {
+      saved: { [obj.id]: obj },
+      editingId: undefined,
+    };
+
+    const actual = variableReduxReducer(
+      preReducerState,
+      deleteVariable(obj.id)
+    );
+
+    expect(actual.saved).toEqual({});
   });
 
   it('should handle change name', () => {

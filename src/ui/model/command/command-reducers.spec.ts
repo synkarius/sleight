@@ -9,6 +9,7 @@ import {
   saveCommand,
   commandReduxReducer,
   commandReactReducer,
+  deleteCommand,
 } from './command-reducers';
 
 describe('command reducer', () => {
@@ -81,6 +82,19 @@ describe('command reducer', () => {
       saved: {},
       editingId: undefined,
     });
+  });
+
+  it('should handle delete', () => {
+    const obj = createCommand();
+
+    const preReducerState: CommandsState = {
+      saved: { [obj.id]: obj },
+      editingId: undefined,
+    };
+
+    const actual = commandReduxReducer(preReducerState, deleteCommand(obj.id));
+
+    expect(actual.saved).toEqual({});
   });
 
   it('should handle change name', () => {
