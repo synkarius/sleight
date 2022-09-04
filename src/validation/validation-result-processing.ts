@@ -1,9 +1,7 @@
-import { alwaysTrue, isDefined, notFalsy } from '../common/common-functions';
+import { alwaysTrue, isDefined } from '../common/common-functions';
+import { ErrorOrFailureValidationResult } from './validation-context';
 import { Field } from './validation-field';
-import {
-  ErrorValidationResult,
-  ValidationResultType,
-} from './validation-result';
+import { ValidationResultType } from './validation-result';
 
 type GetErrorMessageFn = (fields: Field[], id?: string) => string | undefined;
 
@@ -13,9 +11,9 @@ type GetErrorMessageFn = (fields: Field[], id?: string) => string | undefined;
  * @returns
  */
 export const processErrorResults = (
-  errorResults: ErrorValidationResult[]
+  errorResults: ErrorOrFailureValidationResult[]
 ): GetErrorMessageFn => {
-  const errorMap = new Map<Field, ErrorValidationResult>();
+  const errorMap = new Map<Field, ErrorOrFailureValidationResult>();
   for (const errorResult of errorResults) {
     const fields =
       errorResult.type === ValidationResultType.MULTI_FIELD
@@ -30,7 +28,7 @@ export const processErrorResults = (
       .map((field) => errorMap.get(field))
       .filter(isDefined)
       .filter((errorResult) => {
-        // if the error result is an ID_LIST type, also match on id
+        // if the error result type has ids, also match on id
         return (
           !(
             errorResult.type === ValidationResultType.ID_LIST ||

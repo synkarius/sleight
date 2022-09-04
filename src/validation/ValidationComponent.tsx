@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useAppSelector } from '../app/hooks';
 import { useAllData } from '../data/use-all-data-hook';
 import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
 import { listsIntersect } from '../common/common-functions';
 import { FieldValidator, ValidatorType } from './field-validator';
-import { ValidationContext } from './validation-context';
-import { Field } from './validation-field';
 import {
-  ErrorValidationResult,
-  ValidationResultType,
-} from './validation-result';
+  ErrorOrFailureValidationResult,
+  isErrorOrFailedValidationResult,
+  ValidationContext,
+} from './validation-context';
+import { Field } from './validation-field';
+import { ValidationResult, ValidationResultType } from './validation-result';
+import { SleightDataInternalFormat } from '../data/data-formats';
 
 export enum ValidateMode {
   TOUCH,
@@ -69,6 +70,29 @@ const shouldUseValidator = (
 };
 
 /**
+ * Attempts a validation.
+ */
+const tryValidate = <T,>(
+  validator: FieldValidator<T>,
+  editing: T,
+  data: Readonly<SleightDataInternalFormat>
+): ValidationResult => {
+  try {
+    return validator.validate(editing, data);
+  } catch (error) {
+    const field =
+      validator.validatorType === ValidatorType.FIELDS
+        ? validator.fields[0]
+        : validator.field;
+    return {
+      type: ValidationResultType.VALIDATION_FAILED,
+      field,
+      message: `validation failed for ${Field[field]}`,
+    };
+  }
+};
+
+/**
  * Controls local validation.
  *
  * Must specify domain object type being validated.
@@ -80,19 +104,16 @@ const shouldUseValidator = (
  */
 export const ValidationComponent: ValidationPropsComponent = (props) => {
   const [touched, setTouched] = useState<Field[]>([]);
-  const [results, setResults] = useState<ErrorValidationResult[]>([]);
+  const [results, setResults] = useState<ErrorOrFailureValidationResult[]>([]);
   useEffect(() => validateTouched(), [touched]);
   const allData = useAllData();
-  const validate = (mode: ValidateMode): ErrorValidationResult[] => {
+  const validate = (mode: ValidateMode): ErrorOrFailureValidationResult[] => {
     // submit means everything is touched
     return props.validators
       .filter((v) => shouldUseValidator(mode, v, touched))
       .filter((v) => v.isApplicable(props.editing))
-      .map((v) => v.validate(props.editing, allData))
-      .filter(
-        (result): result is ErrorValidationResult =>
-          result.type !== ValidationResultType.VALID
-      );
+      .map((v) => tryValidate(v, props.editing, allData))
+      .filter(isErrorOrFailedValidationResult);
   };
   const validateTouched = () => {
     // want to ignore prior state:

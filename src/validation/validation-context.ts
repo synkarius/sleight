@@ -1,12 +1,25 @@
 import React from 'react';
 import { Field } from './validation-field';
-import { ErrorValidationResult } from './validation-result';
+import {
+  ErrorValidationResult,
+  FailedValidationResult,
+  ValidationResult,
+  ValidationResultType,
+} from './validation-result';
+
+export type ErrorOrFailureValidationResult =
+  | ErrorValidationResult
+  | FailedValidationResult;
+export const isErrorOrFailedValidationResult = (
+  result: ValidationResult
+): result is ErrorOrFailureValidationResult =>
+  result.type !== ValidationResultType.VALID;
 
 interface ValidationData {
   readonly touch: (field: Field) => void;
   readonly validateForSave: () => boolean;
-  readonly validateForDelete: () => ErrorValidationResult[];
-  readonly getErrorResults: () => ErrorValidationResult[];
+  readonly validateForDelete: () => ErrorOrFailureValidationResult[];
+  readonly getErrorResults: () => ErrorOrFailureValidationResult[];
 }
 
 export const ValidationContext = React.createContext<
