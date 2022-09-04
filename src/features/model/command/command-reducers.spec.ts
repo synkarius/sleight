@@ -1,6 +1,6 @@
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
-import { MoveDirection } from '../common/move-direction';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { MoveDirection } from '../../../common/move-direction';
 import { createCommand, Command } from './command';
 import { CommandReducerActionType } from './command-editing-context';
 import {

@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { ActionType } from './action-types';
 import { ActionParentComponent } from './ActionParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { saveAction } from './action-reducers';
 import { EnterValueType } from './action-value/action-value';
 import { createPauseAction, PauseAction } from './pause/pause';
@@ -25,7 +25,7 @@ import { saveSpec } from '../spec/spec-reducers';
 import { saveSelector } from '../selector/selector-reducers';
 import { Command, createCommand } from '../command/command';
 import { saveCommand } from '../command/command-reducers';
-import { LIST } from '../common/accessibility-roles';
+import { LIST } from '../../../common/accessibility-roles';
 
 const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
 const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';

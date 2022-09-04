@@ -1,4 +1,4 @@
-import { getDefaultInjectionContext } from '../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { SleightDataInternalFormat } from '../../data/data-formats';
 import { Action } from '../../features/model/action/action';
 import { Command } from '../../features/model/command/command';

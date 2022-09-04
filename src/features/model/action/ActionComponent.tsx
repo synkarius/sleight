@@ -21,8 +21,8 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { isPauseAction } from './pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { useSaved } from '../../../data/use-saved';
-import { ElementType } from '../common/element-types';
+import { useSaved } from '../../../data/use-saved-hook';
+import { ElementType } from '../../../common/element-types';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;

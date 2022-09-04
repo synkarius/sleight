@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { NotImplementedError } from '../../../error/not-implemented-error';
 import { Action } from './action';

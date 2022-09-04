@@ -1,5 +1,5 @@
 import { MissingDelegateError } from '../../../../../error/missing-delegate-error';
-import { isDefined } from '../../../../../util/common-functions';
+import { isDefined } from '../../../../../common/common-functions';
 import { ActionValueUpdater } from './action-value-updater';
 import { getActionValueUpdaterDelegates } from './action-value-updater-delegates';
 

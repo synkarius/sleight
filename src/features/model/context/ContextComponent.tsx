@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
-import { useSaved } from '../../../data/use-saved';
+import { useSaved } from '../../../data/use-saved-hook';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
@@ -9,7 +9,7 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { PanelComponent } from '../../ui/PanelComponent';
-import { ElementType } from '../common/element-types';
+import { ElementType } from '../../../common/element-types';
 import { Context } from './context';
 import {
   ContextEditingContext,

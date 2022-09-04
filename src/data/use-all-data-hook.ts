@@ -1,7 +1,7 @@
 import { useAppSelector } from '../app/hooks';
 import { SleightDataInternalFormat } from './data-formats';
 
-export const useAllDataSelector = (): Readonly<SleightDataInternalFormat> => {
+export const useAllData = (): Readonly<SleightDataInternalFormat> => {
   const actions = useAppSelector((state) => state.action.saved);
   const commands = useAppSelector((state) => state.command.saved);
   const contexts = useAppSelector((state) => state.context.saved);

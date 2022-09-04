@@ -1,12 +1,12 @@
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
-import { ElementType } from '../../../features/model/common/element-types';
+import { ElementType } from '../../../common/element-types';
 import { ContextType } from '../../../features/model/context/context-types';
 import { SelectorDTO } from '../../../features/model/selector/data/selector-dto';
 import { SpecItemDTO } from '../../../features/model/spec/data/spec-dto';
 import { SpecItemType } from '../../../features/model/spec/spec-item-type';
 import { VariableDTO } from '../../../features/model/variable/data/variable-dto';
 import { VariableType } from '../../../features/model/variable/variable-types';
-import { replaceNonAlphaNumeric } from '../../../util/common-functions';
+import { replaceNonAlphaNumeric } from '../../../common/common-functions';
 import { SleightDataInternalFormat } from '../../data-formats';
 import { createMustacheFn } from '../util-mustache-fns';
 

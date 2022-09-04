@@ -19,8 +19,8 @@ import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { InjectionContext } from '../../../di/injector-context';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
-import { useSaved } from '../../../data/use-saved';
-import { ElementType } from '../common/element-types';
+import { useSaved } from '../../../data/use-saved-hook';
+import { ElementType } from '../../../common/element-types';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 

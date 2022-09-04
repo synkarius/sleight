@@ -1,6 +1,6 @@
-import { getRandomId } from '../../../util/random-id';
+import { getRandomId } from '../../../common/random-id';
 import { RoleKeyed, Named, Ided } from '../../domain';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
 
 export interface Command extends Ided, Named, RoleKeyed {
   readonly specId: string;

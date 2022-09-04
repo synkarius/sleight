@@ -1,4 +1,4 @@
-import { ElementType } from '../../features/model/common/element-types';
+import { ElementType } from '../../common/element-types';
 import { Field } from '../validation-field';
 
 export type ValidationConfig = {

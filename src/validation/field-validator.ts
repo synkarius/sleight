@@ -7,7 +7,7 @@ import {
 import { ValidationErrorCode } from './validation-error-code';
 import { SleightDataInternalFormat } from '../data/data-formats';
 import { Ided, Named } from '../features/domain';
-import { alwaysTrue } from '../util/common-functions';
+import { alwaysTrue } from '../common/common-functions';
 import { ValidateMode } from './ValidationComponent';
 
 export enum ValidatorType {

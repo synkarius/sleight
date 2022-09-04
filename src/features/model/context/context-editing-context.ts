@@ -1,4 +1,4 @@
-import { createEditingContext } from '../common/editing-context';
+import { createEditingContext } from '../../../common/editing-context';
 import { ContextType } from './context-types';
 
 export enum ContextReducerActionType {

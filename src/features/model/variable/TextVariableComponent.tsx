@@ -5,7 +5,7 @@ import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
-import { USE_DEFAULT } from '../common/consts';
+import { USE_DEFAULT } from '../../../common/consts';
 import { TextVariable } from './data/variable';
 import {
   VariableEditingContext,

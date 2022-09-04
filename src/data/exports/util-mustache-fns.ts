@@ -1,4 +1,4 @@
-import { replaceNonAlphaNumeric } from '../../util/common-functions';
+import { replaceNonAlphaNumeric } from '../../common/common-functions';
 
 type MustacheFn = (value: string, render: (value: string) => string) => string;
 export const createMustacheFn = (fn: MustacheFn) => () => fn;

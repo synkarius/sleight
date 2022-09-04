@@ -1,5 +1,5 @@
 import { Field } from '../../../validation/validation-field';
-import { createEditingContext } from '../common/editing-context';
+import { createEditingContext } from '../../../common/editing-context';
 import { ActionType } from './action-types';
 import { ActionValueType } from './action-value/action-value-type';
 import { MouseActionType } from './mouse/mouse-action-type';

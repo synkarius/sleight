@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ElementType } from '../../model/common/element-types';
+import { ElementType } from '../../../common/element-types';
 
 type EditorFocusState = {
   elementType?: ElementType.Type;

@@ -2,8 +2,8 @@ import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
-import { LIST_ITEM } from '../common/accessibility-roles';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { LIST_ITEM } from '../../../common/accessibility-roles';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
 
 type ActionDropdownComponentProps = {
   readonly field: Field;

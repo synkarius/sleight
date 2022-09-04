@@ -1,4 +1,4 @@
-import { createEditingContext } from '../common/editing-context';
+import { createEditingContext } from '../../../common/editing-context';
 import { Selector, SelectorItem } from '../selector/data/selector-domain';
 import { ChoiceItem } from './data/variable';
 import { VariableType } from './variable-types';

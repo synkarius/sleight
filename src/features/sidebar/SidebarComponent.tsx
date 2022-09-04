@@ -2,7 +2,7 @@ import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectAction } from '../model/action/action-reducers';
 import { selectCommand } from '../model/command/command-reducers';
-import { ElementType } from '../model/common/element-types';
+import { ElementType } from '../../common/element-types';
 import { selectContext } from '../model/context/context-reducers';
 import { selectVariable } from '../model/variable/variable-reducers';
 import { selectSpec } from '../model/spec/spec-reducers';

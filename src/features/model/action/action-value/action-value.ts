@@ -1,4 +1,4 @@
-import { SELECT_DEFAULT_VALUE } from '../../common/consts';
+import { SELECT_DEFAULT_VALUE } from '../../../../common/consts';
 import { VariableType } from '../../variable/variable-types';
 import { ActionValueType } from './action-value-type';
 

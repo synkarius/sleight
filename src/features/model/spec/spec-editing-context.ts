@@ -1,5 +1,5 @@
-import { createEditingContext } from '../common/editing-context';
-import { MoveDirection } from '../common/move-direction';
+import { createEditingContext } from '../../../common/editing-context';
+import { MoveDirection } from '../../../common/move-direction';
 import { Selector, SelectorItem } from '../selector/data/selector-domain';
 import { SpecItem } from './data/spec-domain';
 import { SpecItemType } from './spec-item-type';

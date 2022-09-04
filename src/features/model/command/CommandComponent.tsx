@@ -19,8 +19,8 @@ import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { InjectionContext } from '../../../di/injector-context';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
-import { useSaved } from '../../../data/use-saved';
-import { ElementType } from '../common/element-types';
+import { useSaved } from '../../../data/use-saved-hook';
+import { ElementType } from '../../../common/element-types';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;

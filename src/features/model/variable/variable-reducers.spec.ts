@@ -1,4 +1,4 @@
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import {
   createSelector,
   createSelectorItem,

@@ -23,10 +23,10 @@ import {
   SpecEditingContext,
   SpecReducerActionType,
 } from './spec-editing-context';
-import { MoveDirection } from '../common/move-direction';
+import { MoveDirection } from '../../../common/move-direction';
 import { Field } from '../../../validation/validation-field';
-import { LIST, LIST_ITEM } from '../common/accessibility-roles';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { LIST, LIST_ITEM } from '../../../common/accessibility-roles';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
 import { ValidationResultType } from '../../../validation/validation-result';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';

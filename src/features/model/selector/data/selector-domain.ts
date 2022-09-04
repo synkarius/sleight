@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../../util/random-id';
+import { getRandomId } from '../../../../common/random-id';
 import { Ided } from '../../../domain';
 
 /**

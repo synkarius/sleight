@@ -1,6 +1,6 @@
 import { Ided, Typed } from '../../domain';
-import { DefaultNamer } from '../common/default-namer';
-import { ElementType } from '../common/element-types';
+import { DefaultNamer } from '../../../common/default-namer';
+import { ElementType } from '../../../common/element-types';
 import { ActionType } from './action-types';
 
 interface IdedAndTyped extends Ided, Typed<ActionType.Type> {}

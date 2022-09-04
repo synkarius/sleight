@@ -1,5 +1,5 @@
-import { alwaysTrue, isEmpty } from '../../../util/common-functions';
-import { MapUtil } from '../../../util/map-util';
+import { alwaysTrue, isEmpty } from '../../../common/common-functions';
+import { MapUtil } from '../../../common/map-util';
 import {
   createNameTakenValidator,
   createValidator,

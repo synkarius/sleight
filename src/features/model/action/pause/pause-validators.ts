@@ -1,4 +1,4 @@
-import { isSelected } from '../../../../util/common-functions';
+import { isSelected } from '../../../../common/common-functions';
 import { createValidator } from '../../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../../validation/validation-error-code';
 import { Field } from '../../../../validation/validation-field';

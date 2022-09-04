@@ -7,7 +7,7 @@ import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from './variable-types';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { createRangeVariable } from './data/variable';
 import { getVariableDomainMapper } from './data/variable-domain-mapper';
 import { saveVariable } from './variable-reducers';

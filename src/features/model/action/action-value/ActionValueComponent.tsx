@@ -19,7 +19,7 @@ import {
   NumericActionValue,
   TextActionValue,
 } from './action-value';
-import { SELECT_DEFAULT_VALUE } from '../../common/consts';
+import { SELECT_DEFAULT_VALUE } from '../../../../common/consts';
 import { processErrorResults } from '../../../../validation/validation-result-processing';
 import { ActionValueFieldGroup } from './action-value-type-name-group';
 

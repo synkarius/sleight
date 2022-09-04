@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
-import { useAllDataSelector } from '../data/use-all-data-selector';
+import { useAllData } from '../data/use-all-data-hook';
 import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
-import { listsIntersect } from '../util/common-functions';
+import { listsIntersect } from '../common/common-functions';
 import { FieldValidator, ValidatorType } from './field-validator';
 import { ValidationContext } from './validation-context';
 import { Field } from './validation-field';
@@ -82,7 +82,7 @@ export const ValidationComponent: ValidationPropsComponent = (props) => {
   const [touched, setTouched] = useState<Field[]>([]);
   const [results, setResults] = useState<ErrorValidationResult[]>([]);
   useEffect(() => validateTouched(), [touched]);
-  const allData = useAllDataSelector();
+  const allData = useAllData();
   const validate = (mode: ValidateMode): ErrorValidationResult[] => {
     // submit means everything is touched
     return props.validators

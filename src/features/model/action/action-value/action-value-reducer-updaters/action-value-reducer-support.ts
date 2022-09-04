@@ -1,5 +1,5 @@
 import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
-import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { SELECT_DEFAULT_VALUE } from '../../../../../common/consts';
 import { VariableType } from '../../../variable/variable-types';
 import {
   ActionReducerActionType,

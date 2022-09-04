@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import App from '../../App';
 import { store } from '../../app/store';
-import { ElementType } from '../model/common/element-types';
+import { ElementType } from '../../common/element-types';
 import { saveAction } from '../model/action/action-reducers';
 import { createPauseAction } from '../model/action/pause/pause';
 import { saveCommand } from '../model/command/command-reducers';
@@ -15,7 +15,7 @@ import { SpecDTO } from '../model/spec/data/spec-dto';
 import { saveSpec } from '../model/spec/spec-reducers';
 import { saveVariable } from '../model/variable/variable-reducers';
 import { Field } from '../../validation/validation-field';
-import { TEXT_BOX } from '../model/common/accessibility-roles';
+import { TEXT_BOX } from '../../common/accessibility-roles';
 import { createRangeVariable } from '../model/variable/data/variable';
 import { Action } from '../model/action/action';
 

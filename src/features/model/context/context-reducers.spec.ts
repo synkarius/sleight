@@ -8,7 +8,7 @@ import {
 } from './context-reducers';
 import { ContextType } from './context-types';
 import { ContextReducerActionType } from './context-editing-context';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 
 const injected = getDefaultInjectionContext();
 const contextDefaultNamer = injected.default.namers.context;

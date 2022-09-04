@@ -11,7 +11,7 @@ import { ActionType } from './action-types';
 import { createNumericValue } from './action-value/action-value';
 import { ActionReducerActionType } from './action-editing-context';
 import { Action } from './action';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 
 const injected = getDefaultInjectionContext();
 const actionDefaultNamer = injected.default.namers.action;

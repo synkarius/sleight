@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../../util/random-id';
+import { getRandomId } from '../../../../common/random-id';
 import { AbstractAction, copyAction } from '../abstract-action';
 import { Action } from '../action';
 import { ActionType } from '../action-types';

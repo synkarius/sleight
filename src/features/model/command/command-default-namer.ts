@@ -1,6 +1,6 @@
 import { Ided } from '../../domain';
-import { DefaultNamer } from '../common/default-namer';
-import { ElementType } from '../common/element-types';
+import { DefaultNamer } from '../../../common/default-namer';
+import { ElementType } from '../../../common/element-types';
 
 export const getDefaultCommandNamer: () => DefaultNamer<Ided> = () => ({
   getDefaultName: (command) =>

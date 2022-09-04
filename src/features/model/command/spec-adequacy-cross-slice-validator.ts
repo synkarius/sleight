@@ -1,6 +1,6 @@
 import { SleightDataInternalFormat } from '../../../data/data-formats';
-import { Predicate, singletonArray } from '../../../util/common-functions';
-import { MapUtil } from '../../../util/map-util';
+import { Predicate, singletonArray } from '../../../common/common-functions';
+import { MapUtil } from '../../../common/map-util';
 import {
   specAdequacyConfigForAction,
   specAdequacyConfigForCommand,
@@ -30,8 +30,8 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { Action } from '../action/action';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
-import { ElementType } from '../common/element-types';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { ElementType } from '../../../common/element-types';
 import { Spec } from '../spec/data/spec-domain';
 import { SpecItemType } from '../spec/spec-item-type';
 import { VariableDTO } from '../variable/data/variable-dto';

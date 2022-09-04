@@ -1,5 +1,5 @@
 import { Ided, Named } from '../domain';
-import { ElementType } from '../model/common/element-types';
+import { ElementType } from '../../common/element-types';
 
 interface IdedAndNamed extends Ided, Named {}
 

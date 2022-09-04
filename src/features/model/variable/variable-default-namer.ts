@@ -1,6 +1,6 @@
 import { Ided, Typed } from '../../domain';
-import { DefaultNamer } from '../common/default-namer';
-import { ElementType } from '../common/element-types';
+import { DefaultNamer } from '../../../common/default-namer';
+import { ElementType } from '../../../common/element-types';
 import { VariableType } from './variable-types';
 
 export interface VarIdedAndTyped extends Ided, Typed<VariableType.Type> {}

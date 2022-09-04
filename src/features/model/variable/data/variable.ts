@@ -1,4 +1,4 @@
-import { getRandomId } from '../../../../util/random-id';
+import { getRandomId } from '../../../../common/random-id';
 import { Ided, Named, RoleKeyed, Typed } from '../../../domain';
 import { Selector } from '../../selector/data/selector-domain';
 import { VariableType } from '../variable-types';

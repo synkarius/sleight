@@ -8,11 +8,11 @@ import {
 } from '../../data/exports/export-type';
 import { simpleSaveFile } from '../../data/exports/simple-save-file';
 import { ImportResultType } from '../../data/imports/import-result';
-import { useAllDataSelector } from '../../data/use-all-data-selector';
+import { useAllData } from '../../data/use-all-data-hook';
 import { InjectionContext } from '../../di/injector-context';
 
 export const Navigation: React.FC<{}> = () => {
-  const allData = useAllDataSelector();
+  const allData = useAllData();
   const injectionContext = useContext(InjectionContext);
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);

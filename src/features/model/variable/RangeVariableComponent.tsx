@@ -16,7 +16,7 @@ import { Field } from '../../../validation/validation-field';
 import { ValidationContext } from '../../../validation/validation-context';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { USE_DEFAULT } from '../common/consts';
+import { USE_DEFAULT } from '../../../common/consts';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 
 export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (

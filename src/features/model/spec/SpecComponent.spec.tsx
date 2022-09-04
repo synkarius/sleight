@@ -9,7 +9,7 @@ import { SpecItemType } from './spec-item-type';
 import { saveVariable } from '../variable/variable-reducers';
 import { createRangeVariable, RangeVariable } from '../variable/data/variable';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { saveSpec } from './spec-reducers';
 import { createSpecItem, Spec, SpecItem } from './data/spec-domain';
 import { saveSelector } from '../selector/selector-reducers';

@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { WrongTypeError } from '../../../error/wrong-type-error';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
-import { MoveDirection } from '../common/move-direction';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { MoveDirection } from '../../../common/move-direction';
 import { Command } from './command';
 import {
   CommandReducerAction,

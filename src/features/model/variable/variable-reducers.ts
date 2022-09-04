@@ -28,7 +28,7 @@ import {
 import { VariableDTO } from './data/variable-dto';
 import { Ided, Named, RoleKeyed } from '../../domain';
 import { WrongTypeError } from '../../../error/wrong-type-error';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;

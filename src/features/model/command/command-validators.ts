@@ -1,4 +1,4 @@
-import { alwaysTrue, isSelected } from '../../../util/common-functions';
+import { alwaysTrue, isSelected } from '../../../common/common-functions';
 import {
   createNameTakenValidator,
   createValidator,

@@ -5,7 +5,7 @@ import { DomainMapper } from '../data/mapper';
 import { Ided } from '../features/domain';
 import { Action } from '../features/model/action/action';
 import { Command } from '../features/model/command/command';
-import { DefaultNamer } from '../features/model/common/default-namer';
+import { DefaultNamer } from '../common/default-namer';
 import { Context } from '../features/model/context/context';
 import { Selector } from '../features/model/selector/data/selector-domain';
 import { SelectorDTO } from '../features/model/selector/data/selector-dto';

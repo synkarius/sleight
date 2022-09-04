@@ -1,4 +1,4 @@
-import { SELECT_DEFAULT_VALUE } from '../features/model/common/consts';
+import { SELECT_DEFAULT_VALUE } from './consts';
 
 export const alwaysTrue = <T>(_t: T): boolean => true;
 

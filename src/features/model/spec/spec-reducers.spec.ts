@@ -1,5 +1,5 @@
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
-import { MoveDirection } from '../common/move-direction';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
+import { MoveDirection } from '../../../common/move-direction';
 import { createSpec, createSpecItem } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
 import { SpecReducerActionType } from './spec-editing-context';

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import App from '../../../App';
 import { store } from '../../../app/store';
-import { ElementType } from '../../model/common/element-types';
+import { ElementType } from '../../../common/element-types';
 import { Field } from '../../../validation/validation-field';
 import { createSpec, Spec } from '../../model/spec/data/spec-domain';
 import { SpecDTO } from '../../model/spec/data/spec-dto';

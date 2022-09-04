@@ -8,7 +8,7 @@ import {
   TextActionValue,
 } from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
-import { getRandomId } from '../../../../util/random-id';
+import { getRandomId } from '../../../../common/random-id';
 import { ActionType } from '../action-types';
 import { Action } from '../action';
 

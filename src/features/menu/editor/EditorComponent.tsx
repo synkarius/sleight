@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '../../../app/hooks';
-import { ElementType } from '../../model/common/element-types';
+import { ElementType } from '../../../common/element-types';
 import { ActionParentComponent } from '../../model/action/ActionParentComponent';
 import { CommandParentComponent } from '../../model/command/CommandParentComponent';
 import { ContextParentComponent } from '../../model/context/ContextParentComponent';

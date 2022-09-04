@@ -12,7 +12,7 @@ import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../ui/ErrorTextComponent';
 import { FormGroupRowComponent } from '../../ui/FormGroupRowComponent';
-import { USE_DEFAULT } from '../common/consts';
+import { USE_DEFAULT } from '../../../common/consts';
 import { createSelector } from '../selector/data/selector-domain';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
 import { ChoiceVariable, createChoiceItem } from './data/variable';

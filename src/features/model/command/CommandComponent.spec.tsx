@@ -12,7 +12,7 @@ import { CommandParentComponent } from './CommandParentComponent';
 import { saveContext } from '../context/context-reducers';
 import { createContext } from '../context/context';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../app-default-injection-context';
+import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { getSelectorDomainMapper } from '../selector/data/selector-domain-mapper';
 import { getSpecDomainMapper } from '../spec/data/spec-domain-mapper';
 import { saveCommand } from './command-reducers';

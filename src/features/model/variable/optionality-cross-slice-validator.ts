@@ -3,8 +3,8 @@ import {
   isSelected,
   Predicate,
   singletonArray,
-} from '../../../util/common-functions';
-import { MapUtil } from '../../../util/map-util';
+} from '../../../common/common-functions';
+import { MapUtil } from '../../../common/map-util';
 import {
   optionalityConfigForSpec,
   optionalityConfigForVariable,
@@ -25,7 +25,7 @@ import {
   ValidationResultType,
   validResult,
 } from '../../../validation/validation-result';
-import { ElementType } from '../common/element-types';
+import { ElementType } from '../../../common/element-types';
 import {
   isVariableSpecItem,
   Spec,

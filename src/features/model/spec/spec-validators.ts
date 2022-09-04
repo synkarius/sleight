@@ -1,4 +1,4 @@
-import { alwaysTrue, isEmpty } from '../../../util/common-functions';
+import { alwaysTrue, isEmpty } from '../../../common/common-functions';
 import {
   createNameTakenValidator,
   createValidator,
@@ -12,7 +12,7 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { ValidateMode } from '../../../validation/ValidationComponent';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
 import { Spec } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
 import { SpecItemType } from './spec-item-type';

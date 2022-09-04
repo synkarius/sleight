@@ -1,4 +1,4 @@
-import { alwaysTrue } from '../../../util/common-functions';
+import { alwaysTrue } from '../../../common/common-functions';
 import {
   createNameTakenValidator,
   FieldValidator,

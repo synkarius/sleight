@@ -22,12 +22,12 @@ import {
 import { ValidationContext } from '../../../validation/validation-context';
 import { setEditorFocus } from '../../menu/editor/editor-focus-reducers';
 import { saveSelector } from '../selector/selector-reducers';
-import { LIST, LIST_ITEM } from '../common/accessibility-roles';
+import { LIST, LIST_ITEM } from '../../../common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
 import { TextVariableComponent } from './TextVariableComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { useSaved } from '../../../data/use-saved';
-import { ElementType } from '../common/element-types';
+import { useSaved } from '../../../data/use-saved-hook';
+import { ElementType } from '../../../common/element-types';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
 
