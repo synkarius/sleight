@@ -36,6 +36,7 @@ const VARIABLE_NAME_1 = 'variable-name-1';
 const ACTION_WITH_VARS = 'action-id-1';
 const ACTION_NAME_1 = 'action-name-1';
 const ACTION_NO_VARS = 'action-id-2';
+const ROLE_KEY = 'rk-38190';
 const SAVE = 'Save';
 
 let user: UserEvent;
@@ -116,6 +117,7 @@ beforeEach(async () => {
     ...createPauseAction(),
     id: ACTION_WITH_VARS,
     name: ACTION_NAME_1,
+    roleKey: ROLE_KEY,
     centiseconds: {
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableType: VariableType.Enum.RANGE,
@@ -196,7 +198,33 @@ describe('action component tests', () => {
     await user.click(nameField);
     await user.type(nameField, ACTION_NAME_1);
 
+    const errorText = screen.getByText(
+      'an action already exists with this name'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
     expect(nameField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate an already taken role key', async () => {
+    doRender();
+
+    const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.AC_ROLE_KEY],
+    });
+    await user.click(roleKeyField);
+    await user.type(roleKeyField, ROLE_KEY);
+
+    const errorText = screen.getByText(
+      'an action already exists with this role key'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
+    expect(roleKeyField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
   });
 
   it('should validate action w/ no vars in command w/ spec w/ no vars', async () => {

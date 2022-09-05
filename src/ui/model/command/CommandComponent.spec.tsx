@@ -35,6 +35,7 @@ const SPEC_WITH_VAR_NAME = 'asdf-spec-2';
 const CONTEXT_ID = 'asdf-ctx-id';
 const CONTEXT_NAME = 'asdf-ctx-name';
 const COMMAND_NAME = 'asdf-cmd-name';
+const ROLE_KEY = 'rk-1087';
 
 let user: UserEvent;
 
@@ -98,11 +99,12 @@ beforeAll(() => {
     },
   };
   store.dispatch(saveAction(actionWithVar));
-  // save a command with a name
+  // save a command
   store.dispatch(
     saveCommand({
       ...createCommand(),
       name: COMMAND_NAME,
+      roleKey: ROLE_KEY,
       specId: specWithNoVar.id,
       actionIds: [actionWithNoVar.id],
     })
@@ -176,7 +178,31 @@ describe('command component tests', () => {
     await user.click(nameField);
     await user.type(nameField, COMMAND_NAME);
 
+    const errorText = screen.getByText(
+      'a command already exists with this name'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
     expect(nameField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate an already taken role key', async () => {
+    const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CMD_ROLE_KEY],
+    });
+    await user.click(roleKeyField);
+    await user.type(roleKeyField, ROLE_KEY);
+
+    const errorText = screen.getByText(
+      'a command already exists with this role key'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
+    expect(roleKeyField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
   });
 
   it('should validate on save if spec has no variables and actions are empty', async () => {

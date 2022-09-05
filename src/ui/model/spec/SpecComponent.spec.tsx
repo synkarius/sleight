@@ -39,11 +39,11 @@ const SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID =
 const SPEC_WITH_VARIABLE_NOT_OPTIONAL_NAME =
   'spec-with-variable-not-optional-name-4';
 // mixed
+const ROLE_KEY = 'role-key';
 const VARIABLE_ID = 'non-default-variable-id-1';
 const VARIABLE_NAME = 'non-default-variable-name-1';
 const DEFAULT_VARIABLE_ID = 'default-variable-id-2';
 const DEFAULT_VARIABLE_NAME = 'default-variable-name-2';
-const ROLE_KEY_NAME_1 = 'role-key-name-1';
 const SAVE = 'Save';
 const ADD_NEW_SPEC_ITEM = 'Add New Spec Item';
 const GTE1_ERROR_MESSAGE = 'at least one spec item must be added';
@@ -128,7 +128,7 @@ beforeEach(async () => {
     id: SPEC_WITH_SELECTOR_ID,
     name: SPEC_WITH_SELECTOR_NAME,
     items: [selectorSpecItem],
-    roleKey: '',
+    roleKey: ROLE_KEY,
   };
   const specDTO1 = specMapper.mapFromDomain(specWithSelector);
   store.dispatch(saveSpec(specDTO1));
@@ -381,7 +381,31 @@ describe('spec component tests', () => {
     await user.click(nameField);
     await user.type(nameField, SPEC_WITH_SELECTOR_NAME);
 
+    const errorText = screen.getByText('a spec already exists with this name');
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
     expect(nameField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate an already taken role key', async () => {
+    doRender();
+
+    const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.SP_ROLE_KEY],
+    });
+    await user.click(roleKeyField);
+    await user.type(roleKeyField, ROLE_KEY);
+
+    const errorText = screen.getByText(
+      'a spec already exists with this role key'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
+    expect(roleKeyField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
   });
 
   it('should invalidate spec with non-alpha/space selector', async () => {

@@ -49,7 +49,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       type: ActionReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
-    validationContext.touch(Field.AC_ROLE_KEY);
+    validationContext.touch(AC_ROLE_KEY);
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatch({

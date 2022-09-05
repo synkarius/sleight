@@ -11,6 +11,7 @@ import { saveContext } from './context-reducers';
 import { createContext } from './context';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
+const ROLE_KEY = 'ROLE_KEY';
 
 let user: UserEvent;
 
@@ -19,6 +20,7 @@ beforeAll(() => {
     saveContext({
       ...createContext(),
       name: CONTEXT_NAME,
+      roleKey: ROLE_KEY,
     })
   );
   user = userEvent.setup();
@@ -80,6 +82,30 @@ describe('context component tests', () => {
     await user.click(nameField);
     await user.type(nameField, CONTEXT_NAME);
 
+    const errorText = screen.getByText(
+      'a context already exists with this name'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
     expect(nameField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate an already taken role key', async () => {
+    const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.CTX_ROLE_KEY],
+    });
+    await user.click(roleKeyField);
+    await user.type(roleKeyField, ROLE_KEY);
+
+    const errorText = screen.getByText(
+      'a context already exists with this role key'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
+    expect(roleKeyField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
   });
 });

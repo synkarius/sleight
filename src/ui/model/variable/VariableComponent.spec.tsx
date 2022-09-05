@@ -8,8 +8,7 @@ import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from './variable-types';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { createRangeVariable } from './data/variable';
-import { getVariableDomainMapper } from './data/variable-domain-mapper';
+import { createRangeVariable, RangeVariable } from './data/variable';
 import { saveVariable } from './variable-reducers';
 import { createPauseAction, PauseAction } from '../action/pause/pause';
 import { ActionValueType } from '../action/action-value/action-value-type';
@@ -18,25 +17,30 @@ import { saveAction } from '../action/action-reducers';
 const SAVE = 'Save';
 const VARIABLE_1_ID = 'VARIABLE_1_ID';
 const VARIABLE_1_NAME = 'VARIABLE_1_NAME';
+const VARIABLE_1_RK = 'VARIABLE_1_RK';
 const VARIABLE_2_ID = 'VARIABLE_2_ID';
 const VARIABLE_2_NAME = 'VARIABLE_2_NAME';
 
 let user: UserEvent;
 
 beforeAll(() => {
-  const variable1 = {
+  const injected = getDefaultInjectionContext();
+  const variableMapper = injected.mappers.variable;
+
+  const variable1: RangeVariable = {
     ...createRangeVariable(),
     id: VARIABLE_1_ID,
     name: VARIABLE_1_NAME,
+    roleKey: VARIABLE_1_RK,
   };
-  const variable1DTO = getVariableDomainMapper().mapFromDomain(variable1);
+  const variable1DTO = variableMapper.mapFromDomain(variable1);
   store.dispatch(saveVariable(variable1DTO));
   const variable2 = {
     ...createRangeVariable(),
     id: VARIABLE_2_ID,
     name: VARIABLE_2_NAME,
   };
-  const variable2DTO = getVariableDomainMapper().mapFromDomain(variable2);
+  const variable2DTO = variableMapper.mapFromDomain(variable2);
   store.dispatch(saveVariable(variable2DTO));
   const action: PauseAction = {
     ...createPauseAction(),
@@ -88,7 +92,33 @@ describe('variable component tests', () => {
     await user.click(nameField);
     await user.type(nameField, VARIABLE_1_NAME);
 
+    const errorText = screen.getByText(
+      'a variable already exists with this name'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
     expect(nameField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate an already taken role key', async () => {
+    doRender();
+
+    const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
+      name: Field[Field.VAR_ROLE_KEY],
+    });
+    await user.click(roleKeyField);
+    await user.type(roleKeyField, VARIABLE_1_RK);
+
+    const errorText = screen.getByText(
+      'a variable already exists with this role key'
+    );
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+
+    expect(roleKeyField).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
   });
 
   it('should invalidate type change if variable is used', async () => {
