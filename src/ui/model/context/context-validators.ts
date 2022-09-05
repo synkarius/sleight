@@ -1,7 +1,5 @@
 import { alwaysTrue, notEmpty } from '../../../common/common-functions';
 import {
-  createNameTakenValidator,
-  createValidator,
   FieldValidator,
   ValidatorType,
 } from '../../../validation/field-validator';
@@ -12,6 +10,11 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { ValidateMode } from '../../../validation/ValidationComponent';
+import {
+  createNameTakenValidator,
+  createRoleKeyTakenValidator,
+  createValidator,
+} from '../../../validation/validator-factories';
 import { Context } from './context';
 
 const nameTakenValidator = createNameTakenValidator<Context, Context>(
@@ -19,6 +22,13 @@ const nameTakenValidator = createNameTakenValidator<Context, Context>(
   (data) => data.contexts,
   'a context already exists with this name',
   ValidationErrorCode.CTX_NAME_TAKEN
+);
+
+const roleKeyTakenValidator = createRoleKeyTakenValidator<Context, Context>(
+  Field.CTX_ROLE_KEY,
+  (data) => data.contexts,
+  'a context already exists with this role key',
+  ValidationErrorCode.CTX_RK_TAKEN
 );
 
 const contextMatcherValidator: FieldValidator<Context> = createValidator(
@@ -54,6 +64,7 @@ const deletionValidator: FieldValidator<Context> = {
 
 export const getContextValidators: () => FieldValidator<Context>[] = () => [
   nameTakenValidator,
+  roleKeyTakenValidator,
   contextMatcherValidator,
   deletionValidator,
 ];

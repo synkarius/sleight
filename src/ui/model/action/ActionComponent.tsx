@@ -42,13 +42,6 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     });
     validationContext.touch(AC_NAME);
   };
-  const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    editingContext.localDispatch({
-      type: ActionReducerActionType.CHANGE_ACTION_TYPE,
-      payload: event.target.value as ActionType.Type,
-    });
-    validationContext.touch(Field.AC_TYPE);
-  };
   const roleKeyChangedHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -56,6 +49,14 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
       type: ActionReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
+    validationContext.touch(Field.AC_ROLE_KEY);
+  };
+  const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    editingContext.localDispatch({
+      type: ActionReducerActionType.CHANGE_ACTION_TYPE,
+      payload: event.target.value as ActionType.Type,
+    });
+    validationContext.touch(Field.AC_TYPE);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const formIsValid = validationContext.validateForSave();

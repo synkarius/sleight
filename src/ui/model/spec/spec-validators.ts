@@ -1,7 +1,5 @@
 import { alwaysTrue, isEmpty } from '../../../common/common-functions';
 import {
-  createNameTakenValidator,
-  createValidator,
   FieldValidator,
   ValidatorType,
 } from '../../../validation/field-validator';
@@ -16,12 +14,24 @@ import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
 import { Spec } from './data/spec-domain';
 import { SpecDTO } from './data/spec-dto';
 import { SpecItemType } from './spec-item-type';
+import {
+  createNameTakenValidator,
+  createRoleKeyTakenValidator,
+  createValidator,
+} from '../../../validation/validator-factories';
 
 const nameTakenValidator = createNameTakenValidator<SpecDTO, Spec>(
   Field.SP_NAME,
   (data) => data.specs,
   'a spec already exists with this name',
   ValidationErrorCode.SP_NAME_TAKEN
+);
+
+const roleKeyTakenValidator = createRoleKeyTakenValidator<SpecDTO, Spec>(
+  Field.SP_ROLE_KEY,
+  (data) => data.specs,
+  'a spec already exists with this role key',
+  ValidationErrorCode.SP_RK_TAKEN
 );
 
 const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
@@ -149,6 +159,7 @@ const deletionValidator: FieldValidator<Spec> = {
 
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
   nameTakenValidator,
+  roleKeyTakenValidator,
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,
   specVariableMustBeSelected,

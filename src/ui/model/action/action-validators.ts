@@ -1,6 +1,5 @@
 import { alwaysTrue } from '../../../common/common-functions';
 import {
-  createNameTakenValidator,
   FieldValidator,
   ValidatorType,
 } from '../../../validation/field-validator';
@@ -11,6 +10,10 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { ValidateMode } from '../../../validation/ValidationComponent';
+import {
+  createNameTakenValidator,
+  createRoleKeyTakenValidator,
+} from '../../../validation/validator-factories';
 import { Action } from './action';
 
 const nameTakenValidator = createNameTakenValidator<Action, Action>(
@@ -18,6 +21,13 @@ const nameTakenValidator = createNameTakenValidator<Action, Action>(
   (data) => data.actions,
   'an action already exists with this name',
   ValidationErrorCode.AC_NAME_TAKEN
+);
+
+const roleKeyTakenValidator = createRoleKeyTakenValidator<Action, Action>(
+  Field.AC_ROLE_KEY,
+  (data) => data.actions,
+  'an action already exists with this role key',
+  ValidationErrorCode.AC_RK_TAKEN
 );
 
 const deletionValidator: FieldValidator<Action> = {
@@ -45,5 +55,6 @@ const deletionValidator: FieldValidator<Action> = {
 
 export const getActionValidators: () => FieldValidator<Action>[] = () => [
   nameTakenValidator,
+  roleKeyTakenValidator,
   deletionValidator,
 ];

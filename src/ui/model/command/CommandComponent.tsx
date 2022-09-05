@@ -46,6 +46,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
       type: CommandReducerActionType.CHANGE_ROLE_KEY,
       payload: e.target.value,
     });
+    validationContext.touch(Field.CMD_ROLE_KEY);
   };
   const addActionHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     const actions = Object.values(actionsSaved);

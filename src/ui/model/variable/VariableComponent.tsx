@@ -53,6 +53,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       type: VariableReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
+    validationContext.touch(Field.VAR_ROLE_KEY);
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariableType = event.target.value as VariableType.Type;

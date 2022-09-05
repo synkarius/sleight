@@ -42,6 +42,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
       type: ContextReducerActionType.CHANGE_ROLE_KEY,
       payload: event.target.value,
     });
+    validationContext.touch(Field.CTX_ROLE_KEY);
   };
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatch({

@@ -1,8 +1,6 @@
 import { alwaysTrue, isEmpty } from '../../../common/common-functions';
 import { MapUtil } from '../../../common/map-util';
 import {
-  createNameTakenValidator,
-  createValidator,
   FieldValidator,
   ValidatorType,
 } from '../../../validation/field-validator';
@@ -14,6 +12,11 @@ import {
   validResult,
 } from '../../../validation/validation-result';
 import { ValidateMode } from '../../../validation/ValidationComponent';
+import {
+  createNameTakenValidator,
+  createRoleKeyTakenValidator,
+  createValidator,
+} from '../../../validation/validator-factories';
 import {
   ChoiceVariable,
   isChoiceVariable,
@@ -27,6 +30,16 @@ const nameTakenValidator = createNameTakenValidator<VariableDTO, Variable>(
   (data) => data.variables,
   'a variable already exists with this name',
   ValidationErrorCode.VAR_NAME_TAKEN
+);
+
+const roleKeyTakenValidator = createRoleKeyTakenValidator<
+  VariableDTO,
+  Variable
+>(
+  Field.VAR_ROLE_KEY,
+  (data) => data.variables,
+  'a variable already exists with this role key',
+  ValidationErrorCode.VAR_RK_TAKEN
 );
 
 const rangeMaxIsGreaterThanOrEqualsRangeMin: FieldValidator<Variable> =
@@ -166,6 +179,7 @@ const deletionValidator: FieldValidator<Variable> = {
 
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
   nameTakenValidator,
+  roleKeyTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,
   choiceSelectorItemsCantBeEmpty,
