@@ -11,6 +11,7 @@ import { InjectionContext } from '../../../di/injector-context';
 import { SpecDomainMapper } from './data/spec-domain-mapper';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModal } from '../../other-components/DeleteModal';
+import { Field } from '../../../validation/validation-field';
 
 type SpecInitFunction = (specId?: string) => Spec;
 
@@ -59,6 +60,8 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
+          deleteField={Field.SP_DELETE_MODAL_DELETE}
+          cancelField={Field.SP_DELETE_MODAL_CANCEL}
         />
       </SpecEditingContext.Provider>
     </ValidationComponent>

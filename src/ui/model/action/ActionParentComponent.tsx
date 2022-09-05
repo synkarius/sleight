@@ -9,6 +9,7 @@ import { actionReactReducer, deleteAction } from './action-reducers';
 import { ActionComponent } from './ActionComponent';
 import { createSendKeyPressAction } from './send-key/send-key';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
+import { Field } from '../../../validation/validation-field';
 
 const init = (
   savedMap: Record<string, Action>
@@ -56,6 +57,8 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
+          deleteField={Field.AC_DELETE_MODAL_DELETE}
+          cancelField={Field.AC_DELETE_MODAL_CANCEL}
         />
       </ActionEditingContext.Provider>
     </ValidationComponent>

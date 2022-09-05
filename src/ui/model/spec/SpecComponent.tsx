@@ -149,6 +149,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
             variant="danger"
             size="lg"
             className="me-3"
+            aria-label={Field[Field.SP_DELETE]}
           >
             Delete
           </Button>

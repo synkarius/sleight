@@ -164,6 +164,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
           variant="danger"
           size="lg"
           className="me-3"
+          aria-label={Field[Field.VAR_DELETE]}
         >
           Delete
         </Button>

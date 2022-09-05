@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
+import { Button, FormControl, FormSelect } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { ActionType } from './action-types';
@@ -129,6 +129,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
           variant="danger"
           size="lg"
           className="me-3"
+          aria-label={Field[Field.AC_DELETE]}
         >
           Delete
         </Button>

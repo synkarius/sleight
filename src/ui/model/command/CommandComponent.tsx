@@ -183,6 +183,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
           variant="danger"
           size="lg"
           className="me-3"
+          aria-label={Field[Field.CMD_DELETE]}
         >
           Delete
         </Button>

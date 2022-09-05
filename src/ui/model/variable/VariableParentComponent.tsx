@@ -11,6 +11,7 @@ import { VariableDTO } from './data/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
 import { deleteVariable, variableReactReducer } from './variable-reducers';
 import { VariableComponent } from './VariableComponent';
+import { Field } from '../../../validation/validation-field';
 
 type VariableInitFunction = (specId?: string) => Variable;
 
@@ -67,6 +68,8 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
+          deleteField={Field.VAR_DELETE_MODAL_DELETE}
+          cancelField={Field.VAR_DELETE_MODAL_CANCEL}
         />
       </VariableEditingContext.Provider>
     </ValidationComponent>

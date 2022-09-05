@@ -3,7 +3,6 @@ import { Button, Modal } from 'react-bootstrap';
 import { identity } from '../../common/common-functions';
 import { ValidationContext } from '../../validation/validation-context';
 import { Field } from '../../validation/validation-field';
-import { processErrorResults } from '../../validation/validation-result-processing';
 import { ErrorTextComponent } from './ErrorTextComponent';
 
 /**
@@ -19,6 +18,8 @@ export const DeleteModal: React.FC<{
   deletingName: string;
   config: DeleteModalConfig;
   deleteFn: () => void;
+  deleteField: Field;
+  cancelField: Field;
 }> = (props) => {
   const validationContext = useContext(ValidationContext);
 
@@ -49,13 +50,18 @@ export const DeleteModal: React.FC<{
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCancel}>
+        <Button
+          variant="secondary"
+          onClick={handleCancel}
+          aria-label={Field[props.cancelField]}
+        >
           Cancel
         </Button>
         <Button
           variant="danger"
           onClick={handleDelete}
           disabled={!!errorMessage}
+          aria-label={Field[props.deleteField]}
         >
           Delete
         </Button>

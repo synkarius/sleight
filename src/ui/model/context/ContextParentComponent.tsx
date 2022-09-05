@@ -8,6 +8,7 @@ import { Context, createContext } from './context';
 import { ContextEditingContext } from './context-editing-context';
 import { contextReactReducer, deleteContext } from './context-reducers';
 import { ContextComponent } from './ContextComponent';
+import { Field } from '../../../validation/validation-field';
 
 const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
   return (contextId?: string) => {
@@ -50,6 +51,8 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
+          deleteField={Field.CTX_DELETE_MODAL_DELETE}
+          cancelField={Field.CTX_DELETE_MODAL_CANCEL}
         />
       </ContextEditingContext.Provider>
     </ValidationComponent>

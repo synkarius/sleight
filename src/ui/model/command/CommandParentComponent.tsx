@@ -8,6 +8,7 @@ import { Command, createCommand } from './command';
 import { CommandEditingContext } from './command-editing-context';
 import { commandReactReducer, deleteCommand } from './command-reducers';
 import { CommandComponent } from './CommandComponent';
+import { Field } from '../../../validation/validation-field';
 
 const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
   return (commandId?: string) => {
@@ -50,6 +51,8 @@ export const CommandParentComponent: React.FC<{ commandId?: string }> = (
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
+          deleteField={Field.CMD_DELETE_MODAL_DELETE}
+          cancelField={Field.CMD_DELETE_MODAL_CANCEL}
         />
       </CommandEditingContext.Provider>
     </ValidationComponent>

@@ -140,6 +140,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
           variant="danger"
           size="lg"
           className="me-3"
+          aria-label={Field[Field.CTX_DELETE]}
         >
           Delete
         </Button>

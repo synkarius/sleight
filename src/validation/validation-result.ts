@@ -9,12 +9,6 @@ export enum ValidationResultType {
   MULTI_FIELD,
 }
 
-const errorResultTypes = [
-  ValidationResultType.BASIC,
-  ValidationResultType.ID_LIST,
-  ValidationResultType.MULTI_FIELD,
-];
-
 interface AbstractValidationResult {
   readonly type: ValidationResultType;
 }
@@ -37,8 +31,17 @@ export const validResult = (field: Field): ValidValidationResult => ({
   field: field,
 });
 
+const errorResultTypes = [
+  ValidationResultType.BASIC,
+  ValidationResultType.ID_LIST,
+  ValidationResultType.MULTI_FIELD,
+];
+
 interface AbstractInvalidValidationResult extends AbstractValidationResult {
-  readonly type: typeof errorResultTypes[ValidationResultType];
+  readonly type:
+    | typeof ValidationResultType.BASIC
+    | typeof ValidationResultType.ID_LIST
+    | typeof ValidationResultType.MULTI_FIELD;
   readonly code: ValidationErrorCode;
   readonly message: string;
 }
