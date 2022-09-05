@@ -2,10 +2,8 @@ import { AbstractAction, copyAction } from '../abstract-action';
 import {
   createEnumValue,
   createNumericValue,
-  createTextValue,
   EnumActionValue,
   NumericActionValue,
-  TextActionValue,
 } from '../action-value/action-value';
 import { SendKeyMode } from './send-key-modes';
 import { getRandomId } from '../../../../common/random-id';
@@ -57,6 +55,8 @@ export const createSendKeyPressAction = (): SendKeyPressAction => {
     name: '',
     type: ActionType.Enum.SEND_KEY,
     roleKey: '',
+    enabled: true,
+    locked: false,
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
     keyToSend: createEnumValue(),
@@ -97,6 +97,8 @@ export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
     name: '',
     type: ActionType.Enum.SEND_KEY,
     roleKey: '',
+    enabled: true,
+    locked: false,
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
     keyToSend: createEnumValue(),

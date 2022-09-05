@@ -37,6 +37,8 @@ describe('context reducer', () => {
       roleKey: '',
       id: obj.id,
       name: contextDefaultNamer.getDefaultName(obj),
+      enabled: true,
+      locked: false,
       type: ContextType.Enum.EXECUTABLE_NAME,
       matcher: '',
     };
@@ -59,6 +61,8 @@ describe('context reducer', () => {
       roleKey: '',
       id: obj.id,
       name: 'asdf',
+      enabled: true,
+      locked: false,
       type: ContextType.Enum.EXECUTABLE_NAME,
       matcher: '',
     };

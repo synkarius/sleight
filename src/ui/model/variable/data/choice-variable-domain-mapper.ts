@@ -47,6 +47,8 @@ export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
         name: domain.name,
         type: domain.type,
         roleKey: domain.roleKey,
+        enabled: domain.enabled,
+        locked: domain.locked,
         items: domain.items.map((item) =>
           choiceItemDomainMapper.mapFromDomain(item)
         ),
@@ -60,6 +62,8 @@ export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
         name: dto.name,
         type: dto.type,
         roleKey: dto.roleKey,
+        enabled: dto.enabled,
+        locked: dto.locked,
         items: dto.items.map((item) =>
           choiceItemDomainMapper.mapToDomain(item, selectorDtos)
         ),

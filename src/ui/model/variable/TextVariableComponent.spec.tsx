@@ -46,6 +46,8 @@ beforeAll(() => {
       },
     ],
     roleKey: '',
+    enabled: true,
+    locked: false,
   };
   const specDTO1 = specMapper.mapFromDomain(specWithVariableOptional);
   store.dispatch(saveSpec(specDTO1));
@@ -63,6 +65,8 @@ beforeAll(() => {
       },
     ],
     roleKey: '',
+    enabled: true,
+    locked: false,
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariableNotOptional);
   store.dispatch(saveSpec(specDTO2));

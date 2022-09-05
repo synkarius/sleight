@@ -129,6 +129,8 @@ beforeEach(async () => {
     name: SPEC_WITH_SELECTOR_NAME,
     items: [selectorSpecItem],
     roleKey: ROLE_KEY,
+    enabled: true,
+    locked: false,
   };
   const specDTO1 = specMapper.mapFromDomain(specWithSelector);
   store.dispatch(saveSpec(specDTO1));
@@ -147,6 +149,8 @@ beforeEach(async () => {
       },
     ],
     roleKey: '',
+    enabled: true,
+    locked: false,
   };
   const specDTO2 = specMapper.mapFromDomain(specWithVariable);
   store.dispatch(saveSpec(specDTO2));
@@ -164,6 +168,8 @@ beforeEach(async () => {
       },
     ],
     roleKey: '',
+    enabled: true,
+    locked: false,
   };
   const specDTO3 = specMapper.mapFromDomain(specWithVariableOptional);
   store.dispatch(saveSpec(specDTO3));
@@ -181,6 +187,8 @@ beforeEach(async () => {
       },
     ],
     roleKey: '',
+    enabled: true,
+    locked: false,
   };
   const specDTO4 = specMapper.mapFromDomain(specWithVariableNotOptional);
   store.dispatch(saveSpec(specDTO4));

@@ -76,6 +76,8 @@ beforeEach(() => {
     id: SPEC_ID_1,
     name: SPEC_NAME_1,
     roleKey: '',
+    enabled: true,
+    locked: false,
     items: [],
   };
   store.dispatch(saveSpec(spec));
@@ -83,6 +85,8 @@ beforeEach(() => {
     id: COMMAND_ID_1,
     name: COMMAND_NAME_1,
     roleKey: '',
+    enabled: true,
+    locked: false,
     specId: SPEC_ID_1,
     actionIds: [ACTION_ID_1],
     contextId: CONTEXT_ID_1,
@@ -322,6 +326,8 @@ describe('side bar component tests', () => {
       id: 'spec-name-123412341987',
       name: specName,
       roleKey: '',
+      enabled: true,
+      locked: false,
       items: [],
     };
     act(() => {

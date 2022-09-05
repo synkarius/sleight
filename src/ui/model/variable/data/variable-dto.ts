@@ -1,8 +1,17 @@
-import { Ided, Named, RoleKeyed, Typed } from '../../../domain';
+import {
+  Enablable,
+  Ided,
+  Lockable,
+  Named,
+  RoleKeyed,
+  Typed,
+} from '../../../domain';
 import { VariableType } from '../variable-types';
 
 export interface AbstractVariableDTO
-  extends Ided,
+  extends Enablable,
+    Ided,
+    Lockable,
     Named,
     RoleKeyed,
     Typed<VariableType.Type> {}

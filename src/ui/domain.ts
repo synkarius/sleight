@@ -1,5 +1,15 @@
+/** Enables export of an element. */
+export interface Enablable {
+  readonly enabled: boolean;
+}
+
 export interface Ided {
   readonly id: string;
+}
+
+/** Blocks import override of an element by role key. */
+export interface Lockable {
+  readonly locked: boolean;
 }
 
 export interface Named {

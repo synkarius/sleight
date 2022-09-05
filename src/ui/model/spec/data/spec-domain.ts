@@ -1,5 +1,5 @@
 import { getRandomId } from '../../../../common/random-id';
-import { Ided, Named, RoleKeyed } from '../../../domain';
+import { Enablable, Ided, Lockable, Named, RoleKeyed } from '../../../domain';
 import { createSelector, Selector } from '../../selector/data/selector-domain';
 import { SpecItemType } from '../spec-item-type';
 
@@ -41,15 +41,17 @@ export const createSpecItem = (): SelectorSpecItem => {
   };
 };
 
-export interface Spec extends Ided, Named, RoleKeyed {
+export interface Spec extends Enablable, Ided, Lockable, Named, RoleKeyed {
   readonly items: SpecItem[];
 }
 
-export const createSpec = () => {
+export const createSpec = (): Spec => {
   return {
     id: getRandomId(),
     name: '',
     roleKey: '',
+    enabled: true,
+    locked: false,
     items: [],
   };
 };

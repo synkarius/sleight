@@ -19,6 +19,8 @@ export const getSpecDomainMapper: () => SpecDomainMapper = () => {
         id: dto.id,
         name: dto.name,
         roleKey: dto.roleKey,
+        enabled: dto.enabled,
+        locked: dto.locked,
         items: dto.items.map((item) =>
           specItemDomainMapper.mapToDomain(item, selectorDtos)
         ),
@@ -29,6 +31,8 @@ export const getSpecDomainMapper: () => SpecDomainMapper = () => {
         id: domain.id,
         name: domain.name,
         roleKey: domain.roleKey,
+        enabled: domain.enabled,
+        locked: domain.locked,
         items: domain.items.map((dSpecItem) =>
           specItemDomainMapper.mapFromDomain(dSpecItem)
         ),

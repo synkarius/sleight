@@ -21,6 +21,8 @@ export const createPauseAction = (): PauseAction => {
     name: '',
     type: ActionType.Enum.PAUSE,
     roleKey: '',
+    enabled: true,
+    locked: false,
     centiseconds: createNumericValue(),
   };
 };

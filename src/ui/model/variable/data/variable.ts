@@ -1,10 +1,19 @@
 import { getRandomId } from '../../../../common/random-id';
-import { Ided, Named, RoleKeyed, Typed } from '../../../domain';
+import {
+  Enablable,
+  Ided,
+  Lockable,
+  Named,
+  RoleKeyed,
+  Typed,
+} from '../../../domain';
 import { Selector } from '../../selector/data/selector-domain';
 import { VariableType } from '../variable-types';
 
 export interface AbstractVariable
-  extends Ided,
+  extends Enablable,
+    Ided,
+    Lockable,
     Named,
     RoleKeyed,
     Typed<VariableType.Type> {}
@@ -57,6 +66,8 @@ export const createTextVariable = (): TextVariable => {
     type: VariableType.Enum.TEXT,
     name: '',
     roleKey: '',
+    enabled: true,
+    locked: false,
   };
 };
 
@@ -66,6 +77,8 @@ export const createRangeVariable = (): RangeVariable => {
     type: VariableType.Enum.RANGE,
     name: '',
     roleKey: '',
+    enabled: true,
+    locked: false,
     beginInclusive: BEGIN_INCLUSIVE_DEFAULT,
     endInclusive: END_INCLUSIVE_DEFAULT,
   };
@@ -85,6 +98,8 @@ export const createChoiceVariable = (): ChoiceVariable => {
     type: VariableType.Enum.CHOICE,
     name: '',
     roleKey: '',
+    enabled: true,
+    locked: false,
     items: [],
   };
 };

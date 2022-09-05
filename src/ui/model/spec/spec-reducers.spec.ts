@@ -23,6 +23,8 @@ const createTestSpecRedux = (from?: {
     id: from?.id ?? 'asdf-id',
     name: from?.name ?? '',
     roleKey: '',
+    enabled: true,
+    locked: false,
     items: [
       {
         id: from?.specItemId ?? 'asdf-id',
@@ -37,6 +39,7 @@ const createTestSpecRedux = (from?: {
 
 describe('spec reducer', () => {
   const injected = getDefaultInjectionContext();
+  const specMapper = injected.mappers.spec;
   const specDefaultNamer = injected.default.namers.spec;
 
   it('should handle initial state', () => {
@@ -121,9 +124,10 @@ describe('spec reducer', () => {
 
   it('should handle delete', () => {
     const obj = createSpec();
+    const dto = specMapper.mapFromDomain(obj);
 
     const preReducerState: SpecsState = {
-      saved: { [obj.id]: obj },
+      saved: { [dto.id]: dto },
       editingId: undefined,
     };
 

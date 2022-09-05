@@ -154,6 +154,8 @@ describe('action reducer', () => {
       name: '',
       roleKey: '',
       type: ActionType.Enum.PAUSE,
+      enabled: true,
+      locked: false,
       centiseconds: createNumericValue(),
     };
 

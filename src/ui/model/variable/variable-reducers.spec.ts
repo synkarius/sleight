@@ -34,6 +34,8 @@ const createTestVariable = (id: string): VariableDTO => {
     roleKey: '',
     name: '',
     type: VariableType.Enum.TEXT,
+    enabled: true,
+    locked: false,
   };
 };
 
