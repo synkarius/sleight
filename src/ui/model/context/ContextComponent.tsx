@@ -17,6 +17,7 @@ import {
 } from './context-editing-context';
 import { saveContext } from './context-reducers';
 import { ContextType } from './context-types';
+import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
@@ -47,7 +48,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     editingContext.localDispatch({
       type: ContextReducerActionType.CHANGE_TYPE,
-      payload: event.target.value,
+      payload: event.target.value as ContextType.Type,
     });
   };
   const matcherChangedHandler = (
@@ -58,6 +59,16 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
       payload: event.target.value,
     });
     validationContext.touch(Field.CTX_MATCHER);
+  };
+  const toggleEnabled = () => {
+    editingContext.localDispatch({
+      type: ContextReducerActionType.TOGGLE_ENABLED,
+    });
+  };
+  const toggleLocked = () => {
+    editingContext.localDispatch({
+      type: ContextReducerActionType.TOGGLE_LOCKED,
+    });
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForSave();
@@ -78,6 +89,11 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Context">
+      <ExportImportOptionsComponent
+        element={props.context}
+        toggleEnabledFn={toggleEnabled}
+        toggleLockedFn={toggleLocked}
+      />
       <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.CTX_NAME]}

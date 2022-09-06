@@ -1,5 +1,5 @@
 import React from 'react';
-import { DeleteModalConfig } from '../ui/other-components/DeleteModal';
+import { DeleteModalConfig } from '../ui/other-components/DeleteModalComponent';
 
 interface EditingData<P> {
   // P is a payload

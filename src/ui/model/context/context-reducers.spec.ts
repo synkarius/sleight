@@ -146,15 +146,18 @@ describe('context reducer', () => {
   });
 
   it('should handle change type', () => {
-    const obj = createContext();
+    const obj: Context = {
+      ...createContext(),
+      type: ContextType.Enum.EXECUTABLE_NAME,
+    };
     const actual = contextReactReducer(obj, {
       type: ContextReducerActionType.CHANGE_TYPE,
-      payload: 'asdf',
+      payload: ContextType.Enum.WINDOW_TITLE,
     });
 
     expect(actual).toEqual({
       ...obj,
-      type: 'asdf',
+      type: ContextType.Enum.WINDOW_TITLE,
     });
   });
 

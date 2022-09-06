@@ -85,24 +85,35 @@ const changeEditingContextMatcher = (
     matcher: action.payload,
   };
 };
+const toggleEditingContextEnabled = (state: Context): Context => ({
+  ...state,
+  enabled: !state.enabled,
+});
+
+const toggleEditingContextLocked = (state: Context): Context => ({
+  ...state,
+  locked: !state.locked,
+});
 
 export const contextReactReducer = (
   state: Context,
   action: ContextReducerAction
 ): Context => {
-  switch (action.type) {
+  const actionType = action.type;
+  switch (actionType) {
     case ContextReducerActionType.CHANGE_NAME:
       return changeEditingContextName(state, action);
     case ContextReducerActionType.CHANGE_ROLE_KEY:
       return changeEditingContextRoleKey(state, action);
     case ContextReducerActionType.CHANGE_TYPE:
-      return changeEditingContextType(
-        state,
-        action as ContextReducerMatcherTypeAction
-      );
+      return changeEditingContextType(state, action);
     case ContextReducerActionType.CHANGE_MATCHER:
       return changeEditingContextMatcher(state, action);
+    case ContextReducerActionType.TOGGLE_ENABLED:
+      return toggleEditingContextEnabled(state);
+    case ContextReducerActionType.TOGGLE_LOCKED:
+      return toggleEditingContextLocked(state);
     default:
-      throw new ExhaustivenessFailureError(action.type);
+      throw new ExhaustivenessFailureError(actionType);
   }
 };

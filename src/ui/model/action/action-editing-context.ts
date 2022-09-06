@@ -18,6 +18,8 @@ export enum ActionReducerActionType {
   CHANGE_SEND_KEY_MODE,
   CHANGE_MOUSE_ACTION_TYPE,
   CHANGE_MOUSE_MOVEMENT_TYPE,
+  TOGGLE_ENABLED,
+  TOGGLE_LOCKED,
 }
 
 type AbstractActionReducerAction<T> = {
@@ -64,13 +66,18 @@ export interface ActionReducerMouseMovementTypePayloadAction
   extends AbstractActionReducerAction<MouseMovementType.Type> {
   type: typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE;
 }
-
-// change action value: value/variable/roleKey
+// change action value: value/variable
 export interface ActionReducerChangePayloadAction
   extends AbstractActionReducerAction<ActionValueChange> {
   type:
     | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE
     | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID;
+}
+export interface ActionReducerToggleAction
+  extends Omit<AbstractActionReducerAction<unknown>, 'payload'> {
+  type:
+    | typeof ActionReducerActionType.TOGGLE_ENABLED
+    | typeof ActionReducerActionType.TOGGLE_LOCKED;
 }
 export type ActionReducerAction =
   | ActionReducerStringPayloadAction
@@ -80,6 +87,7 @@ export type ActionReducerAction =
   | ActionReducerModifiersPayloadAction
   | ActionReducerChangePayloadAction
   | ActionReducerMouseActionTypePayloadAction
-  | ActionReducerMouseMovementTypePayloadAction;
+  | ActionReducerMouseMovementTypePayloadAction
+  | ActionReducerToggleAction;
 
 export const ActionEditingContext = createEditingContext<ActionReducerAction>();

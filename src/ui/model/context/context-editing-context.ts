@@ -6,16 +6,34 @@ export enum ContextReducerActionType {
   CHANGE_ROLE_KEY,
   CHANGE_TYPE,
   CHANGE_MATCHER,
+  TOGGLE_ENABLED,
+  TOGGLE_LOCKED,
 }
 type AbstractContextReducerAction<T> = {
   type: ContextReducerActionType;
   payload: T;
 };
-export type ContextReducerStringAction = AbstractContextReducerAction<string>;
-export type ContextReducerMatcherTypeAction =
-  AbstractContextReducerAction<ContextType.Type>;
+export interface ContextReducerStringAction
+  extends AbstractContextReducerAction<string> {
+  type:
+    | typeof ContextReducerActionType.CHANGE_NAME
+    | typeof ContextReducerActionType.CHANGE_ROLE_KEY
+    | typeof ContextReducerActionType.CHANGE_MATCHER;
+}
+export interface ContextReducerMatcherTypeAction
+  extends AbstractContextReducerAction<ContextType.Type> {
+  type: typeof ContextReducerActionType.CHANGE_TYPE;
+}
+export interface ContextReducerToggleAction
+  extends Omit<AbstractContextReducerAction<unknown>, 'payload'> {
+  type:
+    | typeof ContextReducerActionType.TOGGLE_ENABLED
+    | typeof ContextReducerActionType.TOGGLE_LOCKED;
+}
 export type ContextReducerAction =
   | ContextReducerStringAction
-  | ContextReducerMatcherTypeAction;
+  | ContextReducerMatcherTypeAction
+  | ContextReducerToggleAction;
+
 export const ContextEditingContext =
   createEditingContext<ContextReducerAction>();

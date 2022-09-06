@@ -17,6 +17,8 @@ export enum SpecReducerActionType {
   ADD_SELECTOR_ITEM,
   CHANGE_SELECTOR_ITEM,
   DELETE_SELECTOR_ITEM,
+  TOGGLE_ENABLED,
+  TOGGLE_LOCKED,
 }
 
 interface AbstractSpecReducerAction<T> {
@@ -61,6 +63,12 @@ export interface SpecReducerDeleteSelectorItemAction
   extends AbstractSpecReducerAction<DeleteSelectorItemPayload> {
   type: typeof SpecReducerActionType.DELETE_SELECTOR_ITEM;
 }
+export interface SpecReducerToggleAction
+  extends Omit<AbstractSpecReducerAction<unknown>, 'payload'> {
+  type:
+    | typeof SpecReducerActionType.TOGGLE_ENABLED
+    | typeof SpecReducerActionType.TOGGLE_LOCKED;
+}
 export type SpecReducerAction =
   | SpecReducerStringAction
   | SpecReducerAddAction
@@ -69,7 +77,8 @@ export type SpecReducerAction =
   | SpecReducerChangeSpecItemOrderAction
   | SpecReducerAddSelectorItemAction
   | SpecReducerChangeSelectorItemAction
-  | SpecReducerDeleteSelectorItemAction;
+  | SpecReducerDeleteSelectorItemAction
+  | SpecReducerToggleAction;
 
 export const SpecEditingContext = createEditingContext<SpecReducerAction>();
 

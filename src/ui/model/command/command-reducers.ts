@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
-import { WrongTypeError } from '../../../error/wrong-type-error';
 import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
 import { MoveDirection } from '../../../common/move-direction';
 import { Command } from './command';
@@ -142,6 +141,16 @@ const deleteEditingCommandAction = (
   };
 };
 
+const toggleEditingCommandEnabled = (state: Command): Command => ({
+  ...state,
+  enabled: !state.enabled,
+});
+
+const toggleEditingCommandLocked = (state: Command): Command => ({
+  ...state,
+  locked: !state.locked,
+});
+
 export const commandReactReducer = (
   state: Command,
   action: CommandReducerAction
@@ -164,6 +173,10 @@ export const commandReactReducer = (
       return moveEditingCommandAction(state, action);
     case CommandReducerActionType.DELETE_ACTION:
       return deleteEditingCommandAction(state, action);
+    case CommandReducerActionType.TOGGLE_ENABLED:
+      return toggleEditingCommandEnabled(state);
+    case CommandReducerActionType.TOGGLE_LOCKED:
+      return toggleEditingCommandLocked(state);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

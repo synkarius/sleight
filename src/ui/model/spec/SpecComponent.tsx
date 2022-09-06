@@ -21,6 +21,7 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../data/use-saved-hook';
 import { ElementType } from '../../../common/element-types';
+import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
@@ -55,6 +56,16 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
     });
     validationContext.touch(Field.SP_ADD_ITEM_BUTTON);
   };
+  const toggleEnabled = () => {
+    editingContext.localDispatch({
+      type: SpecReducerActionType.TOGGLE_ENABLED,
+    });
+  };
+  const toggleLocked = () => {
+    editingContext.localDispatch({
+      type: SpecReducerActionType.TOGGLE_LOCKED,
+    });
+  };
   const saveSpecHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForSave();
     if (isValid) {
@@ -82,6 +93,11 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Spec">
+      <ExportImportOptionsComponent
+        element={props.spec}
+        toggleEnabledFn={toggleEnabled}
+        toggleLockedFn={toggleLocked}
+      />
       <FormGroupRowComponent
         labelText="Name"
         descriptionText="name of spec"

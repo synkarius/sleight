@@ -289,6 +289,16 @@ const changeDefaultIndex = (
   defaultValue: action.payload,
 });
 
+const toggleEditingVariableEnabled = (state: Variable): Variable => ({
+  ...state,
+  enabled: !state.enabled,
+});
+
+const toggleEditingVariableLocked = (state: Variable): Variable => ({
+  ...state,
+  locked: !state.locked,
+});
+
 export const variableReactReducer = (
   state: Variable,
   action: VariableReducerAction
@@ -358,6 +368,10 @@ export const variableReactReducer = (
         return changeDefaultIndex(state, action);
       }
       throw new WrongTypeError(state.type);
+    case VariableReducerActionType.TOGGLE_ENABLED:
+      return toggleEditingVariableEnabled(state);
+    case VariableReducerActionType.TOGGLE_LOCKED:
+      return toggleEditingVariableLocked(state);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

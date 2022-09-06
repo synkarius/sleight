@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
-import { DeleteModal } from '../../other-components/DeleteModal';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { SelectorDTO } from '../selector/data/selector-dto';
 import { createTextVariable, Variable } from './data/variable';
 import { VariableDomainMapper } from './data/variable-domain-mapper';
@@ -64,7 +64,7 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
         value={{ localDispatch, deleteModalConfig }}
       >
         <VariableComponent variable={editing} />
-        <DeleteModal
+        <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}

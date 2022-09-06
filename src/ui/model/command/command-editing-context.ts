@@ -10,6 +10,8 @@ export enum CommandReducerActionType {
   CHANGE_ACTION,
   MOVE_ACTION,
   DELETE_ACTION,
+  TOGGLE_ENABLED,
+  TOGGLE_LOCKED,
 }
 
 type ChangeCommandActionId = {
@@ -52,12 +54,19 @@ export interface CommandReducerDeleteAction
   extends AbstractCommandReducerAction<number> {
   type: typeof CommandReducerActionType.DELETE_ACTION;
 }
+export interface CommandReducerToggleAction
+  extends Omit<AbstractCommandReducerAction<unknown>, 'payload'> {
+  type:
+    | typeof CommandReducerActionType.TOGGLE_ENABLED
+    | typeof CommandReducerActionType.TOGGLE_LOCKED;
+}
 export type CommandReducerAction =
   | CommandReducerNoPayloadAction
   | CommandReducerStringAction
   | CommandReducerActionIdAction
   | CommandReducerMoveAction
-  | CommandReducerDeleteAction;
+  | CommandReducerDeleteAction
+  | CommandReducerToggleAction;
 
 export const CommandEditingContext =
   createEditingContext<CommandReducerAction>();

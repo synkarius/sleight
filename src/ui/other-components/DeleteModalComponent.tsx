@@ -14,7 +14,7 @@ export type DeleteModalConfig = {
   readonly setShow: (show: boolean) => void;
 };
 
-export const DeleteModal: React.FC<{
+export const DeleteModalComponent: React.FC<{
   deletingName: string;
   config: DeleteModalConfig;
   deleteFn: () => void;

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
-import { DeleteModal } from '../../other-components/DeleteModal';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Context, createContext } from './context';
 import { ContextEditingContext } from './context-editing-context';
 import { contextReactReducer, deleteContext } from './context-reducers';
@@ -47,7 +47,7 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
         value={{ localDispatch, deleteModalConfig }}
       >
         <ContextComponent context={editing} />
-        <DeleteModal
+        <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}

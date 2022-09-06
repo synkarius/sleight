@@ -14,6 +14,7 @@ import {
   ActionReducerMouseMovementTypePayloadAction,
 } from './action-editing-context';
 import { ActionType } from './action-types';
+import { ActionValueUpdater } from './action-value/action-value-reducer-updaters/action-value-updater';
 import { getActionValueUpdater } from './action-value/action-value-reducer-updaters/default-action-value-updater';
 import {
   copyIntoMouseClickAction,
@@ -204,7 +205,17 @@ const changeEditingActionName = (
   return { ...state, name: action.payload.trim() === '' ? '' : action.payload };
 };
 
-const changeActionValue = getActionValueUpdater();
+const toggleEditingActionEnabled = (state: Action): Action => ({
+  ...state,
+  enabled: !state.enabled,
+});
+
+const toggleEditingActionLocked = (state: Action): Action => ({
+  ...state,
+  locked: !state.locked,
+});
+
+const changeActionValue: ActionValueUpdater = getActionValueUpdater();
 
 export const actionReactReducer = (
   state: Action,
@@ -230,6 +241,10 @@ export const actionReactReducer = (
       return changeEditingMouseActionType(state, action);
     case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE:
       return changeEditingMouseMovementType(state, action);
+    case ActionReducerActionType.TOGGLE_ENABLED:
+      return toggleEditingActionEnabled(state);
+    case ActionReducerActionType.TOGGLE_LOCKED:
+      return toggleEditingActionLocked(state);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

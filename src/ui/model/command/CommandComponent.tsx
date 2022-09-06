@@ -21,6 +21,7 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../data/use-saved-hook';
 import { ElementType } from '../../../common/element-types';
+import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
@@ -48,6 +49,16 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     });
     validationContext.touch(Field.CMD_ROLE_KEY);
   };
+  const toggleEnabled = () => {
+    editingContext.localDispatch({
+      type: CommandReducerActionType.TOGGLE_ENABLED,
+    });
+  };
+  const toggleLocked = () => {
+    editingContext.localDispatch({
+      type: CommandReducerActionType.TOGGLE_LOCKED,
+    });
+  };
   const addActionHandler = (_e: React.MouseEvent<HTMLButtonElement>) => {
     const actions = Object.values(actionsSaved);
     if (actions.length > 0) {
@@ -70,6 +81,11 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Command">
+      <ExportImportOptionsComponent
+        element={props.command}
+        toggleEnabledFn={toggleEnabled}
+        toggleLockedFn={toggleLocked}
+      />
       <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.CMD_NAME]}

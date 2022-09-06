@@ -23,6 +23,7 @@ import { PauseComponent } from './pause/PauseComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { useSaved } from '../../../data/use-saved-hook';
 import { ElementType } from '../../../common/element-types';
+import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
@@ -58,6 +59,16 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     });
     validationContext.touch(Field.AC_TYPE);
   };
+  const toggleEnabled = () => {
+    editingContext.localDispatch({
+      type: ActionReducerActionType.TOGGLE_ENABLED,
+    });
+  };
+  const toggleLocked = () => {
+    editingContext.localDispatch({
+      type: ActionReducerActionType.TOGGLE_LOCKED,
+    });
+  };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
@@ -71,6 +82,11 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Action">
+      <ExportImportOptionsComponent
+        element={props.action}
+        toggleEnabledFn={toggleEnabled}
+        toggleLockedFn={toggleLocked}
+      />
       <FormGroupRowComponent
         labelText="Name"
         descriptionText="name of action"

@@ -2,7 +2,7 @@ import React, { useContext, useReducer, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
-import { DeleteModal } from '../../other-components/DeleteModal';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Action } from './action';
 import { ActionEditingContext } from './action-editing-context';
 import { actionReactReducer, deleteAction } from './action-reducers';
@@ -50,7 +50,7 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
         value={{ localDispatch, deleteModalConfig }}
       >
         <ActionComponent action={editing} />
-        <DeleteModal
+        <DeleteModalComponent
           /** editing.name is fine here because the modal won't show unless
            * the element is saved, and the element can't be saved without a name
            */

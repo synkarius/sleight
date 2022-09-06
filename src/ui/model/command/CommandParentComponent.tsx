@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
-import { DeleteModal } from '../../other-components/DeleteModal';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Command, createCommand } from './command';
 import { CommandEditingContext } from './command-editing-context';
 import { commandReactReducer, deleteCommand } from './command-reducers';
@@ -47,7 +47,7 @@ export const CommandParentComponent: React.FC<{ commandId?: string }> = (
         value={{ localDispatch, deleteModalConfig }}
       >
         <CommandComponent command={editing} />
-        <DeleteModal
+        <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}

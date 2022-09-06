@@ -19,6 +19,8 @@ export enum VariableReducerActionType {
   CHANGE_DEFAULT_TEXT,
   CHANGE_DEFAULT_NUMBER,
   CHANGE_DEFAULT_CHOICE,
+  TOGGLE_ENABLED,
+  TOGGLE_LOCKED,
 }
 
 interface AbstractVariableReducerAction<T> {
@@ -26,9 +28,12 @@ interface AbstractVariableReducerAction<T> {
   readonly payload: T;
 }
 
-export interface VariableReducerNoPayloadAction
-  extends Omit<AbstractVariableReducerAction<any>, 'payload'> {
-  readonly type: typeof VariableReducerActionType.TOGGLE_DEFAULT_ENABLED;
+export interface VariableReducerToggleAction
+  extends Omit<AbstractVariableReducerAction<unknown>, 'payload'> {
+  readonly type:
+    | typeof VariableReducerActionType.TOGGLE_DEFAULT_ENABLED
+    | typeof VariableReducerActionType.TOGGLE_ENABLED
+    | typeof VariableReducerActionType.TOGGLE_LOCKED;
 }
 
 export interface VariableReducerStringAction
@@ -80,7 +85,7 @@ export interface VariableReducerDeleteSelectorItemAction
 }
 
 export type VariableReducerAction =
-  | VariableReducerNoPayloadAction
+  | VariableReducerToggleAction
   | VariableReducerStringAction
   | VariableReducerVariableTypeAction
   | VariableReducerNumberAction

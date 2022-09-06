@@ -28,6 +28,7 @@ import { TextVariableComponent } from './TextVariableComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { useSaved } from '../../../data/use-saved-hook';
 import { ElementType } from '../../../common/element-types';
+import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
 
@@ -77,6 +78,16 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     }
     validationContext.touch(Field.VAR_TYPE_SELECT);
   };
+  const toggleEnabled = () => {
+    editingContext.localDispatch({
+      type: VariableReducerActionType.TOGGLE_ENABLED,
+    });
+  };
+  const toggleLocked = () => {
+    editingContext.localDispatch({
+      type: VariableReducerActionType.TOGGLE_LOCKED,
+    });
+  };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForSave();
     if (isValid) {
@@ -104,6 +115,11 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
 
   return (
     <PanelComponent header="Create/Edit Variable">
+      <ExportImportOptionsComponent
+        element={props.variable}
+        toggleEnabledFn={toggleEnabled}
+        toggleLockedFn={toggleLocked}
+      />
       <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
           aria-label={Field[Field.VAR_NAME]}

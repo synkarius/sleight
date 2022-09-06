@@ -10,7 +10,7 @@ import { SelectorDTO } from '../selector/data/selector-dto';
 import { InjectionContext } from '../../../di/injector-context';
 import { SpecDomainMapper } from './data/spec-domain-mapper';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
-import { DeleteModal } from '../../other-components/DeleteModal';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Field } from '../../../validation/validation-field';
 
 type SpecInitFunction = (specId?: string) => Spec;
@@ -56,7 +56,7 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
     >
       <SpecEditingContext.Provider value={{ localDispatch, deleteModalConfig }}>
         <SpecComponent spec={editing} />
-        <DeleteModal
+        <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}
           deleteFn={handleDelete}
