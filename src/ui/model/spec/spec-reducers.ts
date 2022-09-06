@@ -288,12 +288,12 @@ const toggleSpecItemGrouped = (
   };
 };
 
-const toggleEditingCommandEnabled = (state: Spec): Spec => ({
+const toggleEditingSpecEnabled = (state: Spec): Spec => ({
   ...state,
   enabled: !state.enabled,
 });
 
-const toggleEditingCommandLocked = (state: Spec): Spec => ({
+const toggleEditingSpecLocked = (state: Spec): Spec => ({
   ...state,
   locked: !state.locked,
 });
@@ -329,9 +329,9 @@ export const specReactReducer = (
     case SpecReducerActionType.TOGGLE_SPEC_ITEM_GROUPED:
       return toggleSpecItemGrouped(state, action);
     case SpecReducerActionType.TOGGLE_ENABLED:
-      return toggleEditingCommandEnabled(state);
+      return toggleEditingSpecEnabled(state);
     case SpecReducerActionType.TOGGLE_LOCKED:
-      return toggleEditingCommandLocked(state);
+      return toggleEditingSpecLocked(state);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }
