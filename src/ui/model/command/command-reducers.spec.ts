@@ -293,4 +293,32 @@ describe('command reducer', () => {
       actionIds: ['asdf-2'],
     });
   });
+
+  it('should handle toggle enabled', () => {
+    const obj = createCommand();
+
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.TOGGLE_ENABLED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      enabled: !obj.enabled,
+    });
+  });
+
+  it('should handle toggle locked', () => {
+    const obj = createCommand();
+
+    const actual = commandReactReducer(obj, {
+      type: CommandReducerActionType.TOGGLE_LOCKED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      locked: !obj.locked,
+    });
+  });
 });

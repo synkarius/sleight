@@ -418,4 +418,32 @@ describe('spec reducer', () => {
       items: [newSpecItem1, { ...newSpecItem2, grouped: true }],
     });
   });
+
+  it('should handle toggle enabled', () => {
+    const obj = createSpec();
+
+    const actual = specReactReducer(obj, {
+      type: SpecReducerActionType.TOGGLE_ENABLED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      enabled: !obj.enabled,
+    });
+  });
+
+  it('should handle toggle locked', () => {
+    const obj = createSpec();
+
+    const actual = specReactReducer(obj, {
+      type: SpecReducerActionType.TOGGLE_LOCKED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      locked: !obj.locked,
+    });
+  });
 });

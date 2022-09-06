@@ -302,6 +302,26 @@ describe('action component tests', () => {
     expect(errorText).not.toBeInTheDocument();
     expect(saveButton).not.toBeDisabled();
   });
+
+  it('should update enabled', async () => {
+    doRender();
+
+    const enabledSwitch = screen.getByLabelText('Enabled');
+    expect(enabledSwitch).toBeChecked();
+    await user.click(enabledSwitch);
+
+    expect(enabledSwitch).not.toBeChecked();
+  });
+
+  it('should update locked', async () => {
+    doRender();
+
+    const lockedSwitch = screen.getByLabelText('Locked');
+    expect(lockedSwitch).not.toBeChecked();
+    await user.click(lockedSwitch);
+
+    expect(lockedSwitch).toBeChecked();
+  });
 });
 
 const getSpecAdequacyErrorRegex = () =>

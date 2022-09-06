@@ -162,4 +162,32 @@ describe('action reducer', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual(expectedAction);
   });
+
+  it('should handle toggle enabled', () => {
+    const obj = createPauseAction();
+
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.TOGGLE_ENABLED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      enabled: !obj.enabled,
+    });
+  });
+
+  it('should handle toggle locked', () => {
+    const obj = createPauseAction();
+
+    const actual = actionReactReducer(obj, {
+      type: ActionReducerActionType.TOGGLE_LOCKED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      locked: !obj.locked,
+    });
+  });
 });

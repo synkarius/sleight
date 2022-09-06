@@ -173,4 +173,32 @@ describe('context reducer', () => {
       matcher: 'asdf',
     });
   });
+
+  it('should handle toggle enabled', () => {
+    const obj = createContext();
+
+    const actual = contextReactReducer(obj, {
+      type: ContextReducerActionType.TOGGLE_ENABLED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      enabled: !obj.enabled,
+    });
+  });
+
+  it('should handle toggle locked', () => {
+    const obj = createContext();
+
+    const actual = contextReactReducer(obj, {
+      type: ContextReducerActionType.TOGGLE_LOCKED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      locked: !obj.locked,
+    });
+  });
 });

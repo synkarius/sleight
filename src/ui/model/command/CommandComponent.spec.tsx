@@ -344,6 +344,22 @@ describe('command component tests', () => {
     expect(saveButton).not.toBeDisabled();
     expect(errorText).not.toBeInTheDocument();
   });
+
+  it('should update enabled', async () => {
+    const enabledSwitch = screen.getByLabelText('Enabled');
+    expect(enabledSwitch).toBeChecked();
+    await user.click(enabledSwitch);
+
+    expect(enabledSwitch).not.toBeChecked();
+  });
+
+  it('should update locked', async () => {
+    const lockedSwitch = screen.getByLabelText('Locked');
+    expect(lockedSwitch).not.toBeChecked();
+    await user.click(lockedSwitch);
+
+    expect(lockedSwitch).toBeChecked();
+  });
 });
 
 const getInadequateSpecsRegex = () =>

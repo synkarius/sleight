@@ -500,4 +500,32 @@ describe('variable reducer', () => {
 
     expect(actual.defaultValue).toBe('asdf');
   });
+
+  it('should handle toggle enabled', () => {
+    const obj = createTextVariable();
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.TOGGLE_ENABLED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      enabled: !obj.enabled,
+    });
+  });
+
+  it('should handle toggle locked', () => {
+    const obj = createTextVariable();
+
+    const actual = variableReactReducer(obj, {
+      type: VariableReducerActionType.TOGGLE_LOCKED,
+    });
+
+    expect(actual).not.toBe(obj);
+    expect(actual).toEqual({
+      ...obj,
+      locked: !obj.locked,
+    });
+  });
 });
