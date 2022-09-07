@@ -24,6 +24,9 @@ import { getSpecValidators } from '../core/validators/spec-validators';
 import { getVariableDomainMapper } from '../core/mappers/variable-domain-mapper';
 import { getDefaultVariableNamer } from '../core/default-namers/variable-default-namer';
 import { getVariableValidators } from '../core/validators/variable-validators';
+import { getCommandDomainMapper } from '../core/mappers/command-domain-mapper';
+import { getActionDomainMapper } from '../core/mappers/action-domain-mapper';
+import { getContextDomainMapper } from '../core/mappers/context-domain-mapper';
 
 let instance: Injected | undefined = undefined;
 
@@ -59,6 +62,9 @@ export const getDefaultInjectionContext = (): Injected => {
         ],
       },
       mappers: {
+        action: getActionDomainMapper(),
+        command: getCommandDomainMapper(),
+        context: getContextDomainMapper(),
         selector: getSelectorDomainMapper(),
         spec: getSpecDomainMapper(),
         variable: getVariableDomainMapper(),

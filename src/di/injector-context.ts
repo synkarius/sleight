@@ -32,6 +32,9 @@ export type Injected = {
     variable: FieldValidator<Variable>[];
   };
   mappers: {
+    action: DomainMapper<Action, Action>;
+    command: DomainMapper<Command, Command>;
+    context: DomainMapper<Context, Context>;
     selector: DomainMapper<Selector, SelectorDTO>;
     spec: SpecDomainMapper;
     variable: VariableDomainMapper;
