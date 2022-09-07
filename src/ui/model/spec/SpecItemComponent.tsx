@@ -27,7 +27,6 @@ import { MoveDirection } from '../../../common/move-direction';
 import { Field } from '../../../validation/validation-field';
 import { LIST, LIST_ITEM } from '../../../common/accessibility-roles';
 import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
-import { ValidationResultType } from '../../../validation/validation-result';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
@@ -94,6 +93,7 @@ export const SpecItemComponent: React.FC<{
       type: SpecReducerActionType.DELETE_SPEC_ITEM,
       payload: props.specItem.id,
     });
+    validationContext.touch(Field.SP_ITEM_DELETE);
   };
   const addSelectorItemHandler = () => {
     editingContext.localDispatch({
@@ -142,6 +142,7 @@ export const SpecItemComponent: React.FC<{
 
   return (
     <VerticalMoveableComponent
+      deleteField={Field.SP_ITEM_DELETE}
       moveFn={specItemMovedHandler}
       deleteFn={deleteSpecItemHandler}
     >

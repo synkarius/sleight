@@ -156,6 +156,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
 
       {props.command.actionIds.map((actionId, index) => (
         <VerticalMoveableComponent
+          deleteField={Field.CMD_ACTION_DELETE}
           moveFn={(direction) => {
             editingContext.localDispatch({
               type: CommandReducerActionType.MOVE_ACTION,
@@ -167,6 +168,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
               type: CommandReducerActionType.DELETE_ACTION,
               payload: index,
             });
+            validationContext.touch(Field.CMD_ACTION_DELETE);
           }}
           key={actionId + '-' + index}
         >

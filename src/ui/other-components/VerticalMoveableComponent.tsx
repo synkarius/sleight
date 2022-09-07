@@ -2,9 +2,11 @@ import React from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { ArrowDown, ArrowUp } from 'react-bootstrap-icons';
 import { MoveDirection } from '../../common/move-direction';
+import { Field } from '../../validation/validation-field';
 
 export const VerticalMoveableComponent: React.FC<{
   children: React.ReactNode;
+  deleteField: Field;
   moveFn: (direction: MoveDirection) => void;
   deleteFn: () => void;
 }> = (props) => {
@@ -27,6 +29,7 @@ export const VerticalMoveableComponent: React.FC<{
                 className="mb-3"
                 variant="warning"
                 onClick={(_e) => props.deleteFn()}
+                aria-label={Field[props.deleteField]}
               >
                 Delete
               </Button>

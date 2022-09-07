@@ -53,6 +53,7 @@ export enum Field {
   // command: spec
   CMD_SPEC_SELECT,
   CMD_ACTION_SELECT,
+  CMD_ACTION_DELETE,
   CMD_SAVE,
   CMD_DELETE,
   // context:
@@ -70,6 +71,7 @@ export enum Field {
   SP_ITEM_TYPE_SELECT,
   SP_ITEM_SELECTOR,
   SP_ITEM_VARIABLE,
+  SP_ITEM_DELETE,
   SP_TOGGLE_SPEC_ITEM_OPTIONAL,
   SP_SAVE,
   SP_DELETE,
