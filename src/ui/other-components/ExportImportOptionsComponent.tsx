@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import { FormCheck } from 'react-bootstrap';
-import { Enablable, Lockable } from '../domain';
+import { Enablable, Lockable } from '../../data/model/domain';
 import { FormGroupRowComponent } from './FormGroupRowComponent';
 
 type EnablableAndLockable = Enablable & Lockable;

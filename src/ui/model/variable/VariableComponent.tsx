@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import { useAppDispatch } from '../../../app/hooks';
 import { FormControl, FormText, Button, FormSelect } from 'react-bootstrap';
 import { ChoiceVariableComponent } from './ChoiceVariableComponent';
-import { VariableType } from './variable-types';
+import { VariableType } from '../../../data/model/variable/variable-types';
 import { RangeVariableComponent } from './RangeVariableComponent';
-import { saveVariable } from './variable-reducers';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { PanelComponent } from '../../other-components/PanelComponent';
-import { createSelector } from '../selector/data/selector-domain';
+import { createSelector } from '../../../data/model/selector/selector-domain';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { Field } from '../../../validation/validation-field';
 import {
@@ -14,20 +14,20 @@ import {
   isRangeVariable,
   isTextVariable,
   Variable,
-} from './data/variable';
+} from '../../../data/model/variable/variable';
 import {
   VariableEditingContext,
   VariableReducerActionType,
 } from './variable-editing-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
-import { saveSelector } from '../selector/selector-reducers';
-import { LIST, LIST_ITEM } from '../../../common/accessibility-roles';
+import { saveSelector } from '../../../core/reducers/selector-reducers';
+import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
 import { TextVariableComponent } from './TextVariableComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { useSaved } from '../../../data/use-saved-hook';
-import { ElementType } from '../../../common/element-types';
+import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;

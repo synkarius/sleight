@@ -5,15 +5,18 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
-import { VariableType } from './variable-types';
-import { NUMBER_TEXT_BOX } from '../../../common/accessibility-roles';
+import { VariableType } from '../../../data/model/variable/variable-types';
+import { NUMBER_TEXT_BOX } from '../../../core/common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { createSpecItem, Spec } from '../spec/data/spec-domain';
-import { SpecItemType } from '../spec/spec-item-type';
-import { saveSpec } from '../spec/spec-reducers';
-import { createRangeVariable, RangeVariable } from './data/variable';
-import { saveVariable } from './variable-reducers';
+import { createSpecItem, Spec } from '../../../data/model/spec/spec-domain';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
+import {
+  createRangeVariable,
+  RangeVariable,
+} from '../../../data/model/variable/variable';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';

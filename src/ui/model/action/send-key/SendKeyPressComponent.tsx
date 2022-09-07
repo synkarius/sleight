@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
-import { SendKeyPressAction } from './send-key';
+import { SendKeyPressAction } from '../../../../data/model/action/send-key/send-key';
 import {
   innerPauseGroup,
   repeatGroup,

@@ -6,19 +6,19 @@ import { getDefaultInjectionContext } from '../../../../di/app-default-injection
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
-import { createSelector } from '../../selector/data/selector-domain';
-import { saveSelector } from '../../selector/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../variable/data/choice-variable-domain-mapper';
-import { getTextVariableDomainMapper } from '../../variable/data/text-variable-domain-mapper-delegate';
+import { createSelector } from '../../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../../core/reducers/selector-reducers';
+import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
+import { getTextVariableDomainMapper } from '../../../../core/mappers/text-variable-domain-mapper-delegate';
 import {
   ChoiceVariable,
   createChoiceItem,
   createChoiceVariable,
   createTextVariable,
-} from '../../variable/data/variable';
-import { saveVariable } from '../../variable/variable-reducers';
+} from '../../../../data/model/variable/variable';
+import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
-import { SendKeyMode } from './send-key-modes';
+import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
 
 const VARIABLE_NAME = 'asdf-range-var';
 const VARIABLE_RADIO = 1;

@@ -12,10 +12,13 @@ import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
-import { USE_DEFAULT } from '../../../common/consts';
-import { createSelector } from '../selector/data/selector-domain';
+import { USE_DEFAULT } from '../../../core/common/consts';
+import { createSelector } from '../../../data/model/selector/selector-domain';
 import { ChoiceItemComponent } from './ChoiceItemComponent';
-import { ChoiceVariable, createChoiceItem } from './data/variable';
+import {
+  ChoiceVariable,
+  createChoiceItem,
+} from '../../../data/model/variable/variable';
 import {
   VariableEditingContext,
   VariableReducerActionType,

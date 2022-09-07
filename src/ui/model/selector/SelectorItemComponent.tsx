@@ -6,7 +6,7 @@ import {
   IdListValidationResult,
   ValidationResultType,
 } from '../../../validation/validation-result';
-import { SelectorItem } from './data/selector-domain';
+import { SelectorItem } from '../../../data/model/selector/selector-domain';
 import { SelectorButtonType } from './selector-button-type';
 
 export type SelectorPositionData = {

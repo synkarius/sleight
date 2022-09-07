@@ -8,8 +8,8 @@ import { ContextParentComponent } from '../ui/model/context/ContextParentCompone
 import userEvent from '@testing-library/user-event';
 import { Field } from './validation-field';
 import { FieldValidator, ValidatorType } from './field-validator';
-import { Context } from '../ui/model/context/context';
-import { alwaysTrue } from '../common/common-functions';
+import { Context } from '../data/model/context/context';
+import { alwaysTrue } from '../core/common/common-functions';
 
 let user: UserEvent;
 

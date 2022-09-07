@@ -1,5 +1,5 @@
 import React from 'react';
-import { PressMouseAction } from './mouse';
+import { PressMouseAction } from '../../../../data/model/action/mouse/mouse';
 
 export const ClickMouseComponent: React.FC<{
   clickMouseAction: PressMouseAction;

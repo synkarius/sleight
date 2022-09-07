@@ -9,18 +9,18 @@ import {
   ActionReducerActionType,
 } from '../action-editing-context';
 import { ActionValueComponent } from '../action-value/ActionValueComponent';
-import { Key } from './key';
+import { Key } from '../../../../data/model/action/send-key/key';
 import {
   isSendKeyHoldReleaseAction,
   isSendKeyPressAction,
   SendKeyAction,
-} from './send-key';
+} from '../../../../data/model/action/send-key/send-key';
 import {
   keyToSendGroup,
   outerPauseGroup,
 } from './send-key-action-value-field-groups';
-import { SendKeyMode } from './send-key-modes';
-import { SendKeyModifiers } from './send-key-modifiers';
+import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
+import { SendKeyModifiers } from '../../../../data/model/action/send-key/send-key-modifiers';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
 import { SendKeyPressComponent } from './SendKeyPressComponent';
 

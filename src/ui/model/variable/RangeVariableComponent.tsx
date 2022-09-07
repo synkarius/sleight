@@ -11,12 +11,12 @@ import {
   VariableEditingContext,
   VariableReducerActionType,
 } from './variable-editing-context';
-import { RangeVariable } from './data/variable';
+import { RangeVariable } from '../../../data/model/variable/variable';
 import { Field } from '../../../validation/validation-field';
 import { ValidationContext } from '../../../validation/validation-context';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { USE_DEFAULT } from '../../../common/consts';
+import { USE_DEFAULT } from '../../../core/common/consts';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 
 export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (

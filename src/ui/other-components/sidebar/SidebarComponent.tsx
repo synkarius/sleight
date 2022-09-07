@@ -1,11 +1,11 @@
 import { Accordion } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectAction } from '../../model/action/action-reducers';
-import { selectCommand } from '../../model/command/command-reducers';
-import { ElementType } from '../../../common/element-types';
-import { selectContext } from '../../model/context/context-reducers';
-import { selectVariable } from '../../model/variable/variable-reducers';
-import { selectSpec } from '../../model/spec/spec-reducers';
+import { selectAction } from '../../../core/reducers/action-reducers';
+import { selectCommand } from '../../../core/reducers/command-reducers';
+import { ElementType } from '../../../data/model/element-types';
+import { selectContext } from '../../../core/reducers/context-reducers';
+import { selectVariable } from '../../../core/reducers/variable-reducers';
+import { selectSpec } from '../../../core/reducers/spec-reducers';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { SidebarSection } from './sidebar';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';

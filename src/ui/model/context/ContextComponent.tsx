@@ -9,14 +9,14 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
-import { ElementType } from '../../../common/element-types';
-import { Context } from './context';
+import { ElementType } from '../../../data/model/element-types';
+import { Context } from '../../../data/model/context/context';
 import {
   ContextEditingContext,
   ContextReducerActionType,
 } from './context-editing-context';
-import { saveContext } from './context-reducers';
-import { ContextType } from './context-types';
+import { saveContext } from '../../../core/reducers/context-reducers';
+import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;

@@ -1,12 +1,12 @@
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
-import { ElementType } from '../../../common/element-types';
-import { ContextType } from '../../../ui/model/context/context-types';
-import { SelectorDTO } from '../../../ui/model/selector/data/selector-dto';
-import { SpecItemDTO } from '../../../ui/model/spec/data/spec-dto';
-import { SpecItemType } from '../../../ui/model/spec/spec-item-type';
-import { VariableDTO } from '../../../ui/model/variable/data/variable-dto';
-import { VariableType } from '../../../ui/model/variable/variable-types';
-import { replaceNonAlphaNumeric } from '../../../common/common-functions';
+import { ElementType } from '../../model/element-types';
+import { ContextType } from '../../model/context/context-types';
+import { SelectorDTO } from '../../model/selector/selector-dto';
+import { SpecItemDTO } from '../../model/spec/spec-dto';
+import { SpecItemType } from '../../model/spec/spec-item-type';
+import { VariableDTO } from '../../model/variable/variable-dto';
+import { VariableType } from '../../model/variable/variable-types';
+import { replaceNonAlphaNumeric } from '../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../data-formats';
 import { createMustacheFn } from '../util-mustache-fns';
 

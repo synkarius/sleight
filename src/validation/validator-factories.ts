@@ -1,6 +1,6 @@
-import { alwaysTrue } from '../common/common-functions';
+import { alwaysTrue } from '../core/common/common-functions';
 import { SleightDataInternalFormat } from '../data/data-formats';
-import { Ided, Named, RoleKeyed } from '../ui/domain';
+import { Ided, Named, RoleKeyed } from '../data/model/domain';
 import { FieldValidator, ValidatorType } from './field-validator';
 import { ValidationErrorCode } from './validation-error-code';
 import { Field } from './validation-field';

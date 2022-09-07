@@ -2,9 +2,9 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
-import { VariableDTO } from '../variable/data/variable-dto';
-import { Spec, SpecItem } from './data/spec-domain';
-import { SpecItemType } from './spec-item-type';
+import { VariableDTO } from '../../../data/model/variable/variable-dto';
+import { Spec, SpecItem } from '../../../data/model/spec/spec-domain';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 
 const mapSpecItemToPreview = (
   specItem: SpecItem,

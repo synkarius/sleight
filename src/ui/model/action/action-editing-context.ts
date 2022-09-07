@@ -1,11 +1,11 @@
 import { Field } from '../../../validation/validation-field';
-import { createEditingContext } from '../../../common/editing-context';
-import { ActionType } from './action-types';
-import { ActionValueType } from './action-value/action-value-type';
-import { MouseActionType } from './mouse/mouse-action-type';
-import { MouseMovementType } from './mouse/mouse-movement-type';
-import { SendKeyMode } from './send-key/send-key-modes';
-import { SendKeyModifiers } from './send-key/send-key-modifiers';
+import { createEditingContext } from '../../../core/common/editing-context';
+import { ActionType } from '../../../data/model/action/action-types';
+import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { MouseActionType } from '../../../data/model/action/mouse/mouse-action-type';
+import { MouseMovementType } from '../../../data/model/action/mouse/mouse-movement-type';
+import { SendKeyMode } from '../../../data/model/action/send-key/send-key-modes';
+import { SendKeyModifiers } from '../../../data/model/action/send-key/send-key-modifiers';
 
 export enum ActionReducerActionType {
   CHANGE_ACTION_TYPE,

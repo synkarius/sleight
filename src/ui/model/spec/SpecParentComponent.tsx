@@ -1,14 +1,17 @@
 import { useContext, useReducer, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
-import { createSpec, Spec } from './data/spec-domain';
-import { SpecDTO } from './data/spec-dto';
+import { createSpec, Spec } from '../../../data/model/spec/spec-domain';
+import { SpecDTO } from '../../../data/model/spec/spec-dto';
 import { SpecEditingContext } from './spec-editing-context';
-import { deleteSpec, specReactReducer } from './spec-reducers';
+import {
+  deleteSpec,
+  specReactReducer,
+} from '../../../core/reducers/spec-reducers';
 import { SpecComponent } from './SpecComponent';
-import { SelectorDTO } from '../selector/data/selector-dto';
+import { SelectorDTO } from '../../../data/model/selector/selector-dto';
 import { InjectionContext } from '../../../di/injector-context';
-import { SpecDomainMapper } from './data/spec-domain-mapper';
+import { SpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Field } from '../../../validation/validation-field';

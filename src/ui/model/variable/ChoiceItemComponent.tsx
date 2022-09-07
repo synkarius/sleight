@@ -3,9 +3,9 @@ import { Button, Col, FormControl, FormText, Row } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
 import { RequiredAsteriskComponent } from '../../other-components/RequiredAsteriskComponent';
-import { createSelectorItem } from '../selector/data/selector-domain';
+import { createSelectorItem } from '../../../data/model/selector/selector-domain';
 import { SelectorComponent } from '../selector/SelectorComponent';
-import { ChoiceItem } from './data/variable';
+import { ChoiceItem } from '../../../data/model/variable/variable';
 import {
   VariableEditingContext,
   VariableReducerActionType,

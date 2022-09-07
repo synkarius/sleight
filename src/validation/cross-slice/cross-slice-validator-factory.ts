@@ -1,5 +1,5 @@
 import { SleightDataInternalFormat } from '../../data/data-formats';
-import { alwaysTrue, Predicate } from '../../common/common-functions';
+import { alwaysTrue, Predicate } from '../../core/common/common-functions';
 import { FieldValidator, ValidatorType } from '../field-validator';
 import { ValidationResult } from '../validation-result';
 import { ValidationConfig } from './cross-slice-validator-config';

@@ -4,29 +4,38 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { createSelector, Selector } from '../selector/data/selector-domain';
-import { saveSelector } from '../selector/selector-reducers';
-import { saveSpec } from '../spec/spec-reducers';
-import { createSpec, createSpecItem } from '../spec/data/spec-domain';
+import {
+  createSelector,
+  Selector,
+} from '../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../core/reducers/selector-reducers';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
+import {
+  createSpec,
+  createSpecItem,
+} from '../../../data/model/spec/spec-domain';
 import { CommandParentComponent } from './CommandParentComponent';
-import { saveContext } from '../context/context-reducers';
-import { createContext } from '../context/context';
+import { saveContext } from '../../../core/reducers/context-reducers';
+import { createContext } from '../../../data/model/context/context';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { getSelectorDomainMapper } from '../selector/data/selector-domain-mapper';
-import { getSpecDomainMapper } from '../spec/data/spec-domain-mapper';
-import { saveCommand } from './command-reducers';
-import { createCommand } from './command';
-import { createRangeVariable } from '../variable/data/variable';
-import { getVariableDomainMapper } from '../variable/data/variable-domain-mapper';
-import { saveVariable } from '../variable/variable-reducers';
-import { SpecItemType } from '../spec/spec-item-type';
-import { SpecDTO } from '../spec/data/spec-dto';
-import { createPauseAction, PauseAction } from '../action/pause/pause';
-import { saveAction } from '../action/action-reducers';
-import { EnterValueType } from '../action/action-value/action-value';
-import { ActionValueType } from '../action/action-value/action-value-type';
-import { VariableType } from '../variable/variable-types';
+import { getSelectorDomainMapper } from '../../../core/mappers/selector-domain-mapper';
+import { getSpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
+import { saveCommand } from '../../../core/reducers/command-reducers';
+import { createCommand } from '../../../data/model/command/command';
+import { createRangeVariable } from '../../../data/model/variable/variable';
+import { getVariableDomainMapper } from '../../../core/mappers/variable-domain-mapper';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
+import { SpecDTO } from '../../../data/model/spec/spec-dto';
+import {
+  createPauseAction,
+  PauseAction,
+} from '../../../data/model/action/pause/pause';
+import { saveAction } from '../../../core/reducers/action-reducers';
+import { EnterValueType } from '../../../data/model/action/action-value/action-value';
+import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { VariableType } from '../../../data/model/variable/variable-types';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';

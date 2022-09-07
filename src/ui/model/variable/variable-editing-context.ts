@@ -1,7 +1,10 @@
-import { createEditingContext } from '../../../common/editing-context';
-import { Selector, SelectorItem } from '../selector/data/selector-domain';
-import { ChoiceItem } from './data/variable';
-import { VariableType } from './variable-types';
+import { createEditingContext } from '../../../core/common/editing-context';
+import {
+  Selector,
+  SelectorItem,
+} from '../../../data/model/selector/selector-domain';
+import { ChoiceItem } from '../../../data/model/variable/variable';
+import { VariableType } from '../../../data/model/variable/variable-types';
 
 export enum VariableReducerActionType {
   CHANGE_NAME,

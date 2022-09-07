@@ -14,8 +14,8 @@ import {
   isHoldReleaseMouseAction,
   isMoveMouseAction,
   MouseAction,
-} from './mouse';
-import { MouseActionType } from './mouse-action-type';
+} from '../../../../data/model/action/mouse/mouse';
+import { MouseActionType } from '../../../../data/model/action/mouse/mouse-action-type';
 import { MoveMouseComponent } from './MoveMouseComponent';
 
 export const MouseComponent: React.FC<{ mouseAction: MouseAction }> = (

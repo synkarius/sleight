@@ -6,13 +6,13 @@ import { getDefaultInjectionContext } from '../../../../di/app-default-injection
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
-import { getRangeVariableDomainMapper } from '../../variable/data/range-variable-domain-mapper';
-import { getTextVariableDomainMapper } from '../../variable/data/text-variable-domain-mapper-delegate';
+import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
+import { getTextVariableDomainMapper } from '../../../../core/mappers/text-variable-domain-mapper-delegate';
 import {
   createRangeVariable,
   createTextVariable,
-} from '../../variable/data/variable';
-import { saveVariable } from '../../variable/variable-reducers';
+} from '../../../../data/model/variable/variable';
+import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
 
 const VARIABLE_NAME = 'asdf-range-var';

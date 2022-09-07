@@ -1,8 +1,11 @@
-import { createEditingContext } from '../../../common/editing-context';
-import { MoveDirection } from '../../../common/move-direction';
-import { Selector, SelectorItem } from '../selector/data/selector-domain';
-import { SpecItem } from './data/spec-domain';
-import { SpecItemType } from './spec-item-type';
+import { createEditingContext } from '../../../core/common/editing-context';
+import { MoveDirection } from '../../../core/common/move-direction';
+import {
+  Selector,
+  SelectorItem,
+} from '../../../data/model/selector/selector-domain';
+import { SpecItem } from '../../../data/model/spec/spec-domain';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 
 export enum SpecReducerActionType {
   CHANGE_NAME,

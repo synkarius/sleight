@@ -1,5 +1,5 @@
 import React from 'react';
-import { HoldReleaseMouseAction } from './mouse';
+import { HoldReleaseMouseAction } from '../../../../data/model/action/mouse/mouse';
 
 export const HoldReleaseMouseComponent: React.FC<{
   holdReleaseMouseAction: HoldReleaseMouseAction;

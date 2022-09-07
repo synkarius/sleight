@@ -1,6 +1,6 @@
 import { useAppSelector } from '../app/hooks';
 import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
-import { ElementType } from '../common/element-types';
+import { ElementType } from './model/element-types';
 
 /** custom hook to determine if there is a saved element with the given id */
 export const useSaved = (

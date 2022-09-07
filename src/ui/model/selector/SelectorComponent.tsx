@@ -1,7 +1,7 @@
 import React, { useId } from 'react';
 import { FormGroup, FormLabel, FormText, Row } from 'react-bootstrap';
 import { Field } from '../../../validation/validation-field';
-import { Selector } from './data/selector-domain';
+import { Selector } from '../../../data/model/selector/selector-domain';
 import { SelectorButtonType } from './selector-button-type';
 import {
   SelectorItemComponent,

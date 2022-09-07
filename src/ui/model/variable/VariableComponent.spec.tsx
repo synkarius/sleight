@@ -5,14 +5,20 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
-import { VariableType } from './variable-types';
+import { VariableType } from '../../../data/model/variable/variable-types';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { createRangeVariable, RangeVariable } from './data/variable';
-import { saveVariable } from './variable-reducers';
-import { createPauseAction, PauseAction } from '../action/pause/pause';
-import { ActionValueType } from '../action/action-value/action-value-type';
-import { saveAction } from '../action/action-reducers';
+import {
+  createRangeVariable,
+  RangeVariable,
+} from '../../../data/model/variable/variable';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
+import {
+  createPauseAction,
+  PauseAction,
+} from '../../../data/model/action/pause/pause';
+import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { saveAction } from '../../../core/reducers/action-reducers';
 
 const SAVE = 'Save';
 const VARIABLE_1_ID = 'VARIABLE_1_ID';

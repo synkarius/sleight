@@ -4,28 +4,35 @@ import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
-import { ActionType } from './action-types';
+import { ActionType } from '../../../data/model/action/action-types';
 import { ActionParentComponent } from './ActionParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { saveAction } from './action-reducers';
-import { EnterValueType } from './action-value/action-value';
-import { createPauseAction, PauseAction } from './pause/pause';
-import { ActionValueType } from './action-value/action-value-type';
-import { VariableType } from '../variable/variable-types';
-import { createRangeVariable } from '../variable/data/variable';
-import { saveVariable } from '../variable/variable-reducers';
-import { createSpecItem, Spec, SpecItem } from '../spec/data/spec-domain';
-import { SpecItemType } from '../spec/spec-item-type';
+import { saveAction } from '../../../core/reducers/action-reducers';
+import { EnterValueType } from '../../../data/model/action/action-value/action-value';
+import {
+  createPauseAction,
+  PauseAction,
+} from '../../../data/model/action/pause/pause';
+import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { VariableType } from '../../../data/model/variable/variable-types';
+import { createRangeVariable } from '../../../data/model/variable/variable';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
+import {
+  createSpecItem,
+  Spec,
+  SpecItem,
+} from '../../../data/model/spec/spec-domain';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import {
   createSelector,
   createSelectorItem,
-} from '../selector/data/selector-domain';
-import { saveSpec } from '../spec/spec-reducers';
-import { saveSelector } from '../selector/selector-reducers';
-import { Command, createCommand } from '../command/command';
-import { saveCommand } from '../command/command-reducers';
-import { LIST } from '../../../common/accessibility-roles';
+} from '../../../data/model/selector/selector-domain';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
+import { saveSelector } from '../../../core/reducers/selector-reducers';
+import { Command, createCommand } from '../../../data/model/command/command';
+import { saveCommand } from '../../../core/reducers/command-reducers';
+import { LIST } from '../../../core/common/accessibility-roles';
 
 const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
 const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';

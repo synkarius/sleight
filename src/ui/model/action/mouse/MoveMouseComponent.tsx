@@ -7,8 +7,8 @@ import {
   ActionEditingContext,
   ActionReducerActionType,
 } from '../action-editing-context';
-import { MoveMouseAction } from './mouse';
-import { MouseMovementType } from './mouse-movement-type';
+import { MoveMouseAction } from '../../../../data/model/action/mouse/mouse';
+import { MouseMovementType } from '../../../../data/model/action/mouse/mouse-movement-type';
 
 export const MoveMouseComponent: React.FC<{
   moveMouseAction: MoveMouseAction;

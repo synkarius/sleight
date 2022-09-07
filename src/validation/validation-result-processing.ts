@@ -1,4 +1,4 @@
-import { alwaysTrue, isDefined } from '../common/common-functions';
+import { alwaysTrue, isDefined } from '../core/common/common-functions';
 import { ErrorOrFailureValidationResult } from './validation-context';
 import { Field } from './validation-field';
 import { ValidationResultType } from './validation-result';

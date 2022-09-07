@@ -4,9 +4,12 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
-import { Command, createCommand } from './command';
+import { Command, createCommand } from '../../../data/model/command/command';
 import { CommandEditingContext } from './command-editing-context';
-import { commandReactReducer, deleteCommand } from './command-reducers';
+import {
+  commandReactReducer,
+  deleteCommand,
+} from '../../../core/reducers/command-reducers';
 import { CommandComponent } from './CommandComponent';
 import { Field } from '../../../validation/validation-field';
 

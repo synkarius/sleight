@@ -9,21 +9,21 @@ import {
   getCrossSliceSpecValidators,
   getCrossSliceVariableValidators,
 } from '../validation/cross-slice/cross-slice-validation-fns';
-import { getDefaultActionNamer } from '../ui/model/action/action-default-namer';
-import { getActionValidators } from '../ui/model/action/action-validators';
-import { getPauseValidators } from '../ui/model/action/pause/pause-validators';
-import { getSendKeyValidators } from '../ui/model/action/send-key/send-key-validators';
-import { getDefaultCommandNamer } from '../ui/model/command/command-default-namer';
-import { getCommandValidators } from '../ui/model/command/command-validators';
-import { getDefaultContextNamer } from '../ui/model/context/context-default-namer';
-import { getContextValidators } from '../ui/model/context/context-validators';
-import { getSelectorDomainMapper } from '../ui/model/selector/data/selector-domain-mapper';
-import { getSpecDomainMapper } from '../ui/model/spec/data/spec-domain-mapper';
-import { getDefaultSpecNamer } from '../ui/model/spec/spec-default-namer';
-import { getSpecValidators } from '../ui/model/spec/spec-validators';
-import { getVariableDomainMapper } from '../ui/model/variable/data/variable-domain-mapper';
-import { getDefaultVariableNamer } from '../ui/model/variable/variable-default-namer';
-import { getVariableValidators } from '../ui/model/variable/variable-validators';
+import { getDefaultActionNamer } from '../core/default-namers/action-default-namer';
+import { getActionValidators } from '../core/validators/action-validators';
+import { getPauseValidators } from '../core/validators/action/pause-validators';
+import { getSendKeyValidators } from '../core/validators/action/send-key-validators';
+import { getDefaultCommandNamer } from '../core/default-namers/command-default-namer';
+import { getCommandValidators } from '../core/validators/command-validators';
+import { getDefaultContextNamer } from '../core/default-namers/context-default-namer';
+import { getContextValidators } from '../core/validators/context-validators';
+import { getSelectorDomainMapper } from '../core/mappers/selector-domain-mapper';
+import { getSpecDomainMapper } from '../core/mappers/spec-domain-mapper';
+import { getDefaultSpecNamer } from '../core/default-namers/spec-default-namer';
+import { getSpecValidators } from '../core/validators/spec-validators';
+import { getVariableDomainMapper } from '../core/mappers/variable-domain-mapper';
+import { getDefaultVariableNamer } from '../core/default-namers/variable-default-namer';
+import { getVariableValidators } from '../core/validators/variable-validators';
 
 let instance: Injected | undefined = undefined;
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { identity } from '../../common/common-functions';
+import { identity } from '../../core/common/common-functions';
 import { ValidationContext } from '../../validation/validation-context';
 import { Field } from '../../validation/validation-field';
 import { ErrorTextComponent } from './ErrorTextComponent';

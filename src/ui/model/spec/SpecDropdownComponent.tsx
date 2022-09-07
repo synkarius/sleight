@@ -2,7 +2,7 @@ import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
 
 type SpecDropdownComponentProps = {
   readonly specId?: string;

@@ -4,12 +4,18 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
-import { SelectorDTO } from '../selector/data/selector-dto';
-import { createTextVariable, Variable } from './data/variable';
-import { VariableDomainMapper } from './data/variable-domain-mapper';
-import { VariableDTO } from './data/variable-dto';
+import { SelectorDTO } from '../../../data/model/selector/selector-dto';
+import {
+  createTextVariable,
+  Variable,
+} from '../../../data/model/variable/variable';
+import { VariableDomainMapper } from '../../../core/mappers/variable-domain-mapper';
+import { VariableDTO } from '../../../data/model/variable/variable-dto';
 import { VariableEditingContext } from './variable-editing-context';
-import { deleteVariable, variableReactReducer } from './variable-reducers';
+import {
+  deleteVariable,
+  variableReactReducer,
+} from '../../../core/reducers/variable-reducers';
 import { VariableComponent } from './VariableComponent';
 import { Field } from '../../../validation/validation-field';
 

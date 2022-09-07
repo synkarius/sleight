@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useAllData } from '../data/use-all-data-hook';
+import { useAllData } from '../app/custom-hooks/use-all-data-hook';
 import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
-import { listsIntersect } from '../common/common-functions';
+import { listsIntersect } from '../core/common/common-functions';
 import { FieldValidator, ValidatorType } from './field-validator';
 import {
   ErrorOrFailureValidationResult,

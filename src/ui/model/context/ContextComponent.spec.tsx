@@ -7,8 +7,8 @@ import { Field } from '../../../validation/validation-field';
 import { ContextParentComponent } from './ContextParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { saveContext } from './context-reducers';
-import { createContext } from './context';
+import { saveContext } from '../../../core/reducers/context-reducers';
+import { createContext } from '../../../data/model/context/context';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
 const ROLE_KEY = 'ROLE_KEY';

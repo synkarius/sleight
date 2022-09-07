@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
 import { Button, Col, FormControl } from 'react-bootstrap';
-import { saveSpec } from './spec-reducers';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { SpecItemComponent } from './SpecItemComponent';
-import { saveSelector } from '../selector/selector-reducers';
+import { saveSelector } from '../../../core/reducers/selector-reducers';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { SpecPreviewComponent } from './SpecPreviewComponent';
 import { Field } from '../../../validation/validation-field';
-import { SpecItemType } from './spec-item-type';
-import { createSpecItem, Spec } from './data/spec-domain';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
+import { createSpecItem, Spec } from '../../../data/model/spec/spec-domain';
 import { ValidationContext } from '../../../validation/validation-context';
 import {
   SpecEditingContext,
@@ -20,7 +20,7 @@ import { InjectionContext } from '../../../di/injector-context';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../data/use-saved-hook';
-import { ElementType } from '../../../common/element-types';
+import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;

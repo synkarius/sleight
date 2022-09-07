@@ -5,8 +5,8 @@ import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
-import { USE_DEFAULT } from '../../../common/consts';
-import { TextVariable } from './data/variable';
+import { USE_DEFAULT } from '../../../core/common/consts';
+import { TextVariable } from '../../../data/model/variable/variable';
 import {
   VariableEditingContext,
   VariableReducerActionType,

@@ -5,26 +5,26 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
-import { VariableType } from './variable-types';
+import { VariableType } from '../../../data/model/variable/variable-types';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { TEXT_BOX } from '../../../common/accessibility-roles';
-import { createSpecItem, Spec } from '../spec/data/spec-domain';
-import { SpecItemType } from '../spec/spec-item-type';
-import { saveSpec } from '../spec/spec-reducers';
+import { TEXT_BOX } from '../../../core/common/accessibility-roles';
+import { createSpecItem, Spec } from '../../../data/model/spec/spec-domain';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
 import {
   ChoiceVariable,
   createChoiceItem,
   createChoiceVariable,
-} from './data/variable';
-import { saveVariable } from './variable-reducers';
+} from '../../../data/model/variable/variable';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
 import {
   createSelector,
   createSelectorItem,
   Selector,
   SelectorItem,
-} from '../selector/data/selector-domain';
-import { saveSelector } from '../selector/selector-reducers';
+} from '../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../core/reducers/selector-reducers';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';

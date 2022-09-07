@@ -2,7 +2,7 @@ import React, { useContext, useId } from 'react';
 import { FormCheck, FormControl, FormSelect } from 'react-bootstrap';
 import { FormGroupRowComponent } from '../../../other-components/FormGroupRowComponent';
 import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
-import { ActionValueType } from './action-value-type';
+import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
 import { ValidationContext } from '../../../../validation/validation-context';
 import {
   ActionEditingContext,
@@ -18,8 +18,8 @@ import {
   isVariableActionValue,
   NumericActionValue,
   TextActionValue,
-} from './action-value';
-import { SELECT_DEFAULT_VALUE } from '../../../../common/consts';
+} from '../../../../data/model/action/action-value/action-value';
+import { SELECT_DEFAULT_VALUE } from '../../../../core/common/consts';
 import { processErrorResults } from '../../../../validation/validation-result-processing';
 import { ActionValueFieldGroup } from './action-value-type-name-group';
 

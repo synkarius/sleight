@@ -6,19 +6,19 @@ import { getDefaultInjectionContext } from '../../../../di/app-default-injection
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
-import { createSelector } from '../../selector/data/selector-domain';
-import { saveSelector } from '../../selector/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../variable/data/choice-variable-domain-mapper';
-import { getRangeVariableDomainMapper } from '../../variable/data/range-variable-domain-mapper';
+import { createSelector } from '../../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../../core/reducers/selector-reducers';
+import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
+import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
 import {
   ChoiceVariable,
   createChoiceItem,
   createChoiceVariable,
   createRangeVariable,
   RangeVariable,
-} from '../../variable/data/variable';
-import { saveVariable } from '../../variable/variable-reducers';
-import { ActionType } from '../action-types';
+} from '../../../../data/model/variable/variable';
+import { saveVariable } from '../../../../core/reducers/variable-reducers';
+import { ActionType } from '../../../../data/model/action/action-types';
 import { ActionParentComponent } from '../ActionParentComponent';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';

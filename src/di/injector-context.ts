@@ -1,19 +1,19 @@
 import React from 'react';
 import { Exporter } from '../data/exports/exporter';
 import { Importer } from '../data/imports/json-importer';
-import { DomainMapper } from '../data/mapper';
-import { Ided } from '../ui/domain';
-import { Action } from '../ui/model/action/action';
-import { Command } from '../ui/model/command/command';
-import { DefaultNamer } from '../common/default-namer';
-import { Context } from '../ui/model/context/context';
-import { Selector } from '../ui/model/selector/data/selector-domain';
-import { SelectorDTO } from '../ui/model/selector/data/selector-dto';
-import { Spec } from '../ui/model/spec/data/spec-domain';
-import { SpecDomainMapper } from '../ui/model/spec/data/spec-domain-mapper';
-import { Variable } from '../ui/model/variable/data/variable';
-import { VariableDomainMapper } from '../ui/model/variable/data/variable-domain-mapper';
-import { VarIdedAndTyped } from '../ui/model/variable/variable-default-namer';
+import { DomainMapper } from '../core/mappers/mapper';
+import { Ided } from '../data/model/domain';
+import { Action } from '../data/model/action/action';
+import { Command } from '../data/model/command/command';
+import { DefaultNamer } from '../core/default-namers/default-namer';
+import { Context } from '../data/model/context/context';
+import { Selector } from '../data/model/selector/selector-domain';
+import { SelectorDTO } from '../data/model/selector/selector-dto';
+import { Spec } from '../data/model/spec/spec-domain';
+import { SpecDomainMapper } from '../core/mappers/spec-domain-mapper';
+import { Variable } from '../data/model/variable/variable';
+import { VariableDomainMapper } from '../core/mappers/variable-domain-mapper';
+import { VarIdedAndTyped } from '../core/default-namers/variable-default-namer';
 import { FieldValidator } from '../validation/field-validator';
 
 export type Injected = {

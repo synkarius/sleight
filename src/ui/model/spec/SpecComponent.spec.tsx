@@ -5,25 +5,35 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { SpecParentComponent } from './SpecParentComponent';
-import { SpecItemType } from './spec-item-type';
-import { saveVariable } from '../variable/variable-reducers';
-import { createRangeVariable, RangeVariable } from '../variable/data/variable';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
+import {
+  createRangeVariable,
+  RangeVariable,
+} from '../../../data/model/variable/variable';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { saveSpec } from './spec-reducers';
-import { createSpecItem, Spec, SpecItem } from './data/spec-domain';
-import { saveSelector } from '../selector/selector-reducers';
-import { createPauseAction, PauseAction } from '../action/pause/pause';
-import { EnterValueType } from '../action/action-value/action-value';
-import { ActionValueType } from '../action/action-value/action-value-type';
-import { VariableType } from '../variable/variable-types';
-import { saveAction } from '../action/action-reducers';
-import { Command, createCommand } from '../command/command';
-import { saveCommand } from '../command/command-reducers';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
+import {
+  createSpecItem,
+  Spec,
+  SpecItem,
+} from '../../../data/model/spec/spec-domain';
+import { saveSelector } from '../../../core/reducers/selector-reducers';
+import {
+  createPauseAction,
+  PauseAction,
+} from '../../../data/model/action/pause/pause';
+import { EnterValueType } from '../../../data/model/action/action-value/action-value';
+import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { VariableType } from '../../../data/model/variable/variable-types';
+import { saveAction } from '../../../core/reducers/action-reducers';
+import { Command, createCommand } from '../../../data/model/command/command';
+import { saveCommand } from '../../../core/reducers/command-reducers';
 import {
   createSelector,
   createSelectorItem,
-} from '../selector/data/selector-domain';
+} from '../../../data/model/selector/selector-domain';
 
 let user: UserEvent;
 // spec adequacy:

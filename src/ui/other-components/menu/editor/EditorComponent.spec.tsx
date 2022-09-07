@@ -4,12 +4,12 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import App from '../../../../App';
 import { store } from '../../../../app/store';
-import { ElementType } from '../../../../common/element-types';
+import { ElementType } from '../../../../data/model/element-types';
 import { Field } from '../../../../validation/validation-field';
-import { createSpec, Spec } from '../../../model/spec/data/spec-domain';
-import { SpecDTO } from '../../../model/spec/data/spec-dto';
-import { getSpecDomainMapper } from '../../../model/spec/data/spec-domain-mapper';
-import { saveSpec } from '../../../model/spec/spec-reducers';
+import { createSpec, Spec } from '../../../../data/model/spec/spec-domain';
+import { SpecDTO } from '../../../../data/model/spec/spec-dto';
+import { getSpecDomainMapper } from '../../../../core/mappers/spec-domain-mapper';
+import { saveSpec } from '../../../../core/reducers/spec-reducers';
 
 let user: UserEvent;
 

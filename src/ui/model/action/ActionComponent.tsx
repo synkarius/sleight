@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { Button, FormControl, FormSelect } from 'react-bootstrap';
 import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../other-components/PanelComponent';
-import { ActionType } from './action-types';
-import { saveAction } from './action-reducers';
+import { ActionType } from '../../../data/model/action/action-types';
+import { saveAction } from '../../../core/reducers/action-reducers';
 import { SendKeyComponent } from './send-key/SendKeyComponent';
-import { isSendKeyAction } from './send-key/send-key';
+import { isSendKeyAction } from '../../../data/model/action/send-key/send-key';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { ValidationContext } from '../../../validation/validation-context';
 import {
@@ -14,15 +14,15 @@ import {
 } from './action-editing-context';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
-import { Action } from './action';
-import { isMouseAction } from './mouse/mouse';
+import { Action } from '../../../data/model/action/action';
+import { isMouseAction } from '../../../data/model/action/mouse/mouse';
 import { MouseComponent } from './mouse/MouseComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { isPauseAction } from './pause/pause';
+import { isPauseAction } from '../../../data/model/action/pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { useSaved } from '../../../data/use-saved-hook';
-import { ElementType } from '../../../common/element-types';
+import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const AC_NAME = Field.AC_NAME;

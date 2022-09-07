@@ -4,29 +4,32 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import App from '../../../App';
 import { store } from '../../../app/store';
-import { ElementType } from '../../../common/element-types';
-import { deleteAction, saveAction } from '../../model/action/action-reducers';
-import { createPauseAction } from '../../model/action/pause/pause';
+import { ElementType } from '../../../data/model/element-types';
+import {
+  deleteAction,
+  saveAction,
+} from '../../../core/reducers/action-reducers';
+import { createPauseAction } from '../../../data/model/action/pause/pause';
 import {
   deleteCommand,
   saveCommand,
-} from '../../model/command/command-reducers';
-import { Command } from '../../model/command/command';
-import { Context, createContext } from '../../model/context/context';
-import { saveContext } from '../../model/context/context-reducers';
-import { SpecDTO } from '../../model/spec/data/spec-dto';
-import { saveSpec } from '../../model/spec/spec-reducers';
-import { saveVariable } from '../../model/variable/variable-reducers';
+} from '../../../core/reducers/command-reducers';
+import { Command } from '../../../data/model/command/command';
+import { Context, createContext } from '../../../data/model/context/context';
+import { saveContext } from '../../../core/reducers/context-reducers';
+import { SpecDTO } from '../../../data/model/spec/spec-dto';
+import { saveSpec } from '../../../core/reducers/spec-reducers';
+import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { Field } from '../../../validation/validation-field';
-import { TEXT_BOX } from '../../../common/accessibility-roles';
+import { TEXT_BOX } from '../../../core/common/accessibility-roles';
 import {
   createRangeVariable,
   RangeVariable,
-} from '../../model/variable/data/variable';
-import { Action } from '../../model/action/action';
+} from '../../../data/model/variable/variable';
+import { Action } from '../../../data/model/action/action';
 import { act } from 'react-dom/test-utils';
-import { VariableType } from '../../model/variable/variable-types';
-import { ActionValueType } from '../../model/action/action-value/action-value-type';
+import { VariableType } from '../../../data/model/variable/variable-types';
+import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
 
 let user: UserEvent;
 

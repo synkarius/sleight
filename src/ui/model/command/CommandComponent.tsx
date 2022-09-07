@@ -9,18 +9,18 @@ import { PanelComponent } from '../../other-components/PanelComponent';
 import { VerticalMoveableComponent } from '../../other-components/VerticalMoveableComponent';
 import { ActionDropdownComponent } from '../action/ActionDropdownComponent';
 import { SpecDropdownComponent } from '../spec/SpecDropdownComponent';
-import { Command } from './command';
+import { Command } from '../../../data/model/command/command';
 import {
   CommandEditingContext,
   CommandReducerActionType,
 } from './command-editing-context';
-import { saveCommand } from './command-reducers';
+import { saveCommand } from '../../../core/reducers/command-reducers';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { InjectionContext } from '../../../di/injector-context';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../data/use-saved-hook';
-import { ElementType } from '../../../common/element-types';
+import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;

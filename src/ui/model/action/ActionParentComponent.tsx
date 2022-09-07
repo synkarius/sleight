@@ -3,11 +3,14 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
-import { Action } from './action';
+import { Action } from '../../../data/model/action/action';
 import { ActionEditingContext } from './action-editing-context';
-import { actionReactReducer, deleteAction } from './action-reducers';
+import {
+  actionReactReducer,
+  deleteAction,
+} from '../../../core/reducers/action-reducers';
 import { ActionComponent } from './ActionComponent';
-import { createSendKeyPressAction } from './send-key/send-key';
+import { createSendKeyPressAction } from '../../../data/model/action/send-key/send-key';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { ArrowDown, ArrowUp } from 'react-bootstrap-icons';
-import { MoveDirection } from '../../common/move-direction';
+import { MoveDirection } from '../../core/common/move-direction';
 import { Field } from '../../validation/validation-field';
 
 export const VerticalMoveableComponent: React.FC<{

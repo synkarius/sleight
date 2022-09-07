@@ -4,9 +4,12 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
-import { Context, createContext } from './context';
+import { Context, createContext } from '../../../data/model/context/context';
 import { ContextEditingContext } from './context-editing-context';
-import { contextReactReducer, deleteContext } from './context-reducers';
+import {
+  contextReactReducer,
+  deleteContext,
+} from '../../../core/reducers/context-reducers';
 import { ContextComponent } from './ContextComponent';
 import { Field } from '../../../validation/validation-field';
 

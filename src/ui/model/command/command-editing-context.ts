@@ -1,5 +1,5 @@
-import { createEditingContext } from '../../../common/editing-context';
-import { MoveDirection } from '../../../common/move-direction';
+import { createEditingContext } from '../../../core/common/editing-context';
+import { MoveDirection } from '../../../core/common/move-direction';
 
 export enum CommandReducerActionType {
   CHANGE_NAME,

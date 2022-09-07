@@ -11,22 +11,22 @@ import {
   createSelector,
   createSelectorItem,
   Selector,
-} from '../selector/data/selector-domain';
+} from '../../../data/model/selector/selector-domain';
 import { SelectorComponent } from '../selector/SelectorComponent';
 import { VerticalMoveableComponent } from '../../other-components/VerticalMoveableComponent';
 import { RequiredAsteriskComponent } from '../../other-components/RequiredAsteriskComponent';
-import { SpecItemType } from './spec-item-type';
+import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
-import { SpecItem } from './data/spec-domain';
+import { SpecItem } from '../../../data/model/spec/spec-domain';
 import { ValidationContext } from '../../../validation/validation-context';
 import {
   SpecEditingContext,
   SpecReducerActionType,
 } from './spec-editing-context';
-import { MoveDirection } from '../../../common/move-direction';
+import { MoveDirection } from '../../../core/common/move-direction';
 import { Field } from '../../../validation/validation-field';
-import { LIST, LIST_ITEM } from '../../../common/accessibility-roles';
-import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
+import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';

@@ -1,5 +1,5 @@
-import { createEditingContext } from '../../../common/editing-context';
-import { ContextType } from './context-types';
+import { createEditingContext } from '../../../core/common/editing-context';
+import { ContextType } from '../../../data/model/context/context-types';
 
 export enum ContextReducerActionType {
   CHANGE_NAME,
