@@ -26,7 +26,7 @@ import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
 import { TextVariableComponent } from './TextVariableComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { useSaved } from '../../../data/use-saved-hook';
+import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 

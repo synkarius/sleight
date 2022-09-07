@@ -21,7 +21,7 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { isPauseAction } from '../../../data/model/action/pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { useSaved } from '../../../data/use-saved-hook';
+import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 
