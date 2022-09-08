@@ -9,6 +9,7 @@ import { simpleSaveFile } from '../../../data/exports/simple-save-file';
 import { ImportResultType } from '../../../data/imports/import-result';
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
+import { cleanData, merge } from '../../../data/data-formats';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
@@ -38,6 +39,10 @@ export const Navigation: React.FC<{}> = () => {
       const importResult = injectionContext.importers.json.import(fileContents);
       if (importResult.type === ImportResultType.VALID) {
         // TODO: version adapters
+        const copiedAllData = structuredClone(allData);
+        const merged = merge(copiedAllData, importResult.data);
+        const cleaned = cleanData(merged);
+        // TODO: validate it
         // TODO: add it to redux
       }
     }
