@@ -103,6 +103,11 @@ export type NumericActionValue =
 
 export type EnumActionValue = EnterEnumActionValue | VariableChoiceActionValue;
 
+export type ActionValue =
+  | TextActionValue
+  | NumericActionValue
+  | EnumActionValue;
+
 //========================================
 //========================================
 //========================================
