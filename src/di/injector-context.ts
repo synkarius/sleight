@@ -15,6 +15,9 @@ import { Variable } from '../data/model/variable/variable';
 import { VariableDomainMapper } from '../core/mappers/variable-domain-mapper';
 import { VarIdedAndTyped } from '../core/default-namers/variable-default-namer';
 import { FieldValidator } from '../validation/field-validator';
+import { Cleaner } from '../core/cleaners/cleaner';
+import { SpecDTO } from '../data/model/spec/spec-dto';
+import { VariableDTO } from '../data/model/variable/variable-dto';
 
 export type Injected = {
   importers: {
@@ -47,6 +50,14 @@ export type Injected = {
       spec: DefaultNamer<Ided>;
       variable: DefaultNamer<VarIdedAndTyped>;
     };
+  };
+  cleaners: {
+    action: Cleaner<Action>;
+    command: Cleaner<Command>;
+    context: Cleaner<Context>;
+    selector: Cleaner<SelectorDTO>;
+    spec: Cleaner<SpecDTO>;
+    variable: Cleaner<VariableDTO>;
   };
 };
 

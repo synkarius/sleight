@@ -2,19 +2,22 @@ import { getDefaultInjectionContext } from '../di/app-default-injection-context'
 import { Action } from './model/action/action';
 import { Command } from './model/command/command';
 import { Context } from './model/context/context';
+import { Ided } from './model/domain';
 import { SelectorDTO } from './model/selector/selector-dto';
 import { SpecDTO } from './model/spec/spec-dto';
 import { VariableDTO } from './model/variable/variable-dto';
 
-export type SleightDataExportFormat = {
-  readonly version: string;
-  //
+type SleightDataArrays = {
   readonly actions: Readonly<Action[]>;
   readonly commands: Readonly<Command[]>;
   readonly contexts: Readonly<Context[]>;
   readonly selectors: Readonly<SelectorDTO[]>;
   readonly specs: Readonly<SpecDTO[]>;
   readonly variables: Readonly<VariableDTO[]>;
+};
+
+export type SleightDataExportFormat = SleightDataArrays & {
+  readonly version: string;
 };
 
 export type SleightDataInternalFormat = {
@@ -39,16 +42,21 @@ export const convertSleightInternalFormatToKeys = (
   };
 };
 
+const reduceIded = <T extends Ided>(record: Record<string, T>, ided: T) => ({
+  ...record,
+  [ided.id]: ided,
+});
+
 export const convertSleightExternalFormatToInternal = (
   external: Omit<SleightDataExportFormat, 'version'>
 ): SleightDataInternalFormat => {
   const result: SleightDataInternalFormat = {
-    actions: external.actions.reduce((obj, i) => ({ ...obj, [i.id]: i }), {}),
-    commands: external.commands.reduce((obj, i) => ({ ...obj, [i.id]: i }), {}),
-    contexts: external.contexts.reduce((obj, i) => ({ ...obj, [i.id]: i }), {}),
-    selectors: external.selectors.reduce((o, i) => ({ ...o, [i.id]: i }), {}),
-    specs: external.specs.reduce((obj, i) => ({ ...obj, [i.id]: i }), {}),
-    variables: external.variables.reduce((o, i) => ({ ...o, [i.id]: i }), {}),
+    actions: external.actions.reduce(reduceIded, {}),
+    commands: external.commands.reduce(reduceIded, {}),
+    contexts: external.contexts.reduce(reduceIded, {}),
+    selectors: external.selectors.reduce(reduceIded, {}),
+    specs: external.specs.reduce(reduceIded, {}),
+    variables: external.variables.reduce(reduceIded, {}),
   };
   return result;
 };
@@ -63,43 +71,22 @@ export const merge = (
   };
 };
 
-/** Clean data by mapping back and forth -- should remove values not in format. */
+/** Clean data -- should remove values not in format. */
 export const cleanData = (
   data: SleightDataInternalFormat
 ): SleightDataInternalFormat => {
-  const injected = getDefaultInjectionContext();
-  const mappers = injected.mappers;
   // convert records to arrays
-  const values: Omit<SleightDataExportFormat, 'version'> =
-    convertSleightInternalFormatToKeys(data);
-  // convert selectors early b/c other conversions depend on them
-  const selectors = values.selectors
-    .map((selector) => mappers.selector.mapToDomain(selector))
-    .map((selector) => mappers.selector.mapFromDomain(selector));
-  const selectorsRecord: Record<string, SelectorDTO> = selectors.reduce(
-    (o, i) => ({ ...o, [i.id]: i }),
-    {}
-  );
-  // map back and forth
-  const cleanedValues: Omit<SleightDataExportFormat, 'version'> = {
-    actions: values.actions
-      .map((action) => mappers.action.mapToDomain(action))
-      .map((action) => mappers.action.mapFromDomain(action)),
-    commands: values.commands
-      .map((command) => mappers.command.mapToDomain(command))
-      .map((command) => mappers.command.mapFromDomain(command)),
-    contexts: values.contexts
-      .map((context) => mappers.context.mapToDomain(context))
-      .map((context) => mappers.context.mapFromDomain(context)),
-    selectors,
-    specs: values.specs
-      .map((spec) => mappers.spec.mapToDomain(spec, selectorsRecord))
-      .map((spec) => mappers.spec.mapFromDomain(spec)),
-    variables: values.variables
-      .map((variable) =>
-        mappers.variable.mapToDomain(variable, selectorsRecord)
-      )
-      .map((variable) => mappers.variable.mapFromDomain(variable)),
+  const arrays: SleightDataArrays = convertSleightInternalFormatToKeys(data);
+  // clean data
+  const injected = getDefaultInjectionContext();
+  const cleaners = injected.cleaners;
+  const cleanedValues: SleightDataArrays = {
+    actions: cleaners.action.clean(arrays.actions),
+    commands: cleaners.command.clean(arrays.commands),
+    contexts: cleaners.context.clean(arrays.contexts),
+    selectors: cleaners.selector.clean(arrays.selectors),
+    specs: cleaners.spec.clean(arrays.specs),
+    variables: cleaners.variable.clean(arrays.variables),
   };
   // convert back to internal format
   const internalFormat = convertSleightExternalFormatToInternal(cleanedValues);

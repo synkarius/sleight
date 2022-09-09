@@ -27,6 +27,12 @@ import { getVariableValidators } from '../core/validators/variable-validators';
 import { getCommandDomainMapper } from '../core/mappers/command-domain-mapper';
 import { getActionDomainMapper } from '../core/mappers/action-domain-mapper';
 import { getContextDomainMapper } from '../core/mappers/context-domain-mapper';
+import { getActionMappingCleaner } from '../core/cleaners/action-cleaner';
+import { getCommandMappingCleaner } from '../core/cleaners/command-cleaner';
+import { getContextMappingCleaner } from '../core/cleaners/context-cleaner';
+import { getSelectorMappingCleaner } from '../core/cleaners/selector-cleaner';
+import { getSpecCleaner } from '../core/cleaners/spec-cleaner';
+import { getVariableCleaner } from '../core/cleaners/variable-cleaner';
 
 let instance: Injected | undefined = undefined;
 
@@ -77,6 +83,14 @@ export const getDefaultInjectionContext = (): Injected => {
           spec: getDefaultSpecNamer(),
           variable: getDefaultVariableNamer(),
         },
+      },
+      cleaners: {
+        action: getActionMappingCleaner(),
+        command: getCommandMappingCleaner(),
+        context: getContextMappingCleaner(),
+        selector: getSelectorMappingCleaner(),
+        spec: getSpecCleaner(),
+        variable: getVariableCleaner(),
       },
     };
   }
