@@ -33,18 +33,27 @@ import { getContextMappingCleaner } from '../core/cleaners/context-cleaner';
 import { getSelectorMappingCleaner } from '../core/cleaners/selector-cleaner';
 import { getSpecCleaner } from '../core/cleaners/spec-cleaner';
 import { getVariableCleaner } from '../core/cleaners/variable-cleaner';
+import { getImportsValidator } from '../data/imports/imports-validator';
+import { getCopyingImportDataMerger } from '../data/imports/import-data-merger';
+import { getFormatMapper } from '../data/data-format-mapper';
+import { getImportsCleaner } from '../data/imports/imports-cleaner';
 
 let instance: Injected | undefined = undefined;
 
 export const getDefaultInjectionContext = (): Injected => {
   if (!instance) {
     instance = {
-      importers: {
-        json: getJsonImporter(),
+      imports: {
+        importers: {
+          json: getJsonImporter(),
+        },
+        dataMerger: getCopyingImportDataMerger(),
       },
-      exporters: {
-        json: getJsonExporter(),
-        dragonfly: getDragonflyExporter(),
+      exports: {
+        exporters: {
+          json: getJsonExporter(),
+          dragonfly: getDragonflyExporter(),
+        },
       },
       validators: {
         action: [
@@ -66,6 +75,7 @@ export const getDefaultInjectionContext = (): Injected => {
           ...getVariableValidators(),
           ...getCrossSliceVariableValidators(),
         ],
+        imports: getImportsValidator(),
       },
       mappers: {
         action: getActionDomainMapper(),
@@ -74,6 +84,7 @@ export const getDefaultInjectionContext = (): Injected => {
         selector: getSelectorDomainMapper(),
         spec: getSpecDomainMapper(),
         variable: getVariableDomainMapper(),
+        dataFormat: getFormatMapper(),
       },
       default: {
         namers: {
@@ -91,6 +102,7 @@ export const getDefaultInjectionContext = (): Injected => {
         selector: getSelectorMappingCleaner(),
         spec: getSpecCleaner(),
         variable: getVariableCleaner(),
+        imports: getImportsCleaner(),
       },
     };
   }

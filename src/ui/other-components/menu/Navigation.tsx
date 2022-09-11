@@ -9,7 +9,7 @@ import { simpleSaveFile } from '../../../data/exports/simple-save-file';
 import { ImportResultType } from '../../../data/imports/import-result';
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
-import { cleanData, merge } from '../../../data/data-formats';
+import { ImportValidationResultType } from '../../../data/imports/imports-validator';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
@@ -18,11 +18,11 @@ export const Navigation: React.FC<{}> = () => {
   const importInputRef = useRef<HTMLInputElement | null>(null);
 
   const exportJson = () => {
-    const data = injectionContext.exporters.json.export(allData);
+    const data = injectionContext.exports.exporters.json.export(allData);
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
   const exportDragonfly = () => {
-    const data = injectionContext.exporters.dragonfly.export(allData);
+    const data = injectionContext.exports.exporters.dragonfly.export(allData);
     simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
   };
   const importFileClickHandler = () => {
@@ -36,14 +36,22 @@ export const Navigation: React.FC<{}> = () => {
     const file = e.target.files?.item(0);
     const fileContents = await file?.text();
     if (fileContents) {
-      const importResult = injectionContext.importers.json.import(fileContents);
+      const importResult =
+        injectionContext.imports.importers.json.import(fileContents);
       if (importResult.type === ImportResultType.VALID) {
         // TODO: version adapters
-        const copiedAllData = structuredClone(allData);
-        const merged = merge(copiedAllData, importResult.data);
-        const cleaned = cleanData(merged);
-        // TODO: validate it
-        // TODO: add it to redux
+        const merged = injectionContext.imports.dataMerger.merge(
+          allData,
+          importResult.data
+        );
+        const cleaned = injectionContext.cleaners.imports.cleanData(merged);
+        const validationResult =
+          injectionContext.validators.imports.validateImportedData(cleaned);
+        if (validationResult.status === ImportValidationResultType.VALID) {
+          // TODO: add it to redux
+        } else {
+          // TODO: error toast "Import Failed - See Logs" and log results
+        }
       }
     }
   };

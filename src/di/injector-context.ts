@@ -18,14 +18,23 @@ import { FieldValidator } from '../validation/field-validator';
 import { Cleaner } from '../core/cleaners/cleaner';
 import { SpecDTO } from '../data/model/spec/spec-dto';
 import { VariableDTO } from '../data/model/variable/variable-dto';
+import { ImportsValidator } from '../data/imports/imports-validator';
+import { ImportDataMerger } from '../data/imports/import-data-merger';
+import { ImportsCleaner } from '../data/imports/imports-cleaner';
+import { FormatMapper } from '../data/data-format-mapper';
 
 export type Injected = {
-  importers: {
-    json: Importer;
+  imports: {
+    importers: {
+      json: Importer;
+    };
+    dataMerger: ImportDataMerger;
   };
-  exporters: {
-    json: Exporter;
-    dragonfly: Exporter;
+  exports: {
+    exporters: {
+      json: Exporter;
+      dragonfly: Exporter;
+    };
   };
   validators: {
     action: FieldValidator<Action>[];
@@ -33,6 +42,7 @@ export type Injected = {
     context: FieldValidator<Context>[];
     spec: FieldValidator<Spec>[];
     variable: FieldValidator<Variable>[];
+    imports: ImportsValidator;
   };
   mappers: {
     action: DomainMapper<Action, Action>;
@@ -41,6 +51,7 @@ export type Injected = {
     selector: DomainMapper<Selector, SelectorDTO>;
     spec: SpecDomainMapper;
     variable: VariableDomainMapper;
+    dataFormat: FormatMapper;
   };
   default: {
     namers: {
@@ -58,6 +69,7 @@ export type Injected = {
     selector: Cleaner<SelectorDTO>;
     spec: Cleaner<SpecDTO>;
     variable: Cleaner<VariableDTO>;
+    imports: ImportsCleaner;
   };
 };
 
