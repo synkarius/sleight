@@ -7,7 +7,7 @@ import {
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
-export const getOuterPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
+export const getSkOuterPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
       Object.values(outerPauseGroup).includes(action.payload.field) &&

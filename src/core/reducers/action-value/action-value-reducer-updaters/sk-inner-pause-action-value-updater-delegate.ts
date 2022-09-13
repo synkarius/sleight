@@ -10,7 +10,7 @@ import {
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
-export const getInnerPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
+export const getSkInnerPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
       Object.values(innerPauseGroup).includes(action.payload.field) &&

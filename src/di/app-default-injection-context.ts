@@ -37,6 +37,7 @@ import { getImportsValidator } from '../data/imports/imports-validator';
 import { getCopyingImportDataMerger } from '../data/imports/import-data-merger';
 import { getFormatMapper } from '../data/data-format-mapper';
 import { getImportsCleaner } from '../data/imports/imports-cleaner';
+import { getMouseValidators } from '../core/validators/action/mouse-validators';
 
 let instance: Injected | undefined = undefined;
 
@@ -60,6 +61,7 @@ export const getDefaultInjectionContext = (): Injected => {
           ...getActionValidators(),
           ...getSendKeyValidators(),
           ...getPauseValidators(),
+          ...getMouseValidators(),
           ...getCrossSliceActionValidators(),
         ],
         command: [

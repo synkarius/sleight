@@ -12,6 +12,7 @@ import {
   ActionReducerActionTypePayloadAction,
   ActionReducerMouseActionTypePayloadAction,
   ActionReducerMouseMovementTypePayloadAction,
+  ActionReducerNumberPayloadAction,
 } from '../../ui/model/action/action-editing-context';
 import { ActionType } from '../../data/model/action/action-types';
 import { ActionValueUpdater } from './action-value/action-value-reducer-updaters/action-value-updater';
@@ -20,6 +21,8 @@ import {
   copyIntoMouseClickAction,
   copyIntoMouseHoldAction,
   copyIntoMouseMoveAction,
+  isMouseAction,
+  isMoveMouseAction,
   MoveMouseAction,
 } from '../../data/model/action/mouse/mouse';
 import { MouseActionType } from '../../data/model/action/mouse/mouse-action-type';
@@ -33,6 +36,7 @@ import {
 } from '../../data/model/action/send-key/send-key';
 import { SendKeyMode } from '../../data/model/action/send-key/send-key-modes';
 import { SendKeyModifiers } from '../../data/model/action/send-key/send-key-modifiers';
+import { WrongTypeError } from '../../error/wrong-type-error';
 
 export type ActionsState = {
   saved: Record<string, Action>;
@@ -134,7 +138,7 @@ const changeEditingMouseActionType = (
   switch (action.payload) {
     case MouseActionType.Enum.MOVE:
       return copyIntoMouseMoveAction(state);
-    case MouseActionType.Enum.PRESS:
+    case MouseActionType.Enum.CLICK:
       return copyIntoMouseClickAction(state);
     case MouseActionType.Enum.HOLD_RELEASE:
       return copyIntoMouseHoldAction(state);
@@ -144,29 +148,51 @@ const changeEditingMouseActionType = (
 };
 
 const changeEditingMouseMovementType = (
-  state: Action,
+  state: MoveMouseAction,
   action: ActionReducerMouseMovementTypePayloadAction
-): Action => {
+): MoveMouseAction => {
   switch (action.payload) {
     case MouseMovementType.Enum.ABSOLUTE:
       return {
-        ...(state as MoveMouseAction),
+        ...state,
         mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
+        x: Math.round(state.x),
+        y: Math.round(state.y),
       };
     case MouseMovementType.Enum.RELATIVE:
       return {
-        ...(state as MoveMouseAction),
+        ...state,
         mouseMovementType: MouseMovementType.Enum.RELATIVE,
+        x: Math.round(state.x),
+        y: Math.round(state.y),
       };
     case MouseMovementType.Enum.WINDOW:
       return {
-        ...(state as MoveMouseAction),
+        ...state,
         mouseMovementType: MouseMovementType.Enum.WINDOW,
+        x: Math.min(Math.max(state.x, 1), 0),
+        y: Math.min(Math.max(state.y, 1), 0),
       };
     default:
       throw new ExhaustivenessFailureError(action.payload);
   }
 };
+
+const changeEditingMouseMovementX = (
+  state: MoveMouseAction,
+  action: ActionReducerNumberPayloadAction
+): MoveMouseAction => ({
+  ...state,
+  x: action.payload,
+});
+
+const changeEditingMouseMovementY = (
+  state: MoveMouseAction,
+  action: ActionReducerNumberPayloadAction
+): MoveMouseAction => ({
+  ...state,
+  y: action.payload,
+});
 
 const changeEditingActionType = (
   state: Action,
@@ -240,7 +266,20 @@ export const actionReactReducer = (
     case ActionReducerActionType.CHANGE_MOUSE_ACTION_TYPE:
       return changeEditingMouseActionType(state, action);
     case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE:
-      return changeEditingMouseMovementType(state, action);
+      if (isMouseAction(state) && isMoveMouseAction(state)) {
+        return changeEditingMouseMovementType(state, action);
+      }
+      throw new WrongTypeError('CHANGE_MOUSE_MOVEMENT_TYPE');
+    case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_X:
+      if (isMouseAction(state) && isMoveMouseAction(state)) {
+        return changeEditingMouseMovementX(state, action);
+      }
+      throw new WrongTypeError('CHANGE_MOUSE_MOVEMENT_X');
+    case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_Y:
+      if (isMouseAction(state) && isMoveMouseAction(state)) {
+        return changeEditingMouseMovementY(state, action);
+      }
+      throw new WrongTypeError('CHANGE_MOUSE_MOVEMENT_Y');
     case ActionReducerActionType.TOGGLE_ENABLED:
       return toggleEditingActionEnabled(state);
     case ActionReducerActionType.TOGGLE_LOCKED:

@@ -18,6 +18,8 @@ export enum ActionReducerActionType {
   CHANGE_SEND_KEY_MODE,
   CHANGE_MOUSE_ACTION_TYPE,
   CHANGE_MOUSE_MOVEMENT_TYPE,
+  CHANGE_MOUSE_MOVEMENT_X,
+  CHANGE_MOUSE_MOVEMENT_Y,
   TOGGLE_ENABLED,
   TOGGLE_LOCKED,
 }
@@ -41,6 +43,12 @@ export interface ActionReducerStringPayloadAction
   type:
     | typeof ActionReducerActionType.CHANGE_NAME
     | typeof ActionReducerActionType.CHANGE_ROLE_KEY;
+}
+export interface ActionReducerNumberPayloadAction
+  extends AbstractActionReducerAction<number> {
+  type:
+    | typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_X
+    | typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_Y;
 }
 export interface ActionReducerActionTypePayloadAction
   extends AbstractActionReducerAction<ActionType.Type> {
@@ -81,6 +89,7 @@ export interface ActionReducerToggleAction
 }
 export type ActionReducerAction =
   | ActionReducerStringPayloadAction
+  | ActionReducerNumberPayloadAction
   | ActionReducerActionTypePayloadAction
   | ActionReducerActionValueTypePayloadAction
   | ActionReducerSendKeyModePayloadAction

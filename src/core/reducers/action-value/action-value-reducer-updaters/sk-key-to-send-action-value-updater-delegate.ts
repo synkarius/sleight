@@ -7,7 +7,7 @@ import {
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
-export const getKeyToSendActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
+export const getSkKeyToSendActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
       Object.values(keyToSendGroup).includes(action.payload.field) &&
