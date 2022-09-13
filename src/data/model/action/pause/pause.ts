@@ -1,5 +1,8 @@
-import { getRandomId } from '../../../../core/common/random-id';
-import { AbstractAction, copyAction } from '../abstract-action';
+import {
+  AbstractAction,
+  copyAction,
+  createAbstractAction,
+} from '../abstract-action';
 import { Action } from '../action';
 import { ActionType } from '../action-types';
 import {
@@ -17,12 +20,8 @@ export const isPauseAction = (action: AbstractAction): action is PauseAction =>
 
 export const createPauseAction = (): PauseAction => {
   return {
-    id: getRandomId(),
-    name: '',
+    ...createAbstractAction(),
     type: ActionType.Enum.PAUSE,
-    roleKey: '',
-    enabled: true,
-    locked: false,
     centiseconds: createNumericValue(),
   };
 };

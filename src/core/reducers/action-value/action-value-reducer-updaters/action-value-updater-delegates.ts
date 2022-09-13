@@ -8,7 +8,7 @@ import { getSkInnerPauseActionValueUpdaterDelegate } from './sk-inner-pause-acti
 import { getSkKeyToSendActionValueUpdaterDelegate } from './sk-key-to-send-action-value-updater-delegate';
 import { getSkOuterPauseActionValueUpdaterDelegate } from './sk-outer-pause-action-value-updater-delegate';
 import { getSkRepeatActionValueUpdaterDelegate } from './sk-repeat-action-value-updater-delegate';
-import { getMhrDirectionActionValueUpdaterDelegate } from './mhr-direction-action-value-updater-delegate copy';
+import { getMhrDirectionActionValueUpdaterDelegate } from './mhr-direction-action-value-updater-delegate';
 
 export const getActionValueUpdaterDelegates: () => ActionValueUpdaterDelegate[] =
   () => [
