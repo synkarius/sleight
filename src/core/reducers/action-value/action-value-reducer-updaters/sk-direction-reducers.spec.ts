@@ -24,7 +24,7 @@ describe('action reducer: action.direction', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: Field.AC_DIRECTION_RADIO,
+        field: Field.AC_SK_DIRECTION_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
@@ -46,7 +46,7 @@ describe('action reducer: action.direction', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        field: Field.AC_DIRECTION_VALUE,
+        field: Field.AC_SK_DIRECTION_VALUE,
         value: 'asdf',
       },
     });
@@ -67,7 +67,7 @@ describe('action reducer: action.direction', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        field: Field.AC_DIRECTION_VAR,
+        field: Field.AC_SK_DIRECTION_VAR,
         value: 'asdf',
       },
     });

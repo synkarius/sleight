@@ -42,29 +42,29 @@ export const extractVariablesFromAction = (action: Action): VAV_A_F[] => {
       results.push({
         ...action.keyToSend,
         actionId: action.id,
-        field: Field.AC_KEY_TO_SEND_VAR,
+        field: Field.AC_SK_KEY_TO_SEND_VAR,
       });
       results.push({
         ...action.outerPause,
         actionId: action.id,
-        field: Field.AC_OUTER_PAUSE_VAR,
+        field: Field.AC_SK_OUTER_PAUSE_VAR,
       });
       if (action.sendKeyMode === SendKeyMode.Enum.PRESS) {
         results.push({
           ...action.innerPause,
           actionId: action.id,
-          field: Field.AC_INNER_PAUSE_VAR,
+          field: Field.AC_SK_INNER_PAUSE_VAR,
         });
         results.push({
           ...action.repeat,
           actionId: action.id,
-          field: Field.AC_REPEAT_VAR,
+          field: Field.AC_SK_REPEAT_VAR,
         });
       } else {
         results.push({
           ...action.direction,
           actionId: action.id,
-          field: Field.AC_DIRECTION_VAR,
+          field: Field.AC_SK_DIRECTION_VAR,
         });
       }
       break;

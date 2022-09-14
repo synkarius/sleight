@@ -185,7 +185,7 @@ describe('action component tests', () => {
     doRender();
 
     const select = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.AC_KEY_TO_SEND_VALUE],
+      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
     });
     await user.click(select);
     await user.tab();

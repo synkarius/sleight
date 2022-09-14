@@ -49,7 +49,7 @@ describe('editor mode focus tests', () => {
   it('action should clear on save', async () => {
     await clickToCreateNew(ElementType.Enum.ACTION);
     const keyToSendField = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.AC_KEY_TO_SEND_VALUE],
+      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
     });
     // minimal info to save
     await user.selectOptions(keyToSendField, 'b (bravo)');

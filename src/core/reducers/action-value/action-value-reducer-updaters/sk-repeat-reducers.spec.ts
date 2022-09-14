@@ -23,7 +23,7 @@ describe('action reducer: action.repeat', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: Field.AC_REPEAT_RADIO,
+        field: Field.AC_SK_REPEAT_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
@@ -45,7 +45,7 @@ describe('action reducer: action.repeat', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        field: Field.AC_REPEAT_VALUE,
+        field: Field.AC_SK_REPEAT_VALUE,
         value: '34',
       },
     });
@@ -66,7 +66,7 @@ describe('action reducer: action.repeat', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        field: Field.AC_REPEAT_VAR,
+        field: Field.AC_SK_REPEAT_VAR,
         value: 'asdf',
       },
     });

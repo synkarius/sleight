@@ -129,7 +129,7 @@ const directionValidators: ActionValueValidators = {
       isEnterEnumActionValue(action.direction) &&
       isSelected(action.direction.value),
     ValidationErrorCode.AC_AV_EMPTY,
-    createNonSelectedEnumError(MOUSE_BUTTON)
+    createNonSelectedEnumError(DIRECTION)
   ),
   variable: createValidator(
     Field.AC_MOUSE_DIRECTION_VAR,

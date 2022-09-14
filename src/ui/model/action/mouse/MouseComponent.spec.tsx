@@ -1,15 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { store } from '../../../../app/store';
+import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { InjectionContext } from '../../../../di/injector-context';
+import { ActionParentComponent } from '../ActionParentComponent';
+import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Field } from '../../../../validation/validation-field';
-import { createSelector } from '../../../../data/model/selector/selector-domain';
-import { saveSelector } from '../../../../core/reducers/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
-import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
+import { ActionType } from '../../../../data/model/action/action-types';
+import { MouseActionType } from '../../../../data/model/action/mouse/mouse-action-type';
 import {
   ChoiceVariable,
   createChoiceItem,
@@ -17,9 +16,11 @@ import {
   createRangeVariable,
   RangeVariable,
 } from '../../../../data/model/variable/variable';
+import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
-import { ActionType } from '../../../../data/model/action/action-types';
-import { ActionParentComponent } from '../ActionParentComponent';
+import { createSelector } from '../../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../../core/reducers/selector-reducers';
+import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -32,7 +33,6 @@ beforeAll(() => {
   const rangeVariable: RangeVariable = {
     ...createRangeVariable(),
     name: RANGE_VARIABLE_NAME,
-    // roleKey: roleKeyRange.id,
   };
   const rangeVariableDTO =
     getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
@@ -62,45 +62,11 @@ beforeEach(async () => {
   const actionTypeSelect = screen.getByRole('list', {
     name: Field[Field.AC_TYPE],
   });
-  await user.selectOptions(actionTypeSelect, ActionType.Enum.PAUSE);
-});
-
-describe('pause action component tests', () => {
-  it('should invalidate non-selected centiseconds variable', async () => {
-    await selectActionValueType(
-      user,
-      Field.AC_CENTISECONDS_RADIO,
-      VARIABLE_RADIO
-    );
-    const select = screen.getByRole('list', {
-      name: Field[Field.AC_CENTISECONDS_VAR],
-    });
-    await user.click(select);
-    await user.tab();
-
-    const errorText = screen.getByText(
-      'centiseconds : variable must be selected'
-    );
-
-    expect(errorText).toBeInTheDocument();
-    expect(select).toHaveClass('is-invalid');
+  await user.selectOptions(actionTypeSelect, ActionType.Enum.MOUSE);
+  const mouseActionTypeSelect = screen.getByRole('list', {
+    name: Field[Field.AC_MOUSE_ACTION_TYPE],
   });
-
-  it('should validate selected centiseconds variable', async () => {
-    await selectActionValueType(
-      user,
-      Field.AC_CENTISECONDS_RADIO,
-      VARIABLE_RADIO
-    );
-    const select = screen.getByRole('list', {
-      name: Field[Field.AC_CENTISECONDS_VAR],
-    });
-    await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
-
-    await user.tab();
-
-    expect(select).not.toHaveClass('is-invalid');
-  });
+  await user.selectOptions(mouseActionTypeSelect, MouseActionType.Enum.CLICK);
 });
 
 const selectActionValueType = async (
@@ -114,3 +80,27 @@ const selectActionValueType = async (
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
 };
+
+describe('mouse action component tests', () => {
+  it('should reset valid status on change mouse action type', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_MOUSE_REPEAT_RADIO,
+      VARIABLE_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_REPEAT_VAR],
+    });
+    await user.click(select);
+    await user.tab();
+    // is invalid at this point
+    const mouseActionTypeSelect = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_ACTION_TYPE],
+    });
+    await user.selectOptions(mouseActionTypeSelect, MouseActionType.Enum.MOVE);
+    // should be valid again
+
+    const saveButton = screen.getByText<HTMLButtonElement>('Save');
+    expect(saveButton).not.toBeDisabled();
+  });
+});

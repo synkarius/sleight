@@ -1,15 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { store } from '../../../../app/store';
+import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { InjectionContext } from '../../../../di/injector-context';
+import { ActionParentComponent } from '../ActionParentComponent';
+import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Field } from '../../../../validation/validation-field';
-import { createSelector } from '../../../../data/model/selector/selector-domain';
-import { saveSelector } from '../../../../core/reducers/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
-import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
+import { ActionType } from '../../../../data/model/action/action-types';
+import { MouseActionType } from '../../../../data/model/action/mouse/mouse-action-type';
 import {
   ChoiceVariable,
   createChoiceItem,
@@ -17,9 +16,11 @@ import {
   createRangeVariable,
   RangeVariable,
 } from '../../../../data/model/variable/variable';
+import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
-import { ActionParentComponent } from '../ActionParentComponent';
-import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
+import { createSelector } from '../../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../../core/reducers/selector-reducers';
+import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -58,6 +59,14 @@ beforeEach(async () => {
       </InjectionContext.Provider>
     </Provider>
   );
+  const actionTypeSelect = screen.getByRole('list', {
+    name: Field[Field.AC_TYPE],
+  });
+  await user.selectOptions(actionTypeSelect, ActionType.Enum.MOUSE);
+  const mouseActionTypeSelect = screen.getByRole('list', {
+    name: Field[Field.AC_MOUSE_ACTION_TYPE],
+  });
+  await user.selectOptions(mouseActionTypeSelect, MouseActionType.Enum.CLICK);
 });
 
 const selectActionValueType = async (
@@ -72,95 +81,96 @@ const selectActionValueType = async (
   await user.click(options[index]);
 };
 
-describe('sendKey action component tests', () => {
-  it('should invalidate empty key to send value', async () => {
+describe('mouse click action component tests', () => {
+  it('should invalidate empty mouse button value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VALUE],
     });
     await user.click(select);
 
     await user.tab();
-    const errorText = screen.getByText('key to send : value must be selected');
+
+    const errorText = screen.getByText('mouse button : value must be selected');
 
     expect(errorText).toBeInTheDocument();
     expect(select).toHaveClass('is-invalid');
   });
 
-  it('should validate non-empty key to send value', async () => {
+  it('should validate non-empty mouse button value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VALUE],
     });
     await user.click(select);
 
-    await user.selectOptions(select, 'a (alpha)');
+    await user.selectOptions(select, 'Left');
     await user.tab();
 
     expect(select).not.toHaveClass('is-invalid');
   });
 
-  it('should invalidate non-selected key to send variable', async () => {
+  it('should invalidate non-selected mouse button variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_KEY_TO_SEND_RADIO,
+      Field.AC_MOUSE_MOUSE_BUTTON_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VAR],
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VAR],
     });
     await user.click(select);
+
     await user.tab();
 
     const errorText = screen.getByText(
-      'key to send : variable must be selected'
+      'mouse button : variable must be selected'
     );
 
     expect(errorText).toBeInTheDocument();
     expect(select).toHaveClass('is-invalid');
   });
 
-  it('should validate selected key to send variable', async () => {
+  it('should validate selected mouse button variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_KEY_TO_SEND_RADIO,
+      Field.AC_MOUSE_MOUSE_BUTTON_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VAR],
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VAR],
     });
     await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
+
     await user.tab();
 
     expect(select).not.toHaveClass('is-invalid');
   });
 
-  it('should invalidate non-selected outer pause variable', async () => {
+  it('should invalidate non-selected pause variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_OUTER_PAUSE_RADIO,
+      Field.AC_MOUSE_PAUSE_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_OUTER_PAUSE_VAR],
+      name: Field[Field.AC_MOUSE_PAUSE_VAR],
     });
     await user.click(select);
     await user.tab();
 
-    const errorText = screen.getByText(
-      'outer pause : variable must be selected'
-    );
+    const errorText = screen.getByText('pause : variable must be selected');
 
     expect(errorText).toBeInTheDocument();
     expect(select).toHaveClass('is-invalid');
   });
 
-  it('should validate selected outer pause variable', async () => {
+  it('should validate selected pause variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_OUTER_PAUSE_RADIO,
+      Field.AC_MOUSE_PAUSE_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_OUTER_PAUSE_VAR],
+      name: Field[Field.AC_MOUSE_PAUSE_VAR],
     });
     await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
 
@@ -169,25 +179,37 @@ describe('sendKey action component tests', () => {
     expect(select).not.toHaveClass('is-invalid');
   });
 
-  it('should reset valid status on change send key mode', async () => {
+  it('should invalidate non-selected repeat variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_OUTER_PAUSE_RADIO,
+      Field.AC_MOUSE_REPEAT_RADIO,
       VARIABLE_RADIO
     );
-    const outerPauseSelect = screen.getByRole('list', {
-      name: Field[Field.AC_SK_OUTER_PAUSE_VAR],
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_REPEAT_VAR],
     });
-    await user.click(outerPauseSelect);
+    await user.click(select);
     await user.tab();
-    // is invalid at this point
-    const sendKeyModeSelect = screen.getByRole('list', {
-      name: Field[Field.AC_SEND_KEY_MODE],
-    });
-    await user.selectOptions(sendKeyModeSelect, SendKeyMode.Enum.HOLD_RELEASE);
-    // should be valid again
 
-    const saveButton = screen.getByText<HTMLButtonElement>('Save');
-    expect(saveButton).not.toBeDisabled();
+    const errorText = screen.getByText('repeat : variable must be selected');
+
+    expect(errorText).toBeInTheDocument();
+    expect(select).toHaveClass('is-invalid');
+  });
+
+  it('should validate selected repeat variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_MOUSE_REPEAT_RADIO,
+      VARIABLE_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_REPEAT_VAR],
+    });
+    await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
+
+    await user.tab();
+
+    expect(select).not.toHaveClass('is-invalid');
   });
 });

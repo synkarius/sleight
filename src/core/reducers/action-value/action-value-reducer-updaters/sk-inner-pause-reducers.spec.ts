@@ -23,7 +23,7 @@ describe('action reducer: action.innerPause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: Field.AC_INNER_PAUSE_RADIO,
+        field: Field.AC_SK_INNER_PAUSE_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
@@ -45,7 +45,7 @@ describe('action reducer: action.innerPause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        field: Field.AC_INNER_PAUSE_VALUE,
+        field: Field.AC_SK_INNER_PAUSE_VALUE,
         value: '34',
       },
     });
@@ -66,7 +66,7 @@ describe('action reducer: action.innerPause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        field: Field.AC_INNER_PAUSE_VAR,
+        field: Field.AC_SK_INNER_PAUSE_VAR,
         value: 'asdf',
       },
     });

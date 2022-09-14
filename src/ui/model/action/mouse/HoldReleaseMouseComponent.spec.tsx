@@ -1,46 +1,52 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { store } from '../../../../app/store';
+import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { InjectionContext } from '../../../../di/injector-context';
+import { ActionParentComponent } from '../ActionParentComponent';
+import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Field } from '../../../../validation/validation-field';
-import { createSelector } from '../../../../data/model/selector/selector-domain';
-import { saveSelector } from '../../../../core/reducers/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
-import { getTextVariableDomainMapper } from '../../../../core/mappers/text-variable-domain-mapper-delegate';
+import { ActionType } from '../../../../data/model/action/action-types';
+import { MouseActionType } from '../../../../data/model/action/mouse/mouse-action-type';
 import {
   ChoiceVariable,
   createChoiceItem,
   createChoiceVariable,
-  createTextVariable,
+  createRangeVariable,
+  RangeVariable,
 } from '../../../../data/model/variable/variable';
+import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
-import { ActionParentComponent } from '../ActionParentComponent';
-import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
+import { createSelector } from '../../../../data/model/selector/selector-domain';
+import { saveSelector } from '../../../../core/reducers/selector-reducers';
+import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
 
-const VARIABLE_NAME = 'asdf-range-var';
+const RANGE_VARIABLE_NAME = 'asdf-range-var';
+const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
 const VARIABLE_RADIO = 1;
 type Radio = 0 | 1;
 let user: UserEvent;
 
 beforeAll(() => {
   // save variables
+  const rangeVariable: RangeVariable = {
+    ...createRangeVariable(),
+    name: RANGE_VARIABLE_NAME,
+  };
+  const rangeVariableDTO =
+    getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
+  store.dispatch(saveVariable(rangeVariableDTO));
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
   const choiceVariable: ChoiceVariable = {
     ...createChoiceVariable(),
-    name: VARIABLE_NAME,
+    name: CHOICE_VARIABLE_NAME,
     items: [createChoiceItem(choiceItemSelector)],
   };
   const choiceVariableDTO =
     getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
   store.dispatch(saveVariable(choiceVariableDTO));
-  const textVariable = createTextVariable();
-  const textVariableDTO =
-    getTextVariableDomainMapper().mapFromDomain(textVariable);
-  store.dispatch(saveVariable(textVariableDTO));
 
   user = userEvent.setup();
 });
@@ -53,10 +59,17 @@ beforeEach(async () => {
       </InjectionContext.Provider>
     </Provider>
   );
-  const sendKeyModeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_SEND_KEY_MODE],
+  const actionTypeSelect = screen.getByRole('list', {
+    name: Field[Field.AC_TYPE],
   });
-  await user.selectOptions(sendKeyModeSelect, SendKeyMode.Enum.HOLD_RELEASE);
+  await user.selectOptions(actionTypeSelect, ActionType.Enum.MOUSE);
+  const mouseActionTypeSelect = screen.getByRole('list', {
+    name: Field[Field.AC_MOUSE_ACTION_TYPE],
+  });
+  await user.selectOptions(
+    mouseActionTypeSelect,
+    MouseActionType.Enum.HOLD_RELEASE
+  );
 });
 
 const selectActionValueType = async (
@@ -71,10 +84,44 @@ const selectActionValueType = async (
   await user.click(options[index]);
 };
 
-describe('sendKeyHoldRelease action component tests', () => {
+describe('mouse hold/release action component tests', () => {
+  it('should invalidate non-selected pause variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_MOUSE_PAUSE_RADIO,
+      VARIABLE_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_PAUSE_VAR],
+    });
+    await user.click(select);
+    await user.tab();
+
+    const errorText = screen.getByText('pause : variable must be selected');
+
+    expect(errorText).toBeInTheDocument();
+    expect(select).toHaveClass('is-invalid');
+  });
+
+  it('should validate selected pause variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_MOUSE_PAUSE_RADIO,
+      VARIABLE_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_PAUSE_VAR],
+    });
+    await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
+
+    await user.tab();
+
+    expect(select).not.toHaveClass('is-invalid');
+  });
+
   it('should invalidate empty direction value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VALUE],
+      name: Field[Field.AC_MOUSE_DIRECTION_VALUE],
     });
     await user.click(select);
 
@@ -88,7 +135,7 @@ describe('sendKeyHoldRelease action component tests', () => {
 
   it('should validate non-empty direction value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VALUE],
+      name: Field[Field.AC_MOUSE_DIRECTION_VALUE],
     });
     await user.click(select);
 
@@ -101,13 +148,14 @@ describe('sendKeyHoldRelease action component tests', () => {
   it('should invalidate non-selected direction variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_DIRECTION_RADIO,
+      Field.AC_MOUSE_DIRECTION_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VAR],
+      name: Field[Field.AC_MOUSE_DIRECTION_VAR],
     });
     await user.click(select);
+
     await user.tab();
 
     const errorText = screen.getByText('direction : variable must be selected');
@@ -119,13 +167,13 @@ describe('sendKeyHoldRelease action component tests', () => {
   it('should validate selected direction variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_SK_DIRECTION_RADIO,
+      Field.AC_MOUSE_DIRECTION_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VAR],
+      name: Field[Field.AC_MOUSE_DIRECTION_VAR],
     });
-    await user.selectOptions(select, [VARIABLE_NAME]);
+    await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
 
     await user.tab();
 

@@ -63,26 +63,31 @@ describe('sendKeyPress action component tests', () => {
   it('should invalidate non-selected inner pause variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_INNER_PAUSE_RADIO,
+      Field.AC_SK_INNER_PAUSE_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_INNER_PAUSE_VAR],
+      name: Field[Field.AC_SK_INNER_PAUSE_VAR],
     });
     await user.click(select);
     await user.tab();
 
+    const errorText = screen.getByText(
+      'inner pause : variable must be selected'
+    );
+
+    expect(errorText).toBeInTheDocument();
     expect(select).toHaveClass('is-invalid');
   });
 
   it('should validate selected inner pause variable', async () => {
     await selectActionValueType(
       user,
-      Field.AC_INNER_PAUSE_RADIO,
+      Field.AC_SK_INNER_PAUSE_RADIO,
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_INNER_PAUSE_VAR],
+      name: Field[Field.AC_SK_INNER_PAUSE_VAR],
     });
     await user.selectOptions(select, [VARIABLE_NAME]);
 
@@ -94,20 +99,23 @@ describe('sendKeyPress action component tests', () => {
   // repeat
 
   it('should invalidate non-selected repeat variable', async () => {
-    await selectActionValueType(user, Field.AC_REPEAT_RADIO, VARIABLE_RADIO);
+    await selectActionValueType(user, Field.AC_SK_REPEAT_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_REPEAT_VAR],
+      name: Field[Field.AC_SK_REPEAT_VAR],
     });
     await user.click(select);
     await user.tab();
 
+    const errorText = screen.getByText('repeat : variable must be selected');
+
+    expect(errorText).toBeInTheDocument();
     expect(select).toHaveClass('is-invalid');
   });
 
   it('should validate selected repeat variable', async () => {
-    await selectActionValueType(user, Field.AC_REPEAT_RADIO, VARIABLE_RADIO);
+    await selectActionValueType(user, Field.AC_SK_REPEAT_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_REPEAT_VAR],
+      name: Field[Field.AC_SK_REPEAT_VAR],
     });
     await user.selectOptions(select, [VARIABLE_NAME]);
 

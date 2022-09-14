@@ -24,7 +24,7 @@ describe('action reducer: action.keyToSend', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        field: Field.AC_KEY_TO_SEND_RADIO,
+        field: Field.AC_SK_KEY_TO_SEND_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
@@ -46,7 +46,7 @@ describe('action reducer: action.keyToSend', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        field: Field.AC_KEY_TO_SEND_VALUE,
+        field: Field.AC_SK_KEY_TO_SEND_VALUE,
         value: 'asdf',
       },
     });
@@ -67,7 +67,7 @@ describe('action reducer: action.keyToSend', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        field: Field.AC_KEY_TO_SEND_VAR,
+        field: Field.AC_SK_KEY_TO_SEND_VAR,
         value: 'asdf',
       },
     });

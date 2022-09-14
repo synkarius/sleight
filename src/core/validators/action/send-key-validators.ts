@@ -28,7 +28,7 @@ import {
 const KEY_TO_SEND = 'key to send';
 const keyToSendValidators: ActionValueValidators = {
   value: createValidator(
-    Field.AC_KEY_TO_SEND_VALUE,
+    Field.AC_SK_KEY_TO_SEND_VALUE,
     (action) =>
       isSendKeyAction(action) &&
       !isVariableActionValue(action.keyToSend) &&
@@ -42,7 +42,7 @@ const keyToSendValidators: ActionValueValidators = {
     createNonSelectedEnumError(KEY_TO_SEND)
   ),
   variable: createValidator(
-    Field.AC_KEY_TO_SEND_VAR,
+    Field.AC_SK_KEY_TO_SEND_VAR,
     (action) =>
       isSendKeyAction(action) && isVariableActionValue(action.keyToSend),
     (action) =>
@@ -63,7 +63,7 @@ const keyToSendValidators: ActionValueValidators = {
 const OUTER_PAUSE = 'outer pause';
 const outerPauseValidators: ActionValueValidators = {
   variable: createValidator(
-    Field.AC_OUTER_PAUSE_VAR,
+    Field.AC_SK_OUTER_PAUSE_VAR,
     (action) =>
       isSendKeyAction(action) && isVariableActionValue(action.outerPause),
     (action) =>
@@ -84,7 +84,7 @@ const outerPauseValidators: ActionValueValidators = {
 const INNER_PAUSE = 'inner pause';
 const innerPauseValidators: ActionValueValidators = {
   variable: createValidator(
-    Field.AC_INNER_PAUSE_VAR,
+    Field.AC_SK_INNER_PAUSE_VAR,
     (action) =>
       isSendKeyAction(action) &&
       isSendKeyPressAction(action) &&
@@ -108,7 +108,7 @@ const innerPauseValidators: ActionValueValidators = {
 const REPEAT = 'repeat';
 const repeatValidators: ActionValueValidators = {
   variable: createValidator(
-    Field.AC_REPEAT_VAR,
+    Field.AC_SK_REPEAT_VAR,
     (action) =>
       isSendKeyAction(action) &&
       isSendKeyPressAction(action) &&
@@ -132,7 +132,7 @@ const repeatValidators: ActionValueValidators = {
 const DIRECTION = 'direction';
 const directionValidators: ActionValueValidators = {
   value: createValidator(
-    Field.AC_DIRECTION_VALUE,
+    Field.AC_SK_DIRECTION_VALUE,
     (action) =>
       isSendKeyAction(action) &&
       isSendKeyHoldReleaseAction(action) &&
@@ -148,7 +148,7 @@ const directionValidators: ActionValueValidators = {
     createNonSelectedEnumError(DIRECTION)
   ),
   variable: createValidator(
-    Field.AC_DIRECTION_VAR,
+    Field.AC_SK_DIRECTION_VAR,
     (action) =>
       isSendKeyAction(action) &&
       isSendKeyHoldReleaseAction(action) &&
