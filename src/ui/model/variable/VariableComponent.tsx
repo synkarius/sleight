@@ -59,7 +59,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const typeChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newVariableType = event.target.value as VariableType.Type;
     switch (newVariableType) {
-      case VariableType.Enum.CHOICE:
+      case VariableType.Enum.ENUM:
         editingContext.localDispatch({
           type: VariableReducerActionType.CHANGE_TYPE,
           payload: {
@@ -93,7 +93,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
     if (isValid) {
       // TODO: this still creates orphans... damnit... clear them
       // at least it's less this way
-      if (props.variable.type === VariableType.Enum.CHOICE) {
+      if (props.variable.type === VariableType.Enum.ENUM) {
         props.variable.items.forEach((item) => {
           const selectorDTO = injectionContext.mappers.selector.mapFromDomain(
             item.selector

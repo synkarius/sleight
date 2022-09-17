@@ -4,12 +4,13 @@ import {
   changeNumericActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
-import { pauseGroup } from '../../../../ui/model/action/mouse/click-mouse-action-value-field-groups';
+import { mPauseGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
 import {
   isClickMouseAction,
   isHoldReleaseMouseAction,
   isMouseAction,
 } from '../../../../data/model/action/mouse/mouse';
+import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
 
 /**
  * For mouse click or mouse hold/release actions.
@@ -17,7 +18,7 @@ import {
 export const getMcMhrPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      Object.values(pauseGroup).includes(action.payload.field) &&
+      groupIncludesField(mPauseGroup, action.payload.field) &&
       ((isMouseAction(state) && isClickMouseAction(state)) ||
         (isMouseAction(state) && isHoldReleaseMouseAction(state)))
     ) {

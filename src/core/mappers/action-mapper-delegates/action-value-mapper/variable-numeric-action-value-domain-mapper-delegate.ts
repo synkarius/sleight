@@ -1,5 +1,5 @@
-import { NumericActionValue } from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { NumericActionValue } from '../../../../data/model/action/action-value';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import { DomainMapper } from '../../mapper';
 
 type T = NumericActionValue & {

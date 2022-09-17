@@ -8,16 +8,15 @@ import {
   ActionEditingContext,
   ActionReducerActionType,
 } from '../action-editing-context';
-import { ActionValueComponent } from '../action-value/ActionValueComponent';
-import { Key } from '../../../../data/model/action/send-key/key';
+import { ActionValueComponent } from '../ActionValueComponent';
 import {
   isSendKeyHoldReleaseAction,
   isSendKeyPressAction,
   SendKeyAction,
 } from '../../../../data/model/action/send-key/send-key';
 import {
-  keyToSendGroup,
-  outerPauseGroup,
+  skKeyToSendGroup,
+  skOuterPauseGroup,
 } from './send-key-action-value-field-groups';
 import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
 import { SendKeyModifiers } from '../../../../data/model/action/send-key/send-key-modifiers';
@@ -68,13 +67,10 @@ export const SendKeyComponent: React.FC<{
         </Form.Select>
       </FormGroupRowComponent>
       <ActionValueComponent
-        actionValue={{
-          ...props.sendKeyAction.keyToSend,
-          enumValues: Key.values(),
-        }}
+        actionValue={props.sendKeyAction.keyToSend}
         labelText="Key to Send"
         descriptionText="key to send"
-        fields={keyToSendGroup}
+        fields={skKeyToSendGroup}
         required={true}
       />
       <ExpandCollapseComponent
@@ -115,12 +111,8 @@ export const SendKeyComponent: React.FC<{
           actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
           descriptionText="time to pause after keystroke, in centiseconds"
-          fields={outerPauseGroup}
+          fields={skOuterPauseGroup}
         />
-
-        {/* TODO: use the type guards in components
-        like below EVERYWHERE -- then the logic is actually shared */}
-
         {isSendKeyPressAction(props.sendKeyAction) && (
           <SendKeyPressComponent sendKeyPressAction={props.sendKeyAction} />
         )}

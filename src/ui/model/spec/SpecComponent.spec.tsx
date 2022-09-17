@@ -24,8 +24,7 @@ import {
   createPauseAction,
   PauseAction,
 } from '../../../data/model/action/pause/pause';
-import { EnterValueType } from '../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { saveAction } from '../../../core/reducers/action-reducers';
 import { Command, createCommand } from '../../../data/model/command/command';
@@ -88,7 +87,7 @@ beforeAll(() => {
     ...createPauseAction(),
     centiseconds: {
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
-      variableType: VariableType.Enum.RANGE,
+      variableType: VariableType.Enum.NUMBER,
       variableId: rangeVariable.id,
     },
   };
@@ -97,7 +96,7 @@ beforeAll(() => {
     ...createPauseAction(),
     centiseconds: {
       actionValueType: ActionValueType.Enum.ENTER_VALUE,
-      enteredValueType: EnterValueType.NUMERIC,
+      enteredValueType: VariableType.Enum.NUMBER,
       value: 789,
     },
   };

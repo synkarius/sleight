@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { UNSELECTED_ID } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
 import { Command } from '../../data/model/command/command';
 import {
@@ -92,7 +92,7 @@ const changeEditingCommandSpecId = (
 const addActionToEditingCommand = (state: Command): Command => {
   return {
     ...state,
-    actionIds: [...state.actionIds, SELECT_DEFAULT_VALUE],
+    actionIds: [...state.actionIds, UNSELECTED_ID],
   };
 };
 const changeEditingCommandActionId = (

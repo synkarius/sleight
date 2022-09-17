@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
-import { NotImplementedError } from '../../error/not-implemented-error';
 import { Action } from '../../data/model/action/action';
 import {
   ActionReducerAction,
@@ -12,7 +11,6 @@ import {
   ActionReducerActionTypePayloadAction,
   ActionReducerMouseActionTypePayloadAction,
   ActionReducerMouseMovementTypePayloadAction,
-  ActionReducerNumberPayloadAction,
 } from '../../ui/model/action/action-editing-context';
 import { ActionType } from '../../data/model/action/action-types';
 import { ActionValueUpdater } from './action-value/action-value-reducer-updaters/action-value-updater';
@@ -37,6 +35,12 @@ import {
 import { SendKeyMode } from '../../data/model/action/send-key/send-key-modes';
 import { SendKeyModifiers } from '../../data/model/action/send-key/send-key-modifiers';
 import { WrongTypeError } from '../../error/wrong-type-error';
+import { limitNumericActionValueToPercentage } from './action-value/action-value-reducer-updaters/mm-move-reducer-support';
+import { copyIntoSendTextAction } from '../../data/model/action/send-text/send-text';
+import { copyIntoWaitForWindowAction } from '../../data/model/action/wait-for-window/wait-for-window';
+import { copyIntoMimicAction } from '../../data/model/action/mimic/mimic';
+import { copyIntoCallFunctionAction } from '../../data/model/action/call-function/call-function';
+import { copyIntoBringAppAction } from '../../data/model/action/bring-app/bring-app';
 
 export type ActionsState = {
   saved: Record<string, Action>;
@@ -156,43 +160,23 @@ const changeEditingMouseMovementType = (
       return {
         ...state,
         mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
-        x: Math.round(state.x),
-        y: Math.round(state.y),
       };
     case MouseMovementType.Enum.RELATIVE:
       return {
         ...state,
         mouseMovementType: MouseMovementType.Enum.RELATIVE,
-        x: Math.round(state.x),
-        y: Math.round(state.y),
       };
     case MouseMovementType.Enum.WINDOW:
       return {
         ...state,
         mouseMovementType: MouseMovementType.Enum.WINDOW,
-        x: Math.min(Math.max(state.x, 1), 0),
-        y: Math.min(Math.max(state.y, 1), 0),
+        x: limitNumericActionValueToPercentage(state.x),
+        y: limitNumericActionValueToPercentage(state.y),
       };
     default:
       throw new ExhaustivenessFailureError(action.payload);
   }
 };
-
-const changeEditingMouseMovementX = (
-  state: MoveMouseAction,
-  action: ActionReducerNumberPayloadAction
-): MoveMouseAction => ({
-  ...state,
-  x: action.payload,
-});
-
-const changeEditingMouseMovementY = (
-  state: MoveMouseAction,
-  action: ActionReducerNumberPayloadAction
-): MoveMouseAction => ({
-  ...state,
-  y: action.payload,
-});
 
 const changeEditingActionType = (
   state: Action,
@@ -206,12 +190,15 @@ const changeEditingActionType = (
     case ActionType.Enum.MOUSE:
       return copyIntoMouseMoveAction(state);
     case ActionType.Enum.BRING_APP:
+      return copyIntoBringAppAction(state);
     case ActionType.Enum.CALL_FUNCTION:
+      return copyIntoCallFunctionAction(state);
     case ActionType.Enum.MIMIC:
+      return copyIntoMimicAction(state);
     case ActionType.Enum.SEND_TEXT:
+      return copyIntoSendTextAction(state);
     case ActionType.Enum.WAIT_FOR_WINDOW:
-      // TODO: implement all
-      throw new NotImplementedError('action type ' + action.payload);
+      return copyIntoWaitForWindowAction(state);
     default:
       throw new ExhaustivenessFailureError(action.payload);
   }
@@ -270,16 +257,6 @@ export const actionReactReducer = (
         return changeEditingMouseMovementType(state, action);
       }
       throw new WrongTypeError('CHANGE_MOUSE_MOVEMENT_TYPE');
-    case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_X:
-      if (isMouseAction(state) && isMoveMouseAction(state)) {
-        return changeEditingMouseMovementX(state, action);
-      }
-      throw new WrongTypeError('CHANGE_MOUSE_MOVEMENT_X');
-    case ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_Y:
-      if (isMouseAction(state) && isMoveMouseAction(state)) {
-        return changeEditingMouseMovementY(state, action);
-      }
-      throw new WrongTypeError('CHANGE_MOUSE_MOVEMENT_Y');
     case ActionReducerActionType.TOGGLE_ENABLED:
       return toggleEditingActionEnabled(state);
     case ActionReducerActionType.TOGGLE_LOCKED:

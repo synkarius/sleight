@@ -43,7 +43,7 @@ export const CommandParentComponent: React.FC<{ commandId?: string }> = (
 
   return (
     <ValidationComponent<Command>
-      validators={[...injectionContext.validators.command]}
+      validators={[...injectionContext.validation.validators.command]}
       editing={editing}
     >
       <CommandEditingContext.Provider

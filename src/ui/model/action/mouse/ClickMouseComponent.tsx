@@ -1,12 +1,11 @@
 import React from 'react';
 import { ClickMouseAction } from '../../../../data/model/action/mouse/mouse';
-import { MouseKey } from '../../../../data/model/action/mouse/mouse-key';
-import { ActionValueComponent } from '../action-value/ActionValueComponent';
+import { ActionValueComponent } from '../ActionValueComponent';
 import {
-  mouseKeyGroup,
-  pauseGroup,
-  repeatGroup,
-} from './click-mouse-action-value-field-groups';
+  mMouseKeyGroup,
+  mPauseGroup,
+  mRepeatGroup,
+} from './mouse-action-value-field-groups';
 
 export const ClickMouseComponent: React.FC<{
   clickMouseAction: ClickMouseAction;
@@ -14,25 +13,22 @@ export const ClickMouseComponent: React.FC<{
   return (
     <>
       <ActionValueComponent
-        actionValue={{
-          ...props.clickMouseAction.mouseKey,
-          enumValues: MouseKey.values(),
-        }}
+        actionValue={props.clickMouseAction.mouseButton}
         labelText="Mouse Button"
         descriptionText="which mouse button to click"
-        fields={mouseKeyGroup}
+        fields={mMouseKeyGroup}
       />
       <ActionValueComponent
         actionValue={props.clickMouseAction.pause}
         labelText="Pause"
         descriptionText="how long to pause after clicking"
-        fields={pauseGroup}
+        fields={mPauseGroup}
       />
       <ActionValueComponent
         actionValue={props.clickMouseAction.repeat}
         labelText="Repeat"
         descriptionText="how many times to repeat the click"
-        fields={repeatGroup}
+        fields={mRepeatGroup}
       />
     </>
   );

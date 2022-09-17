@@ -2,20 +2,20 @@ import { ElementType } from '../../data/model/element-types';
 import { Field } from '../validation-field';
 import { ValidationConfig } from './cross-slice-validator-config';
 import {
-  keyToSendGroup,
-  outerPauseGroup,
-  innerPauseGroup,
-  repeatGroup,
-  directionGroup,
+  skKeyToSendGroup,
+  skOuterPauseGroup,
+  skInnerPauseGroup,
+  skRepeatGroup,
+  skDirectionGroup,
 } from '../../ui/model/action/send-key/send-key-action-value-field-groups';
 
 export const specAdequacyConfigForAction: ValidationConfig = {
   touchTriggersValidationFields: [
-    ...Object.values(keyToSendGroup),
-    ...Object.values(outerPauseGroup),
-    ...Object.values(innerPauseGroup),
-    ...Object.values(repeatGroup),
-    ...Object.values(directionGroup),
+    ...Object.values(skKeyToSendGroup),
+    ...Object.values(skOuterPauseGroup),
+    ...Object.values(skInnerPauseGroup),
+    ...Object.values(skRepeatGroup),
+    ...Object.values(skDirectionGroup),
     Field.AC_SAVE,
   ],
   editingElementType: ElementType.Enum.ACTION,

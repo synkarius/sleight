@@ -1,8 +1,7 @@
 import React from 'react';
-import { ActionValueComponent } from '../action-value/ActionValueComponent';
-import { Direction } from '../../../../data/model/action/direction';
+import { ActionValueComponent } from '../ActionValueComponent';
 import { SendKeyHoldReleaseAction } from '../../../../data/model/action/send-key/send-key';
-import { directionGroup } from './send-key-action-value-field-groups';
+import { skDirectionGroup } from './send-key-action-value-field-groups';
 
 export const SendKeyHoldReleaseComponent: React.FC<{
   sendKeyHoldReleaseAction: SendKeyHoldReleaseAction;
@@ -12,11 +11,8 @@ export const SendKeyHoldReleaseComponent: React.FC<{
       <ActionValueComponent
         labelText="Direction"
         descriptionText="up or down"
-        actionValue={{
-          ...props.sendKeyHoldReleaseAction.direction,
-          enumValues: Direction.values(),
-        }}
-        fields={directionGroup}
+        actionValue={props.sendKeyHoldReleaseAction.direction}
+        fields={skDirectionGroup}
         required={true}
       />
     </>

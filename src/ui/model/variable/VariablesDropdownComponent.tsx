@@ -2,7 +2,7 @@ import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
 import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
-import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
+import { UNSELECTED_ID } from '../../../core/common/consts';
 import { VariableType } from '../../../data/model/variable/variable-types';
 
 type VariablesDropdownComponentProps = {
@@ -18,18 +18,17 @@ export const VariablesDropdownComponent: React.FC<
   VariablesDropdownComponentProps
 > = (props) => {
   const variablesSaved = useAppSelector((state) => state.variable.saved);
-  const variableId = props.selectedVariableId ?? SELECT_DEFAULT_VALUE;
 
   return (
     <FormSelect
+      value={props.selectedVariableId ?? UNSELECTED_ID}
       aria-label={Field[props.field]}
       onChange={props.onChange}
       onBlur={props.onBlur}
-      value={variableId}
       isInvalid={props.isInvalid}
       role={LIST}
     >
-      <option value={SELECT_DEFAULT_VALUE} role={LIST_ITEM}></option>
+      <option value={UNSELECTED_ID} role={LIST_ITEM}></option>
       {Object.values(variablesSaved)
         .filter(
           (variable) =>

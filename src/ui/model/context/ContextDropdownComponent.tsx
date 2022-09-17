@@ -2,7 +2,7 @@ import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
+import { UNSELECTED_ID } from '../../../core/common/consts';
 
 type ContextDropdownComponentProps = {
   readonly contextId?: string;
@@ -19,14 +19,14 @@ export const ContextDropdownComponent: React.FC<
 
   return (
     <FormSelect
-      value={props.contextId || SELECT_DEFAULT_VALUE}
+      value={props.contextId ?? UNSELECTED_ID}
       aria-label={Field[props.field]}
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}
       role="list"
     >
-      <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
+      <option value={UNSELECTED_ID} role="listitem"></option>
       {Object.values(contextsSaved).map((context) => (
         <option key={context.id} value={context.id} role="listitem">
           {context.name}

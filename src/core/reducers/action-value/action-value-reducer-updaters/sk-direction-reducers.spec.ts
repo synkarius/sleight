@@ -1,5 +1,4 @@
-import { EnterValueType } from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import {
   createSendKeyHoldReleaseAction,
   SendKeyHoldReleaseAction,
@@ -7,16 +6,16 @@ import {
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { UNSELECTED_ENUM } from '../../../common/consts';
 import { actionReactReducer } from '../../action-reducers';
 
-describe('action reducer: action.direction', () => {
+describe('sk action reducer: action.direction', () => {
   it('should handle change action.direction.actionValueType', () => {
     const obj: SendKeyHoldReleaseAction = {
       ...createSendKeyHoldReleaseAction(),
       direction: {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.CHOICE,
+        variableType: VariableType.Enum.ENUM,
         variableId: 'asdf',
       },
     };
@@ -34,8 +33,8 @@ describe('action reducer: action.direction', () => {
       ...obj,
       direction: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.ENUM,
-        value: SELECT_DEFAULT_VALUE,
+        enteredValueType: VariableType.Enum.ENUM,
+        value: UNSELECTED_ENUM,
       },
     });
   });

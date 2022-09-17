@@ -46,7 +46,9 @@ export const Navigation: React.FC<{}> = () => {
         );
         const cleaned = injectionContext.cleaners.imports.cleanData(merged);
         const validationResult =
-          injectionContext.validators.imports.validateImportedData(cleaned);
+          injectionContext.validation.validators.imports.validateImportedData(
+            cleaned
+          );
         if (validationResult.status === ImportValidationResultType.VALID) {
           // TODO: add it to redux
         } else {

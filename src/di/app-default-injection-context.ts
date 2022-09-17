@@ -38,6 +38,7 @@ import { getCopyingImportDataMerger } from '../data/imports/import-data-merger';
 import { getFormatMapper } from '../data/data-format-mapper';
 import { getImportsCleaner } from '../data/imports/imports-cleaner';
 import { getMouseValidators } from '../core/validators/action/mouse-validators';
+import { getDelegatingVariableExtractor } from '../validation/variable-extraction/delegating-variable-extractor';
 
 let instance: Injected | undefined = undefined;
 
@@ -56,28 +57,31 @@ export const getDefaultInjectionContext = (): Injected => {
           dragonfly: getDragonflyExporter(),
         },
       },
-      validators: {
-        action: [
-          ...getActionValidators(),
-          ...getSendKeyValidators(),
-          ...getPauseValidators(),
-          ...getMouseValidators(),
-          ...getCrossSliceActionValidators(),
-        ],
-        command: [
-          ...getCommandValidators(),
-          ...getCrossSliceCommandValidators(),
-        ],
-        context: [
-          ...getContextValidators(),
-          ...getCrossSliceContextValidators(),
-        ],
-        spec: [...getSpecValidators(), ...getCrossSliceSpecValidators()],
-        variable: [
-          ...getVariableValidators(),
-          ...getCrossSliceVariableValidators(),
-        ],
-        imports: getImportsValidator(),
+      validation: {
+        validators: {
+          action: [
+            ...getActionValidators(),
+            ...getSendKeyValidators(),
+            ...getPauseValidators(),
+            ...getMouseValidators(),
+            ...getCrossSliceActionValidators(),
+          ],
+          command: [
+            ...getCommandValidators(),
+            ...getCrossSliceCommandValidators(),
+          ],
+          context: [
+            ...getContextValidators(),
+            ...getCrossSliceContextValidators(),
+          ],
+          spec: [...getSpecValidators(), ...getCrossSliceSpecValidators()],
+          variable: [
+            ...getVariableValidators(),
+            ...getCrossSliceVariableValidators(),
+          ],
+          imports: getImportsValidator(),
+        },
+        variableExtractor: getDelegatingVariableExtractor(),
       },
       mappers: {
         action: getActionDomainMapper(),

@@ -187,7 +187,7 @@ describe('variable reducer', () => {
 
     const actual = variableReactReducer(obj, {
       type: VariableReducerActionType.CHANGE_TYPE,
-      payload: { variableType: VariableType.Enum.RANGE },
+      payload: { variableType: VariableType.Enum.NUMBER },
     });
 
     expect(actual).toEqual({
@@ -208,7 +208,7 @@ describe('variable reducer', () => {
 
     const actual = variableReactReducer(obj, {
       type: VariableReducerActionType.CHANGE_TYPE,
-      payload: { variableType: VariableType.Enum.CHOICE, selector },
+      payload: { variableType: VariableType.Enum.ENUM, selector },
     });
 
     expect(actual).toEqual({

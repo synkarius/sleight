@@ -1,5 +1,5 @@
 import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
-import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { UNSELECTED_ENUM, UNSELECTED_ID } from '../../../common/consts';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import {
   ActionReducerActionType,
@@ -7,12 +7,11 @@ import {
   ActionReducerChangePayloadAction,
 } from '../../../../ui/model/action/action-editing-context';
 import {
-  EnterValueType,
   EnumActionValue,
   NumericActionValue,
   TextActionValue,
-} from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+} from '../../../../data/model/action/action-value';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 
 export const changeTextActionValueType = (
   action: ActionReducerActionValueTypePayloadAction
@@ -22,14 +21,14 @@ export const changeTextActionValueType = (
     case ActionValueType.Enum.ENTER_VALUE:
       return {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.TEXT,
+        enteredValueType: VariableType.Enum.TEXT,
         value: '',
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.TEXT,
-        variableId: SELECT_DEFAULT_VALUE,
+        variableId: UNSELECTED_ID,
       };
     default:
       throw new ExhaustivenessFailureError(actionValueType);
@@ -44,14 +43,14 @@ export const changeNumericActionValueType = (
     case ActionValueType.Enum.ENTER_VALUE:
       return {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.NUMERIC,
+        enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.RANGE,
-        variableId: SELECT_DEFAULT_VALUE,
+        variableType: VariableType.Enum.NUMBER,
+        variableId: UNSELECTED_ID,
       };
     default:
       throw new ExhaustivenessFailureError(actionValueType);
@@ -66,14 +65,14 @@ export const changeEnumActionValueType = (
     case ActionValueType.Enum.ENTER_VALUE:
       return {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.ENUM,
-        value: SELECT_DEFAULT_VALUE,
+        enteredValueType: VariableType.Enum.ENUM,
+        value: UNSELECTED_ENUM,
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.CHOICE,
-        variableId: SELECT_DEFAULT_VALUE,
+        variableType: VariableType.Enum.ENUM,
+        variableId: UNSELECTED_ID,
       };
     default:
       throw new ExhaustivenessFailureError(actionValueType);
@@ -91,7 +90,7 @@ export const changeActionValueValue = <
     case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
       if (
         actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE &&
-        actionValue.enteredValueType === EnterValueType.NUMERIC
+        actionValue.enteredValueType === VariableType.Enum.NUMBER
       ) {
         return {
           ...actionValue,

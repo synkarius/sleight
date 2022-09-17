@@ -4,16 +4,17 @@ import {
   changeNumericActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
-import { repeatGroup } from '../../../../ui/model/action/mouse/click-mouse-action-value-field-groups';
+import { mRepeatGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
 import {
   isClickMouseAction,
   isMouseAction,
 } from '../../../../data/model/action/mouse/mouse';
+import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
 
 export const getMcRepeatActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      Object.values(repeatGroup).includes(action.payload.field) &&
+      groupIncludesField(mRepeatGroup, action.payload.field) &&
       isMouseAction(state) &&
       isClickMouseAction(state)
     ) {

@@ -8,7 +8,7 @@ import {
   createNumericValue,
   EnumActionValue,
   NumericActionValue,
-} from '../action-value/action-value';
+} from '../action-value';
 import { SendKeyMode } from './send-key-modes';
 import { ActionType } from '../action-types';
 import { Action } from '../action';
@@ -33,7 +33,6 @@ interface AbstractSendKeyAction extends AbstractAction {
   readonly type: typeof ActionType.Enum.SEND_KEY;
   readonly sendKeyMode: SendKeyMode.Type;
   readonly modifiers: Modifiers;
-  // TODO: enforce that this has roleKey:alphabet if using a choice var??
   readonly keyToSend: EnumActionValue;
   readonly outerPause: NumericActionValue;
 }

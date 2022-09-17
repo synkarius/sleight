@@ -54,7 +54,7 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
 
   return (
     <ValidationComponent<Spec>
-      validators={[...injectionContext.validators.spec]}
+      validators={[...injectionContext.validation.validators.spec]}
       editing={editing}
     >
       <SpecEditingContext.Provider value={{ localDispatch, deleteModalConfig }}>

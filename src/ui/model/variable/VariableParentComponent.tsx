@@ -63,7 +63,7 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
 
   return (
     <ValidationComponent<Variable>
-      validators={[...injectionContext.validators.variable]}
+      validators={[...injectionContext.validation.validators.variable]}
       editing={editing}
     >
       <VariableEditingContext.Provider

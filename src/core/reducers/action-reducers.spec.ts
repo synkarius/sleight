@@ -12,7 +12,7 @@ import {
   PauseAction,
 } from '../../data/model/action/pause/pause';
 import { ActionType } from '../../data/model/action/action-types';
-import { createNumericValue } from '../../data/model/action/action-value/action-value';
+import { createNumericValue } from '../../data/model/action/action-value';
 import { ActionReducerActionType } from '../../ui/model/action/action-editing-context';
 import { Action } from '../../data/model/action/action';
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';

@@ -12,7 +12,7 @@ import { ActionType } from '../../data/model/action/action-types';
 import {
   createEnumValue,
   createNumericValue,
-} from '../../data/model/action/action-value/action-value';
+} from '../../data/model/action/action-value';
 
 const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
   return {

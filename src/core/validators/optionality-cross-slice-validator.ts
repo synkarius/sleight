@@ -1,6 +1,6 @@
 import {
   isDefined,
-  isSelected,
+  isIdSelected,
   Predicate,
   singletonArray,
 } from '../common/common-functions';
@@ -45,7 +45,7 @@ const specOptionalityValidatorFn: ValidatorFn<Spec> = (specs, data, config) => {
     .flatMap((spec) =>
       spec.items
         .filter(isVariableSpecItem)
-        .filter((item) => isSelected(item.variableId))
+        .filter((item) => isIdSelected(item.variableId))
         .map((item: VariableSpecItem): InvalidSpecDetails | undefined => {
           const variable = MapUtil.getOrThrow(data.variables, item.variableId);
           if (item.optional && !isDefined(variable.defaultValue)) {

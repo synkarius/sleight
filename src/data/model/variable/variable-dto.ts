@@ -15,7 +15,7 @@ export interface TextVariableDTO extends AbstractVariableDTO {
 }
 
 export interface RangeVariableDTO extends AbstractVariableDTO {
-  readonly type: typeof VariableType.Enum.RANGE;
+  readonly type: typeof VariableType.Enum.NUMBER;
   readonly beginInclusive: number;
   readonly endInclusive: number;
   readonly defaultValue?: number;
@@ -27,7 +27,7 @@ export interface ChoiceItemDTO extends Ided {
 }
 
 export interface ChoiceVariableDTO extends AbstractVariableDTO {
-  readonly type: typeof VariableType.Enum.CHOICE;
+  readonly type: typeof VariableType.Enum.ENUM;
   readonly items: ChoiceItemDTO[];
   readonly defaultValue?: string;
 }

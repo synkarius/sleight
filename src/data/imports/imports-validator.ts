@@ -58,7 +58,7 @@ export const getImportsValidator = (): ImportsValidator => {
   return {
     validateImportedData: (data) => {
       const injected = getDefaultInjectionContext();
-      const validators = injected.validators;
+      const validators = injected.validation.validators;
       const specMapper = injected.mappers.spec;
       const variableMapper = injected.mappers.variable;
       const invalidatedResults = [

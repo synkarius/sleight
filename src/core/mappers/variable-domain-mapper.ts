@@ -28,9 +28,9 @@ export const getVariableDomainMapper: () => VariableDomainMapper = () => {
       switch (dtoType) {
         case VariableType.Enum.TEXT:
           return textVariableDomainMapperDelegate.mapToDomain(dto);
-        case VariableType.Enum.RANGE:
+        case VariableType.Enum.NUMBER:
           return rangeVariableDomainMapperDelegate.mapToDomain(dto);
-        case VariableType.Enum.CHOICE:
+        case VariableType.Enum.ENUM:
           return choiceVariableDomainMapperDelegate.mapToDomain(
             dto,
             selectorDtos
@@ -45,9 +45,9 @@ export const getVariableDomainMapper: () => VariableDomainMapper = () => {
       switch (domainType) {
         case VariableType.Enum.TEXT:
           return textVariableDomainMapperDelegate.mapFromDomain(domain);
-        case VariableType.Enum.RANGE:
+        case VariableType.Enum.NUMBER:
           return rangeVariableDomainMapperDelegate.mapFromDomain(domain);
-        case VariableType.Enum.CHOICE:
+        case VariableType.Enum.ENUM:
           return choiceVariableDomainMapperDelegate.mapFromDomain(domain);
         default:
           throw new ExhaustivenessFailureError(domainType);

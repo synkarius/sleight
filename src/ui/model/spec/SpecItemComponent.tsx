@@ -26,7 +26,7 @@ import {
 import { MoveDirection } from '../../../core/common/move-direction';
 import { Field } from '../../../validation/validation-field';
 import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
-import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
+import { UNSELECTED_ID } from '../../../core/common/consts';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
@@ -60,7 +60,7 @@ export const SpecItemComponent: React.FC<{
           payload: {
             specItemId: props.specItem.id,
             specItemType: SpecItemType.Enum.VARIABLE,
-            variableId: SELECT_DEFAULT_VALUE,
+            variableId: UNSELECTED_ID,
           },
         });
         break;

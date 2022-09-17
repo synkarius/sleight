@@ -46,7 +46,7 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
 
   return (
     <ValidationComponent<Action>
-      validators={[...injectionContext.validators.action]}
+      validators={[...injectionContext.validation.validators.action]}
       editing={editing}
     >
       <ActionEditingContext.Provider

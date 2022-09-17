@@ -1,5 +1,5 @@
-import { SELECT_DEFAULT_VALUE } from '../../../../core/common/consts';
-import { VariableType } from '../../variable/variable-types';
+import { UNSELECTED_ENUM } from '../../../core/common/consts';
+import { VariableType } from '../variable/variable-types';
 import { ActionValueType } from './action-value-type';
 
 interface AbstractActionValue {
@@ -9,15 +9,9 @@ interface AbstractActionValue {
   readonly actionValueType: ActionValueType.Type;
 }
 
-export enum EnterValueType {
-  TEXT,
-  NUMERIC,
-  ENUM,
-}
-
 interface AbstractEnterValueActionValue extends AbstractActionValue {
   readonly actionValueType: typeof ActionValueType.Enum.ENTER_VALUE;
-  readonly enteredValueType: EnterValueType;
+  readonly enteredValueType: VariableType.Type;
 }
 
 export const isEnterValueActionValue = (
@@ -26,34 +20,34 @@ export const isEnterValueActionValue = (
   actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE;
 
 interface EnterTextActionValue extends AbstractEnterValueActionValue {
-  readonly enteredValueType: typeof EnterValueType.TEXT;
+  readonly enteredValueType: typeof VariableType.Enum.TEXT;
   readonly value: string;
 }
 
 export const isEnterTextActionValue = (
   actionValue: AbstractEnterValueActionValue
 ): actionValue is EnterTextActionValue =>
-  actionValue.enteredValueType === EnterValueType.TEXT;
+  actionValue.enteredValueType === VariableType.Enum.TEXT;
 
 interface EnterNumberActionValue extends AbstractEnterValueActionValue {
-  readonly enteredValueType: typeof EnterValueType.NUMERIC;
+  readonly enteredValueType: typeof VariableType.Enum.NUMBER;
   readonly value: number;
 }
 
 export const isEnterNumberActionValue = (
   actionValue: AbstractEnterValueActionValue
 ): actionValue is EnterNumberActionValue =>
-  actionValue.enteredValueType === EnterValueType.NUMERIC;
+  actionValue.enteredValueType === VariableType.Enum.NUMBER;
 
 interface EnterEnumActionValue extends AbstractEnterValueActionValue {
-  readonly enteredValueType: typeof EnterValueType.ENUM;
+  readonly enteredValueType: typeof VariableType.Enum.ENUM;
   readonly value: string;
 }
 
 export const isEnterEnumActionValue = (
   actionValue: AbstractEnterValueActionValue
 ): actionValue is EnterEnumActionValue =>
-  actionValue.enteredValueType === EnterValueType.ENUM;
+  actionValue.enteredValueType === VariableType.Enum.ENUM;
 
 interface AbstractVariableActionValue extends AbstractActionValue {
   readonly actionValueType: typeof ActionValueType.Enum.USE_VARIABLE;
@@ -78,22 +72,22 @@ export const isVariableTextActionValue = (
   actionValue.variableType === VariableType.Enum.TEXT;
 
 export interface VariableRangeActionValue extends AbstractVariableActionValue {
-  readonly variableType: typeof VariableType.Enum.RANGE;
+  readonly variableType: typeof VariableType.Enum.NUMBER;
 }
 
 export const isVariableRangeActionValue = (
   actionValue: AbstractVariableActionValue
 ): actionValue is VariableRangeActionValue =>
-  actionValue.variableType === VariableType.Enum.RANGE;
+  actionValue.variableType === VariableType.Enum.NUMBER;
 
-export interface VariableChoiceActionValue extends AbstractVariableActionValue {
-  readonly variableType: typeof VariableType.Enum.CHOICE;
+export interface VariableEnumActionValue extends AbstractVariableActionValue {
+  readonly variableType: typeof VariableType.Enum.ENUM;
 }
 
-export const isVariableChoiceActionValue = (
+export const isVariableEnumActionValue = (
   actionValue: AbstractVariableActionValue
-): actionValue is VariableChoiceActionValue =>
-  actionValue.variableType === VariableType.Enum.CHOICE;
+): actionValue is VariableEnumActionValue =>
+  actionValue.variableType === VariableType.Enum.ENUM;
 
 export type TextActionValue = EnterTextActionValue | VariableTextActionValue;
 
@@ -101,7 +95,7 @@ export type NumericActionValue =
   | EnterNumberActionValue
   | VariableRangeActionValue;
 
-export type EnumActionValue = EnterEnumActionValue | VariableChoiceActionValue;
+export type EnumActionValue = EnterEnumActionValue | VariableEnumActionValue;
 
 export type ActionValue =
   | TextActionValue
@@ -115,7 +109,7 @@ export type ActionValue =
 export const createTextValue = (): EnterTextActionValue => {
   return {
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    enteredValueType: EnterValueType.TEXT,
+    enteredValueType: VariableType.Enum.TEXT,
     value: '',
   };
 };
@@ -123,7 +117,7 @@ export const createTextValue = (): EnterTextActionValue => {
 export const createNumericValue = (): EnterNumberActionValue => {
   return {
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    enteredValueType: EnterValueType.NUMERIC,
+    enteredValueType: VariableType.Enum.NUMBER,
     value: 0,
   };
 };
@@ -131,7 +125,7 @@ export const createNumericValue = (): EnterNumberActionValue => {
 export const createEnumValue = (): EnterEnumActionValue => {
   return {
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    enteredValueType: EnterValueType.ENUM,
-    value: SELECT_DEFAULT_VALUE,
+    enteredValueType: VariableType.Enum.ENUM,
+    value: UNSELECTED_ENUM,
   };
 };

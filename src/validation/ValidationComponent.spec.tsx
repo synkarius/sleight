@@ -29,9 +29,12 @@ beforeAll(() => {
   const defaultInjectionContext = getDefaultInjectionContext();
   const testInjectionContext: Injected = {
     ...defaultInjectionContext,
-    validators: {
-      ...defaultInjectionContext.validators,
-      context: [testBrokenValidator],
+    validation: {
+      ...defaultInjectionContext.validation,
+      validators: {
+        ...defaultInjectionContext.validation.validators,
+        context: [testBrokenValidator],
+      },
     },
   };
 

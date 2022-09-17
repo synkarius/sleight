@@ -33,8 +33,7 @@ import {
   PauseAction,
 } from '../../../data/model/action/pause/pause';
 import { saveAction } from '../../../core/reducers/action-reducers';
-import { EnterValueType } from '../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { VariableType } from '../../../data/model/variable/variable-types';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
@@ -93,7 +92,7 @@ beforeAll(() => {
     name: ACTION_NO_VAR_NAME,
     centiseconds: {
       actionValueType: ActionValueType.Enum.ENTER_VALUE,
-      enteredValueType: EnterValueType.NUMERIC,
+      enteredValueType: VariableType.Enum.NUMBER,
       value: 0,
     },
   };
@@ -103,7 +102,7 @@ beforeAll(() => {
     name: ACTION_WITH_VAR_NAME,
     centiseconds: {
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
-      variableType: VariableType.Enum.RANGE,
+      variableType: VariableType.Enum.NUMBER,
       variableId: rangeVariable.id,
     },
   };

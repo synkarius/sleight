@@ -1,5 +1,4 @@
-import { EnterValueType } from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import {
   ClickMouseAction,
   createMouseClickAction,
@@ -15,7 +14,7 @@ describe('mouse action reducer: action.repeat', () => {
       ...createMouseClickAction(),
       repeat: {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.RANGE,
+        variableType: VariableType.Enum.NUMBER,
         variableId: 'asdf',
       },
     };
@@ -33,7 +32,7 @@ describe('mouse action reducer: action.repeat', () => {
       ...obj,
       repeat: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.NUMERIC,
+        enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
       },
     });

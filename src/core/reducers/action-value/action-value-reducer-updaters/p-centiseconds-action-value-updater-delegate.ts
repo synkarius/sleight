@@ -6,7 +6,7 @@ import {
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
-export const getCentisecondsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
+export const getPCentisecondsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (isPauseAction(state)) {
       return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE

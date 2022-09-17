@@ -4,16 +4,17 @@ import {
   changeEnumActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
-import { directionGroup } from '../../../../ui/model/action/mouse/click-mouse-action-value-field-groups';
+import { mDirectionGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
 import {
   isHoldReleaseMouseAction,
   isMouseAction,
 } from '../../../../data/model/action/mouse/mouse';
+import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
 
 export const getMhrDirectionActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      Object.values(directionGroup).includes(action.payload.field) &&
+      groupIncludesField(mDirectionGroup, action.payload.field) &&
       isMouseAction(state) &&
       isHoldReleaseMouseAction(state)
     ) {

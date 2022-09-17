@@ -1,7 +1,7 @@
 import { Field } from '../../../validation/validation-field';
 import { createEditingContext } from '../../../core/common/editing-context';
 import { ActionType } from '../../../data/model/action/action-types';
-import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { MouseActionType } from '../../../data/model/action/mouse/mouse-action-type';
 import { MouseMovementType } from '../../../data/model/action/mouse/mouse-movement-type';
 import { SendKeyMode } from '../../../data/model/action/send-key/send-key-modes';
@@ -18,8 +18,6 @@ export enum ActionReducerActionType {
   CHANGE_SEND_KEY_MODE,
   CHANGE_MOUSE_ACTION_TYPE,
   CHANGE_MOUSE_MOVEMENT_TYPE,
-  CHANGE_MOUSE_MOVEMENT_X,
-  CHANGE_MOUSE_MOVEMENT_Y,
   TOGGLE_ENABLED,
   TOGGLE_LOCKED,
 }
@@ -43,12 +41,6 @@ export interface ActionReducerStringPayloadAction
   type:
     | typeof ActionReducerActionType.CHANGE_NAME
     | typeof ActionReducerActionType.CHANGE_ROLE_KEY;
-}
-export interface ActionReducerNumberPayloadAction
-  extends AbstractActionReducerAction<number> {
-  type:
-    | typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_X
-    | typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_Y;
 }
 export interface ActionReducerActionTypePayloadAction
   extends AbstractActionReducerAction<ActionType.Type> {
@@ -89,7 +81,6 @@ export interface ActionReducerToggleAction
 }
 export type ActionReducerAction =
   | ActionReducerStringPayloadAction
-  | ActionReducerNumberPayloadAction
   | ActionReducerActionTypePayloadAction
   | ActionReducerActionValueTypePayloadAction
   | ActionReducerSendKeyModePayloadAction

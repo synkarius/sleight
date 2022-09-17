@@ -9,12 +9,11 @@ import { ActionParentComponent } from './ActionParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { saveAction } from '../../../core/reducers/action-reducers';
-import { EnterValueType } from '../../../data/model/action/action-value/action-value';
 import {
   createPauseAction,
   PauseAction,
 } from '../../../data/model/action/pause/pause';
-import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { createRangeVariable } from '../../../data/model/variable/variable';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
@@ -131,7 +130,7 @@ beforeEach(async () => {
     roleKey: ROLE_KEY,
     centiseconds: {
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
-      variableType: VariableType.Enum.RANGE,
+      variableType: VariableType.Enum.NUMBER,
       variableId: VARIABLE_ID_1,
     },
   };
@@ -141,7 +140,7 @@ beforeEach(async () => {
     id: ACTION_NO_VARS,
     centiseconds: {
       actionValueType: ActionValueType.Enum.ENTER_VALUE,
-      enteredValueType: EnterValueType.NUMERIC,
+      enteredValueType: VariableType.Enum.NUMBER,
       value: 789,
     },
   };
@@ -271,9 +270,7 @@ describe('action component tests', () => {
     doRender(ACTION_NO_VARS);
 
     // change action to have vars
-    const variableRadio = screen.getByLabelText(
-      ActionValueType.Enum.USE_VARIABLE
-    );
+    const variableRadio = screen.getByLabelText('Use (Range) Variable');
     await user.click(variableRadio);
     const variableSelect = screen.getByRole(LIST, {
       name: Field[Field.AC_CENTISECONDS_VAR],

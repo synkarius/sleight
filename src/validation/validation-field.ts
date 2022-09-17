@@ -9,32 +9,56 @@ export enum Field {
   AC_DELETE,
   AC_DELETE_MODAL_DELETE,
   AC_DELETE_MODAL_CANCEL,
+  // action: bring app : app path
+  AC_BRING_PATH_RADIO,
+  AC_BRING_PATH_VALUE,
+  AC_BRING_PATH_VAR,
+  // action: bring app : app title
+  AC_BRING_TITLE_RADIO,
+  AC_BRING_TITLE_VALUE,
+  AC_BRING_TITLE_VAR,
+  // action: bring app : start dir
+  AC_BRING_START_DIR_RADIO,
+  AC_BRING_START_DIR_VALUE,
+  AC_BRING_START_DIR_VAR,
   // action: pause
   AC_CENTISECONDS_RADIO,
   AC_CENTISECONDS_VALUE,
   AC_CENTISECONDS_VAR,
-  // action: send key :
-  AC_SEND_KEY_MODE,
+  // action: mimic : words
+  AC_MIMIC_WORDS_RADIO,
+  AC_MIMIC_WORDS_VALUE,
+  AC_MIMIC_WORDS_VAR,
   // action: mouse
   AC_MOUSE_ACTION_TYPE,
+  // action: mouse : move
   AC_MOUSE_MOVEMENT_TYPE,
-  AC_MOUSE_X,
-  AC_MOUSE_Y,
+  // action: mouse : move : x
+  AC_MOUSE_X_RADIO,
+  AC_MOUSE_X_VALUE,
+  AC_MOUSE_X_VAR,
+  // action: mouse : move : y
+  AC_MOUSE_Y_RADIO,
+  AC_MOUSE_Y_VALUE,
+  AC_MOUSE_Y_VAR,
+  // action: mouse : click
   AC_MOUSE_MOUSE_BUTTON_RADIO,
   AC_MOUSE_MOUSE_BUTTON_VALUE,
   AC_MOUSE_MOUSE_BUTTON_VAR,
-  //
+  // action: mouse : click/hold
   AC_MOUSE_PAUSE_RADIO,
   AC_MOUSE_PAUSE_VALUE,
   AC_MOUSE_PAUSE_VAR,
-  //
+  // action: mouse : repeat
   AC_MOUSE_REPEAT_RADIO,
   AC_MOUSE_REPEAT_VALUE,
   AC_MOUSE_REPEAT_VAR,
-  //
+  // action: mouse : direction
   AC_MOUSE_DIRECTION_RADIO,
   AC_MOUSE_DIRECTION_VALUE,
   AC_MOUSE_DIRECTION_VAR,
+  // action: send key :
+  AC_SEND_KEY_MODE,
   // action: send key : direction
   AC_SK_DIRECTION_RADIO,
   AC_SK_DIRECTION_VALUE,
@@ -55,6 +79,22 @@ export enum Field {
   AC_SK_REPEAT_RADIO,
   AC_SK_REPEAT_VALUE,
   AC_SK_REPEAT_VAR,
+  // action: send text : text
+  AC_ST_TEXT_RADIO,
+  AC_ST_TEXT_VALUE,
+  AC_ST_TEXT_VAR,
+  // action: wait for window : executable
+  AC_WFW_EXECUTABLE_RADIO,
+  AC_WFW_EXECUTABLE_VALUE,
+  AC_WFW_EXECUTABLE_VAR,
+  // action: wait for window : title
+  AC_WFW_TITLE_RADIO,
+  AC_WFW_TITLE_VALUE,
+  AC_WFW_TITLE_VAR,
+  // action: wait for window : wait seconds
+  AC_WFW_WAIT_SECONDS_RADIO,
+  AC_WFW_WAIT_SECONDS_VALUE,
+  AC_WFW_WAIT_SECONDS_VAR,
   // command:
   CMD_NAME,
   CMD_ROLE_KEY,

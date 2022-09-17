@@ -20,7 +20,7 @@ export const getVariableCleaner = (): Cleaner<VariableDTO> => {
               type: variable.type,
               defaultValue: variable.defaultValue,
             };
-          case VariableType.Enum.RANGE:
+          case VariableType.Enum.NUMBER:
             return {
               ...base,
               type: variable.type,
@@ -28,7 +28,7 @@ export const getVariableCleaner = (): Cleaner<VariableDTO> => {
               endInclusive: variable.endInclusive,
               defaultValue: variable.defaultValue,
             };
-          case VariableType.Enum.CHOICE:
+          case VariableType.Enum.ENUM:
             return {
               ...base,
               type: variable.type,

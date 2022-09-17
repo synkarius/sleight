@@ -1,14 +1,13 @@
 import { actionReactReducer } from '../../action-reducers';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
-import { EnterValueType } from '../../../../data/model/action/action-value/action-value';
 import {
   createMouseHoldAction,
   HoldReleaseMouseAction,
 } from '../../../../data/model/action/mouse/mouse';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import { SELECT_DEFAULT_VALUE } from '../../../common/consts';
+import { UNSELECTED_ENUM } from '../../../common/consts';
 
 describe('mouse action reducer: action.direction', () => {
   it('should handle change action.direction.actionValueType', () => {
@@ -16,7 +15,7 @@ describe('mouse action reducer: action.direction', () => {
       ...createMouseHoldAction(),
       direction: {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.CHOICE,
+        variableType: VariableType.Enum.ENUM,
         variableId: 'asdf',
       },
     };
@@ -34,8 +33,8 @@ describe('mouse action reducer: action.direction', () => {
       ...obj,
       direction: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.ENUM,
-        value: SELECT_DEFAULT_VALUE,
+        enteredValueType: VariableType.Enum.ENUM,
+        value: UNSELECTED_ENUM,
       },
     });
   });

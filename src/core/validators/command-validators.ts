@@ -1,4 +1,4 @@
-import { alwaysTrue, isSelected } from '../common/common-functions';
+import { alwaysTrue, isIdSelected } from '../common/common-functions';
 import { FieldValidator } from '../../validation/field-validator';
 import { ValidationErrorCode } from '../../validation/validation-error-code';
 import { Field } from '../../validation/validation-field';
@@ -27,7 +27,7 @@ const commandSpecVariableSelectedValidator: FieldValidator<Command> =
   createValidator(
     Field.CMD_SPEC_SELECT,
     alwaysTrue,
-    (command) => isSelected(command.specId),
+    (command) => isIdSelected(command.specId),
     ValidationErrorCode.CMD_SPEC_VAR_NOT_SELECTED,
     'spec variable must be selected'
   );

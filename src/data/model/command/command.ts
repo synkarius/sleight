@@ -1,6 +1,6 @@
 import { getRandomId } from '../../../core/common/random-id';
 import { RoleKeyed, Named, Ided, Enablable, Lockable } from '../domain';
-import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
+import { UNSELECTED_ID } from '../../../core/common/consts';
 
 export interface Command extends Enablable, Ided, Lockable, Named, RoleKeyed {
   readonly specId: string;
@@ -16,7 +16,7 @@ export const createCommand = (): Command => {
     enabled: true,
     locked: false,
     contextId: undefined,
-    specId: SELECT_DEFAULT_VALUE,
+    specId: UNSELECTED_ID,
     actionIds: [],
   };
 };

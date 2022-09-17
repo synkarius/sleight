@@ -112,7 +112,7 @@ describe('range variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.RANGE);
+    await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const minInput = screen.getByRole(NUMBER_TEXT_BOX, {
       name: Field[Field.VAR_RANGE_MIN],
     });
@@ -134,7 +134,7 @@ describe('range variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.RANGE);
+    await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const minInput = screen.getByRole(NUMBER_TEXT_BOX, {
       name: Field[Field.VAR_RANGE_MIN],
     });
@@ -157,7 +157,7 @@ describe('range variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.RANGE);
+    await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
       name: 'Use Default',
     });
@@ -175,7 +175,7 @@ describe('range variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.RANGE);
+    await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
       name: 'Use Default',
     });

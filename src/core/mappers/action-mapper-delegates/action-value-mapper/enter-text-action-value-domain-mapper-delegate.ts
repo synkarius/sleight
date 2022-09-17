@@ -1,5 +1,5 @@
-import { TextActionValue } from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { TextActionValue } from '../../../../data/model/action/action-value';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import { DomainMapper } from '../../mapper';
 
 type T = TextActionValue & {

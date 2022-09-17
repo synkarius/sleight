@@ -1,4 +1,4 @@
-import { SELECT_DEFAULT_VALUE } from './consts';
+import { UNSELECTED_ENUM, UNSELECTED_ID } from './consts';
 
 export const alwaysTrue = <T>(_t: T): boolean => true;
 
@@ -26,8 +26,11 @@ export const not =
   (t: T) =>
     !predicate(t);
 
-export const isSelected = (id?: string): boolean =>
-  !!id && id !== SELECT_DEFAULT_VALUE;
+export const isIdSelected = (id?: string): boolean =>
+  !!id && id !== UNSELECTED_ID;
+
+export const isEnumSelected = (id?: string): boolean =>
+  !!id && id !== UNSELECTED_ENUM;
 
 export const isTruthy = (t: any) => !!t;
 

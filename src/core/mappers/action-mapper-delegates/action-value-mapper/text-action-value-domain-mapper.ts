@@ -1,5 +1,5 @@
-import { TextActionValue } from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { TextActionValue } from '../../../../data/model/action/action-value';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import { DomainMapper } from '../../mapper';
 import { getEnterTextActionValueDomainMapperDelegate } from './enter-text-action-value-domain-mapper-delegate';
 import { getVariableTextActionValueDomainMapperDelegate } from './variable-text-action-value-domain-mapper-delegate';

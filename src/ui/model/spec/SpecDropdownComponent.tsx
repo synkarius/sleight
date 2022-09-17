@@ -2,7 +2,7 @@ import React from 'react';
 import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
-import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
+import { UNSELECTED_ID } from '../../../core/common/consts';
 
 type SpecDropdownComponentProps = {
   readonly specId?: string;
@@ -19,14 +19,14 @@ export const SpecDropdownComponent: React.FC<SpecDropdownComponentProps> = (
 
   return (
     <FormSelect
-      value={props.specId || SELECT_DEFAULT_VALUE}
+      value={props.specId ?? UNSELECTED_ID}
       aria-label={Field[props.field]}
       role="list"
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}
     >
-      <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
+      <option value={UNSELECTED_ID} role="listitem"></option>
       {Object.values(specsSaved).map((spec) => (
         <option key={spec.id} value={spec.id} role="listitem">
           {spec.name}

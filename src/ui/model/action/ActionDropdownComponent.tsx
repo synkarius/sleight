@@ -3,7 +3,7 @@ import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
 import { LIST_ITEM } from '../../../core/common/accessibility-roles';
-import { SELECT_DEFAULT_VALUE } from '../../../core/common/consts';
+import { UNSELECTED_ID } from '../../../core/common/consts';
 
 type ActionDropdownComponentProps = {
   readonly field: Field;
@@ -20,14 +20,14 @@ export const ActionDropdownComponent: React.FC<ActionDropdownComponentProps> = (
 
   return (
     <FormSelect
-      value={props.actionId || SELECT_DEFAULT_VALUE}
+      value={props.actionId ?? UNSELECTED_ID}
       aria-label={Field[props.field]}
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}
       role="list"
     >
-      <option value={SELECT_DEFAULT_VALUE} role={LIST_ITEM}></option>
+      <option value={UNSELECTED_ID} role={LIST_ITEM}></option>
       {Object.values(actions).map((action) => (
         <option key={action.id} value={action.id} role={LIST_ITEM}>
           {action.name}

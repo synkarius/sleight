@@ -1,4 +1,8 @@
-import { isDefined, isSelected } from '../../common/common-functions';
+import {
+  isDefined,
+  isEnumSelected,
+  isIdSelected,
+} from '../../common/common-functions';
 import { FieldValidator } from '../../../validation/field-validator';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
@@ -7,7 +11,7 @@ import { Action } from '../../../data/model/action/action';
 import {
   isEnterEnumActionValue,
   isVariableActionValue,
-} from '../../../data/model/action/action-value/action-value';
+} from '../../../data/model/action/action-value';
 import {
   ActionValueValidators,
   createNonSelectedEnumError,
@@ -37,7 +41,7 @@ const keyToSendValidators: ActionValueValidators = {
       isSendKeyAction(action) &&
       !isVariableActionValue(action.keyToSend) &&
       isEnterEnumActionValue(action.keyToSend) &&
-      isSelected(action.keyToSend.value),
+      isEnumSelected(action.keyToSend.value),
     ValidationErrorCode.AC_AV_EMPTY,
     createNonSelectedEnumError(KEY_TO_SEND)
   ),
@@ -48,7 +52,7 @@ const keyToSendValidators: ActionValueValidators = {
     (action) =>
       isSendKeyAction(action) &&
       isVariableActionValue(action.keyToSend) &&
-      isSelected(action.keyToSend.variableId),
+      isIdSelected(action.keyToSend.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,
     createNonSelectedVariableError(KEY_TO_SEND)
   ),
@@ -69,7 +73,7 @@ const outerPauseValidators: ActionValueValidators = {
     (action) =>
       isSendKeyAction(action) &&
       isVariableActionValue(action.outerPause) &&
-      isSelected(action.outerPause.variableId),
+      isIdSelected(action.outerPause.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,
     createNonSelectedVariableError(OUTER_PAUSE)
   ),
@@ -93,7 +97,7 @@ const innerPauseValidators: ActionValueValidators = {
       isSendKeyAction(action) &&
       isSendKeyPressAction(action) &&
       isVariableActionValue(action.innerPause) &&
-      isSelected(action.innerPause.variableId),
+      isIdSelected(action.innerPause.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,
     createNonSelectedVariableError(INNER_PAUSE)
   ),
@@ -117,7 +121,7 @@ const repeatValidators: ActionValueValidators = {
       isSendKeyAction(action) &&
       isSendKeyPressAction(action) &&
       isVariableActionValue(action.repeat) &&
-      isSelected(action.repeat.variableId),
+      isIdSelected(action.repeat.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,
     createNonSelectedVariableError(REPEAT)
   ),
@@ -143,7 +147,7 @@ const directionValidators: ActionValueValidators = {
       isSendKeyHoldReleaseAction(action) &&
       !isVariableActionValue(action.direction) &&
       isEnterEnumActionValue(action.direction) &&
-      isSelected(action.direction.value),
+      isEnumSelected(action.direction.value),
     ValidationErrorCode.AC_AV_EMPTY,
     createNonSelectedEnumError(DIRECTION)
   ),
@@ -157,7 +161,7 @@ const directionValidators: ActionValueValidators = {
       isSendKeyAction(action) &&
       isSendKeyHoldReleaseAction(action) &&
       isVariableActionValue(action.direction) &&
-      isSelected(action.direction.variableId),
+      isIdSelected(action.direction.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,
     createNonSelectedVariableError(DIRECTION)
   ),

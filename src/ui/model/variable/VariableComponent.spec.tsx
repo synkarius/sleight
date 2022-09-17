@@ -17,7 +17,7 @@ import {
   createPauseAction,
   PauseAction,
 } from '../../../data/model/action/pause/pause';
-import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { saveAction } from '../../../core/reducers/action-reducers';
 
 const SAVE = 'Save';
@@ -51,7 +51,7 @@ beforeAll(() => {
   const action: PauseAction = {
     ...createPauseAction(),
     centiseconds: {
-      variableType: VariableType.Enum.RANGE,
+      variableType: VariableType.Enum.NUMBER,
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableId: variable1.id,
     },
@@ -82,7 +82,7 @@ describe('variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
     await user.click(saveButton);
 
@@ -133,7 +133,7 @@ describe('variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
 
     const errorText = screen.getByText(getVarUsedErrorMsgRegex());
 
@@ -147,7 +147,7 @@ describe('variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
 
     const errorText = screen.queryByText(getVarUsedErrorMsgRegex());
 

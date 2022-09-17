@@ -1,5 +1,5 @@
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { UNSELECTED_ID } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from '../../data/model/command/command';
 import { CommandReducerActionType } from '../../ui/model/command/command-editing-context';
@@ -182,7 +182,7 @@ describe('command reducer', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      actionIds: [...obj.actionIds, SELECT_DEFAULT_VALUE],
+      actionIds: [...obj.actionIds, UNSELECTED_ID],
     });
   });
 

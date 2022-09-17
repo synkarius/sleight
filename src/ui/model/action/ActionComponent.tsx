@@ -24,6 +24,10 @@ import { InjectionContext } from '../../../di/injector-context';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { isSendTextAction } from '../../../data/model/action/send-text/send-text';
+import { SendTextComponent } from './send-text/SendTextComponent';
+import { isWaitForWindowAction } from '../../../data/model/action/wait-for-window/wait-for-window';
+import { WaitForWindowComponent } from './wait-for-window/WaitForWindowComponent';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
@@ -130,14 +134,21 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
           ))}
         </FormSelect>
       </FormGroupRowComponent>
-      {isSendKeyAction(props.action) && (
-        <SendKeyComponent sendKeyAction={props.action} />
-      )}
+
       {isMouseAction(props.action) && (
         <MouseComponent mouseAction={props.action} />
       )}
       {isPauseAction(props.action) && (
         <PauseComponent pauseAction={props.action} />
+      )}
+      {isSendKeyAction(props.action) && (
+        <SendKeyComponent sendKeyAction={props.action} />
+      )}
+      {isSendTextAction(props.action) && (
+        <SendTextComponent sendTextAction={props.action} />
+      )}
+      {isWaitForWindowAction(props.action) && (
+        <WaitForWindowComponent wfwAction={props.action} />
       )}
 
       {isSaved && (

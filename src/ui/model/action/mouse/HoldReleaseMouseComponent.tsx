@@ -1,11 +1,10 @@
 import React from 'react';
-import { Direction } from '../../../../data/model/action/direction';
 import { HoldReleaseMouseAction } from '../../../../data/model/action/mouse/mouse';
-import { ActionValueComponent } from '../action-value/ActionValueComponent';
+import { ActionValueComponent } from '../ActionValueComponent';
 import {
-  directionGroup,
-  pauseGroup,
-} from './click-mouse-action-value-field-groups';
+  mDirectionGroup,
+  mPauseGroup,
+} from './mouse-action-value-field-groups';
 
 export const HoldReleaseMouseComponent: React.FC<{
   holdReleaseMouseAction: HoldReleaseMouseAction;
@@ -16,16 +15,13 @@ export const HoldReleaseMouseComponent: React.FC<{
         actionValue={props.holdReleaseMouseAction.pause}
         labelText="Pause"
         descriptionText="how long to pause after clicking"
-        fields={pauseGroup}
+        fields={mPauseGroup}
       />
       <ActionValueComponent
-        actionValue={{
-          ...props.holdReleaseMouseAction.direction,
-          enumValues: Direction.values(),
-        }}
+        actionValue={props.holdReleaseMouseAction.direction}
         labelText="Direction"
         descriptionText="hold (down) or release (up)"
-        fields={directionGroup}
+        fields={mDirectionGroup}
       />
     </>
   );

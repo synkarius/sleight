@@ -1,8 +1,8 @@
 import {
   EnumActionValue,
   NumericActionValue,
-} from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+} from '../../../../data/model/action/action-value';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import { DomainMapper } from '../../mapper';
 import { getEnterEnumActionValueDomainMapperDelegate } from './enter-enum-action-value-domain-mapper-delegate';
 import { getEnterNumberActionValueDomainMapperDelegate } from './enter-numeric-action-value-domain-mapper-delegate';

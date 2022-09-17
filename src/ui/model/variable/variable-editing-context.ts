@@ -111,12 +111,12 @@ export interface ChangeVariableTypeSimplePayload
   extends AbstractChangeVariableTypePayload {
   readonly variableType:
     | typeof VariableType.Enum.TEXT
-    | typeof VariableType.Enum.RANGE;
+    | typeof VariableType.Enum.NUMBER;
 }
 
 export interface ChangeVariableTypeSelectorPayload
   extends AbstractChangeVariableTypePayload {
-  readonly variableType: typeof VariableType.Enum.CHOICE;
+  readonly variableType: typeof VariableType.Enum.ENUM;
   readonly selector: Selector;
 }
 

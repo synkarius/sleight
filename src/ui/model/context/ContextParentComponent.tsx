@@ -43,7 +43,7 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
 
   return (
     <ValidationComponent<Context>
-      validators={[...injectionContext.validators.context]}
+      validators={[...injectionContext.validation.validators.context]}
       editing={editing}
     >
       <ContextEditingContext.Provider

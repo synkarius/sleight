@@ -134,7 +134,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const saveButton = screen.getByRole('button', {
       name: SAVE,
     });
@@ -150,7 +150,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const saveButton = screen.getByRole('button', {
       name: SAVE,
     });
@@ -169,7 +169,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
     await user.click(addChoiceItemButton);
     const selectorInput = screen.getByRole('textbox', {
@@ -190,7 +190,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
     await user.click(addChoiceItemButton);
     const selectorInput = screen.getByRole('textbox', {
@@ -208,7 +208,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
     await user.click(addChoiceItemButton);
     const selectorInput = screen.getByRole('textbox', {
@@ -225,7 +225,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
       name: 'Use Default',
     });
@@ -243,7 +243,7 @@ describe('choice variable component tests', () => {
     const typeSelect = screen.getByRole('list', {
       name: Field[Field.VAR_TYPE_SELECT],
     });
-    await user.selectOptions(typeSelect, VariableType.Enum.CHOICE);
+    await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
       name: 'Use Default',
     });

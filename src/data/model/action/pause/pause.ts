@@ -5,10 +5,7 @@ import {
 } from '../abstract-action';
 import { Action } from '../action';
 import { ActionType } from '../action-types';
-import {
-  createNumericValue,
-  NumericActionValue,
-} from '../action-value/action-value';
+import { createNumericValue, NumericActionValue } from '../action-value';
 
 export interface PauseAction extends AbstractAction {
   readonly type: typeof ActionType.Enum.PAUSE;

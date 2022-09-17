@@ -1,21 +1,20 @@
 import { actionReactReducer } from '../../action-reducers';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
-import { EnterValueType } from '../../../../data/model/action/action-value/action-value';
 import {
   createPauseAction,
   PauseAction,
 } from '../../../../data/model/action/pause/pause';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 
-describe('action reducer: action.centiseconds', () => {
+describe('pause action reducer: action.centiseconds', () => {
   it('should handle change action.centiseconds.actionValueType', () => {
     const obj: PauseAction = {
       ...createPauseAction(),
       centiseconds: {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.RANGE,
+        variableType: VariableType.Enum.NUMBER,
         variableId: 'asdf',
       },
     };
@@ -33,7 +32,7 @@ describe('action reducer: action.centiseconds', () => {
       ...obj,
       centiseconds: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.NUMERIC,
+        enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
       },
     });

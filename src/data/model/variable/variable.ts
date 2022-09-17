@@ -21,7 +21,7 @@ export const isTextVariable = (
 ): variable is TextVariable => variable.type === VariableType.Enum.TEXT;
 
 export interface RangeVariable extends AbstractVariable {
-  readonly type: typeof VariableType.Enum.RANGE;
+  readonly type: typeof VariableType.Enum.NUMBER;
   readonly beginInclusive: number;
   readonly endInclusive: number;
   readonly defaultValue?: number;
@@ -29,7 +29,7 @@ export interface RangeVariable extends AbstractVariable {
 
 export const isRangeVariable = (
   variable: AbstractVariable
-): variable is RangeVariable => variable.type === VariableType.Enum.RANGE;
+): variable is RangeVariable => variable.type === VariableType.Enum.NUMBER;
 
 export interface ChoiceItem extends Ided {
   readonly selector: Selector;
@@ -37,14 +37,14 @@ export interface ChoiceItem extends Ided {
 }
 
 export interface ChoiceVariable extends AbstractVariable {
-  readonly type: typeof VariableType.Enum.CHOICE;
+  readonly type: typeof VariableType.Enum.ENUM;
   readonly items: ChoiceItem[];
   readonly defaultValue?: string;
 }
 
 export const isChoiceVariable = (
   variable: AbstractVariable
-): variable is ChoiceVariable => variable.type === VariableType.Enum.CHOICE;
+): variable is ChoiceVariable => variable.type === VariableType.Enum.ENUM;
 
 export type Variable = TextVariable | RangeVariable | ChoiceVariable;
 
@@ -67,7 +67,7 @@ export const createTextVariable = (): TextVariable => {
 export const createRangeVariable = (): RangeVariable => {
   return {
     id: getRandomId(),
-    type: VariableType.Enum.RANGE,
+    type: VariableType.Enum.NUMBER,
     name: '',
     roleKey: '',
     enabled: true,
@@ -88,7 +88,7 @@ export const createChoiceItem = (selector: Selector): ChoiceItem => {
 export const createChoiceVariable = (): ChoiceVariable => {
   return {
     id: getRandomId(),
-    type: VariableType.Enum.CHOICE,
+    type: VariableType.Enum.ENUM,
     name: '',
     roleKey: '',
     enabled: true,

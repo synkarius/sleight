@@ -3,17 +3,18 @@ import {
   isSendKeyAction,
   isSendKeyPressAction,
 } from '../../../../data/model/action/send-key/send-key';
-import { innerPauseGroup } from '../../../../ui/model/action/send-key/send-key-action-value-field-groups';
+import { skInnerPauseGroup } from '../../../../ui/model/action/send-key/send-key-action-value-field-groups';
 import {
   changeActionValueValue,
   changeNumericActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
+import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
 
 export const getSkInnerPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      Object.values(innerPauseGroup).includes(action.payload.field) &&
+      groupIncludesField(skInnerPauseGroup, action.payload.field) &&
       isSendKeyAction(state) &&
       isSendKeyPressAction(state)
     ) {

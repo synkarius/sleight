@@ -1,5 +1,9 @@
 import { SleightDataInternalFormat } from '../../data/data-formats';
-import { Predicate, singletonArray } from '../common/common-functions';
+import {
+  isIdSelected,
+  Predicate,
+  singletonArray,
+} from '../common/common-functions';
 import { MapUtil } from '../common/map-util';
 import {
   specAdequacyConfigForAction,
@@ -21,7 +25,6 @@ import {
   givenSpecFindCommands,
 } from '../../validation/cross-slice/finder-fns';
 import { FieldValidator } from '../../validation/field-validator';
-import { extractVariablesFromAction } from '../../validation/support/extract-variables-from-actions';
 import { ValidationErrorCode } from '../../validation/validation-error-code';
 import { Field } from '../../validation/validation-field';
 import {
@@ -30,12 +33,12 @@ import {
   validResult,
 } from '../../validation/validation-result';
 import { Action } from '../../data/model/action/action';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
 import { ElementType } from '../../data/model/element-types';
 import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { Command } from '../../data/model/command/command';
+import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 
 type ActionAndField = {
   actionId: string;
@@ -48,23 +51,25 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
   data: SleightDataInternalFormat,
   config: ValidationConfig
 ): ValidationResult => {
+  const injected = getDefaultInjectionContext();
+  const extractor = injected.validation.variableExtractor;
   for (const command of commands) {
     const spec = MapUtil.getOrThrow(data.specs, command.specId);
     const variablesInSpec = spec.items
       .filter((item) => item.itemType === SpecItemType.Enum.VARIABLE)
       .map((specItem) => specItem.itemId)
-      .filter((variableId) => variableId !== SELECT_DEFAULT_VALUE)
+      .filter(isIdSelected)
       .map((variableId) => MapUtil.getOrThrow(data.variables, variableId));
 
     const variableActionValuesInActions = command.actionIds
-      .filter((actionId) => actionId !== SELECT_DEFAULT_VALUE)
+      .filter(isIdSelected)
       .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
-      .flatMap(extractVariablesFromAction);
+      .flatMap(extractor.extractVariables);
 
     // get variables which are in the command's actions but not its specs
     const noncoveredVariables: NonCoveredVariable[] =
       variableActionValuesInActions
-        .filter((vav) => vav.variableId !== SELECT_DEFAULT_VALUE)
+        .filter((vav) => isIdSelected(vav.variableId))
         .filter((vav) => {
           return !variablesInSpec
             .map((variable) => variable.id)
@@ -146,7 +151,7 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
 
 const commandRequiresSpecAdequacyValidation: Predicate<Command> = (
   command: Command
-) => command.specId !== SELECT_DEFAULT_VALUE;
+) => isIdSelected(command.specId);
 
 // spec-action adequacy: action side
 export const getActionSideSpecAdequacyValidator: () => FieldValidator<Action> =

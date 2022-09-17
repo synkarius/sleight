@@ -1,5 +1,4 @@
-import { EnterValueType } from '../../../../data/model/action/action-value/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../../data/model/action/action-value-type';
 import {
   createSendKeyPressAction,
   SendKeyPressAction,
@@ -9,13 +8,13 @@ import { ActionReducerActionType } from '../../../../ui/model/action/action-edit
 import { Field } from '../../../../validation/validation-field';
 import { actionReactReducer } from '../../action-reducers';
 
-describe('action reducer: action.innerPause', () => {
+describe('sk action reducer: action.innerPause', () => {
   it('should handle change action.innerPause.actionValueType', () => {
     const obj: SendKeyPressAction = {
       ...createSendKeyPressAction(),
       innerPause: {
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.RANGE,
+        variableType: VariableType.Enum.NUMBER,
         variableId: 'asdf',
       },
     };
@@ -33,7 +32,7 @@ describe('action reducer: action.innerPause', () => {
       ...obj,
       innerPause: {
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: EnterValueType.NUMERIC,
+        enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
       },
     });

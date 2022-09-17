@@ -22,6 +22,7 @@ import { ImportsValidator } from '../data/imports/imports-validator';
 import { ImportDataMerger } from '../data/imports/import-data-merger';
 import { ImportsCleaner } from '../data/imports/imports-cleaner';
 import { FormatMapper } from '../data/data-format-mapper';
+import { VariableExtractor } from '../validation/variable-extraction/variable-extractor';
 
 export type Injected = {
   imports: {
@@ -36,13 +37,16 @@ export type Injected = {
       dragonfly: Exporter;
     };
   };
-  validators: {
-    action: FieldValidator<Action>[];
-    command: FieldValidator<Command>[];
-    context: FieldValidator<Context>[];
-    spec: FieldValidator<Spec>[];
-    variable: FieldValidator<Variable>[];
-    imports: ImportsValidator;
+  validation: {
+    validators: {
+      action: FieldValidator<Action>[];
+      command: FieldValidator<Command>[];
+      context: FieldValidator<Context>[];
+      spec: FieldValidator<Spec>[];
+      variable: FieldValidator<Variable>[];
+      imports: ImportsValidator;
+    };
+    variableExtractor: VariableExtractor;
   };
   mappers: {
     action: DomainMapper<Action, Action>;

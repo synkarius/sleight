@@ -10,7 +10,7 @@ import {
   validResult,
 } from '../../validation/validation-result';
 import { ValidateMode } from '../../validation/ValidationComponent';
-import { SELECT_DEFAULT_VALUE } from '../common/consts';
+import { UNSELECTED_ID } from '../common/consts';
 import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecDTO } from '../../data/model/spec/spec-dto';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
@@ -78,7 +78,7 @@ const findSpecItemsWithUnselectedVariables = (spec: Spec): string[] => {
     .filter(
       (specItem) =>
         specItem.itemType === SpecItemType.Enum.VARIABLE &&
-        specItem.variableId === SELECT_DEFAULT_VALUE
+        specItem.variableId === UNSELECTED_ID
     )
     .map((specItem) => specItem.id);
 };

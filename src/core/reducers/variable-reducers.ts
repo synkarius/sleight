@@ -108,9 +108,9 @@ const changeEditingVariableType = (
   switch (variableType) {
     case VariableType.Enum.TEXT:
       return { ...createTextVariable(), ...copyVariable(state) };
-    case VariableType.Enum.RANGE:
+    case VariableType.Enum.NUMBER:
       return { ...createRangeVariable(), ...copyVariable(state) };
-    case VariableType.Enum.CHOICE:
+    case VariableType.Enum.ENUM:
       return { ...createChoiceVariable(), ...copyVariable(state) };
     default:
       throw new ExhaustivenessFailureError(variableType);
@@ -252,13 +252,13 @@ const deleteSelectorItem = (
 const toggleDefaultEnabled = (state: Variable): Variable => {
   const variableType = state.type;
   switch (variableType) {
-    case VariableType.Enum.RANGE:
+    case VariableType.Enum.NUMBER:
       return {
         ...state,
         defaultValue: state.defaultValue === undefined ? 0 : undefined,
       };
     case VariableType.Enum.TEXT:
-    case VariableType.Enum.CHOICE:
+    case VariableType.Enum.ENUM:
       return {
         ...state,
         defaultValue: state.defaultValue === undefined ? '' : undefined,

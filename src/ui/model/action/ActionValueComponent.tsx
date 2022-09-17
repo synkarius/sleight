@@ -1,14 +1,14 @@
 import React, { useContext, useId } from 'react';
 import { FormCheck, FormControl, FormSelect } from 'react-bootstrap';
-import { FormGroupRowComponent } from '../../../other-components/FormGroupRowComponent';
-import { VariablesDropdownComponent } from '../../variable/VariablesDropdownComponent';
-import { ActionValueType } from '../../../../data/model/action/action-value/action-value-type';
-import { ValidationContext } from '../../../../validation/validation-context';
+import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
+import { VariablesDropdownComponent } from '../variable/VariablesDropdownComponent';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
+import { ValidationContext } from '../../../validation/validation-context';
 import {
   ActionEditingContext,
   ActionReducerActionType,
-} from '../action-editing-context';
-import { Field } from '../../../../validation/validation-field';
+} from './action-editing-context';
+import { Field } from '../../../validation/validation-field';
 import {
   EnumActionValue,
   isEnterEnumActionValue,
@@ -18,26 +18,39 @@ import {
   isVariableActionValue,
   NumericActionValue,
   TextActionValue,
-} from '../../../../data/model/action/action-value/action-value';
-import { SELECT_DEFAULT_VALUE } from '../../../../core/common/consts';
-import { processErrorResults } from '../../../../validation/validation-result-processing';
-import { ActionValueFieldGroup } from './action-value-type-name-group';
-
-type EnumActionValueWithEnumValues = EnumActionValue & {
-  readonly enumValues: string[];
-};
+} from '../../../data/model/action/action-value';
+import { UNSELECTED_ENUM } from '../../../core/common/consts';
+import { processErrorResults } from '../../../validation/validation-result-processing';
+import {
+  ActionValueFieldGroup,
+  isEnumActionFieldGroup,
+  isNumericActionFieldGroup,
+} from './action-value-type-name-group';
+import { VariableType } from '../../../data/model/variable/variable-types';
+import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 
 type AVCProps = {
   // value
-  readonly actionValue:
-    | TextActionValue
-    | NumericActionValue
-    | EnumActionValueWithEnumValues;
+  readonly actionValue: TextActionValue | NumericActionValue | EnumActionValue;
   readonly fields: ActionValueFieldGroup;
   // display
   readonly labelText: string;
   readonly descriptionText: string;
   readonly required?: boolean;
+};
+
+const getRadioButtonLabel = (
+  actionValueType: ActionValueType.Type,
+  variableType: VariableType.Type
+) => {
+  switch (actionValueType) {
+    case ActionValueType.Enum.ENTER_VALUE:
+      return 'Enter Value';
+    case ActionValueType.Enum.USE_VARIABLE:
+      return `Use (${variableType}) Variable`;
+    default:
+      throw new ExhaustivenessFailureError(actionValueType);
+  }
 };
 
 export const ActionValueComponent: React.FC<AVCProps> = (props) => {
@@ -88,8 +101,14 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     ? props.actionValue.variableId
     : undefined;
   const radioButtonData = [
-    { id: enterValueId, actionValueType: ActionValueType.Enum.ENTER_VALUE },
-    { id: useVariableId, actionValueType: ActionValueType.Enum.USE_VARIABLE },
+    {
+      id: enterValueId,
+      actionValueType: ActionValueType.Enum.ENTER_VALUE,
+    },
+    {
+      id: useVariableId,
+      actionValueType: ActionValueType.Enum.USE_VARIABLE,
+    },
   ];
 
   return (
@@ -106,7 +125,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
         {radioButtonData.map((d) => (
           <FormCheck
             inline
-            label={d.actionValueType}
+            label={getRadioButtonLabel(d.actionValueType, props.fields.type)}
             key={d.actionValueType}
             type="radio"
             role="radio"
@@ -118,25 +137,31 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           />
         ))}
       </div>
+      {((isEnterValueActionValue(props.actionValue) &&
+        isEnterTextActionValue(props.actionValue)) ||
+        (isEnterValueActionValue(props.actionValue) &&
+          isEnterEnumActionValue(props.actionValue) &&
+          isEnumActionFieldGroup(props.fields) &&
+          !props.fields.enumValues.length)) && (
+        <FormControl
+          type="text"
+          value={props.actionValue.value}
+          onChange={(e) => enteredValueChangedFn(e.target.value)}
+          onBlur={(_e) => touchEnteredValue()}
+          isInvalid={!!errorResults([props.fields.value])}
+          name={enteredValueFieldName}
+          role="textbox"
+          aria-label={enteredValueFieldName}
+        />
+      )}
       {isEnterValueActionValue(props.actionValue) &&
-        isEnterTextActionValue(props.actionValue) && (
-          <FormControl
-            type="text"
-            value={props.actionValue.value}
-            onChange={(e) => enteredValueChangedFn(e.target.value)}
-            onBlur={(_e) => touchEnteredValue()}
-            isInvalid={!!errorResults([props.fields.value])}
-            name={enteredValueFieldName}
-            role="textbox"
-            aria-label={enteredValueFieldName}
-          />
-        )}
-      {isEnterValueActionValue(props.actionValue) &&
-        isEnterNumberActionValue(props.actionValue) && (
+        isEnterNumberActionValue(props.actionValue) &&
+        isNumericActionFieldGroup(props.fields) && (
           <FormControl
             type="number"
             value={props.actionValue.value}
-            min={0}
+            min={props.fields.min}
+            max={props.fields.max}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults([props.fields.value])}
@@ -146,7 +171,9 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           />
         )}
       {isEnterValueActionValue(props.actionValue) &&
-        isEnterEnumActionValue(props.actionValue) && (
+        isEnterEnumActionValue(props.actionValue) &&
+        isEnumActionFieldGroup(props.fields) &&
+        !!props.fields.enumValues.length && (
           <FormSelect
             value={props.actionValue.value}
             aria-label={Field[props.fields.value]}
@@ -155,8 +182,8 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             isInvalid={!!errorResults([props.fields.value])}
             role="list"
           >
-            <option value={SELECT_DEFAULT_VALUE} role="listitem"></option>
-            {props.actionValue.enumValues.map((enumValue) => (
+            <option value={UNSELECTED_ENUM} role="listitem"></option>
+            {props.fields.enumValues.map((enumValue) => (
               <option key={enumValue} value={enumValue} role="listitem">
                 {enumValue}
               </option>

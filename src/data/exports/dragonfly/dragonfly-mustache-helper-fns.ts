@@ -107,9 +107,9 @@ export const dragonflyViewFunctions = (data: SleightDataInternalFormat) => ({
     switch (variable.type) {
       case VariableType.Enum.TEXT:
         return `Dictation("${name}")`;
-      case VariableType.Enum.RANGE:
+      case VariableType.Enum.NUMBER:
         return `ShortIntegerRef("${name}", ${variable.beginInclusive}, ${variable.endInclusive})`;
-      case VariableType.Enum.CHOICE:
+      case VariableType.Enum.ENUM:
         //
         const choiceItems =
           '{' +

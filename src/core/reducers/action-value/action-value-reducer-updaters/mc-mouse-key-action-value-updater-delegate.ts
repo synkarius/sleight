@@ -4,24 +4,25 @@ import {
   changeEnumActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
-import { mouseKeyGroup } from '../../../../ui/model/action/mouse/click-mouse-action-value-field-groups';
+import { mMouseKeyGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
 import {
   isClickMouseAction,
   isMouseAction,
 } from '../../../../data/model/action/mouse/mouse';
+import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
 
 export const getMcMouseKeyActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      Object.values(mouseKeyGroup).includes(action.payload.field) &&
+      groupIncludesField(mMouseKeyGroup, action.payload.field) &&
       isMouseAction(state) &&
       isClickMouseAction(state)
     ) {
       return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, mouseKey: changeEnumActionValueType(action) }
+        ? { ...state, mouseButton: changeEnumActionValueType(action) }
         : {
             ...state,
-            mouseKey: changeActionValueValue(state.mouseKey, action),
+            mouseButton: changeActionValueValue(state.mouseButton, action),
           };
     }
   };

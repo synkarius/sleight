@@ -29,7 +29,7 @@ import {
 import { Action } from '../../../data/model/action/action';
 import { act } from 'react-dom/test-utils';
 import { VariableType } from '../../../data/model/variable/variable-types';
-import { ActionValueType } from '../../../data/model/action/action-value/action-value-type';
+import { ActionValueType } from '../../../data/model/action/action-value-type';
 
 let user: UserEvent;
 
@@ -64,7 +64,7 @@ beforeEach(() => {
     name: ACTION_NAME_1,
     centiseconds: {
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
-      variableType: VariableType.Enum.RANGE,
+      variableType: VariableType.Enum.NUMBER,
       variableId: VARIABLE_ID_1,
     },
   };
