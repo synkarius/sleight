@@ -129,3 +129,13 @@ export const createEnumValue = (): EnterEnumActionValue => {
     value: UNSELECTED_ENUM,
   };
 };
+
+/**
+ * EnterEnumActionValue can have its `value` set via dropdown or
+ * text input. If it's the latter, the initial value should be blank
+ * rather than `UNSELECTED_ENUM`.
+ */
+export const createHybridTextEnumValue = (): EnterEnumActionValue => ({
+  ...createEnumValue(),
+  value: '',
+});

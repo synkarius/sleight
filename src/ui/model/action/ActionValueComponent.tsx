@@ -193,11 +193,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
         !props.fields.enumValues.length && (
           <FormControl
             type="text"
-            value={
-              props.actionValue.value === UNSELECTED_ENUM
-                ? ''
-                : props.actionValue.value
-            }
+            value={props.actionValue.value}
             onChange={(e) => enteredValueChangedFn(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults([props.fields.value])}

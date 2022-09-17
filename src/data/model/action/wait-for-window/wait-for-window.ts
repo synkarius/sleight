@@ -6,7 +6,7 @@ import {
 import { Action } from '../action';
 import { ActionType } from '../action-types';
 import {
-  createEnumValue,
+  createHybridTextEnumValue,
   createNumericValue,
   EnumActionValue,
   NumericActionValue,
@@ -27,8 +27,8 @@ export const isWaitForWindowAction = (
 export const createWaitForWindowAction = (): WaitForWindowAction => ({
   ...createAbstractAction(),
   type: ActionType.Enum.WAIT_FOR_WINDOW,
-  executable: createEnumValue(),
-  title: createEnumValue(),
+  executable: createHybridTextEnumValue(),
+  title: createHybridTextEnumValue(),
   waitSeconds: createNumericValue(),
 });
 
@@ -37,7 +37,7 @@ export const copyIntoWaitForWindowAction = (
 ): WaitForWindowAction => ({
   ...copyAction(action),
   type: ActionType.Enum.WAIT_FOR_WINDOW,
-  executable: createEnumValue(),
-  title: createEnumValue(),
+  executable: createHybridTextEnumValue(),
+  title: createHybridTextEnumValue(),
   waitSeconds: createNumericValue(),
 });
