@@ -2,7 +2,7 @@ import React from 'react';
 import { ClickMouseAction } from '../../../../data/model/action/mouse/mouse';
 import { ActionValueComponent } from '../ActionValueComponent';
 import {
-  mMouseKeyGroup,
+  mMouseButtonGroup,
   mPauseGroup,
   mRepeatGroup,
 } from './mouse-action-value-field-groups';
@@ -16,7 +16,7 @@ export const ClickMouseComponent: React.FC<{
         actionValue={props.clickMouseAction.mouseButton}
         labelText="Mouse Button"
         descriptionText="which mouse button to click"
-        fields={mMouseKeyGroup}
+        fields={mMouseButtonGroup}
       />
       <ActionValueComponent
         actionValue={props.clickMouseAction.pause}

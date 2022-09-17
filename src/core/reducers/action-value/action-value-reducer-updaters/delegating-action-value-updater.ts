@@ -3,7 +3,7 @@ import { isDefined } from '../../../common/common-functions';
 import { ActionValueUpdater } from './action-value-updater';
 import { getActionValueUpdaterDelegates } from './action-value-updater-delegates';
 
-export const getActionValueUpdater: () => ActionValueUpdater = () => {
+export const getDelegatingActionValueUpdater: () => ActionValueUpdater = () => {
   const delegates = getActionValueUpdaterDelegates();
   return (state, action) => {
     const updated = delegates

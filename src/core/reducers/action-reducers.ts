@@ -14,7 +14,7 @@ import {
 } from '../../ui/model/action/action-editing-context';
 import { ActionType } from '../../data/model/action/action-types';
 import { ActionValueUpdater } from './action-value/action-value-reducer-updaters/action-value-updater';
-import { getActionValueUpdater } from './action-value/action-value-reducer-updaters/default-action-value-updater';
+import { getDelegatingActionValueUpdater } from './action-value/action-value-reducer-updaters/delegating-action-value-updater';
 import {
   copyIntoMouseClickAction,
   copyIntoMouseHoldAction,
@@ -228,7 +228,7 @@ const toggleEditingActionLocked = (state: Action): Action => ({
   locked: !state.locked,
 });
 
-const changeActionValue: ActionValueUpdater = getActionValueUpdater();
+const changeActionValue: ActionValueUpdater = getDelegatingActionValueUpdater();
 
 export const actionReactReducer = (
   state: Action,

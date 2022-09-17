@@ -18,7 +18,7 @@ export const mMoveYGroup: ActionValueFieldGroup = {
   type: VariableType.Enum.NUMBER,
 };
 
-export const mMouseKeyGroup: ActionValueFieldGroup = {
+export const mMouseButtonGroup: ActionValueFieldGroup = {
   radio: Field.AC_MOUSE_MOUSE_BUTTON_RADIO,
   value: Field.AC_MOUSE_MOUSE_BUTTON_VALUE,
   variable: Field.AC_MOUSE_MOUSE_BUTTON_VAR,
