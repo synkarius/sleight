@@ -39,6 +39,11 @@ import { getFormatMapper } from '../data/data-format-mapper';
 import { getImportsCleaner } from '../data/imports/imports-cleaner';
 import { getMouseValidators } from '../core/validators/action/mouse-validators';
 import { getDelegatingVariableExtractor } from '../validation/variable-extraction/delegating-variable-extractor';
+import { getSendTextValidators } from '../core/validators/action/send-text-validators';
+import { getMimicValidators } from '../core/validators/action/mimic-validators';
+import { getCallFunctionValidators } from '../core/validators/action/call-function-validators';
+import { getBringAppValidators } from '../core/validators/action/bring-app-validators';
+import { getWaitForWindowValidators } from '../core/validators/action/wait-for-window-validators';
 
 let instance: Injected | undefined = undefined;
 
@@ -61,9 +66,14 @@ export const getDefaultInjectionContext = (): Injected => {
         validators: {
           action: [
             ...getActionValidators(),
-            ...getSendKeyValidators(),
-            ...getPauseValidators(),
+            ...getCallFunctionValidators(),
+            ...getBringAppValidators(),
+            ...getMimicValidators(),
             ...getMouseValidators(),
+            ...getPauseValidators(),
+            ...getSendKeyValidators(),
+            ...getSendTextValidators(),
+            ...getWaitForWindowValidators(),
             ...getCrossSliceActionValidators(),
           ],
           command: [

@@ -50,7 +50,7 @@ const moveXValueValidators: ActionValueValidators = {
 
 /*
  * =================================================
- *                   MOVE X VALUE
+ *                   MOVE Y VALUE
  * =================================================
  */
 
@@ -79,7 +79,7 @@ const moveYValueValidators: ActionValueValidators = {
  */
 
 const MOUSE_BUTTON = 'mouse button';
-const mouseKeySendValidators: ActionValueValidators = {
+const mouseButtonValidators: ActionValueValidators = {
   value: createValidator(
     Field.AC_MOUSE_MOUSE_BUTTON_VALUE,
     (action) =>
@@ -204,7 +204,7 @@ export const getMouseValidators: () => FieldValidator<Action>[] = () =>
   [
     ...Object.values(moveXValueValidators),
     ...Object.values(moveYValueValidators),
-    ...Object.values(mouseKeySendValidators),
+    ...Object.values(mouseButtonValidators),
     ...Object.values(pauseValidators),
     ...Object.values(repeatValidators),
     ...Object.values(directionValidators),
