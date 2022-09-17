@@ -13,16 +13,16 @@ export const WaitForWindowComponent: React.FC<{
   return (
     <>
       <ActionValueComponent
-        labelText="Window Title"
-        descriptionText="the title of the window to wait for"
-        actionValue={props.wfwAction.title}
-        fields={wfwTitleGroup}
-      />
-      <ActionValueComponent
         labelText="Window Executable"
         descriptionText="the executable name of the window to wait for"
         actionValue={props.wfwAction.executable}
         fields={wfwExecutableGroup}
+      />
+      <ActionValueComponent
+        labelText="Window Title"
+        descriptionText="the title of the window to wait for"
+        actionValue={props.wfwAction.title}
+        fields={wfwTitleGroup}
       />
       <ActionValueComponent
         labelText="Wait Duration"

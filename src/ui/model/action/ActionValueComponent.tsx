@@ -137,23 +137,19 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           />
         ))}
       </div>
-      {((isEnterValueActionValue(props.actionValue) &&
-        isEnterTextActionValue(props.actionValue)) ||
-        (isEnterValueActionValue(props.actionValue) &&
-          isEnterEnumActionValue(props.actionValue) &&
-          isEnumActionFieldGroup(props.fields) &&
-          !props.fields.enumValues.length)) && (
-        <FormControl
-          type="text"
-          value={props.actionValue.value}
-          onChange={(e) => enteredValueChangedFn(e.target.value)}
-          onBlur={(_e) => touchEnteredValue()}
-          isInvalid={!!errorResults([props.fields.value])}
-          name={enteredValueFieldName}
-          role="textbox"
-          aria-label={enteredValueFieldName}
-        />
-      )}
+      {isEnterValueActionValue(props.actionValue) &&
+        isEnterTextActionValue(props.actionValue) && (
+          <FormControl
+            type="text"
+            value={props.actionValue.value}
+            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onBlur={(_e) => touchEnteredValue()}
+            isInvalid={!!errorResults([props.fields.value])}
+            name={enteredValueFieldName}
+            role="textbox"
+            aria-label={enteredValueFieldName}
+          />
+        )}
       {isEnterValueActionValue(props.actionValue) &&
         isEnterNumberActionValue(props.actionValue) &&
         isNumericActionFieldGroup(props.fields) && (
@@ -189,6 +185,26 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
               </option>
             ))}
           </FormSelect>
+        )}
+      {/* textbox enum value entry: */}
+      {isEnterValueActionValue(props.actionValue) &&
+        isEnterEnumActionValue(props.actionValue) &&
+        isEnumActionFieldGroup(props.fields) &&
+        !props.fields.enumValues.length && (
+          <FormControl
+            type="text"
+            value={
+              props.actionValue.value === UNSELECTED_ENUM
+                ? ''
+                : props.actionValue.value
+            }
+            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onBlur={(_e) => touchEnteredValue()}
+            isInvalid={!!errorResults([props.fields.value])}
+            name={enteredValueFieldName}
+            role="textbox"
+            aria-label={enteredValueFieldName}
+          />
         )}
       {isVariableActionValue(props.actionValue) && (
         <VariablesDropdownComponent

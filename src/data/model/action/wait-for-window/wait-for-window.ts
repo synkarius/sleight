@@ -14,8 +14,8 @@ import {
 
 export interface WaitForWindowAction extends AbstractAction {
   type: typeof ActionType.Enum.WAIT_FOR_WINDOW;
-  title: EnumActionValue;
   executable: EnumActionValue;
+  title: EnumActionValue;
   waitSeconds: NumericActionValue;
 }
 
@@ -27,8 +27,8 @@ export const isWaitForWindowAction = (
 export const createWaitForWindowAction = (): WaitForWindowAction => ({
   ...createAbstractAction(),
   type: ActionType.Enum.WAIT_FOR_WINDOW,
-  title: createEnumValue(),
   executable: createEnumValue(),
+  title: createEnumValue(),
   waitSeconds: createNumericValue(),
 });
 
@@ -37,7 +37,7 @@ export const copyIntoWaitForWindowAction = (
 ): WaitForWindowAction => ({
   ...copyAction(action),
   type: ActionType.Enum.WAIT_FOR_WINDOW,
-  title: createEnumValue(),
   executable: createEnumValue(),
+  title: createEnumValue(),
   waitSeconds: createNumericValue(),
 });

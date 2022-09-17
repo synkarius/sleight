@@ -9,7 +9,7 @@ interface AbstractActionFieldGroup {
 }
 
 interface TextActionFieldGroup extends AbstractActionFieldGroup {
-  type: typeof VariableType.Enum.TEXT;
+  readonly type: typeof VariableType.Enum.TEXT;
 }
 
 export const isTextActionFieldGroup = (
@@ -17,9 +17,9 @@ export const isTextActionFieldGroup = (
 ): group is TextActionFieldGroup => group.type === VariableType.Enum.TEXT;
 
 interface NumericActionFieldGroup extends AbstractActionFieldGroup {
-  type: typeof VariableType.Enum.NUMBER;
-  min?: number;
-  max?: number;
+  readonly type: typeof VariableType.Enum.NUMBER;
+  readonly min?: number;
+  readonly max?: number;
 }
 
 export const isNumericActionFieldGroup = (
@@ -27,8 +27,8 @@ export const isNumericActionFieldGroup = (
 ): group is NumericActionFieldGroup => group.type === VariableType.Enum.NUMBER;
 
 interface EnumActionFieldGroup extends AbstractActionFieldGroup {
-  type: typeof VariableType.Enum.ENUM;
-  enumValues: string[];
+  readonly type: typeof VariableType.Enum.ENUM;
+  readonly enumValues: string[];
 }
 
 export const isEnumActionFieldGroup = (

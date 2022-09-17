@@ -11,22 +11,44 @@ import { getSkRepeatActionValueUpdaterDelegate } from './sk-repeat-action-value-
 import { getMhrDirectionActionValueUpdaterDelegate } from './mhr-direction-action-value-updater-delegate';
 import { getMMouseMoveYActionValueUpdaterDelegate } from './mm-move-y-action-value-updater-delegate';
 import { getMMouseMoveXActionValueUpdaterDelegate } from './mm-move-x-action-value-updater-delegate';
+import { getWfwExecutableActionValueUpdaterDelegate } from './wfw-executable-action-value-reducer-delegate';
+import { getWfwTitleActionValueUpdaterDelegate } from './wfw-title-action-value-reducer-delegate';
+import { getWfwWaitSecondsActionValueUpdaterDelegate } from './wfw-wait-seconds-action-value-reducer-delegate';
+import { getStTextActionValueUpdaterDelegate } from './st-text-action-value-reducer-delegate';
+import { getMimicWordsActionValueUpdaterDelegate } from './mimic-words-action-value-reducer-delegate';
+import { getBringAppPathActionValueUpdaterDelegate } from './bring-app-path-action-value-reducer-delegate';
+import { getBringAppTitleActionValueUpdaterDelegate } from './bring-app-title-action-value-reducer-delegate';
+import { getBringAppStartDirActionValueUpdaterDelegate } from './bring-app-start-dir-action-value-reducer-delegate';
 
 export const getActionValueUpdaterDelegates: () => ActionValueUpdaterDelegate[] =
   () => [
-    // mouse action
+    // bring app
+    getBringAppPathActionValueUpdaterDelegate(),
+    getBringAppTitleActionValueUpdaterDelegate(),
+    getBringAppStartDirActionValueUpdaterDelegate(),
+    // call function
+    // TODO: call function
+    // mimic
+    getMimicWordsActionValueUpdaterDelegate(),
+    // mouse
     getMMouseMoveXActionValueUpdaterDelegate(),
     getMMouseMoveYActionValueUpdaterDelegate(),
     getMcMouseKeyActionValueUpdaterDelegate(),
     getMcMhrPauseActionValueUpdaterDelegate(),
     getMcRepeatActionValueUpdaterDelegate(),
     getMhrDirectionActionValueUpdaterDelegate(),
-    // pause action
+    // pause
     getPCentisecondsActionValueUpdaterDelegate(),
-    // send-key action
+    // send-key
     getSkKeyToSendActionValueUpdaterDelegate(),
     getSkOuterPauseActionValueUpdaterDelegate(),
     getSkInnerPauseActionValueUpdaterDelegate(),
     getSkRepeatActionValueUpdaterDelegate(),
     getSkDirectionActionValueUpdaterDelegate(),
+    // send-text
+    getStTextActionValueUpdaterDelegate(),
+    // wait for window
+    getWfwExecutableActionValueUpdaterDelegate(),
+    getWfwTitleActionValueUpdaterDelegate(),
+    getWfwWaitSecondsActionValueUpdaterDelegate(),
   ];

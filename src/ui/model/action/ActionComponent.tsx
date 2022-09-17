@@ -28,6 +28,12 @@ import { isSendTextAction } from '../../../data/model/action/send-text/send-text
 import { SendTextComponent } from './send-text/SendTextComponent';
 import { isWaitForWindowAction } from '../../../data/model/action/wait-for-window/wait-for-window';
 import { WaitForWindowComponent } from './wait-for-window/WaitForWindowComponent';
+import { isMimicAction } from '../../../data/model/action/mimic/mimic';
+import { MimicComponent } from './mimic/MimicComponent';
+import { isBringAppAction } from '../../../data/model/action/bring-app/bring-app';
+import { BringAppComponent } from './bring-app/BringAppComponent';
+import { isCallFunctionAction } from '../../../data/model/action/call-function/call-function';
+import { CallFunctionComponent } from './call-function/CallFunctionComponent';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
@@ -135,6 +141,15 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         </FormSelect>
       </FormGroupRowComponent>
 
+      {isBringAppAction(props.action) && (
+        <BringAppComponent bringAppAction={props.action} />
+      )}
+      {isCallFunctionAction(props.action) && (
+        <CallFunctionComponent callFunctionAction={props.action} />
+      )}
+      {isMimicAction(props.action) && (
+        <MimicComponent mimicAction={props.action} />
+      )}
       {isMouseAction(props.action) && (
         <MouseComponent mouseAction={props.action} />
       )}

@@ -183,18 +183,18 @@ const changeEditingActionType = (
   action: ActionReducerActionTypePayloadAction
 ): Action => {
   switch (action.payload) {
-    case ActionType.Enum.PAUSE:
-      return copyIntoPauseAction(state);
-    case ActionType.Enum.SEND_KEY:
-      return copyIntoSendKeyPressAction(state);
-    case ActionType.Enum.MOUSE:
-      return copyIntoMouseMoveAction(state);
     case ActionType.Enum.BRING_APP:
       return copyIntoBringAppAction(state);
     case ActionType.Enum.CALL_FUNCTION:
       return copyIntoCallFunctionAction(state);
     case ActionType.Enum.MIMIC:
       return copyIntoMimicAction(state);
+    case ActionType.Enum.MOUSE:
+      return copyIntoMouseMoveAction(state);
+    case ActionType.Enum.PAUSE:
+      return copyIntoPauseAction(state);
+    case ActionType.Enum.SEND_KEY:
+      return copyIntoSendKeyPressAction(state);
     case ActionType.Enum.SEND_TEXT:
       return copyIntoSendTextAction(state);
     case ActionType.Enum.WAIT_FOR_WINDOW:
