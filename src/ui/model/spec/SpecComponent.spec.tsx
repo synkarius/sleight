@@ -49,10 +49,10 @@ const SPEC_WITH_VARIABLE_NOT_OPTIONAL_NAME =
   'spec-with-variable-not-optional-name-4';
 // mixed
 const ROLE_KEY = 'role-key';
-const VARIABLE_ID = 'non-default-variable-id-1';
-const VARIABLE_NAME = 'non-default-variable-name-1';
-const DEFAULT_VARIABLE_ID = 'default-variable-id-2';
-const DEFAULT_VARIABLE_NAME = 'default-variable-name-2';
+const VARIABLE_ID_1 = 'non-default-variable-id-1';
+const VARIABLE_NAME_1 = 'non-default-variable-name-1';
+const DEFAULT_VARIABLE_ID_2 = 'default-variable-id-2';
+const DEFAULT_VARIABLE_NAME_2 = 'default-variable-name-2';
 const SAVE = 'Save';
 const ADD_NEW_SPEC_ITEM = 'Add New Spec Item';
 const GTE1_ERROR_MESSAGE = 'at least one spec item must be added';
@@ -63,19 +63,19 @@ beforeAll(() => {
 
   // save variables
   // no default
-  const rangeVariable: RangeVariable = {
+  const rangeVariable1: RangeVariable = {
     ...createRangeVariable(),
-    id: VARIABLE_ID,
-    name: VARIABLE_NAME,
+    id: VARIABLE_ID_1,
+    name: VARIABLE_NAME_1,
     defaultValue: undefined,
   };
-  const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
-  store.dispatch(saveVariable(rangeVariableDTO));
+  const rangeVariableDTO1 = variableMapper.mapFromDomain(rangeVariable1);
+  store.dispatch(saveVariable(rangeVariableDTO1));
   // with default
   const variableWithDefault: RangeVariable = {
     ...createRangeVariable(),
-    id: DEFAULT_VARIABLE_ID,
-    name: DEFAULT_VARIABLE_NAME,
+    id: DEFAULT_VARIABLE_ID_2,
+    name: DEFAULT_VARIABLE_NAME_2,
     defaultValue: 234,
   };
   const variableWithDefaultDTO =
@@ -88,7 +88,7 @@ beforeAll(() => {
     centiseconds: {
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableType: VariableType.Enum.NUMBER,
-      variableId: rangeVariable.id,
+      variableId: rangeVariable1.id,
     },
   };
   store.dispatch(saveAction(action1));
@@ -154,7 +154,7 @@ beforeEach(async () => {
       {
         ...createSpecItem(),
         itemType: SpecItemType.Enum.VARIABLE,
-        variableId: VARIABLE_ID,
+        variableId: VARIABLE_ID_1,
       },
     ],
     roleKey: '',
@@ -172,7 +172,7 @@ beforeEach(async () => {
       {
         ...createSpecItem(),
         itemType: SpecItemType.Enum.VARIABLE,
-        variableId: DEFAULT_VARIABLE_ID,
+        variableId: DEFAULT_VARIABLE_ID_2,
         optional: true,
       },
     ],
@@ -191,7 +191,7 @@ beforeEach(async () => {
       {
         ...createSpecItem(),
         itemType: SpecItemType.Enum.VARIABLE,
-        variableId: VARIABLE_ID,
+        variableId: VARIABLE_ID_1,
         optional: false,
       },
     ],
@@ -306,7 +306,7 @@ describe('spec component tests', () => {
     const variableTypeSelect = screen.getByRole('list', {
       name: Field[Field.SP_ITEM_VARIABLE],
     });
-    await user.selectOptions(variableTypeSelect, VARIABLE_NAME);
+    await user.selectOptions(variableTypeSelect, VARIABLE_NAME_1);
     await user.tab();
 
     const errorSpan = screen.queryByText(GTE1_ERROR_MESSAGE);
@@ -504,7 +504,7 @@ describe('spec component tests', () => {
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.SP_ITEM_VARIABLE],
     });
-    await user.selectOptions(variableSelect, VARIABLE_NAME);
+    await user.selectOptions(variableSelect, VARIABLE_NAME_1);
     const saveButton = screen.getByRole('button', {
       name: SAVE,
     });
@@ -552,7 +552,7 @@ describe('spec component tests', () => {
       name: Field[Field.SP_ITEM_VARIABLE],
     });
     // change to non-default var
-    await user.selectOptions(variableSelect, VARIABLE_NAME);
+    await user.selectOptions(variableSelect, VARIABLE_NAME_1);
 
     const saveButton = screen.getByRole('button', {
       name: SAVE,
@@ -571,7 +571,7 @@ describe('spec component tests', () => {
       name: Field[Field.SP_ITEM_VARIABLE],
     });
     // change to default var
-    await user.selectOptions(variableSelect, [DEFAULT_VARIABLE_NAME]);
+    await user.selectOptions(variableSelect, [DEFAULT_VARIABLE_NAME_2]);
 
     const saveButton = screen.getByRole('button', {
       name: SAVE,

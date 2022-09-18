@@ -1,45 +1,13 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
-import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
-import { VariableDTO } from '../../../data/model/variable/variable-dto';
-import { Spec, SpecItem } from '../../../data/model/spec/spec-domain';
-import { SpecItemType } from '../../../data/model/spec/spec-item-type';
+import { Spec } from '../../../data/model/spec/spec-domain';
 
-const mapSpecItemToPreview = (
-  specItem: SpecItem,
-  variablesSaved: Record<string, VariableDTO>
-): string => {
-  const itemType = specItem.itemType;
-  switch (itemType) {
-    case SpecItemType.Enum.SELECTOR:
-      return (
-        '[ ' +
-        specItem.selector.items.map((sItem) => sItem.value).join(' | ') +
-        ' ]'
-      );
-    case SpecItemType.Enum.VARIABLE:
-      const variableDTO = { ...variablesSaved[specItem.variableId] };
-      // TODO: should be returning calculated variable name, but haven't validated it yet
-      /* Notes
-       * - the name of a variable
-       *  - must not be blank
-       *  - must be alphanumeric
-       *  - must be unique
-       */
-      return '<variable>';
-    default:
-      throw new ExhaustivenessFailureError(itemType);
-  }
-};
+import { mapSpecToPreview } from './spec-preview';
 
 export const SpecPreviewComponent: React.FC<{ spec: Spec }> = (props) => {
   const variablesSaved = useAppSelector((state) => state.variable.saved);
-
-  const specPreview =
-    props.spec.items
-      .map((item) => mapSpecItemToPreview(item, variablesSaved))
-      .join(' ') || '';
+  const specPreview = mapSpecToPreview(props.spec, variablesSaved);
   return (
     <Card bg="light" className="mb-3">
       <Card.Header>Spec Preview</Card.Header>

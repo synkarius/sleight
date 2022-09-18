@@ -19,6 +19,8 @@ import {
   createRoleKeyTakenValidator,
   createValidator,
 } from '../../validation/validator-factories';
+import { mapSpecToPreview } from '../../ui/model/spec/spec-preview';
+import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 
 const nameTakenValidator = createNameTakenValidator<SpecDTO, Spec>(
   Field.SP_NAME,
@@ -157,6 +159,40 @@ const deletionValidator: FieldValidator<Spec> = {
   },
 };
 
+/** Compares spec previews rather than full variable
+ * permutations. Probably good enough in most cases.
+ */
+const basicSpecUniquenessValidator: FieldValidator<Spec> = {
+  validatorType: ValidatorType.FIELD,
+  field: Field.SP_SAVE,
+  isApplicable: (spec) => !!spec.items.length,
+  validate: (spec, data) => {
+    const injected = getDefaultInjectionContext();
+    const specMapper = injected.mappers.spec;
+    const existingSpecPreviews = Object.values(data.specs)
+      .filter((specDTO) => specDTO.id !== spec.id)
+      .map((sp) => specMapper.mapToDomain(sp, data.selectors))
+      .map((sp) => ({
+        name: sp.name,
+        preview: mapSpecToPreview(sp, data.variables),
+      }));
+    const editingSpecPreview = mapSpecToPreview(spec, data.variables);
+    for (const existingSpecPreview of existingSpecPreviews) {
+      if (existingSpecPreview.preview === editingSpecPreview) {
+        return {
+          type: ValidationResultType.BASIC,
+          field: Field.SP_SAVE,
+          code: ValidationErrorCode.SP_UNIQUENESS,
+          message:
+            'specs must be unique; this spec is duplicated by:' +
+            ` "${existingSpecPreview.name}"`,
+        };
+      }
+    }
+    return validResult(Field.SP_SAVE);
+  },
+};
+
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
   nameTakenValidator,
   roleKeyTakenValidator,
@@ -164,5 +200,6 @@ export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
   specSelectorItemsCantBeEmpty,
   specVariableMustBeSelected,
   specSelectorMustBeAlphaSpace,
+  basicSpecUniquenessValidator,
   deletionValidator,
 ];
