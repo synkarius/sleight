@@ -1,0 +1,13 @@
+{
+    "command01": {
+        "id": "command01-id",
+        "name": "",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "specId": "spec-with-selector-id-1",
+        "actionIds": [
+            "action02-id"
+        ]
+    }
+}

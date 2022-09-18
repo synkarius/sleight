@@ -1,0 +1,18 @@
+{
+    "spec01": {
+        "id": "spec-with-selector-id-1",
+        "name": "spec-with-selector-name-1",
+        "roleKey": "role-key",
+        "enabled": true,
+        "locked": false,
+        "items": [
+            {
+                "id": "b06b1a4c-45a7-4ef1-865d-17d0d40f07da",
+                "itemType": "Selector",
+                "itemId": "65c5c3e0-414e-4a68-9166-856b92985653",
+                "optional": false,
+                "grouped": false
+            }
+        ]
+    }
+}

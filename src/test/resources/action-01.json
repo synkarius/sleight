@@ -1,0 +1,15 @@
+{
+    "action01": {
+        "id": "action01-id",
+        "name": "",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "type": "Pause",
+        "centiseconds": {
+            "actionValueType": "Use Variable",
+            "variableType": "Range",
+            "variableId": "non-default-variable-id-1"
+        }
+    }
+}

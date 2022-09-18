@@ -1,0 +1,15 @@
+{
+    "action02": {
+        "id": "action02-id",
+        "name": "",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "type": "Pause",
+        "centiseconds": {
+            "actionValueType": "Enter Value",
+            "enteredValueType": "Range",
+            "value": 789
+        }
+    }
+}

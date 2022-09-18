@@ -1,0 +1,18 @@
+{
+    "spec02": {
+        "id": "spec-with-variable-id-2",
+        "name": "spec-with-variable-name-2",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "items": [
+            {
+                "id": "82823cd5-730b-4220-9704-6c4ef692dab8",
+                "itemType": "Variable",
+                "itemId": "non-default-variable-id-1",
+                "optional": false,
+                "grouped": false
+            }
+        ]
+    }
+}

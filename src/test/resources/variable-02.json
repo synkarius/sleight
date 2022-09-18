@@ -1,0 +1,13 @@
+{
+    "variable02": {
+        "id": "default-variable-id-2",
+        "type": "Range",
+        "name": "default-variable-name-2",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "beginInclusive": 0,
+        "endInclusive": 9,
+        "defaultValue": 234
+    }
+}

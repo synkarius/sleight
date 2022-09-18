@@ -1,0 +1,18 @@
+{
+    "spec04": {
+        "id": "spec-with-variable-not-optional-id-4",
+        "name": "spec-with-variable-not-optional-name-4",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "items": [
+            {
+                "id": "0cb05baf-f61d-47a7-bf39-f9618adaee33",
+                "itemType": "Variable",
+                "itemId": "non-default-variable-id-1",
+                "optional": false,
+                "grouped": false
+            }
+        ]
+    }
+}

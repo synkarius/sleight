@@ -1,0 +1,12 @@
+{
+    "variable01": {
+        "id": "non-default-variable-id-1",
+        "type": "Range",
+        "name": "non-default-variable-name-1",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "beginInclusive": 0,
+        "endInclusive": 9
+    }
+}
