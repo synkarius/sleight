@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -9,7 +9,7 @@ import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { InjectionContext } from '../../../di/injector-context';
 import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { saveSpec } from '../../../core/reducers/spec-reducers';
+import { deleteSpec, saveSpec } from '../../../core/reducers/spec-reducers';
 import { saveSelector } from '../../../core/reducers/selector-reducers';
 import { saveAction } from '../../../core/reducers/action-reducers';
 import { saveCommand } from '../../../core/reducers/command-reducers';
@@ -25,6 +25,8 @@ import { spec04 } from '../../../test/resources/spec-04.json';
 import { variable01 } from '../../../test/resources/variable-01.json';
 import { variable02 } from '../../../test/resources/variable-02.json';
 import { castJsonForTest } from '../../../test/utils/import-test-json-util';
+
+let specIdsForCleanup: string[];
 
 // spec adequacy:
 const SPEC_WITH_SELECTOR_ID = 'spec-with-selector-id-1';
@@ -61,22 +63,14 @@ beforeAll(() => {
   user = userEvent.setup();
 });
 
-beforeEach(async () => {
-  /* re-saving specs before each test since some tests dirty the data */
+beforeEach(() => {
+  specIdsForCleanup = [];
+});
 
-  // save specs
-  // spec w/ selector
-  store.dispatch(saveSpec(castJsonForTest(spec01)));
-  store.dispatch(saveSelector(castJsonForTest(selector01)));
-
-  // spec w/ variable
-  store.dispatch(saveSpec(castJsonForTest(spec02)));
-
-  // spec w/ variable; optional
-  store.dispatch(saveSpec(castJsonForTest(spec03)));
-
-  // spec w/ variable; not optional
-  store.dispatch(saveSpec(castJsonForTest(spec04)));
+afterEach(() => {
+  for (const specId of specIdsForCleanup) {
+    store.dispatch(deleteSpec(specId));
+  }
 });
 
 const doRender = (specId?: string) => {
@@ -266,6 +260,11 @@ describe('spec component tests', () => {
   });
 
   it('should invalidate an already taken name', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec01)));
+      specIdsForCleanup.push(spec01.id);
+      store.dispatch(saveSelector(castJsonForTest(selector01)));
+    });
     doRender();
 
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
@@ -283,6 +282,11 @@ describe('spec component tests', () => {
   });
 
   it('should invalidate an already taken role key', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec01)));
+      specIdsForCleanup.push(spec01.id);
+      store.dispatch(saveSelector(castJsonForTest(selector01)));
+    });
     doRender();
 
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
@@ -315,6 +319,11 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec w/ no vars used in command w/ actions w/ no vars', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec01)));
+      specIdsForCleanup.push(spec01.id);
+      store.dispatch(saveSelector(castJsonForTest(selector01)));
+    });
     doRender(SPEC_WITH_SELECTOR_ID);
 
     const saveButton = screen.getByRole('button', {
@@ -329,6 +338,10 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec w/ vars used in command w/ actions w/ vars', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec02)));
+      specIdsForCleanup.push(spec02.id);
+    });
     doRender(SPEC_WITH_VARIABLE_ID);
 
     const saveButton = screen.getByRole('button', {
@@ -343,6 +356,10 @@ describe('spec component tests', () => {
   });
 
   it('should invalidate spec w/ no vars used in command w/ actions w/ vars', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec02)));
+      specIdsForCleanup.push(spec02.id);
+    });
     doRender(SPEC_WITH_VARIABLE_ID);
 
     /* attempt to change the spec w/ no vars to a spec w/ vars when spec already used
@@ -368,6 +385,11 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec w/ vars used in command w/ actions w/ no vars', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec01)));
+      specIdsForCleanup.push(spec01.id);
+      store.dispatch(saveSelector(castJsonForTest(selector01)));
+    });
     doRender(SPEC_WITH_SELECTOR_ID);
 
     /* change the spec w/ no vars to a spec w/ vars when spec already used
@@ -393,6 +415,10 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec optional + var default', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec03)));
+      specIdsForCleanup.push(spec03.id);
+    });
     doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
 
     const saveButton = screen.getByRole('button', {
@@ -407,9 +433,10 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec not optional + var not default', async () => {
-    // act(() => {
-    //   store.dispatch(deleteCommand(COMMAND_ID_1));
-    // });
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec04)));
+      specIdsForCleanup.push(spec04.id);
+    });
     doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
 
     const saveButton = screen.getByRole('button', {
@@ -424,6 +451,10 @@ describe('spec component tests', () => {
   });
 
   it('should invalidate spec optional + var not default, via var select', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec03)));
+      specIdsForCleanup.push(spec03.id);
+    });
     // start with optional spec + default var
     doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
 
@@ -443,6 +474,10 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec not optional + var default, via var select', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec04)));
+      specIdsForCleanup.push(spec04.id);
+    });
     // start with non-optional spec with non-default var
     doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
 
@@ -462,6 +497,10 @@ describe('spec component tests', () => {
   });
 
   it('should validate spec not optional + var default, via optional switch', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec03)));
+      specIdsForCleanup.push(spec03.id);
+    });
     // start with optional spec + default var
     doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
 
@@ -479,6 +518,10 @@ describe('spec component tests', () => {
   });
 
   it('should invalidate spec optional + var not default, via optional switch', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec04)));
+      specIdsForCleanup.push(spec04.id);
+    });
     // start with non-optional spec with non-default var
     doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
 

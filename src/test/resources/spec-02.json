@@ -1,4 +1,5 @@
 {
+    "description": "spec w/ variable",
     "spec02": {
         "id": "spec-with-variable-id-2",
         "name": "spec-with-variable-name-2",

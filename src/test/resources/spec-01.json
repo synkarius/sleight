@@ -1,4 +1,5 @@
 {
+    "description": "spec w/ selector",
     "spec01": {
         "id": "spec-with-selector-id-1",
         "name": "spec-with-selector-name-1",
