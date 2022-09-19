@@ -16,13 +16,13 @@ export const mapSpecToPreview = (
           case SpecItemType.Enum.SELECTOR:
             return (
               '[ ' +
-              specItem.selector.items.map((sItem) => sItem.value).join(' | ') +
+              specItem.selector.items.map((item) => item.value).join(' | ') +
               ' ]'
             );
           case SpecItemType.Enum.VARIABLE:
             if (isIdSelected(specItem.variableId)) {
               const variableDTO = variablesSaved[specItem.variableId];
-              return '[[ ' + variableDTO.name + ' ]]';
+              return '<' + variableDTO.name + '>';
             }
             return undefined;
           default:

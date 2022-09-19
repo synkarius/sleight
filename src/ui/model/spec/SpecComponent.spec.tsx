@@ -557,6 +557,34 @@ describe('spec component tests', () => {
 
     expect(lockedSwitch).toBeChecked();
   });
+
+  it('should invalidate duplicate spec', async () => {
+    act(() => {
+      store.dispatch(saveSpec(castJsonForTest(spec02)));
+      specIdsForCleanup.push(spec02.id);
+    });
+    doRender();
+
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const specTypeSelect = screen.getByRole('list', {
+      name: Field[Field.SP_ITEM_TYPE_SELECT],
+    });
+    await user.selectOptions(specTypeSelect, SpecItemType.Enum.VARIABLE);
+    const variableTypeSelect = screen.getByRole('list', {
+      name: Field[Field.SP_ITEM_VARIABLE],
+    });
+    await user.selectOptions(variableTypeSelect, VARIABLE_NAME_1);
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    await user.click(saveButton);
+
+    const errorText = screen.getByText(getSpecUniquenessErrorRegex());
+
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
 });
 
 const getSpecAdequacyErrorRegex = () =>
@@ -564,3 +592,6 @@ const getSpecAdequacyErrorRegex = () =>
 
 const getOptionalityErrorRegex = () =>
   /optional variable spec items require variables with defaults/;
+
+const getSpecUniquenessErrorRegex = () =>
+  /specs must be unique; this spec is duplicated by: ".+"/;
