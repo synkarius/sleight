@@ -1,4 +1,4 @@
-import { Lockable, RoleKeyed } from '../../model/domain';
+import { ImportTargetable } from './import-targetable';
 
 export enum ModelUpdateEvaluationType {
   DISCARD,
@@ -36,6 +36,6 @@ export type ModelUpdateEvaluation<E> =
   | PassThroughEvaluation<E>
   | ModelUpdateEvaluationFailure<E>;
 
-export type ModelUpdateEvaluator<E extends RoleKeyed & Lockable> = {
+export type ModelUpdateEvaluator<E extends ImportTargetable> = {
   evaluate: (candidate: E, baseDataElements: E[]) => ModelUpdateEvaluation<E>;
 };

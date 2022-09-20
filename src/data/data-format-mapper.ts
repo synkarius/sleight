@@ -4,7 +4,7 @@ import {
   SleightDataInternalFormat,
 } from './data-formats';
 import { SCHEMA_VERSION } from './exports/schema-version';
-import { Ided } from './model/domain';
+import { reduceIded } from './imports/model-update/reduce-ided';
 
 export type FormatMapper = {
   internalFormatToArrays: (
@@ -21,10 +21,6 @@ export type FormatMapper = {
 };
 
 export const getFormatMapper = (): FormatMapper => {
-  const reduceIded = <T extends Ided>(record: Record<string, T>, ided: T) => ({
-    ...record,
-    [ided.id]: ided,
-  });
   const internalFormatToArrays = (
     data: SleightDataInternalFormat
   ): SleightDataArrays => {

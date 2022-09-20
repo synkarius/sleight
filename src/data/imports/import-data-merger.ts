@@ -4,12 +4,12 @@ import { Command } from '../model/command/command';
 import { Context } from '../model/context/context';
 import { SpecDTO } from '../model/spec/spec-dto';
 import { VariableDTO } from '../model/variable/variable-dto';
-import { ModelUpdateEvaluator } from './role-key-overriding/model-update-evaluator';
-import { createModelUpdateEvaluator } from './role-key-overriding/model-update-evaluator-factory';
+import { ModelUpdateEvaluator } from './model-update/model-update-evaluator';
+import { createModelUpdateEvaluator } from './model-update/model-update-evaluator-factory';
 import {
   getSelectorModelUpdateEvaluator,
   SelectorModelUpdateEvaluator,
-} from './role-key-overriding/selector-model-update-evaluator';
+} from './model-update/selector-model-update-evaluator';
 
 /** Merges import data over existing data. */
 export type ImportDataMerger = {
