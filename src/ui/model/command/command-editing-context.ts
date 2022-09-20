@@ -30,7 +30,7 @@ type AbstractCommandReducerAction<T> = {
 };
 
 export interface CommandReducerNoPayloadAction
-  extends Omit<AbstractCommandReducerAction<any>, 'payload'> {
+  extends Omit<AbstractCommandReducerAction<unknown>, 'payload'> {
   type: typeof CommandReducerActionType.ADD_ACTION;
 }
 

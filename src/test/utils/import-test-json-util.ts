@@ -1,2 +1,2 @@
 /** Test utility function: casts imported json. */
-export const castJsonForTest = <T>(jsonObject: any): T => jsonObject as T;
+export const castJsonForTest = <T>(jsonObject: unknown): T => jsonObject as T;

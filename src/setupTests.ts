@@ -14,5 +14,5 @@ Object.defineProperty(global, 'crypto', {
 
 // missing from test env; may be fixed in Jest 28.x
 Object.defineProperty(global, 'structuredClone', {
-  value: (original: any) => JSON.parse(JSON.stringify(original)),
+  value: (original: unknown) => JSON.parse(JSON.stringify(original)),
 });

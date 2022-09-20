@@ -32,7 +32,7 @@ export const isIdSelected = (id?: string): boolean =>
 export const isEnumSelected = (id?: string): boolean =>
   !!id && id !== UNSELECTED_ENUM;
 
-export const isTruthy = (t: any) => !!t;
+export const isTruthy = (t: unknown) => !!t;
 
 export const replaceNonAlphaNumeric = (
   value: string,

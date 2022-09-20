@@ -28,8 +28,8 @@ type ValidationPropsComponent = <E>(
   props: ValidationProps<E>
 ) => React.ReactElement<ValidationProps<E>>;
 
-const isTouched = (
-  validator: FieldValidator<any>,
+const isTouched = <E,>(
+  validator: FieldValidator<E>,
   touched: Field[]
 ): boolean => {
   const validatorType = validator.validatorType;
@@ -49,9 +49,9 @@ const isTouched = (
  * - mode: submit -> any except delete
  * - mode: delete -> delete validators only
  */
-const shouldUseValidator = (
+const shouldUseValidator = <E,>(
   mode: ValidateMode,
-  validator: FieldValidator<any>,
+  validator: FieldValidator<E>,
   touched: Field[]
 ): boolean => {
   const isDeletionValidator =
