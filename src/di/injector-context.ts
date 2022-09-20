@@ -1,6 +1,6 @@
 import React from 'react';
 import { Exporter } from '../data/exports/exporter';
-import { Importer } from '../data/imports/json-importer';
+import { Deserializer } from '../data/imports/deserializer';
 import { DomainMapper } from '../core/mappers/mapper';
 import { Ided } from '../data/model/domain';
 import { Action } from '../data/model/action/action';
@@ -26,9 +26,7 @@ import { VariableExtractor } from '../validation/variable-extraction/variable-ex
 
 export type Injected = {
   imports: {
-    importers: {
-      json: Importer;
-    };
+    deserializer: Deserializer;
     dataMerger: ImportDataMerger;
   };
   exports: {

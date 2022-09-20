@@ -1,26 +1,30 @@
-import { ImportResult, ImportResultType } from './import-result';
+import {
+  DeserializationResult,
+  DeserializationResultType,
+} from './deserialization-result';
 import { SleightDataExportFormat } from '../data-formats';
 import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 
-export type Importer = {
-  import: (data: string) => ImportResult;
+/** Parses external format; converts to internal format. */
+export type Deserializer = {
+  deserialize: (data: string) => DeserializationResult;
 };
 
-export const getJsonImporter: () => Importer = () => ({
-  import: (data: string): ImportResult => {
+export const getJsonDeserializer: () => Deserializer = () => ({
+  deserialize: (data: string): DeserializationResult => {
     const injected = getDefaultInjectionContext();
     const formatMapper = injected.mappers.dataFormat;
     try {
       const parsed = JSON.parse(data) as SleightDataExportFormat;
       const internalFormat = formatMapper.externalFormatToInternal(parsed);
       return {
-        type: ImportResultType.VALID,
+        type: DeserializationResultType.VALID,
         version: parsed.version,
         data: internalFormat,
       };
     } catch (e: unknown) {
       return {
-        type: ImportResultType.INVALID,
+        type: DeserializationResultType.INVALID,
       };
     }
   },

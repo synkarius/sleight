@@ -6,7 +6,7 @@ import {
   JSON,
 } from '../../../data/exports/export-type';
 import { simpleSaveFile } from '../../../data/exports/simple-save-file';
-import { ImportResultType } from '../../../data/imports/import-result';
+import { DeserializationResultType } from '../../../data/imports/deserialization-result';
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
 import { ImportValidationResultType } from '../../../data/imports/imports-validator';
@@ -36,13 +36,14 @@ export const Navigation: React.FC<{}> = () => {
     const file = e.target.files?.item(0);
     const fileContents = await file?.text();
     if (fileContents) {
-      const importResult =
-        injectionContext.imports.importers.json.import(fileContents);
-      if (importResult.type === ImportResultType.VALID) {
+      //
+      const deserializationResult =
+        injectionContext.imports.deserializer.deserialize(fileContents);
+      if (deserializationResult.type === DeserializationResultType.VALID) {
         // TODO: version adapters
         const merged = injectionContext.imports.dataMerger.merge(
           allData,
-          importResult.data
+          deserializationResult.data
         );
         const cleaned = injectionContext.cleaners.imports.cleanData(merged);
         const validationResult =
@@ -51,10 +52,9 @@ export const Navigation: React.FC<{}> = () => {
           );
         if (validationResult.status === ImportValidationResultType.VALID) {
           // TODO: add it to redux
-        } else {
-          // TODO: error toast "Import Failed - See Logs" and log results
         }
       }
+      // TODO: error toast "Import Failed - See Logs" and log results
     }
   };
   return (

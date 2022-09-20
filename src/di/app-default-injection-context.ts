@@ -1,6 +1,6 @@
 import { getDragonflyExporter } from '../data/exports/dragonfly/dragonfly-exporter';
 import { getJsonExporter } from '../data/exports/json-exporter';
-import { getJsonImporter } from '../data/imports/json-importer';
+import { getJsonDeserializer } from '../data/imports/deserializer';
 import { Injected } from './injector-context';
 import {
   getCrossSliceActionValidators,
@@ -51,9 +51,7 @@ export const getDefaultInjectionContext = (): Injected => {
   if (!instance) {
     instance = {
       imports: {
-        importers: {
-          json: getJsonImporter(),
-        },
+        deserializer: getJsonDeserializer(),
         dataMerger: getCopyingImportDataMerger(),
       },
       exports: {
