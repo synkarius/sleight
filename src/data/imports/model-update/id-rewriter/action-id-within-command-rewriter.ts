@@ -3,7 +3,8 @@ import { Action } from '../../../model/action/action';
 import { reduceIded } from '../reduce-ided';
 import { IdRewriter } from './id-rewriter';
 
-export class CommandActionIdsRewriter implements IdRewriter<Action> {
+/** Rewrites an action's id within commands which use that action. */
+export class ActionIdWithinCommandsRewriter implements IdRewriter<Action> {
   rewriteId(
     action: Action,
     newId: string,

@@ -6,7 +6,9 @@ import { ActionVariableIdsRewriterDelegate } from './action-variable-ids-rewrite
 import { IdRewriter } from './id-rewriter';
 
 /** Rewrites a variable's id within actions which use that variable. */
-export class ActionVariableIdsRewriter implements IdRewriter<VariableDTO> {
+export class VariableIdWithinActionsRewriter
+  implements IdRewriter<VariableDTO>
+{
   constructor(private delegates: ActionVariableIdsRewriterDelegate[]) {}
   rewriteId(
     variable: VariableDTO,

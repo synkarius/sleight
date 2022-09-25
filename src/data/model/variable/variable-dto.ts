@@ -32,6 +32,10 @@ export interface ChoiceVariableDTO extends AbstractVariableDTO {
   readonly defaultValue?: string;
 }
 
+export const isChoiceVariableDTO = (
+  variable: AbstractVariableDTO
+): variable is ChoiceVariableDTO => variable.type === VariableType.Enum.ENUM;
+
 export type VariableDTO =
   | TextVariableDTO
   | RangeVariableDTO

@@ -46,8 +46,8 @@ import { CopyingImportDataMerger } from '../data/imports/import-data-merger';
 import { DefaultImportsCleaner } from '../data/imports/imports-cleaner';
 import { DefaultImportsValidator } from '../data/imports/imports-validator';
 import { ActionIdRewriter } from '../data/imports/model-update/id-rewriter/action-id-rewriter';
-import { ActionVariableIdsRewriter } from '../data/imports/model-update/id-rewriter/action-variable-ids-rewriter';
-import { CommandActionIdsRewriter } from '../data/imports/model-update/id-rewriter/command-action-ids-rewriter';
+import { VariableIdWithinActionsRewriter } from '../data/imports/model-update/id-rewriter/variable-id-within-actions-rewriter';
+import { ActionIdWithinCommandsRewriter } from '../data/imports/model-update/id-rewriter/action-id-within-command-rewriter';
 import { CommandIdRewriter } from '../data/imports/model-update/id-rewriter/command-id-rewriter';
 import { ContextIdRewriter } from '../data/imports/model-update/id-rewriter/context-id-rewriter';
 import { SelectorIdRewriter } from '../data/imports/model-update/id-rewriter/selector-id-rewriter';
@@ -347,11 +347,11 @@ container
   .bind(Tokens.ActionIdRewriter)
   .toInstance(ActionIdRewriter)
   .inSingletonScope();
-injected(ActionIdRewriter, Tokens.CommandActionIdsRewriter);
+
 // command action ids rewriter
 container
-  .bind(Tokens.CommandActionIdsRewriter)
-  .toInstance(CommandActionIdsRewriter)
+  .bind(Tokens.ActionIdWithinCommandsRewriter)
+  .toInstance(ActionIdWithinCommandsRewriter)
   .inSingletonScope();
 // command id rewriter
 container
@@ -380,6 +380,6 @@ container
   .inSingletonScope();
 // action variable ids rewriter
 container
-  .bind(Tokens.ActionVariableIdsRewriter)
-  .toInstance(ActionVariableIdsRewriter)
+  .bind(Tokens.VariableIdWithinActionsRewriter)
+  .toInstance(VariableIdWithinActionsRewriter)
   .inSingletonScope();

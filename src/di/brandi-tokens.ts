@@ -154,8 +154,8 @@ export namespace Tokens {
   export const ImportsCleaner = token<ImportsCleaner>('ImportsCleaner');
   // id rewriters
   export const ActionIdRewriter = token<IdRewriter<Action>>('ActionIdRewriter');
-  export const CommandActionIdsRewriter = token<IdRewriter<Action>>(
-    'CommandActionIdsRewriter'
+  export const ActionIdWithinCommandsRewriter = token<IdRewriter<Action>>(
+    'ActionIdWithinCommandsRewriter'
   );
   export const CommandIdRewriter =
     token<IdRewriter<Command>>('CommandIdRewriter');
@@ -166,7 +166,7 @@ export namespace Tokens {
   export const SpecIdRewriter = token<IdRewriter<SpecDTO>>('SpecIdRewriter');
   export const VariableIdRewriter =
     token<IdRewriter<VariableDTO>>('VariableIdRewriter');
-  export const ActionVariableIdsRewriter = token<IdRewriter<VariableDTO>>(
-    'ActionVariableIdsRewriter'
+  export const VariableIdWithinActionsRewriter = token<IdRewriter<VariableDTO>>(
+    'VariableIdWithinActionsRewriter'
   );
 }
