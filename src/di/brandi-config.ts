@@ -45,6 +45,14 @@ import { JsonDeserializer } from '../data/imports/deserializer';
 import { CopyingImportDataMerger } from '../data/imports/import-data-merger';
 import { DefaultImportsCleaner } from '../data/imports/imports-cleaner';
 import { DefaultImportsValidator } from '../data/imports/imports-validator';
+import { ActionIdRewriter } from '../data/imports/model-update/id-rewriter/action-id-rewriter';
+import { ActionVariableIdsRewriter } from '../data/imports/model-update/id-rewriter/action-variable-ids-rewriter';
+import { CommandActionIdsRewriter } from '../data/imports/model-update/id-rewriter/command-action-ids-rewriter';
+import { CommandIdRewriter } from '../data/imports/model-update/id-rewriter/command-id-rewriter';
+import { ContextIdRewriter } from '../data/imports/model-update/id-rewriter/context-id-rewriter';
+import { SelectorIdRewriter } from '../data/imports/model-update/id-rewriter/selector-id-rewriter';
+import { SpecIdRewriter } from '../data/imports/model-update/id-rewriter/spec-id-rewriter';
+import { VariableIdRewriter } from '../data/imports/model-update/id-rewriter/variable-id-rewriter';
 import {
   ActionModelUpdateEvaluator,
   CommandModelUpdateEvaluator,
@@ -334,3 +342,44 @@ injected(
   Tokens.Cleaner_Spec,
   Tokens.Cleaner_Variable
 );
+// action id rewriter
+container
+  .bind(Tokens.ActionIdRewriter)
+  .toInstance(ActionIdRewriter)
+  .inSingletonScope();
+injected(ActionIdRewriter, Tokens.CommandActionIdsRewriter);
+// command action ids rewriter
+container
+  .bind(Tokens.CommandActionIdsRewriter)
+  .toInstance(CommandActionIdsRewriter)
+  .inSingletonScope();
+// command id rewriter
+container
+  .bind(Tokens.CommandIdRewriter)
+  .toInstance(CommandIdRewriter)
+  .inSingletonScope();
+// context id rewriter
+container
+  .bind(Tokens.ContextIdRewriter)
+  .toInstance(ContextIdRewriter)
+  .inSingletonScope();
+// selector id rewriter
+container
+  .bind(Tokens.SelectorIdRewriter)
+  .toInstance(SelectorIdRewriter)
+  .inSingletonScope();
+// spec id rewriter
+container
+  .bind(Tokens.SpecIdRewriter)
+  .toInstance(SpecIdRewriter)
+  .inSingletonScope();
+// variable id rewriter
+container
+  .bind(Tokens.VariableIdRewriter)
+  .toInstance(VariableIdRewriter)
+  .inSingletonScope();
+// action variable ids rewriter
+container
+  .bind(Tokens.ActionVariableIdsRewriter)
+  .toInstance(ActionVariableIdsRewriter)
+  .inSingletonScope();

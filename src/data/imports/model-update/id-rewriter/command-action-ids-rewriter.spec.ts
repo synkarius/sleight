@@ -1,7 +1,8 @@
+import { container } from '../../../../di/brandi-config';
+import { Tokens } from '../../../../di/brandi-tokens';
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { createPauseAction } from '../../../model/action/pause/pause';
 import { createCommand } from '../../../model/command/command';
-import { getCommandActionIdsRewriter } from './command-action-ids-rewriter';
 
 const createEmptySleightData = (): SleightDataInternalFormat => ({
   actions: {},
@@ -21,9 +22,9 @@ describe('action id rewriter tests', () => {
       ...createEmptySleightData(),
       commands,
     };
-
-    const rewriter = getCommandActionIdsRewriter();
     const newId = 'newId';
+
+    const rewriter = container.get(Tokens.CommandActionIdsRewriter);
     const rewrittenData = rewriter.rewriteId(action, newId, data);
 
     const expected = {

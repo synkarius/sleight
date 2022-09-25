@@ -45,6 +45,7 @@ import { IdedAndContextTyped } from '../core/default-namers/context-default-name
 import { IdedAndVariableTyped } from '../core/default-namers/variable-default-namer';
 import { Cleaner } from '../core/cleaners/cleaner';
 import { ImportsCleaner } from '../data/imports/imports-cleaner';
+import { IdRewriter } from '../data/imports/model-update/id-rewriter/id-rewriter';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -141,6 +142,7 @@ export namespace Tokens {
   export const DefaultNamer_Variable = token<
     DefaultNamer<IdedAndVariableTyped>
   >('DefaultNamer_Variable');
+  // cleaners
   export const Cleaner_Action = token<Cleaner<Action>>('Cleaner_Action');
   export const Cleaner_Command = token<Cleaner<Command>>('Cleaner_Command');
   export const Cleaner_Context = token<Cleaner<Context>>('Cleaner_Context');
@@ -150,8 +152,21 @@ export namespace Tokens {
   export const Cleaner_Variable =
     token<Cleaner<VariableDTO>>('Cleaner_Variable');
   export const ImportsCleaner = token<ImportsCleaner>('ImportsCleaner');
-
-  // TODO: delete
-  export const IdRewriters = 'idRewriters';
-  export const ModelUpdateEvaluators = 'modelUpdateEvaluators';
+  // id rewriters
+  export const ActionIdRewriter = token<IdRewriter<Action>>('ActionIdRewriter');
+  export const CommandActionIdsRewriter = token<IdRewriter<Action>>(
+    'CommandActionIdsRewriter'
+  );
+  export const CommandIdRewriter =
+    token<IdRewriter<Command>>('CommandIdRewriter');
+  export const ContextIdRewriter =
+    token<IdRewriter<Context>>('ContextIdRewriter');
+  export const SelectorIdRewriter =
+    token<IdRewriter<SelectorDTO>>('SelectorIdRewriter');
+  export const SpecIdRewriter = token<IdRewriter<SpecDTO>>('SpecIdRewriter');
+  export const VariableIdRewriter =
+    token<IdRewriter<VariableDTO>>('VariableIdRewriter');
+  export const ActionVariableIdsRewriter = token<IdRewriter<VariableDTO>>(
+    'ActionVariableIdsRewriter'
+  );
 }
