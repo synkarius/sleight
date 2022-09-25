@@ -4,7 +4,7 @@ import { SpecItemType } from '../../../model/spec/spec-item-type';
 import { reduceIded } from '../reduce-ided';
 import { IdRewriter } from './id-rewriter';
 
-export class SelectorIdWithinVariableIdRewriter
+export class SelectorIdWithinSpecsIdRewriter
   implements IdRewriter<SelectorDTO>
 {
   rewriteId(

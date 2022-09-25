@@ -47,7 +47,7 @@ import { DefaultImportsCleaner } from '../data/imports/imports-cleaner';
 import { DefaultImportsValidator } from '../data/imports/imports-validator';
 import { ActionIdRewriter } from '../data/imports/model-update/id-rewriter/action-id-rewriter';
 import { VariableIdWithinActionsRewriter } from '../data/imports/model-update/id-rewriter/variable-id-within-actions-rewriter';
-import { ActionIdWithinCommandsRewriter } from '../data/imports/model-update/id-rewriter/action-id-within-command-rewriter';
+import { ActionIdWithinCommandsRewriter } from '../data/imports/model-update/id-rewriter/action-id-within-commands-rewriter';
 import { CommandIdRewriter } from '../data/imports/model-update/id-rewriter/command-id-rewriter';
 import { ContextIdRewriter } from '../data/imports/model-update/id-rewriter/context-id-rewriter';
 import { SelectorIdRewriter } from '../data/imports/model-update/id-rewriter/selector-id-rewriter';

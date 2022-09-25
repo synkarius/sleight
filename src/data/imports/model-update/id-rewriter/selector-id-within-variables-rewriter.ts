@@ -4,7 +4,7 @@ import { isChoiceVariableDTO } from '../../../model/variable/variable-dto';
 import { reduceIded } from '../reduce-ided';
 import { IdRewriter } from './id-rewriter';
 
-export class SelectorIdWithinVariableIdRewriter
+export class SelectorIdWithinVariablesIdRewriter
   implements IdRewriter<SelectorDTO>
 {
   rewriteId(
