@@ -1,9 +1,11 @@
 import { Context } from '../../data/model/context/context';
 import { DomainMapper } from './mapper';
 
-export const getContextDomainMapper = (): DomainMapper<Context, Context> => {
-  return {
-    mapToDomain: (dto) => ({
+export class DefaultContextDomainMapper
+  implements DomainMapper<Context, Context>
+{
+  mapToDomain(dto: Context): Context {
+    return {
       id: dto.id,
       name: dto.name,
       roleKey: dto.roleKey,
@@ -11,8 +13,10 @@ export const getContextDomainMapper = (): DomainMapper<Context, Context> => {
       locked: dto.locked,
       type: dto.type,
       matcher: dto.matcher,
-    }),
-    mapFromDomain: (domain) => ({
+    };
+  }
+  mapFromDomain(domain: Context): Context {
+    return {
       id: domain.id,
       name: domain.name,
       roleKey: domain.roleKey,
@@ -20,6 +24,6 @@ export const getContextDomainMapper = (): DomainMapper<Context, Context> => {
       locked: domain.locked,
       type: domain.type,
       matcher: domain.matcher,
-    }),
-  };
-};
+    };
+  }
+}

@@ -23,7 +23,8 @@ import {
   Variable,
 } from '../../data/model/variable/variable';
 import { VariableDTO } from '../../data/model/variable/variable-dto';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 const nameTakenValidator = createNameTakenValidator<VariableDTO, Variable>(
   Field.VAR_NAME,
@@ -124,13 +125,12 @@ const usedVariableTypesValidator: FieldValidator<Variable> = {
   field: VAR_TYPE_SELECT,
   isApplicable: alwaysTrue,
   validate: (variable, data) => {
-    const injected = getDefaultInjectionContext();
-    const extractor = injected.validation.variableExtractor;
+    const extractor = container.get(Tokens.VariableExtractor);
 
     const preChangedVariable = MapUtil.get(data.variables, variable.id);
     if (preChangedVariable && preChangedVariable.type !== variable.type) {
       const variableIdsInActions = Object.values(data.actions)
-        .flatMap(extractor.extractVariables)
+        .flatMap((action) => extractor.extractVariables(action))
         .filter((vav) => vav.variableId);
       const variableIsUsed = !!variableIdsInActions
         .map((vav) => vav.variableId)
@@ -161,11 +161,10 @@ const deletionValidator: FieldValidator<Variable> = {
   field: Field.VAR_DELETE,
   isApplicable: alwaysTrue,
   validate: (variable, data) => {
-    const injected = getDefaultInjectionContext();
-    const extractor = injected.validation.variableExtractor;
+    const extractor = container.get(Tokens.VariableExtractor);
 
     const actionsUsingVariable = Object.values(data.actions)
-      .flatMap(extractor.extractVariables)
+      .flatMap((action) => extractor.extractVariables(action))
       .filter((vav) => vav.variableId === variable.id)
       .map((vav) => MapUtil.getOrThrow(data.actions, vav.actionId))
       .map((action) => action.name);

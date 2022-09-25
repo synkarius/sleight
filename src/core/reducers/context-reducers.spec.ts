@@ -9,12 +9,12 @@ import {
 } from './context-reducers';
 import { ContextType } from '../../data/model/context/context-types';
 import { ContextReducerActionType } from '../../ui/model/context/context-editing-context';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
-
-const injected = getDefaultInjectionContext();
-const contextDefaultNamer = injected.default.namers.context;
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 describe('context reducer', () => {
+  const contextDefaultNamer = container.get(Tokens.DefaultNamer_Context);
+
   it('should handle initial state', () => {
     expect(contextReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},

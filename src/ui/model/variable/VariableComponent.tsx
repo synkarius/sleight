@@ -29,6 +29,7 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
 
@@ -36,9 +37,11 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(VariableEditingContext);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const isSaved = useSaved(ElementType.Enum.VARIABLE, props.variable.id);
-  const variableDefaultNamer = injectionContext.default.namers.variable;
+  const variableDefaultNamer = container.get(Tokens.DefaultNamer_Variable);
+  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({
@@ -95,15 +98,11 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       // at least it's less this way
       if (props.variable.type === VariableType.Enum.ENUM) {
         props.variable.items.forEach((item) => {
-          const selectorDTO = injectionContext.mappers.selector.mapFromDomain(
-            item.selector
-          );
+          const selectorDTO = selectorMapper.mapFromDomain(item.selector);
           reduxDispatch(saveSelector(selectorDTO));
         });
       }
-      const variableDTO = injectionContext.mappers.variable.mapFromDomain(
-        props.variable
-      );
+      const variableDTO = variableMapper.mapFromDomain(props.variable);
       reduxDispatch(saveVariable(variableDTO));
       reduxDispatch(setEditorFocus());
     }

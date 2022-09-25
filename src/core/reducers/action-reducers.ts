@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 import { Action } from '../../data/model/action/action';
 import {
@@ -41,6 +40,8 @@ import { copyIntoWaitForWindowAction } from '../../data/model/action/wait-for-wi
 import { copyIntoMimicAction } from '../../data/model/action/mimic/mimic';
 import { copyIntoCallFunctionAction } from '../../data/model/action/call-function/call-function';
 import { copyIntoBringAppAction } from '../../data/model/action/bring-app/bring-app';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 export type ActionsState = {
   saved: Record<string, Action>;
@@ -52,10 +53,8 @@ const initialState: ActionsState = {
   editingId: undefined,
 };
 
-const injected = getDefaultInjectionContext();
-const actionDefaultNamer = injected.default.namers.action;
-
 const addDefaults = (action: Action): Action => {
+  const actionDefaultNamer = container.get(Tokens.DefaultNamer_Action);
   return {
     ...action,
     name: action.name.trim() || actionDefaultNamer.getDefaultName(action),

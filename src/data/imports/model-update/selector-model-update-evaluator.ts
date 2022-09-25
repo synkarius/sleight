@@ -13,10 +13,16 @@ export type SelectorModelUpdateEvaluator = {
 
 /** Selectors don't have role keys; therefore, they can skip
  * the evaluation process. */
-export const getSelectorModelUpdateEvaluator =
-  (): SelectorModelUpdateEvaluator => ({
-    evaluate: (candidate, _baseDataElements) => ({
+export class DefaultSelectorModelUpdateEvaluator
+  implements SelectorModelUpdateEvaluator
+{
+  evaluate(
+    candidate: SelectorDTO,
+    _baseDataElements: unknown
+  ): ModelUpdateEvaluation<SelectorDTO> {
+    return {
       evaluationType: ModelUpdateEvaluationType.ID_REWRITE,
       candidate,
-    }),
-  });
+    };
+  }
+}

@@ -18,13 +18,9 @@ import { CommandParentComponent } from './CommandParentComponent';
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { createContext } from '../../../data/model/context/context';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
-import { getSelectorDomainMapper } from '../../../core/mappers/selector-domain-mapper';
-import { getSpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
 import { saveCommand } from '../../../core/reducers/command-reducers';
 import { createCommand } from '../../../data/model/command/command';
 import { createRangeVariable } from '../../../data/model/variable/variable';
-import { getVariableDomainMapper } from '../../../core/mappers/variable-domain-mapper';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { SpecDTO } from '../../../data/model/spec/spec-dto';
@@ -35,6 +31,8 @@ import {
 import { saveAction } from '../../../core/reducers/action-reducers';
 import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { VariableType } from '../../../data/model/variable/variable-types';
+import { container } from '../../../di/brandi-config';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';
@@ -48,14 +46,16 @@ const ROLE_KEY = 'rk-1087';
 let user: UserEvent;
 
 beforeAll(() => {
+  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
+
   // save variable
   const rangeVariable = createRangeVariable();
-  const rangeVariableDTO =
-    getVariableDomainMapper().mapFromDomain(rangeVariable);
+  const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
   store.dispatch(saveVariable(rangeVariableDTO));
   // save specs
   const selector = createSelector();
-  const selectorRedux = getSelectorDomainMapper().mapFromDomain(selector);
+  const selectorRedux = selectorMapper.mapFromDomain(selector);
   store.dispatch(saveSelector(selectorRedux));
   const specWithNoVar = createTestReduxSpec(selector);
   store.dispatch(
@@ -123,7 +123,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <CommandParentComponent />
       </InjectionContext.Provider>
     </Provider>
@@ -374,9 +374,11 @@ const getInadequateSpecsRegex = () =>
   /this command's spec \(.*\) does not provide variables adequate/;
 
 const createTestReduxSpec = (selector: Selector) => {
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
+  //
   const spec = createSpec();
   const specItem = createSpecItem();
-  return getSpecDomainMapper().mapFromDomain({
+  return specMapper.mapFromDomain({
     ...spec,
     items: [{ ...specItem, selector: selector }],
   });

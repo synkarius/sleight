@@ -28,7 +28,8 @@ import {
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { Ided, Named, RoleKeyed } from '../../data/model/domain';
 import { WrongTypeError } from '../../error/wrong-type-error';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;
@@ -40,10 +41,8 @@ const initialState: VariablesState = {
   editingId: undefined,
 };
 
-const injected = getDefaultInjectionContext();
-const variableDefaultNamer = injected.default.namers.variable;
-
 const addDefaults = (variable: VariableDTO): VariableDTO => {
+  const variableDefaultNamer = container.get(Tokens.DefaultNamer_Variable);
   return {
     ...variable,
     name: variable.name.trim() || variableDefaultNamer.getDefaultName(variable),

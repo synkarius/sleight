@@ -2,7 +2,6 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../../app/store';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { InjectionContext } from '../../../../di/injector-context';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
@@ -16,8 +15,9 @@ import {
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { createSelector } from '../../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../../core/reducers/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
 import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
+import { container } from '../../../../di/brandi-config';
+import { Tokens } from '../../../../di/brandi-tokens';
 
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
 const VARIABLE_RADIO = 1;
@@ -25,6 +25,10 @@ type Radio = 0 | 1;
 let user: UserEvent;
 
 beforeAll(() => {
+  const choiceVariableMapper = container.get(
+    Tokens.VariableMapperDelegate_Choice
+  );
+
   // save variables
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
@@ -33,8 +37,7 @@ beforeAll(() => {
     name: CHOICE_VARIABLE_NAME,
     items: [createChoiceItem(choiceItemSelector)],
   };
-  const choiceVariableDTO =
-    getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
+  const choiceVariableDTO = choiceVariableMapper.mapFromDomain(choiceVariable);
   store.dispatch(saveVariable(choiceVariableDTO));
 
   user = userEvent.setup();
@@ -43,7 +46,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
     </Provider>

@@ -20,7 +20,8 @@ import {
   createValidator,
 } from '../../validation/validator-factories';
 import { mapSpecToPreview } from '../../ui/model/spec/spec-preview';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 const nameTakenValidator = createNameTakenValidator<SpecDTO, Spec>(
   Field.SP_NAME,
@@ -167,8 +168,7 @@ const basicSpecUniquenessValidator: FieldValidator<Spec> = {
   field: Field.SP_SAVE,
   isApplicable: (spec) => !!spec.items.length,
   validate: (spec, data) => {
-    const injected = getDefaultInjectionContext();
-    const specMapper = injected.mappers.spec;
+    const specMapper = container.get(Tokens.DomainMapper_Spec);
     const existingSpecPreviews = Object.values(data.specs)
       .filter((specDTO) => specDTO.id !== spec.id)
       .map((sp) => specMapper.mapToDomain(sp, data.selectors))

@@ -38,7 +38,8 @@ import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { Command } from '../../data/model/command/command';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 type ActionAndField = {
   actionId: string;
@@ -51,8 +52,7 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
   data: SleightDataInternalFormat,
   config: ValidationConfig
 ): ValidationResult => {
-  const injected = getDefaultInjectionContext();
-  const extractor = injected.validation.variableExtractor;
+  const extractor = container.get(Tokens.VariableExtractor);
   for (const command of commands) {
     const spec = MapUtil.getOrThrow(data.specs, command.specId);
     const variablesInSpec = spec.items
@@ -64,7 +64,7 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
     const variableActionValuesInActions = command.actionIds
       .filter(isIdSelected)
       .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
-      .flatMap(extractor.extractVariables);
+      .flatMap((action) => extractor.extractVariables(action));
 
     // get variables which are in the command's actions but not its specs
     const noncoveredVariables: NonCoveredVariable[] =

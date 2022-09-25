@@ -2,14 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { store } from '../app/store';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { getDefaultInjectionContext } from '../di/app-default-injection-context';
-import { Injected, InjectionContext } from '../di/injector-context';
+import { InjectionContext } from '../di/injector-context';
 import { ContextParentComponent } from '../ui/model/context/ContextParentComponent';
 import userEvent from '@testing-library/user-event';
 import { Field } from './validation-field';
 import { FieldValidator, ValidatorType } from './field-validator';
 import { Context } from '../data/model/context/context';
 import { alwaysTrue } from '../core/common/common-functions';
+import { Tokens } from '../di/brandi-tokens';
+import { container } from '../di/brandi-config';
 
 let user: UserEvent;
 
@@ -26,25 +27,24 @@ const testBrokenValidator: FieldValidator<Context> = {
 beforeAll(() => {
   user = userEvent.setup();
 
-  const defaultInjectionContext = getDefaultInjectionContext();
-  const testInjectionContext: Injected = {
-    ...defaultInjectionContext,
-    validation: {
-      ...defaultInjectionContext.validation,
-      validators: {
-        ...defaultInjectionContext.validation.validators,
-        context: [testBrokenValidator],
-      },
-    },
-  };
+  if (container.capture) {
+    container.capture();
+  }
+  container.bind(Tokens.Validators_Context).toConstant([testBrokenValidator]);
 
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={testInjectionContext}>
+      <InjectionContext.Provider value={container}>
         <ContextParentComponent />
       </InjectionContext.Provider>
     </Provider>
   );
+});
+
+afterAll(() => {
+  if (container.restore) {
+    container.restore();
+  }
 });
 
 describe('validation component tests', () => {

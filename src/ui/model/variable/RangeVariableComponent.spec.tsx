@@ -8,7 +8,6 @@ import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { NUMBER_TEXT_BOX } from '../../../core/common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { createSpecItem, Spec } from '../../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { saveSpec } from '../../../core/reducers/spec-reducers';
@@ -17,6 +16,8 @@ import {
   RangeVariable,
 } from '../../../data/model/variable/variable';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
+import { container } from '../../../di/brandi-config';
+import { Tokens } from '../../../di/brandi-tokens';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
@@ -34,8 +35,7 @@ const SAVE = 'Save';
 let user: UserEvent;
 
 beforeAll(() => {
-  const injected = getDefaultInjectionContext();
-  const specMapper = injected.mappers.spec;
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
 
   // spec w/ variable; optional
   const specWithVariableOptional: Spec = {
@@ -80,8 +80,7 @@ beforeAll(() => {
 
 beforeEach(async () => {
   /* re-saving variables before each test since some tests dirty the data */
-  const injected = getDefaultInjectionContext();
-  const variableMapper = injected.mappers.variable;
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
 
   // save variables
   // no default
@@ -265,7 +264,7 @@ const getOptionalityErrorRegex = () =>
 const doRender = (variableId?: string) => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <VariableParentComponent variableId={variableId} />
       </InjectionContext.Provider>
     </Provider>

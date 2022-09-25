@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 import { Context } from '../../data/model/context/context';
 import {
@@ -8,6 +7,8 @@ import {
   ContextReducerMatcherTypeAction,
   ContextReducerStringAction,
 } from '../../ui/model/context/context-editing-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 export interface ContextsState {
   readonly saved: Record<string, Context>;
@@ -19,10 +20,8 @@ const initialState: ContextsState = {
   editingId: undefined,
 };
 
-const injected = getDefaultInjectionContext();
-const contextDefaultNamer = injected.default.namers.context;
-
 const addDefaults = (context: Context): Context => {
+  const contextDefaultNamer = container.get(Tokens.DefaultNamer_Context);
   return {
     ...context,
     name: context.name.trim() || contextDefaultNamer.getDefaultName(context),

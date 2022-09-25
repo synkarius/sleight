@@ -7,7 +7,6 @@ import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { TEXT_BOX } from '../../../core/common/accessibility-roles';
 import { createSpecItem, Spec } from '../../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../../data/model/spec/spec-item-type';
@@ -25,6 +24,8 @@ import {
   SelectorItem,
 } from '../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../core/reducers/selector-reducers';
+import { container } from '../../../di/brandi-config';
+import { Tokens } from '../../../di/brandi-tokens';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
@@ -45,8 +46,7 @@ const GTE1_ERROR_MESSAGE = 'at least one choice item must be added';
 let user: UserEvent;
 
 beforeAll(() => {
-  const injected = getDefaultInjectionContext();
-  const specMapper = injected.mappers.spec;
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
 
   // spec w/ variable; optional
   const specWithVariableOptional: Spec = {
@@ -91,9 +91,7 @@ beforeAll(() => {
 
 beforeEach(async () => {
   /* re-saving variables before each test since some tests dirty the data */
-  const injected = getDefaultInjectionContext();
-  const selectorMapper = injected.mappers.selector;
-  const variableMapper = injected.mappers.variable;
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
 
   // save a selector
   const selectorItem: SelectorItem = {
@@ -333,7 +331,7 @@ const getOptionalityErrorRegex = () =>
 const doRender = (variableId?: string) => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <VariableParentComponent variableId={variableId} />
       </InjectionContext.Provider>
     </Provider>

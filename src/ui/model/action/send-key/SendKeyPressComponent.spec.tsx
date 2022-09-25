@@ -2,18 +2,17 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
-import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
-import { getTextVariableDomainMapper } from '../../../../core/mappers/text-variable-domain-mapper-delegate';
 import {
   createRangeVariable,
   createTextVariable,
 } from '../../../../data/model/variable/variable';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
+import { container } from '../../../../di/brandi-config';
+import { Tokens } from '../../../../di/brandi-tokens';
 
 const VARIABLE_NAME = 'asdf-range-var';
 const VARIABLE_RADIO = 1;
@@ -21,17 +20,17 @@ type Radio = 0 | 1;
 let user: UserEvent;
 
 beforeAll(() => {
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
+
   // save variables
   const rangeVariable = {
     ...createRangeVariable(),
     name: VARIABLE_NAME,
   };
-  const rangeVariableDTO =
-    getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
+  const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
   store.dispatch(saveVariable(rangeVariableDTO));
   const textVariable = createTextVariable();
-  const textVariableDTO =
-    getTextVariableDomainMapper().mapFromDomain(textVariable);
+  const textVariableDTO = variableMapper.mapFromDomain(textVariable);
   store.dispatch(saveVariable(textVariableDTO));
 
   user = userEvent.setup();
@@ -40,7 +39,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
     </Provider>

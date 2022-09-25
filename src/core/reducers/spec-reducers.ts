@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 import { MoveDirection } from '../common/move-direction';
 import {
@@ -21,6 +20,8 @@ import {
   SpecReducerDeleteSelectorItemAction,
 } from '../../ui/model/spec/spec-editing-context';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 export type SpecsState = {
   readonly saved: Record<string, SpecDTO>;
@@ -37,10 +38,8 @@ const specItemIdMatches: (
 ) => (specItem: SpecItem) => boolean = (specItemId) => (specItem) =>
   specItem.id === specItemId;
 
-const injected = getDefaultInjectionContext();
-const specDefaultNamer = injected.default.namers.spec;
-
 const addDefaults = (spec: SpecDTO): SpecDTO => {
+  const specDefaultNamer = container.get(Tokens.DefaultNamer_Spec);
   return {
     ...spec,
     name: spec.name.trim() || specDefaultNamer.getDefaultName(spec),

@@ -1,12 +1,13 @@
-import { getSelectorDomainMapper } from './selector-domain-mapper';
 import { SelectorDTO } from '../../data/model/selector/selector-dto';
 import { ChoiceItem, ChoiceVariable } from '../../data/model/variable/variable';
 import {
   ChoiceItemDTO,
   ChoiceVariableDTO,
 } from '../../data/model/variable/variable-dto';
+import { DomainMapper } from './mapper';
+import { Selector } from '../../data/model/selector/selector-domain';
 
-type ChoiceItemDomainMapper = {
+export type ChoiceItemDomainMapper = {
   mapFromDomain: (domain: ChoiceItem) => ChoiceItemDTO;
   mapToDomain: (
     dto: ChoiceItemDTO,
@@ -14,24 +15,28 @@ type ChoiceItemDomainMapper = {
   ) => ChoiceItem;
 };
 
-const getChoiceItemDomainMapper: () => ChoiceItemDomainMapper = () => {
-  const selectorDomainMapper = getSelectorDomainMapper();
-  return {
-    mapFromDomain: (domain: ChoiceItem): ChoiceItemDTO => ({
+export class DefaultChoiceItemDomainMapper implements ChoiceItemDomainMapper {
+  constructor(private selectorMapper: DomainMapper<Selector, SelectorDTO>) {}
+
+  mapFromDomain(domain: ChoiceItem): ChoiceItemDTO {
+    return {
       id: domain.id,
       selectorId: domain.selector.id,
       value: domain.value,
-    }),
-    mapToDomain: (
-      dto: ChoiceItemDTO,
-      selectorDtos: Readonly<Record<string, SelectorDTO>>
-    ): ChoiceItem => ({
+    };
+  }
+
+  mapToDomain(
+    dto: ChoiceItemDTO,
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
+  ): ChoiceItem {
+    return {
       id: dto.id,
-      selector: selectorDomainMapper.mapToDomain(selectorDtos[dto.selectorId]),
+      selector: this.selectorMapper.mapToDomain(selectorDtos[dto.selectorId]),
       value: dto.value,
-    }),
-  };
-};
+    };
+  }
+}
 
 export type ChoiceVariableDomainMapper = {
   mapFromDomain: (domain: ChoiceVariable) => ChoiceVariableDTO;
@@ -41,36 +46,41 @@ export type ChoiceVariableDomainMapper = {
   ) => ChoiceVariable;
 };
 
-export const getChoiceVariableDomainMapper: () => ChoiceVariableDomainMapper =
-  () => {
-    const choiceItemDomainMapper = getChoiceItemDomainMapper();
+export class DefaultChoiceVariableDomainMapper
+  implements ChoiceVariableDomainMapper
+{
+  constructor(private choiceItemDomainMapper: ChoiceItemDomainMapper) {}
+
+  mapFromDomain(domain: ChoiceVariable): ChoiceVariableDTO {
     return {
-      mapFromDomain: (domain: ChoiceVariable): ChoiceVariableDTO => ({
-        id: domain.id,
-        name: domain.name,
-        type: domain.type,
-        roleKey: domain.roleKey,
-        enabled: domain.enabled,
-        locked: domain.locked,
-        items: domain.items.map((item) =>
-          choiceItemDomainMapper.mapFromDomain(item)
-        ),
-        defaultValue: domain.defaultValue,
-      }),
-      mapToDomain: (
-        dto: ChoiceVariableDTO,
-        selectorDtos: Readonly<Record<string, SelectorDTO>>
-      ): ChoiceVariable => ({
-        id: dto.id,
-        name: dto.name,
-        type: dto.type,
-        roleKey: dto.roleKey,
-        enabled: dto.enabled,
-        locked: dto.locked,
-        items: dto.items.map((item) =>
-          choiceItemDomainMapper.mapToDomain(item, selectorDtos)
-        ),
-        defaultValue: dto.defaultValue,
-      }),
+      id: domain.id,
+      name: domain.name,
+      type: domain.type,
+      roleKey: domain.roleKey,
+      enabled: domain.enabled,
+      locked: domain.locked,
+      items: domain.items.map((item) =>
+        this.choiceItemDomainMapper.mapFromDomain(item)
+      ),
+      defaultValue: domain.defaultValue,
     };
-  };
+  }
+
+  mapToDomain(
+    dto: ChoiceVariableDTO,
+    selectorDtos: Readonly<Record<string, SelectorDTO>>
+  ): ChoiceVariable {
+    return {
+      id: dto.id,
+      name: dto.name,
+      type: dto.type,
+      roleKey: dto.roleKey,
+      enabled: dto.enabled,
+      locked: dto.locked,
+      items: dto.items.map((item) =>
+        this.choiceItemDomainMapper.mapToDomain(item, selectorDtos)
+      ),
+      defaultValue: dto.defaultValue,
+    };
+  }
+}

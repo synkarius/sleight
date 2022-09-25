@@ -4,18 +4,18 @@ import Mustache from 'mustache';
 import { utilViewFunctions } from '../util-mustache-fns';
 
 import { dragonflyViewFunctions } from './dragonfly-mustache-helper-fns';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
+import { FormatMapper } from '../../data-format-mapper';
+import { SleightDataInternalFormat } from '../../data-formats';
 
-export const getDragonflyExporter: () => Exporter = () => ({
-  export: (data) => {
-    const injected = getDefaultInjectionContext();
-    const formatMapper = injected.mappers.dataFormat;
-    //
+export class DragonflyExporter implements Exporter {
+  constructor(private formatMapper: FormatMapper) {}
+
+  export(data: SleightDataInternalFormat): string[] {
     const render = Mustache.render(dragonflyCompactTemplate, {
-      ...formatMapper.internalFormatToArrays(data),
+      ...this.formatMapper.internalFormatToArrays(data),
       ...utilViewFunctions,
       ...dragonflyViewFunctions(data),
     });
     return [render];
-  },
-});
+  }
+}

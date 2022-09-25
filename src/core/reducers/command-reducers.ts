@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 import { UNSELECTED_ID } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
@@ -12,6 +11,8 @@ import {
   CommandReducerMoveAction,
   CommandReducerStringAction,
 } from '../../ui/model/command/command-editing-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 export type CommandsState = {
   readonly saved: Record<string, Command>;
@@ -23,10 +24,8 @@ const initialState: CommandsState = {
   editingId: undefined,
 };
 
-const injected = getDefaultInjectionContext();
-const commandDefaultNamer = injected.default.namers.command;
-
 const addDefaults = (command: Command): Command => {
+  const commandDefaultNamer = container.get(Tokens.DefaultNamer_Command);
   return {
     ...command,
     name: command.name.trim() || commandDefaultNamer.getDefaultName(command),

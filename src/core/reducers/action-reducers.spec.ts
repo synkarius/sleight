@@ -15,12 +15,12 @@ import { ActionType } from '../../data/model/action/action-types';
 import { createNumericValue } from '../../data/model/action/action-value';
 import { ActionReducerActionType } from '../../ui/model/action/action-editing-context';
 import { Action } from '../../data/model/action/action';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
-
-const injected = getDefaultInjectionContext();
-const actionDefaultNamer = injected.default.namers.action;
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 describe('action reducer', () => {
+  const actionDefaultNamer = container.get(Tokens.DefaultNamer_Action);
+
   const initialState: ActionsState = {
     saved: {},
     editingId: undefined,

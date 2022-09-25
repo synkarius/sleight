@@ -1,4 +1,3 @@
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { UNSELECTED_ID } from '../common/consts';
 import { MoveDirection } from '../common/move-direction';
 import { createCommand, Command } from '../../data/model/command/command';
@@ -11,10 +10,11 @@ import {
   commandReactReducer,
   deleteCommand,
 } from './command-reducers';
+import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/brandi-config';
 
 describe('command reducer', () => {
-  const injected = getDefaultInjectionContext();
-  const commandDefaultNamer = injected.default.namers.command;
+  const commandDefaultNamer = container.get(Tokens.DefaultNamer_Command);
 
   it('should handle initial state', () => {
     expect(commandReduxReducer(undefined, { type: 'unknown' })).toEqual({

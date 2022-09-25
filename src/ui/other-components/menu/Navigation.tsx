@@ -10,19 +10,22 @@ import { DeserializationResultType } from '../../../data/imports/deserialization
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
 import { ImportValidationResultType } from '../../../data/imports/imports-validator';
+import { Tokens } from '../../../di/brandi-tokens';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);
 
   const exportJson = () => {
-    const data = injectionContext.exports.exporters.json.export(allData);
+    const jsonExporter = container.get(Tokens.JsonExporter);
+    const data = jsonExporter.export(allData);
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
   const exportDragonfly = () => {
-    const data = injectionContext.exports.exporters.dragonfly.export(allData);
+    const dragonflyExporter = container.get(Tokens.DragonflyExporter);
+    const data = dragonflyExporter.export(allData);
     simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
   };
   const importFileClickHandler = () => {
@@ -36,20 +39,18 @@ export const Navigation: React.FC<{}> = () => {
     const file = e.target.files?.item(0);
     const fileContents = await file?.text();
     if (fileContents) {
+      const deserializer = container.get(Tokens.Deserializer);
+      const dataMerger = container.get(Tokens.DataMerger);
+      const cleaner = container.get(Tokens.ImportsCleaner);
+      const validator = container.get(Tokens.ImportsValidator);
+
       //
-      const deserializationResult =
-        injectionContext.imports.deserializer.deserialize(fileContents);
+      const deserializationResult = deserializer.deserialize(fileContents);
       if (deserializationResult.type === DeserializationResultType.VALID) {
         // TODO: version adapters
-        const merged = injectionContext.imports.dataMerger.merge(
-          allData,
-          deserializationResult.data
-        );
-        const cleaned = injectionContext.cleaners.imports.cleanData(merged);
-        const validationResult =
-          injectionContext.validation.validators.imports.validateImportedData(
-            cleaned
-          );
+        const merged = dataMerger.merge(allData, deserializationResult.data);
+        const cleaned = cleaner.cleanData(merged);
+        const validationResult = validator.validateImportedData(cleaned);
         if (validationResult.status === ImportValidationResultType.VALID) {
           // TODO: add it to redux
         }

@@ -7,7 +7,6 @@ import { Field } from '../../../validation/validation-field';
 import { VariableParentComponent } from './VariableParentComponent';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import {
   createRangeVariable,
   RangeVariable,
@@ -19,6 +18,8 @@ import {
 } from '../../../data/model/action/pause/pause';
 import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { saveAction } from '../../../core/reducers/action-reducers';
+import { container } from '../../../di/brandi-config';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const SAVE = 'Save';
 const VARIABLE_1_ID = 'VARIABLE_1_ID';
@@ -30,8 +31,7 @@ const VARIABLE_2_NAME = 'VARIABLE_2_NAME';
 let user: UserEvent;
 
 beforeAll(() => {
-  const injected = getDefaultInjectionContext();
-  const variableMapper = injected.mappers.variable;
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
 
   const variable1: RangeVariable = {
     ...createRangeVariable(),
@@ -182,7 +182,7 @@ const getVarUsedErrorMsgRegex = () =>
 const doRender = (variableId?: string) => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <VariableParentComponent variableId={variableId} />
       </InjectionContext.Provider>
     </Provider>

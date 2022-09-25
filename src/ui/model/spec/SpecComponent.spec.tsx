@@ -8,7 +8,6 @@ import { SpecParentComponent } from './SpecParentComponent';
 import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { deleteSpec, saveSpec } from '../../../core/reducers/spec-reducers';
 import { saveSelector } from '../../../core/reducers/selector-reducers';
 import { saveAction } from '../../../core/reducers/action-reducers';
@@ -25,6 +24,7 @@ import { spec04 } from '../../../test/resources/spec-04.json';
 import { variable01 } from '../../../test/resources/variable-01.json';
 import { variable02 } from '../../../test/resources/variable-02.json';
 import { castJsonForTest } from '../../../test/utils/import-test-json-util';
+import { container } from '../../../di/brandi-config';
 
 let specIdsForCleanup: string[];
 
@@ -76,7 +76,7 @@ afterEach(() => {
 const doRender = (specId?: string) => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <SpecParentComponent specId={specId} />
       </InjectionContext.Provider>
     </Provider>

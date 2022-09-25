@@ -22,6 +22,7 @@ import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
@@ -29,9 +30,11 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const isSaved = useSaved(ElementType.Enum.SPEC, props.spec.id);
-  const specDefaultNamer = injectionContext.default.namers.spec;
+  const specDefaultNamer = container.get(Tokens.DefaultNamer_Spec);
+  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({
@@ -74,13 +77,11 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       props.spec.items.forEach((item) => {
         switch (item.itemType) {
           case SpecItemType.Enum.SELECTOR:
-            const sel = injectionContext.mappers.selector.mapFromDomain(
-              item.selector
-            );
+            const sel = selectorMapper.mapFromDomain(item.selector);
             return reduxDispatch(saveSelector(sel));
         }
       });
-      const specRedux = injectionContext.mappers.spec.mapFromDomain(props.spec);
+      const specRedux = specMapper.mapFromDomain(props.spec);
       reduxDispatch(saveSpec(specRedux));
       reduxDispatch(setEditorFocus());
     }

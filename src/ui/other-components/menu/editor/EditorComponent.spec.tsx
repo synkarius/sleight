@@ -8,19 +8,22 @@ import { ElementType } from '../../../../data/model/element-types';
 import { Field } from '../../../../validation/validation-field';
 import { createSpec, Spec } from '../../../../data/model/spec/spec-domain';
 import { SpecDTO } from '../../../../data/model/spec/spec-dto';
-import { getSpecDomainMapper } from '../../../../core/mappers/spec-domain-mapper';
 import { saveSpec } from '../../../../core/reducers/spec-reducers';
+import { container } from '../../../../di/brandi-config';
+import { Tokens } from '../../../../di/brandi-tokens';
 
 let user: UserEvent;
 
 const SPEC_NAME_1 = 'spec-name-1';
 
 beforeAll(() => {
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
+
   const spec: Spec = {
     ...createSpec(),
     name: SPEC_NAME_1,
   };
-  const specDTO: SpecDTO = getSpecDomainMapper().mapFromDomain(spec);
+  const specDTO: SpecDTO = specMapper.mapFromDomain(spec);
   store.dispatch(saveSpec(specDTO));
   user = userEvent.setup();
 });

@@ -1,10 +1,11 @@
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { SleightDataInternalFormat } from '../../data/data-formats';
 import { Action } from '../../data/model/action/action';
 import { Command } from '../../data/model/command/command';
 import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import { Variable } from '../../data/model/variable/variable';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 /**
  * Given the editing element, finds one or more validated elements.
@@ -36,8 +37,7 @@ export const givenSpecFindVariables: FinderFn<Spec, Variable> = (
   editing: Spec,
   data: SleightDataInternalFormat
 ): Variable[] => {
-  const injected = getDefaultInjectionContext();
-  const variableMapper = injected.mappers.variable;
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
   //
   const variableIdsInSpec = editing.items
     .filter((specItem) => specItem.itemType === SpecItemType.Enum.VARIABLE)
@@ -54,8 +54,7 @@ export const givenVariableFindSpecs: FinderFn<Variable, Spec> = (
   editing: Variable,
   data: SleightDataInternalFormat
 ): Spec[] => {
-  const injected = getDefaultInjectionContext();
-  const specMapper = injected.mappers.spec;
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
   //
 
   return Object.values(data.specs)

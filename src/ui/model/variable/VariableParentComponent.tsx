@@ -18,6 +18,7 @@ import {
 } from '../../../core/reducers/variable-reducers';
 import { VariableComponent } from './VariableComponent';
 import { Field } from '../../../validation/validation-field';
+import { Tokens } from '../../../di/brandi-tokens';
 
 type VariableInitFunction = (specId?: string) => Variable;
 
@@ -43,14 +44,14 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
   const reduxDispatch = useAppDispatch();
   const variables = useAppSelector((state) => state.variable.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const [editing, localDispatch] = useReducer(
     variableReactReducer,
     props.variableId,
     getVariableInitFunction(
       variables,
       selectors,
-      injectionContext.mappers.variable
+      container.get(Tokens.DomainMapper_Variable)
     )
   );
   const [show, setShow] = useState(false);
@@ -60,12 +61,10 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
     reduxDispatch(setEditorFocus());
   };
   const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Variable);
 
   return (
-    <ValidationComponent<Variable>
-      validators={[...injectionContext.validation.validators.variable]}
-      editing={editing}
-    >
+    <ValidationComponent<Variable> validators={validators} editing={editing}>
       <VariableEditingContext.Provider
         value={{ localDispatch, deleteModalConfig }}
       >

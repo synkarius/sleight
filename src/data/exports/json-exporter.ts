@@ -1,11 +1,11 @@
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { FormatMapper } from '../data-format-mapper';
+import { SleightDataInternalFormat } from '../data-formats';
 import { Exporter } from './exporter';
 
-export const getJsonExporter: () => Exporter = () => ({
-  export: (data) => {
-    const injected = getDefaultInjectionContext();
-    const formatMapper = injected.mappers.dataFormat;
-    //
-    return [JSON.stringify(formatMapper.internalFormatToExternal(data))];
-  },
-});
+export class JsonExporter implements Exporter {
+  constructor(private formatMapper: FormatMapper) {}
+
+  export(data: SleightDataInternalFormat): string[] {
+    return [JSON.stringify(this.formatMapper.internalFormatToExternal(data))];
+  }
+}

@@ -1,10 +1,11 @@
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { SleightDataInternalFormat } from '../../data/data-formats';
 import { Action } from '../../data/model/action/action';
 import { Command } from '../../data/model/command/command';
 import { SelectorDTO } from '../../data/model/selector/selector-dto';
 import { isSelectorSpecItem, Spec } from '../../data/model/spec/spec-domain';
 import { isChoiceVariable, Variable } from '../../data/model/variable/variable';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 /**
  * Makes a copy of the relevant Redux slices.
@@ -31,16 +32,15 @@ export const commandDataCopierFn: DataCopierFn<Command> = (command, data) => {
 };
 
 export const specDataCopierFn: DataCopierFn<Spec> = (spec, data) => {
-  const injected = getDefaultInjectionContext();
-  const selectorMapper = injected.mappers.selector;
-  const specMapper = injected.mappers.spec;
+  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
   //
   const copy = structuredClone(data);
   const specDTO = specMapper.mapFromDomain(spec);
   const selectorDTOs = spec.items
     .filter(isSelectorSpecItem)
     .map((item) => item.selector)
-    .map(selectorMapper.mapFromDomain)
+    .map((selector) => selectorMapper.mapFromDomain(selector))
     .reduce((map, selector) => {
       map[selector.id] = selector;
       return map;
@@ -56,9 +56,8 @@ export const variableDataCopierFn: DataCopierFn<Variable> = (
   variable,
   data
 ) => {
-  const injected = getDefaultInjectionContext();
-  const selectorMapper = injected.mappers.selector;
-  const variableMapper = injected.mappers.variable;
+  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
   //
   const copy = structuredClone(data);
   const variableDTO = variableMapper.mapFromDomain(variable);
@@ -66,7 +65,7 @@ export const variableDataCopierFn: DataCopierFn<Variable> = (
     (isChoiceVariable(variable) &&
       variable.items
         .map((item) => item.selector)
-        .map(selectorMapper.mapFromDomain)
+        .map((selector) => selectorMapper.mapFromDomain(selector))
         .reduce((map, selector) => {
           map[selector.id] = selector;
           return map;

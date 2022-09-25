@@ -10,7 +10,7 @@ import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { SidebarSection } from './sidebar';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 
-export const SidebarComponent = () => {
+export const SidebarComponent: React.FC<{}> = () => {
   const reduxDispatch = useAppDispatch();
   const actionsSaved = useAppSelector((state) => state.action.saved);
   const commandsSaved = useAppSelector((state) => state.command.saved);

@@ -3,20 +3,20 @@ import {
   DeserializationResultType,
 } from './deserialization-result';
 import { SleightDataExportFormat } from '../data-formats';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { FormatMapper } from '../data-format-mapper';
 
 /** Parses external format; converts to internal format. */
 export type Deserializer = {
   deserialize: (data: string) => DeserializationResult;
 };
 
-export const getJsonDeserializer: () => Deserializer = () => ({
-  deserialize: (data: string): DeserializationResult => {
-    const injected = getDefaultInjectionContext();
-    const formatMapper = injected.mappers.dataFormat;
+export class JsonDeserializer implements Deserializer {
+  constructor(private formatMapper: FormatMapper) {}
+
+  deserialize(data: string): DeserializationResult {
     try {
       const parsed = JSON.parse(data) as SleightDataExportFormat;
-      const internalFormat = formatMapper.externalFormatToInternal(parsed);
+      const internalFormat = this.formatMapper.externalFormatToInternal(parsed);
       return {
         type: DeserializationResultType.VALID,
         version: parsed.version,
@@ -27,5 +27,5 @@ export const getJsonDeserializer: () => Deserializer = () => ({
         type: DeserializationResultType.INVALID,
       };
     }
-  },
-});
+  }
+}

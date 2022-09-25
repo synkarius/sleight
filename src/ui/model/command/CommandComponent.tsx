@@ -22,6 +22,7 @@ import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
@@ -31,9 +32,9 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(CommandEditingContext);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const isSaved = useSaved(ElementType.Enum.COMMAND, props.command.id);
-  const commandDefaultNamer = injectionContext.default.namers.command;
+  const commandDefaultNamer = container.get(Tokens.DefaultNamer_Command);
 
   const nameChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({

@@ -1,19 +1,17 @@
 import { Command } from '../../data/model/command/command';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { DomainMapper } from '../mappers/mapper';
 import { Cleaner } from './cleaner';
 
 /** Already have mappers, so cleaning data by mapping back and forth.
  * Should replace with better data cleaner.
  * TODO
  */
-export const getCommandMappingCleaner = (): Cleaner<Command> => {
-  return {
-    clean: (commands) => {
-      const injected = getDefaultInjectionContext();
-      const commandMapper = injected.mappers.command;
-      return commands
-        .map((commandDTO) => commandMapper.mapToDomain(commandDTO))
-        .map((command) => commandMapper.mapFromDomain(command));
-    },
-  };
-};
+export class CommandMappingCleaner implements Cleaner<Command> {
+  constructor(private commandMapper: DomainMapper<Command, Command>) {}
+
+  clean(commands: Readonly<Command[]>): Command[] {
+    return commands
+      .map((commandDTO) => this.commandMapper.mapToDomain(commandDTO))
+      .map((command) => this.commandMapper.mapFromDomain(command));
+  }
+}

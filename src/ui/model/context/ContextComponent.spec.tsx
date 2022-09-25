@@ -6,9 +6,9 @@ import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { ContextParentComponent } from './ContextParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { createContext } from '../../../data/model/context/context';
+import { container } from '../../../di/brandi-config';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
 const ROLE_KEY = 'ROLE_KEY';
@@ -29,7 +29,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <ContextParentComponent />
       </InjectionContext.Provider>
     </Provider>

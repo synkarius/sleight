@@ -2,7 +2,6 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../../app/store';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { InjectionContext } from '../../../../di/injector-context';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
@@ -18,6 +17,8 @@ import {
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { createSelector } from '../../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../../core/reducers/selector-reducers';
+import { container } from '../../../../di/brandi-config';
+import { Tokens } from '../../../../di/brandi-tokens';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -26,8 +27,7 @@ type Radio = 0 | 1;
 let user: UserEvent;
 
 beforeAll(() => {
-  const injected = getDefaultInjectionContext();
-  const variableMapper = injected.mappers.variable;
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
 
   // save variables
   const rangeVariable: RangeVariable = {
@@ -52,7 +52,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
     </Provider>

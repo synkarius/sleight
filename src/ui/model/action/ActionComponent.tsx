@@ -34,6 +34,7 @@ import { isBringAppAction } from '../../../data/model/action/bring-app/bring-app
 import { BringAppComponent } from './bring-app/BringAppComponent';
 import { isCallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { CallFunctionComponent } from './call-function/CallFunctionComponent';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
@@ -42,9 +43,9 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const isSaved = useSaved(ElementType.Enum.ACTION, props.action.id);
-  const actionDefaultNamer = injectionContext.default.namers.action;
+  const actionDefaultNamer = container.get(Tokens.DefaultNamer_Action);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({

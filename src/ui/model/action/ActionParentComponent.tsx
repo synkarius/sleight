@@ -13,6 +13,7 @@ import { ActionComponent } from './ActionComponent';
 import { createSendKeyPressAction } from '../../../data/model/action/send-key/send-key';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const init = (
   savedMap: Record<string, Action>
@@ -35,7 +36,7 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
     props.actionId,
     init(savedMap)
   );
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const handleDelete = () => {
@@ -43,12 +44,10 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
     reduxDispatch(setEditorFocus());
   };
   const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Action);
 
   return (
-    <ValidationComponent<Action>
-      validators={[...injectionContext.validation.validators.action]}
-      editing={editing}
-    >
+    <ValidationComponent<Action> validators={validators} editing={editing}>
       <ActionEditingContext.Provider
         value={{ localDispatch, deleteModalConfig }}
       >

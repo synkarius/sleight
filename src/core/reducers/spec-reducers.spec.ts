@@ -1,4 +1,3 @@
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import { MoveDirection } from '../common/move-direction';
 import { createSpec, createSpecItem } from '../../data/model/spec/spec-domain';
 import { SpecDTO } from '../../data/model/spec/spec-dto';
@@ -12,6 +11,8 @@ import {
   specReactReducer,
   deleteSpec,
 } from './spec-reducers';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 const createTestSpecRedux = (from?: {
   id?: string;
@@ -38,9 +39,8 @@ const createTestSpecRedux = (from?: {
 };
 
 describe('spec reducer', () => {
-  const injected = getDefaultInjectionContext();
-  const specMapper = injected.mappers.spec;
-  const specDefaultNamer = injected.default.namers.spec;
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
+  const specDefaultNamer = container.get(Tokens.DefaultNamer_Spec);
 
   it('should handle initial state', () => {
     expect(specReduxReducer(undefined, { type: 'unknown' })).toEqual({

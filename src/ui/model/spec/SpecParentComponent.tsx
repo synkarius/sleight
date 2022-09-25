@@ -15,6 +15,7 @@ import { SpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Field } from '../../../validation/validation-field';
+import { Tokens } from '../../../di/brandi-tokens';
 
 type SpecInitFunction = (specId?: string) => Spec;
 
@@ -38,11 +39,15 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const specs = useAppSelector((state) => state.spec.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const [editing, localDispatch] = useReducer(
     specReactReducer,
     props.specId,
-    getSpecInitFunction(specs, selectors, injectionContext.mappers.spec)
+    getSpecInitFunction(
+      specs,
+      selectors,
+      container.get(Tokens.DomainMapper_Spec)
+    )
   );
   const [show, setShow] = useState(false);
 
@@ -51,12 +56,10 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
     reduxDispatch(setEditorFocus());
   };
   const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Spec);
 
   return (
-    <ValidationComponent<Spec>
-      validators={[...injectionContext.validation.validators.spec]}
-      editing={editing}
-    >
+    <ValidationComponent<Spec> validators={validators} editing={editing}>
       <SpecEditingContext.Provider value={{ localDispatch, deleteModalConfig }}>
         <SpecComponent spec={editing} />
         <DeleteModalComponent

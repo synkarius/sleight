@@ -20,10 +20,8 @@ export type FormatMapper = {
   ) => SleightDataExportFormat;
 };
 
-export const getFormatMapper = (): FormatMapper => {
-  const internalFormatToArrays = (
-    data: SleightDataInternalFormat
-  ): SleightDataArrays => {
+export class DefaultFormatMapper implements FormatMapper {
+  internalFormatToArrays(data: SleightDataInternalFormat): SleightDataArrays {
     return {
       actions: Object.values(data.actions),
       commands: Object.values(data.commands),
@@ -32,10 +30,10 @@ export const getFormatMapper = (): FormatMapper => {
       specs: Object.values(data.specs),
       variables: Object.values(data.variables),
     };
-  };
-  const externalFormatToInternal = (
+  }
+  externalFormatToInternal(
     external: Omit<SleightDataExportFormat, 'version'>
-  ): SleightDataInternalFormat => {
+  ): SleightDataInternalFormat {
     const result: SleightDataInternalFormat = {
       actions: external.actions.reduce(reduceIded, {}),
       commands: external.commands.reduce(reduceIded, {}),
@@ -45,18 +43,13 @@ export const getFormatMapper = (): FormatMapper => {
       variables: external.variables.reduce(reduceIded, {}),
     };
     return result;
-  };
-  const internalFormatToExternal = (
+  }
+  internalFormatToExternal(
     data: SleightDataInternalFormat
-  ): SleightDataExportFormat => {
+  ): SleightDataExportFormat {
     return {
       version: SCHEMA_VERSION,
-      ...internalFormatToArrays(data),
+      ...this.internalFormatToArrays(data),
     };
-  };
-  return {
-    internalFormatToArrays,
-    externalFormatToInternal,
-    internalFormatToExternal,
-  };
-};
+  }
+}

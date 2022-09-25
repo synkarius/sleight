@@ -12,6 +12,7 @@ import {
 } from '../../../core/reducers/context-reducers';
 import { ContextComponent } from './ContextComponent';
 import { Field } from '../../../validation/validation-field';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
   return (contextId?: string) => {
@@ -32,7 +33,7 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
     props.contextId,
     init(savedMap)
   );
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const handleDelete = () => {
@@ -40,12 +41,10 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
     reduxDispatch(setEditorFocus());
   };
   const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Context);
 
   return (
-    <ValidationComponent<Context>
-      validators={[...injectionContext.validation.validators.context]}
-      editing={editing}
-    >
+    <ValidationComponent<Context> validators={validators} editing={editing}>
       <ContextEditingContext.Provider
         value={{ localDispatch, deleteModalConfig }}
       >

@@ -7,7 +7,6 @@ import userEvent from '@testing-library/user-event';
 import { ActionType } from '../../../data/model/action/action-types';
 import { ActionParentComponent } from './ActionParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { getDefaultInjectionContext } from '../../../di/app-default-injection-context';
 import { saveAction } from '../../../core/reducers/action-reducers';
 import {
   createPauseAction,
@@ -32,6 +31,8 @@ import { saveSelector } from '../../../core/reducers/selector-reducers';
 import { Command, createCommand } from '../../../data/model/command/command';
 import { saveCommand } from '../../../core/reducers/command-reducers';
 import { LIST } from '../../../core/common/accessibility-roles';
+import { container } from '../../../di/brandi-config';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
 const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';
@@ -48,10 +49,9 @@ const SAVE = 'Save';
 let user: UserEvent;
 
 beforeAll(() => {
-  const injected = getDefaultInjectionContext();
-  const selectorMapper = injected.mappers.selector;
-  const specMapper = injected.mappers.spec;
-  const variableMapper = injected.mappers.variable;
+  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
+  const specMapper = container.get(Tokens.DomainMapper_Spec);
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
 
   // save variable
   const rangeVariable = {
@@ -150,7 +150,7 @@ beforeEach(async () => {
 const doRender = (actionId?: string) => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <ActionParentComponent actionId={actionId} />
       </InjectionContext.Provider>
     </Provider>

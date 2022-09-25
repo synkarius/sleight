@@ -2,14 +2,11 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
-import { getDefaultInjectionContext } from '../../../../di/app-default-injection-context';
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
 import { createSelector } from '../../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../../core/reducers/selector-reducers';
-import { getChoiceVariableDomainMapper } from '../../../../core/mappers/choice-variable-domain-mapper';
-import { getRangeVariableDomainMapper } from '../../../../core/mappers/range-variable-domain-mapper';
 import {
   ChoiceVariable,
   createChoiceItem,
@@ -20,6 +17,8 @@ import {
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
+import { container } from '../../../../di/brandi-config';
+import { Tokens } from '../../../../di/brandi-tokens';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -28,13 +27,14 @@ type Radio = 0 | 1;
 let user: UserEvent;
 
 beforeAll(() => {
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
+
   // save variables
   const rangeVariable: RangeVariable = {
     ...createRangeVariable(),
     name: RANGE_VARIABLE_NAME,
   };
-  const rangeVariableDTO =
-    getRangeVariableDomainMapper().mapFromDomain(rangeVariable);
+  const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
   store.dispatch(saveVariable(rangeVariableDTO));
   const choiceItemSelector = createSelector();
   store.dispatch(saveSelector(choiceItemSelector));
@@ -43,8 +43,7 @@ beforeAll(() => {
     name: CHOICE_VARIABLE_NAME,
     items: [createChoiceItem(choiceItemSelector)],
   };
-  const choiceVariableDTO =
-    getChoiceVariableDomainMapper().mapFromDomain(choiceVariable);
+  const choiceVariableDTO = variableMapper.mapFromDomain(choiceVariable);
   store.dispatch(saveVariable(choiceVariableDTO));
 
   user = userEvent.setup();
@@ -53,7 +52,7 @@ beforeAll(() => {
 beforeEach(async () => {
   render(
     <Provider store={store}>
-      <InjectionContext.Provider value={getDefaultInjectionContext()}>
+      <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
     </Provider>

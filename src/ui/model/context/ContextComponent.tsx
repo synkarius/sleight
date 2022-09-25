@@ -18,6 +18,7 @@ import {
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { Tokens } from '../../../di/brandi-tokens';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
@@ -25,9 +26,9 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ContextEditingContext);
-  const injectionContext = useContext(InjectionContext);
+  const container = useContext(InjectionContext);
   const isSaved = useSaved(ElementType.Enum.CONTEXT, props.context.id);
-  const contextDefaultNamer = injectionContext.default.namers.context;
+  const contextDefaultNamer = container.get(Tokens.DefaultNamer_Context);
 
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({

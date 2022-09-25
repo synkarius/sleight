@@ -1,4 +1,3 @@
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
 import {
   createSelector,
   createSelectorItem,
@@ -23,6 +22,8 @@ import {
   deleteVariable,
 } from './variable-reducers';
 import { VariableType } from '../../data/model/variable/variable-types';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 
 const VARIABLE_ID_1 = 'VARIABLE_ID_1';
 const VARIABLE_NAME_1 = 'VARIABLE_NAME_1';
@@ -40,8 +41,7 @@ const createTestVariable = (id: string): VariableDTO => {
 };
 
 describe('variable reducer', () => {
-  const injected = getDefaultInjectionContext();
-  const variableDefaultNamer = injected.default.namers.variable;
+  const variableDefaultNamer = container.get(Tokens.DefaultNamer_Variable);
 
   const initialState: VariablesState = {
     saved: {},

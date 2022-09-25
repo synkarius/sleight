@@ -14,7 +14,8 @@ import {
 } from '../../data/model/action/send-key/send-key';
 import { createSendTextAction } from '../../data/model/action/send-text/send-text';
 import { createWaitForWindowAction } from '../../data/model/action/wait-for-window/wait-for-window';
-import { getDefaultInjectionContext } from '../../di/app-default-injection-context';
+import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/brandi-tokens';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 
 describe('validation support tests', () => {
@@ -23,8 +24,7 @@ describe('validation support tests', () => {
    * are covered, but it doesn't guarantee that subtypes are covered.
    */
   it('all actions should be covered in extract variables fn', () => {
-    const injected = getDefaultInjectionContext();
-    const extractor = injected.validation.variableExtractor;
+    const extractor = container.get(Tokens.VariableExtractor);
     ActionType.values().forEach((actionType) => {
       switch (actionType) {
         case ActionType.Enum.BRING_APP:
