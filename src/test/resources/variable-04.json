@@ -1,0 +1,17 @@
+{
+    "variable04": {
+        "id": "variable04-id",
+        "name": "",
+        "type": "Choice",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "items": [
+            {
+                "id": "20fj39f82j39f8j",
+                "selectorId": "73cy28rnh28r7h2r982chr7h",
+                "value": "hi"
+            }
+        ]
+    }
+}

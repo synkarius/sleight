@@ -32,7 +32,7 @@ import {
 } from '../data/model/variable/variable-dto';
 import { FieldValidator } from '../validation/field-validator';
 import { VariableExtractorDelegate } from '../validation/variable-extraction/variable-extractor-delegate';
-import { token } from 'brandi';
+import { tag, token } from 'brandi';
 import { FormatMapper } from '../data/data-format-mapper';
 import { Deserializer } from '../data/imports/deserializer';
 import { SpecItemDomainMapper } from '../core/mappers/spec-item-domain-mapper';
@@ -46,6 +46,14 @@ import { IdedAndVariableTyped } from '../core/default-namers/variable-default-na
 import { Cleaner } from '../core/cleaners/cleaner';
 import { ImportsCleaner } from '../data/imports/imports-cleaner';
 import { IdRewriter } from '../data/imports/model-update/id-rewriter/id-rewriter';
+import {
+  ActionIdRewriterArray,
+  ContextIdRewriterArray,
+  SelectorIdRewriterArray,
+  SpecIdRewriterArray,
+  VariableIdRewriterArray,
+} from './di-collection-types';
+import { SleightDataIdsRewriter } from '../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -153,6 +161,9 @@ export namespace Tokens {
     token<Cleaner<VariableDTO>>('Cleaner_Variable');
   export const ImportsCleaner = token<ImportsCleaner>('ImportsCleaner');
   // id rewriters
+  export const ActionIdRewriterArray = token<ActionIdRewriterArray>(
+    'ActionIdRewriterArray'
+  );
   export const ActionIdRewriter = token<IdRewriter<Action>>('ActionIdRewriter');
   export const ActionIdWithinCommandsRewriter = token<IdRewriter<Action>>(
     'ActionIdWithinCommandsRewriter'
@@ -161,12 +172,42 @@ export namespace Tokens {
     token<IdRewriter<Command>>('CommandIdRewriter');
   export const ContextIdRewriter =
     token<IdRewriter<Context>>('ContextIdRewriter');
+  export const ContextIdWithinCommandsRewriter = token<IdRewriter<Context>>(
+    'ContextIdWithinCommandsRewriter'
+  );
+  export const ContextIdRewriterArray = token<ContextIdRewriterArray>(
+    'ContextIdRewriterArray'
+  );
   export const SelectorIdRewriter =
     token<IdRewriter<SelectorDTO>>('SelectorIdRewriter');
+  export const SelectorIdWithinSpecsRewriter = token<IdRewriter<SelectorDTO>>(
+    'SelectorIdWithinSpecsRewriter'
+  );
+  export const SelectorIdWithinVariablesRewriter = token<
+    IdRewriter<SelectorDTO>
+  >('SelectorIdWithinVariablesRewriter');
+  export const SelectorIdRewriterArray = token<SelectorIdRewriterArray>(
+    'SelectorIdRewriterArray'
+  );
   export const SpecIdRewriter = token<IdRewriter<SpecDTO>>('SpecIdRewriter');
+  export const SpecIdWithinCommandsRewriter = token<IdRewriter<SpecDTO>>(
+    'SpecIdWithinCommandsRewriter'
+  );
+  export const SpecIdRewriterArray = token<SpecIdRewriterArray>(
+    'SpecIdRewriterArray'
+  );
   export const VariableIdRewriter =
     token<IdRewriter<VariableDTO>>('VariableIdRewriter');
   export const VariableIdWithinActionsRewriter = token<IdRewriter<VariableDTO>>(
     'VariableIdWithinActionsRewriter'
+  );
+  export const VariableIdWithinSpecsRewriter = token<IdRewriter<VariableDTO>>(
+    'VariableIdWithinSpecsRewriter'
+  );
+  export const VariableIdRewriterArray = token<VariableIdRewriterArray>(
+    'VariableIdRewriterArray'
+  );
+  export const SleightDataIdsRewriter = token<SleightDataIdsRewriter>(
+    'SleightDataIdsRewriter'
   );
 }

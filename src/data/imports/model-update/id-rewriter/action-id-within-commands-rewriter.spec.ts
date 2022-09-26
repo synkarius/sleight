@@ -1,25 +1,20 @@
 import { container } from '../../../../di/brandi-config';
 import { Tokens } from '../../../../di/brandi-tokens';
-import { SleightDataInternalFormat } from '../../../data-formats';
+import { createSleightDataInternalFormat } from '../../../data-formats';
 import { createPauseAction } from '../../../model/action/pause/pause';
-import { createCommand } from '../../../model/command/command';
-
-const createEmptySleightData = (): SleightDataInternalFormat => ({
-  actions: {},
-  commands: {},
-  contexts: {},
-  selectors: {},
-  specs: {},
-  variables: {},
-});
+import { Command, createCommand } from '../../../model/command/command';
 
 describe('action id rewriter tests', () => {
-  it('should rewrite command action ids', () => {
+  it("should rewrite command's action ids", () => {
     const action = createPauseAction();
-    const command = { ...createCommand(), actionIds: [action.id] };
+    const otherActionId = 'asdf';
+    const command: Command = {
+      ...createCommand(),
+      actionIds: [action.id, otherActionId],
+    };
     const commands = { [command.id]: command };
     const data = {
-      ...createEmptySleightData(),
+      ...createSleightDataInternalFormat(),
       commands,
     };
     const newId = 'newId';
@@ -28,8 +23,10 @@ describe('action id rewriter tests', () => {
     const rewrittenData = rewriter.rewriteId(action, newId, data);
 
     const expected = {
-      ...createEmptySleightData(),
-      commands: { [command.id]: { ...command, actionIds: [newId] } },
+      ...createSleightDataInternalFormat(),
+      commands: {
+        [command.id]: { ...command, actionIds: [newId, otherActionId] },
+      },
     };
     expect(rewrittenData).toEqual(expected);
   });

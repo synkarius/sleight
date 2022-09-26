@@ -1,0 +1,17 @@
+{
+    "variable03": {
+        "id": "9076bcc5-6916-4911-924c-b44a5d7875dc",
+        "name": "",
+        "type": "Choice",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "items": [
+            {
+                "id": "94d70ca5-66f5-4fa2-aed3-3a3679256a24",
+                "selectorId": "65c5c3e0-414e-4a68-9166-856b92985653",
+                "value": "hello"
+            }
+        ]
+    }
+}

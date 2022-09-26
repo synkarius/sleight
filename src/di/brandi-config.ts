@@ -71,6 +71,19 @@ import {
 import { DelegatingVariableExtractor } from '../validation/variable-extraction/delegating-variable-extractor';
 import { getVariableExtractionDelegates } from '../validation/variable-extraction/variable-extraction-delegates/variable-extraction-delegates';
 import { Tokens } from './brandi-tokens';
+import {
+  ActionIdRewriterArray,
+  ContextIdRewriterArray,
+  SelectorIdRewriterArray,
+  SpecIdRewriterArray,
+  VariableIdRewriterArray,
+} from './di-collection-types';
+import { ContextIdWithinCommandsRewriter } from '../data/imports/model-update/id-rewriter/context-id-within-commands-rewriter';
+import { SelectorIdWithinSpecsIdRewriter } from '../data/imports/model-update/id-rewriter/selector-id-within-specs-rewriter';
+import { SelectorIdWithinVariablesIdRewriter } from '../data/imports/model-update/id-rewriter/selector-id-within-variables-rewriter';
+import { SpecIdWithinCommandsRewriter } from '../data/imports/model-update/id-rewriter/spec-id-within-commands-rewriter';
+import { VariableIdWithinSpecsRewriter } from '../data/imports/model-update/id-rewriter/variable-id-within-specs-rewriter';
+import { DefaultSleightDataIdsRewriter } from '../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
 
 export const container = new Container();
 
@@ -342,44 +355,116 @@ injected(
   Tokens.Cleaner_Spec,
   Tokens.Cleaner_Variable
 );
+/* ==================================
+ *          Id Rewriters
+ * ================================== */
 // action id rewriter
 container
   .bind(Tokens.ActionIdRewriter)
   .toInstance(ActionIdRewriter)
   .inSingletonScope();
-
-// command action ids rewriter
+// action ids (in command) rewriter
 container
   .bind(Tokens.ActionIdWithinCommandsRewriter)
   .toInstance(ActionIdWithinCommandsRewriter)
   .inSingletonScope();
+//
+container
+  .bind(Tokens.ActionIdRewriterArray)
+  .toInstance(ActionIdRewriterArray)
+  .inSingletonScope();
+injected(
+  ActionIdRewriterArray,
+  Tokens.ActionIdRewriter,
+  Tokens.ActionIdWithinCommandsRewriter
+);
 // command id rewriter
 container
   .bind(Tokens.CommandIdRewriter)
   .toInstance(CommandIdRewriter)
   .inSingletonScope();
+container.bind;
 // context id rewriter
 container
   .bind(Tokens.ContextIdRewriter)
   .toInstance(ContextIdRewriter)
+  .inSingletonScope();
+// context ids (in commands) rewriter
+container
+  .bind(Tokens.ContextIdWithinCommandsRewriter)
+  .toInstance(ContextIdWithinCommandsRewriter)
+  .inSingletonScope();
+//
+container
+  .bind(Tokens.ContextIdRewriterArray)
+  .toInstance(ContextIdRewriterArray)
   .inSingletonScope();
 // selector id rewriter
 container
   .bind(Tokens.SelectorIdRewriter)
   .toInstance(SelectorIdRewriter)
   .inSingletonScope();
+// selector ids (within specs) rewriter
+container
+  .bind(Tokens.SelectorIdWithinSpecsRewriter)
+  .toInstance(SelectorIdWithinSpecsIdRewriter)
+  .inSingletonScope();
+// selector ids (within variables) rewriter
+container
+  .bind(Tokens.SelectorIdWithinVariablesRewriter)
+  .toInstance(SelectorIdWithinVariablesIdRewriter)
+  .inSingletonScope();
+//
+container
+  .bind(Tokens.SelectorIdRewriterArray)
+  .toInstance(SelectorIdRewriterArray)
+  .inSingletonScope();
 // spec id rewriter
 container
   .bind(Tokens.SpecIdRewriter)
   .toInstance(SpecIdRewriter)
+  .inSingletonScope();
+// spec ids (within commands) rewriter
+container
+  .bind(Tokens.SpecIdWithinCommandsRewriter)
+  .toInstance(SpecIdWithinCommandsRewriter)
+  .inSingletonScope();
+//
+container
+  .bind(Tokens.SpecIdRewriterArray)
+  .toInstance(SpecIdRewriterArray)
   .inSingletonScope();
 // variable id rewriter
 container
   .bind(Tokens.VariableIdRewriter)
   .toInstance(VariableIdRewriter)
   .inSingletonScope();
-// action variable ids rewriter
+// variable ids (in action) rewriter
 container
   .bind(Tokens.VariableIdWithinActionsRewriter)
   .toInstance(VariableIdWithinActionsRewriter)
   .inSingletonScope();
+// variable ids (in specs) rewriter
+container
+  .bind(Tokens.VariableIdWithinSpecsRewriter)
+  .toInstance(VariableIdWithinSpecsRewriter)
+  .inSingletonScope();
+//
+container
+  .bind(Tokens.VariableIdRewriterArray)
+  .toInstance(VariableIdRewriterArray)
+  .inSingletonScope();
+// sleight data ids rewriter
+container
+  .bind(Tokens.SleightDataIdsRewriter)
+  .toInstance(DefaultSleightDataIdsRewriter)
+  .inSingletonScope();
+injected(
+  DefaultSleightDataIdsRewriter,
+  Tokens.ActionIdRewriterArray,
+  Tokens.CommandIdRewriter,
+  Tokens.ContextIdRewriterArray,
+  Tokens.SelectorIdRewriterArray,
+  Tokens.SpecIdRewriterArray,
+  Tokens.VariableIdRewriterArray
+);

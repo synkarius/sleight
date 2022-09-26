@@ -26,3 +26,13 @@ export type SleightDataInternalFormat = {
   readonly specs: Readonly<Record<string, SpecDTO>>;
   readonly variables: Readonly<Record<string, VariableDTO>>;
 };
+
+export const createSleightDataInternalFormat =
+  (): SleightDataInternalFormat => ({
+    actions: {},
+    commands: {},
+    contexts: {},
+    selectors: {},
+    specs: {},
+    variables: {},
+  });

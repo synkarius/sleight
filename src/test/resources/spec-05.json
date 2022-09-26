@@ -1,0 +1,19 @@
+{
+    "description": "spec w/ selector",
+    "spec05": {
+        "id": "some-spec-05",
+        "name": "some-spec-05-name",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "items": [
+            {
+                "id": "aaa-bbb-ccc-0249587",
+                "itemType": "Selector",
+                "itemId": "aaa-sss-ddd-fff-09527034587",
+                "optional": false,
+                "grouped": false
+            }
+        ]
+    }
+}
