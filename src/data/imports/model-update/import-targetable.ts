@@ -1,3 +1,3 @@
-import { Lockable, RoleKeyed } from '../../model/domain';
+import { Ided, Lockable, RoleKeyed } from '../../model/domain';
 
-export interface ImportTargetable extends RoleKeyed, Lockable {}
+export interface ImportTargetable extends Ided, RoleKeyed, Lockable {}

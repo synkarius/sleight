@@ -5,6 +5,8 @@ export enum ErrorCode {
 
   MISSING_DELEGATE = 'missing delegate',
 
+  MODEL_UPDATE_EVALUATION_FAILURE = 'model update evaluation failed',
+
   NOT_IMPLEMENTED = 'method not implemented',
 
   WRONG_TYPE_FAILURE = 'wrong type: this error should never happen at runtime',

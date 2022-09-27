@@ -8,8 +8,7 @@ import { SpecDomainMapper } from '../core/mappers/spec-domain-mapper';
 import { VariableDomainMapper } from '../core/mappers/variable-domain-mapper';
 import { Exporter } from '../data/exports/exporter';
 import { ImportDataMerger } from '../data/imports/import-data-merger';
-import { ModelUpdateEvaluator } from '../data/imports/model-update/model-update-evaluator';
-import { SelectorModelUpdateEvaluator } from '../data/imports/model-update/selector-model-update-evaluator';
+import { ElementEvaluator } from '../data/imports/model-update/evaluators/element-evaluator';
 import { Action } from '../data/model/action/action';
 import { Command } from '../data/model/command/command';
 import { Context } from '../data/model/context/context';
@@ -54,28 +53,27 @@ import {
   VariableIdRewriterArray,
 } from './di-collection-types';
 import { SleightDataIdsRewriter } from '../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
+import { SleightDataEvaluator } from '../data/imports/model-update/evaluators/sleight-data-evaluator';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
   export const FormatMapper = token<FormatMapper>('FormatMapper');
   export const Deserializer = token<Deserializer>('Deserializer');
-  export const ModelUpdateEvaluator_Action = token<
-    ModelUpdateEvaluator<Action>
-  >('ModelUpdateEvaluator_Action');
-  export const ModelUpdateEvaluator_Command = token<
-    ModelUpdateEvaluator<Command>
-  >('ModelUpdateEvaluator_Command');
-  export const ModelUpdateEvaluator_Context = token<
-    ModelUpdateEvaluator<Context>
-  >('ModelUpdateEvaluator_Context');
-  export const ModelUpdateEvaluator_Selector =
-    token<SelectorModelUpdateEvaluator>('ModelUpdateEvaluator_Selector');
-  export const ModelUpdateEvaluator_Spec = token<ModelUpdateEvaluator<SpecDTO>>(
-    'ModelUpdateEvaluator_Spec'
+  export const ActionEvaluator =
+    token<ElementEvaluator<Action>>('ActionEvaluator');
+  export const CommandEvaluator =
+    token<ElementEvaluator<Command>>('CommandEvaluator');
+  export const ContextEvaluator =
+    token<ElementEvaluator<Context>>('ContextEvaluator');
+  export const SelectorEvaluator =
+    token<ElementEvaluator<SelectorDTO>>('SelectorEvaluator');
+  export const SpecEvaluator =
+    token<ElementEvaluator<SpecDTO>>('SpecEvaluator');
+  export const VariableEvaluator =
+    token<ElementEvaluator<VariableDTO>>('VariableEvaluator');
+  export const SleightDataEvaluator = token<SleightDataEvaluator>(
+    'SleightDataEvaluator'
   );
-  export const ModelUpdateEvaluator_Variable = token<
-    ModelUpdateEvaluator<VariableDTO>
-  >('ModelUpdateEvaluator_Variable');
   export const DataMerger = token<ImportDataMerger>('DataMerger');
   export const JsonExporter = token<Exporter>('JsonExporter');
   export const DragonflyExporter = token<Exporter>('DragonflyExporter');

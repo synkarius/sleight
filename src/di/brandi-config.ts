@@ -54,13 +54,13 @@ import { SelectorIdRewriter } from '../data/imports/model-update/id-rewriter/sel
 import { SpecIdRewriter } from '../data/imports/model-update/id-rewriter/spec-id-rewriter';
 import { VariableIdRewriter } from '../data/imports/model-update/id-rewriter/variable-id-rewriter';
 import {
-  ActionModelUpdateEvaluator,
-  CommandModelUpdateEvaluator,
-  ContextModelUpdateEvaluator,
-  SpecModelUpdateEvaluator,
-  VariableModelUpdateEvaluator,
-} from '../data/imports/model-update/model-update-evaluator-factory';
-import { DefaultSelectorModelUpdateEvaluator } from '../data/imports/model-update/selector-model-update-evaluator';
+  ActionEvaluator,
+  CommandEvaluator,
+  ContextEvaluator,
+  SpecEvaluator,
+  VariableEvaluator,
+} from '../data/imports/model-update/evaluators/element-evaluators';
+import { DefaultSelectorEvaluator } from '../data/imports/model-update/evaluators/selector-model-update-evaluator';
 import {
   getCrossSliceActionValidators,
   getCrossSliceCommandValidators,
@@ -84,6 +84,7 @@ import { SelectorIdWithinVariablesIdRewriter } from '../data/imports/model-updat
 import { SpecIdWithinCommandsRewriter } from '../data/imports/model-update/id-rewriter/spec-id-within-commands-rewriter';
 import { VariableIdWithinSpecsRewriter } from '../data/imports/model-update/id-rewriter/variable-id-within-specs-rewriter';
 import { DefaultSleightDataIdsRewriter } from '../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
+import { DefaultSleightDataEvaluator } from '../data/imports/model-update/evaluators/sleight-data-evaluator';
 
 export const container = new Container();
 
@@ -100,43 +101,49 @@ container
 injected(JsonDeserializer, Tokens.FormatMapper);
 // model update evaluators
 container
-  .bind(Tokens.ModelUpdateEvaluator_Action)
-  .toInstance(ActionModelUpdateEvaluator)
+  .bind(Tokens.ActionEvaluator)
+  .toInstance(ActionEvaluator)
   .inSingletonScope();
 container
-  .bind(Tokens.ModelUpdateEvaluator_Command)
-  .toInstance(CommandModelUpdateEvaluator)
+  .bind(Tokens.CommandEvaluator)
+  .toInstance(CommandEvaluator)
   .inSingletonScope();
 container
-  .bind(Tokens.ModelUpdateEvaluator_Context)
-  .toInstance(ContextModelUpdateEvaluator)
+  .bind(Tokens.ContextEvaluator)
+  .toInstance(ContextEvaluator)
   .inSingletonScope();
 container
-  .bind(Tokens.ModelUpdateEvaluator_Selector)
-  .toInstance(DefaultSelectorModelUpdateEvaluator)
+  .bind(Tokens.SelectorEvaluator)
+  .toInstance(DefaultSelectorEvaluator)
   .inSingletonScope();
 container
-  .bind(Tokens.ModelUpdateEvaluator_Spec)
-  .toInstance(SpecModelUpdateEvaluator)
+  .bind(Tokens.SpecEvaluator)
+  .toInstance(SpecEvaluator)
   .inSingletonScope();
 container
-  .bind(Tokens.ModelUpdateEvaluator_Variable)
-  .toInstance(VariableModelUpdateEvaluator)
+  .bind(Tokens.VariableEvaluator)
+  .toInstance(VariableEvaluator)
   .inSingletonScope();
+// sleight data evaluator
+container
+  .bind(Tokens.SleightDataEvaluator)
+  .toInstance(DefaultSleightDataEvaluator)
+  .inSingletonScope();
+injected(
+  DefaultSleightDataEvaluator,
+  Tokens.ActionEvaluator,
+  Tokens.CommandEvaluator,
+  Tokens.ContextEvaluator,
+  Tokens.SelectorEvaluator,
+  Tokens.SpecEvaluator,
+  Tokens.VariableEvaluator
+);
 // data merger
 container
   .bind(Tokens.DataMerger)
   .toInstance(CopyingImportDataMerger)
   .inSingletonScope();
-injected(
-  CopyingImportDataMerger,
-  Tokens.ModelUpdateEvaluator_Action,
-  Tokens.ModelUpdateEvaluator_Command,
-  Tokens.ModelUpdateEvaluator_Context,
-  Tokens.ModelUpdateEvaluator_Selector,
-  Tokens.ModelUpdateEvaluator_Spec,
-  Tokens.ModelUpdateEvaluator_Variable
-);
+
 // json exporter
 container.bind(Tokens.JsonExporter).toInstance(JsonExporter).inSingletonScope();
 injected(JsonExporter, Tokens.FormatMapper);
@@ -383,7 +390,6 @@ container
   .bind(Tokens.CommandIdRewriter)
   .toInstance(CommandIdRewriter)
   .inSingletonScope();
-container.bind;
 // context id rewriter
 container
   .bind(Tokens.ContextIdRewriter)
