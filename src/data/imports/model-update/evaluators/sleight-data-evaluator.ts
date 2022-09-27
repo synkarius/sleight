@@ -20,51 +20,6 @@ export type SleightDataEvaluator = {
   ) => SleightDataEvaluation;
 };
 
-/** Split apart the rewrites and the overrides. Discard the discards. */
-const addToEvaluation = <T>(
-  base: Record<string, T>,
-  deserialized: Record<string, T>,
-  evaluator: ElementEvaluator<T>,
-  sleightDataEvaluation: SleightDataEvaluation,
-  resultSetter: (
-    data: SleightDataInternalFormat,
-    candidate: T
-  ) => SleightDataInternalFormat
-): SleightDataEvaluation => {
-  const baseValues = Object.values(base);
-  const evaluatedElements = Object.values(deserialized).map((element) =>
-    evaluator.evaluate(element, baseValues)
-  );
-  for (const evaluatedElement of evaluatedElements) {
-    const evaluationType = evaluatedElement.evaluationType;
-    switch (evaluationType) {
-      case ElementEvaluationType.DISCARD:
-        continue;
-      case ElementEvaluationType.ID_REWRITE:
-        sleightDataEvaluation = {
-          ...sleightDataEvaluation,
-          rewriteIds: resultSetter(
-            sleightDataEvaluation.rewriteIds,
-            evaluatedElement.candidate
-          ),
-        };
-        break;
-      case ElementEvaluationType.OVERRIDE:
-        sleightDataEvaluation = {
-          ...sleightDataEvaluation,
-          override: resultSetter(
-            sleightDataEvaluation.override,
-            evaluatedElement.candidate
-          ),
-        };
-        break;
-      default:
-        throw new ExhaustivenessFailureError(evaluationType);
-    }
-  }
-  return sleightDataEvaluation;
-};
-
 export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
   constructor(
     private actionEvaluator: ElementEvaluator<Action>,
@@ -84,7 +39,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
       override: createSleightDataInternalFormat(),
     };
 
-    evaluation = addToEvaluation(
+    evaluation = this.addToEvaluation(
       base.actions,
       deserialized.actions,
       this.actionEvaluator,
@@ -94,7 +49,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         actions: { ...data.actions, [action.id]: action },
       })
     );
-    evaluation = addToEvaluation(
+    evaluation = this.addToEvaluation(
       base.commands,
       deserialized.commands,
       this.commandEvaluator,
@@ -104,7 +59,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         command: { ...data.commands, [command.id]: command },
       })
     );
-    evaluation = addToEvaluation(
+    evaluation = this.addToEvaluation(
       base.contexts,
       deserialized.contexts,
       this.contextEvaluator,
@@ -114,7 +69,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         contexts: { ...data.contexts, [context.id]: context },
       })
     );
-    evaluation = addToEvaluation(
+    evaluation = this.addToEvaluation(
       base.selectors,
       deserialized.selectors,
       this.selectorEvaluator,
@@ -124,7 +79,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         selectors: { ...data.selectors, [selector.id]: selector },
       })
     );
-    evaluation = addToEvaluation(
+    evaluation = this.addToEvaluation(
       base.specs,
       deserialized.specs,
       this.specEvaluator,
@@ -134,7 +89,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         specs: { ...data.specs, [spec.id]: spec },
       })
     );
-    evaluation = addToEvaluation(
+    evaluation = this.addToEvaluation(
       base.variables,
       deserialized.variables,
       this.variableEvaluator,
@@ -146,5 +101,50 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
     );
 
     return evaluation;
+  }
+
+  /** Split apart the rewrites and the overrides. Discard the discards. */
+  addToEvaluation<T>(
+    base: Record<string, T>,
+    deserialized: Record<string, T>,
+    evaluator: ElementEvaluator<T>,
+    sleightDataEvaluation: SleightDataEvaluation,
+    resultSetter: (
+      data: SleightDataInternalFormat,
+      candidate: T
+    ) => SleightDataInternalFormat
+  ): SleightDataEvaluation {
+    const baseValues = Object.values(base);
+    const evaluatedElements = Object.values(deserialized).map((element) =>
+      evaluator.evaluate(element, baseValues)
+    );
+    for (const evaluatedElement of evaluatedElements) {
+      const evaluationType = evaluatedElement.evaluationType;
+      switch (evaluationType) {
+        case ElementEvaluationType.DISCARD:
+          continue;
+        case ElementEvaluationType.ID_REWRITE:
+          sleightDataEvaluation = {
+            ...sleightDataEvaluation,
+            rewriteIds: resultSetter(
+              sleightDataEvaluation.rewriteIds,
+              evaluatedElement.candidate
+            ),
+          };
+          break;
+        case ElementEvaluationType.OVERRIDE:
+          sleightDataEvaluation = {
+            ...sleightDataEvaluation,
+            override: resultSetter(
+              sleightDataEvaluation.override,
+              evaluatedElement.candidate
+            ),
+          };
+          break;
+        default:
+          throw new ExhaustivenessFailureError(evaluationType);
+      }
+    }
+    return sleightDataEvaluation;
   }
 }

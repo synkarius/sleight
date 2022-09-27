@@ -54,6 +54,7 @@ import {
 } from './di-collection-types';
 import { SleightDataIdsRewriter } from '../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
 import { SleightDataEvaluator } from '../data/imports/model-update/evaluators/sleight-data-evaluator';
+import { RoleKeyedDataUpdater } from '../data/imports/model-update/rolekeyed-data-updater';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -73,6 +74,9 @@ export namespace Tokens {
     token<ElementEvaluator<VariableDTO>>('VariableEvaluator');
   export const SleightDataEvaluator = token<SleightDataEvaluator>(
     'SleightDataEvaluator'
+  );
+  export const RoleKeyedDataUpdater = token<RoleKeyedDataUpdater>(
+    'RoleKeyedDataUpdater'
   );
   export const DataMerger = token<ImportDataMerger>('DataMerger');
   export const JsonExporter = token<Exporter>('JsonExporter');

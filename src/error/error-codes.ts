@@ -9,5 +9,7 @@ export enum ErrorCode {
 
   NOT_IMPLEMENTED = 'method not implemented',
 
+  ROLE_KEY_NOT_FOUND = 'role key not found',
+
   WRONG_TYPE_FAILURE = 'wrong type: this error should never happen at runtime',
 }
