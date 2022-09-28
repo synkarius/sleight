@@ -28,8 +28,8 @@ import {
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { Ided, Named, RoleKeyed } from '../../data/model/domain';
 import { WrongTypeError } from '../../error/wrong-type-error';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;

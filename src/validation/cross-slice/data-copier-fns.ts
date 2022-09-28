@@ -4,8 +4,8 @@ import { Command } from '../../data/model/command/command';
 import { SelectorDTO } from '../../data/model/selector/selector-dto';
 import { isSelectorSpecItem, Spec } from '../../data/model/spec/spec-domain';
 import { isChoiceVariable, Variable } from '../../data/model/variable/variable';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 /**
  * Makes a copy of the relevant Redux slices.

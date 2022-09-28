@@ -14,8 +14,8 @@ import {
 } from '../../data/model/action/send-key/send-key';
 import { createSendTextAction } from '../../data/model/action/send-text/send-text';
 import { createWaitForWindowAction } from '../../data/model/action/wait-for-window/wait-for-window';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 
 describe('validation support tests', () => {

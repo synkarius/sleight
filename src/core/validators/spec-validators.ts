@@ -20,8 +20,8 @@ import {
   createValidator,
 } from '../../validation/validator-factories';
 import { mapSpecToPreview } from '../../ui/model/spec/spec-preview';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 const nameTakenValidator = createNameTakenValidator<SpecDTO, Spec>(
   Field.SP_NAME,

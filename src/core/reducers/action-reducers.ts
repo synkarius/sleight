@@ -40,8 +40,8 @@ import { copyIntoWaitForWindowAction } from '../../data/model/action/wait-for-wi
 import { copyIntoMimicAction } from '../../data/model/action/mimic/mimic';
 import { copyIntoCallFunctionAction } from '../../data/model/action/call-function/call-function';
 import { copyIntoBringAppAction } from '../../data/model/action/bring-app/bring-app';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 export type ActionsState = {
   saved: Record<string, Action>;

@@ -20,8 +20,8 @@ import {
   SpecReducerDeleteSelectorItemAction,
 } from '../../ui/model/spec/spec-editing-context';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 export type SpecsState = {
   readonly saved: Record<string, SpecDTO>;

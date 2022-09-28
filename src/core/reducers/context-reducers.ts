@@ -7,8 +7,8 @@ import {
   ContextReducerMatcherTypeAction,
   ContextReducerStringAction,
 } from '../../ui/model/context/context-editing-context';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 export interface ContextsState {
   readonly saved: Record<string, Context>;

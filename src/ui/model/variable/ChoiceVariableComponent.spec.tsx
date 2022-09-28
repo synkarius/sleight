@@ -24,8 +24,8 @@ import {
   SelectorItem,
 } from '../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../core/reducers/selector-reducers';
-import { container } from '../../../di/brandi-config';
-import { Tokens } from '../../../di/brandi-tokens';
+import { container } from '../../../di/config/brandi-config';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';

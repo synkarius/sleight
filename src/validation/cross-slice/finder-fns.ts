@@ -4,8 +4,8 @@ import { Command } from '../../data/model/command/command';
 import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import { Variable } from '../../data/model/variable/variable';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 /**
  * Given the editing element, finds one or more validated elements.

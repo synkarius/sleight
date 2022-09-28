@@ -9,8 +9,8 @@ import { Field } from '../../../../validation/validation-field';
 import { createSpec, Spec } from '../../../../data/model/spec/spec-domain';
 import { SpecDTO } from '../../../../data/model/spec/spec-dto';
 import { saveSpec } from '../../../../core/reducers/spec-reducers';
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 
 let user: UserEvent;
 

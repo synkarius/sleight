@@ -12,7 +12,7 @@ import {
 } from '../../../core/reducers/command-reducers';
 import { CommandComponent } from './CommandComponent';
 import { Field } from '../../../validation/validation-field';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
   return (commandId?: string) => {

@@ -18,8 +18,8 @@ import {
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { createSelector } from '../../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../../core/reducers/selector-reducers';
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';

@@ -18,8 +18,8 @@ import {
 } from '../../../data/model/action/pause/pause';
 import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { saveAction } from '../../../core/reducers/action-reducers';
-import { container } from '../../../di/brandi-config';
-import { Tokens } from '../../../di/brandi-tokens';
+import { container } from '../../../di/config/brandi-config';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const SAVE = 'Save';
 const VARIABLE_1_ID = 'VARIABLE_1_ID';

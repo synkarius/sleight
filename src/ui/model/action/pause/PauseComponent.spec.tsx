@@ -17,8 +17,8 @@ import {
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionType } from '../../../../data/model/action/action-types';
 import { ActionParentComponent } from '../ActionParentComponent';
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';

@@ -10,7 +10,7 @@ import { DeserializationResultType } from '../../../data/imports/deserialization
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
 import { ImportValidationResultType } from '../../../data/imports/imports-validator';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();

@@ -9,8 +9,8 @@ import {
 } from './context-reducers';
 import { ContextType } from '../../data/model/context/context-types';
 import { ContextReducerActionType } from '../../ui/model/context/context-editing-context';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 describe('context reducer', () => {
   const contextDefaultNamer = container.get(Tokens.DefaultNamer_Context);

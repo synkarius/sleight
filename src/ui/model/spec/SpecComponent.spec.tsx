@@ -24,7 +24,7 @@ import { spec04 } from '../../../test/resources/spec-04.json';
 import { variable01 } from '../../../test/resources/variable-01.json';
 import { variable02 } from '../../../test/resources/variable-02.json';
 import { castJsonForTest } from '../../../test/utils/import-test-json-util';
-import { container } from '../../../di/brandi-config';
+import { container } from '../../../di/config/brandi-config';
 
 let specIdsForCleanup: string[];
 

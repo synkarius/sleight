@@ -34,7 +34,7 @@ import { isBringAppAction } from '../../../data/model/action/bring-app/bring-app
 import { BringAppComponent } from './bring-app/BringAppComponent';
 import { isCallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { CallFunctionComponent } from './call-function/CallFunctionComponent';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;

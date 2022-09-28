@@ -8,7 +8,7 @@ import { ContextParentComponent } from './ContextParentComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { createContext } from '../../../data/model/context/context';
-import { container } from '../../../di/brandi-config';
+import { container } from '../../../di/config/brandi-config';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
 const ROLE_KEY = 'ROLE_KEY';

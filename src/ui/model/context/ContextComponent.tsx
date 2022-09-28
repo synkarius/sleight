@@ -18,7 +18,7 @@ import {
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 

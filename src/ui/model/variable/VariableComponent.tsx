@@ -29,7 +29,7 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
 

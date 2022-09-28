@@ -38,8 +38,8 @@ import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { Command } from '../../data/model/command/command';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 type ActionAndField = {
   actionId: string;

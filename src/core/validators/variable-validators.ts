@@ -23,8 +23,8 @@ import {
   Variable,
 } from '../../data/model/variable/variable';
 import { VariableDTO } from '../../data/model/variable/variable-dto';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 const nameTakenValidator = createNameTakenValidator<VariableDTO, Variable>(
   Field.VAR_NAME,

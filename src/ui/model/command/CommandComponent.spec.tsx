@@ -31,8 +31,8 @@ import {
 import { saveAction } from '../../../core/reducers/action-reducers';
 import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { VariableType } from '../../../data/model/variable/variable-types';
-import { container } from '../../../di/brandi-config';
-import { Tokens } from '../../../di/brandi-tokens';
+import { container } from '../../../di/config/brandi-config';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';

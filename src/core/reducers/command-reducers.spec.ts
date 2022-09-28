@@ -10,8 +10,8 @@ import {
   commandReactReducer,
   deleteCommand,
 } from './command-reducers';
-import { Tokens } from '../../di/brandi-tokens';
-import { container } from '../../di/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
 
 describe('command reducer', () => {
   const commandDefaultNamer = container.get(Tokens.DefaultNamer_Command);

@@ -1,5 +1,5 @@
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 import { castJsonForTest } from '../../../../test/utils/import-test-json-util';
 import { createSleightDataInternalFormat } from '../../../data-formats';
 import { Command, createCommand } from '../../../model/command/command';

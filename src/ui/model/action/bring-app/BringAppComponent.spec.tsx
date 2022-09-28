@@ -16,8 +16,8 @@ import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { createSelector } from '../../../../data/model/selector/selector-domain';
 import { saveSelector } from '../../../../core/reducers/selector-reducers';
 import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
 const VARIABLE_RADIO = 1;

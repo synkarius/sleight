@@ -13,8 +13,8 @@ import {
 } from '../../../../data/model/variable/variable';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 
 const TEXT_VARIABLE_NAME = 'asdf-text-var';
 const VARIABLE_RADIO = 1;

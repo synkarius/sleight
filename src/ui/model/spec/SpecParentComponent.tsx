@@ -15,7 +15,7 @@ import { SpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
 import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Field } from '../../../validation/validation-field';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 type SpecInitFunction = (specId?: string) => Spec;
 

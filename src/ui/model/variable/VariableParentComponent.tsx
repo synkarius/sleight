@@ -18,7 +18,7 @@ import {
 } from '../../../core/reducers/variable-reducers';
 import { VariableComponent } from './VariableComponent';
 import { Field } from '../../../validation/validation-field';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 type VariableInitFunction = (specId?: string) => Variable;
 

@@ -11,8 +11,8 @@ import {
   CommandReducerMoveAction,
   CommandReducerStringAction,
 } from '../../ui/model/command/command-editing-context';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 export type CommandsState = {
   readonly saved: Record<string, Command>;

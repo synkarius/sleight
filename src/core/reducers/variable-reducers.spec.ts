@@ -22,8 +22,8 @@ import {
   deleteVariable,
 } from './variable-reducers';
 import { VariableType } from '../../data/model/variable/variable-types';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 const VARIABLE_ID_1 = 'VARIABLE_ID_1';
 const VARIABLE_NAME_1 = 'VARIABLE_NAME_1';

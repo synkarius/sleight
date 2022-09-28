@@ -12,7 +12,7 @@ import {
 } from '../../../core/reducers/context-reducers';
 import { ContextComponent } from './ContextComponent';
 import { Field } from '../../../validation/validation-field';
-import { Tokens } from '../../../di/brandi-tokens';
+import { Tokens } from '../../../di/config/brandi-tokens';
 
 const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
   return (contextId?: string) => {

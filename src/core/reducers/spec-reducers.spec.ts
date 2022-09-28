@@ -11,8 +11,8 @@ import {
   specReactReducer,
   deleteSpec,
 } from './spec-reducers';
-import { container } from '../../di/brandi-config';
-import { Tokens } from '../../di/brandi-tokens';
+import { container } from '../../di/config/brandi-config';
+import { Tokens } from '../../di/config/brandi-tokens';
 
 const createTestSpecRedux = (from?: {
   id?: string;

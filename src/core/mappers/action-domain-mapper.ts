@@ -1,5 +1,5 @@
 import { Action } from '../../data/model/action/action';
-import { Tokens } from '../../di/brandi-tokens';
+import { Tokens } from '../../di/config/brandi-tokens';
 import { MissingDelegateError } from '../../error/missing-delegate-error';
 import { isDefined } from '../common/common-functions';
 import { ActionDomainMapperDelegate } from './action-mapper-delegates/action-domain-mapper-delegate';

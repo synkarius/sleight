@@ -1,5 +1,5 @@
-import { container } from '../../../../di/brandi-config';
-import { Tokens } from '../../../../di/brandi-tokens';
+import { container } from '../../../../di/config/brandi-config';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 import { createSleightDataInternalFormat } from '../../../data-formats';
 import { createPauseAction } from '../../../model/action/pause/pause';
 import { Command, createCommand } from '../../../model/command/command';

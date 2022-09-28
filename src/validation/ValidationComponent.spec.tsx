@@ -9,8 +9,8 @@ import { Field } from './validation-field';
 import { FieldValidator, ValidatorType } from './field-validator';
 import { Context } from '../data/model/context/context';
 import { alwaysTrue } from '../core/common/common-functions';
-import { Tokens } from '../di/brandi-tokens';
-import { container } from '../di/brandi-config';
+import { Tokens } from '../di/config/brandi-tokens';
+import { container } from '../di/config/brandi-config';
 
 let user: UserEvent;
 

@@ -1,60 +1,63 @@
-import { ActionDomainMapperDelegate } from '../core/mappers/action-mapper-delegates/action-domain-mapper-delegate';
+import { ActionDomainMapperDelegate } from '../../core/mappers/action-mapper-delegates/action-domain-mapper-delegate';
 import {
   ChoiceItemDomainMapper,
   ChoiceVariableDomainMapper,
-} from '../core/mappers/choice-variable-domain-mapper';
-import { DomainMapper } from '../core/mappers/mapper';
-import { SpecDomainMapper } from '../core/mappers/spec-domain-mapper';
-import { VariableDomainMapper } from '../core/mappers/variable-domain-mapper';
-import { Exporter } from '../data/exports/exporter';
-import { ImportDataMerger } from '../data/imports/import-data-merger';
-import { ElementEvaluator } from '../data/imports/model-update/evaluators/element-evaluator';
-import { Action } from '../data/model/action/action';
-import { Command } from '../data/model/command/command';
-import { Context } from '../data/model/context/context';
-import { Selector, SelectorItem } from '../data/model/selector/selector-domain';
+} from '../../core/mappers/choice-variable-domain-mapper';
+import { DomainMapper } from '../../core/mappers/mapper';
+import { SpecDomainMapper } from '../../core/mappers/spec-domain-mapper';
+import { VariableDomainMapper } from '../../core/mappers/variable-domain-mapper';
+import { Exporter } from '../../data/exports/exporter';
+import { ImportDataMerger } from '../../data/imports/import-data-merger';
+import { ElementEvaluator } from '../../data/imports/model-update/evaluators/element-evaluator';
+import { Action } from '../../data/model/action/action';
+import { Command } from '../../data/model/command/command';
+import { Context } from '../../data/model/context/context';
+import {
+  Selector,
+  SelectorItem,
+} from '../../data/model/selector/selector-domain';
 import {
   SelectorDTO,
   SelectorItemDTO,
-} from '../data/model/selector/selector-dto';
-import { Spec } from '../data/model/spec/spec-domain';
-import { SpecDTO } from '../data/model/spec/spec-dto';
+} from '../../data/model/selector/selector-dto';
+import { Spec } from '../../data/model/spec/spec-domain';
+import { SpecDTO } from '../../data/model/spec/spec-dto';
 import {
   RangeVariable,
   TextVariable,
   Variable,
-} from '../data/model/variable/variable';
+} from '../../data/model/variable/variable';
 import {
   RangeVariableDTO,
   TextVariableDTO,
   VariableDTO,
-} from '../data/model/variable/variable-dto';
-import { FieldValidator } from '../validation/field-validator';
-import { VariableExtractorDelegate } from '../validation/variable-extraction/variable-extractor-delegate';
+} from '../../data/model/variable/variable-dto';
+import { FieldValidator } from '../../validation/field-validator';
+import { VariableExtractorDelegate } from '../../validation/variable-extraction/variable-extractor-delegate';
 import { tag, token } from 'brandi';
-import { FormatMapper } from '../data/data-format-mapper';
-import { Deserializer } from '../data/imports/deserializer';
-import { SpecItemDomainMapper } from '../core/mappers/spec-item-domain-mapper';
-import { ImportsValidator } from '../data/imports/imports-validator';
-import { VariableExtractor } from '../validation/variable-extraction/variable-extractor';
-import { IdedAndActionTyped } from '../core/default-namers/action-default-namer';
-import { DefaultNamer } from '../core/default-namers/default-namer';
-import { Ided } from '../data/model/domain';
-import { IdedAndContextTyped } from '../core/default-namers/context-default-namer';
-import { IdedAndVariableTyped } from '../core/default-namers/variable-default-namer';
-import { Cleaner } from '../core/cleaners/cleaner';
-import { ImportsCleaner } from '../data/imports/imports-cleaner';
-import { IdRewriter } from '../data/imports/model-update/id-rewriter/id-rewriter';
+import { FormatMapper } from '../../data/data-format-mapper';
+import { Deserializer } from '../../data/imports/deserializer';
+import { SpecItemDomainMapper } from '../../core/mappers/spec-item-domain-mapper';
+import { ImportsValidator } from '../../data/imports/imports-validator';
+import { VariableExtractor } from '../../validation/variable-extraction/variable-extractor';
+import { IdedAndActionTyped } from '../../core/default-namers/action-default-namer';
+import { DefaultNamer } from '../../core/default-namers/default-namer';
+import { Ided } from '../../data/model/domain';
+import { IdedAndContextTyped } from '../../core/default-namers/context-default-namer';
+import { IdedAndVariableTyped } from '../../core/default-namers/variable-default-namer';
+import { Cleaner } from '../../core/cleaners/cleaner';
+import { ImportsCleaner } from '../../data/imports/imports-cleaner';
+import { IdRewriter } from '../../data/imports/model-update/id-rewriter/id-rewriter';
 import {
   ActionIdRewriterArray,
   ContextIdRewriterArray,
   SelectorIdRewriterArray,
   SpecIdRewriterArray,
   VariableIdRewriterArray,
-} from './di-collection-types';
-import { SleightDataIdsRewriter } from '../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
-import { SleightDataEvaluator } from '../data/imports/model-update/evaluators/sleight-data-evaluator';
-import { RoleKeyedDataUpdater } from '../data/imports/model-update/rolekeyed-data-updater';
+} from '../di-collection-types';
+import { SleightDataIdsRewriter } from '../../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
+import { SleightDataEvaluator } from '../../data/imports/model-update/evaluators/sleight-data-evaluator';
+import { RoleKeyedDataUpdater } from '../../data/imports/model-update/rolekeyed-data-updater';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
