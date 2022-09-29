@@ -5,6 +5,7 @@ import {
   saveContext,
   contextReactReducer,
   deleteContext,
+  setContexts,
 } from './context-reducers';
 import { ContextType } from '../../data/model/context/context-types';
 import { ContextReducerActionType } from '../../ui/model/context/context-editing-context';
@@ -173,5 +174,24 @@ describe('context reducer', () => {
       ...obj,
       locked: !obj.locked,
     });
+  });
+
+  it('should handle set', () => {
+    const obj1 = createContext();
+    const preReducerState: ContextsState = {
+      saved: { [obj1.id]: obj1 },
+    };
+
+    const obj2 = createContext();
+    const newReducerState: ContextsState = {
+      saved: { [obj2.id]: obj2 },
+    };
+
+    const actual = contextReduxReducer(
+      preReducerState,
+      setContexts(newReducerState.saved)
+    );
+
+    expect(actual).toEqual(newReducerState);
   });
 });

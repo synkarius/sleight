@@ -36,10 +36,14 @@ const contextsSlice = createSlice({
     deleteContext: (state, action: PayloadAction<string>) => {
       delete state.saved[action.payload];
     },
+    setContexts: (state, action: PayloadAction<Record<string, Context>>) => {
+      state.saved = action.payload;
+    },
   },
 });
 
-export const { saveContext, deleteContext } = contextsSlice.actions;
+export const { saveContext, deleteContext, setContexts } =
+  contextsSlice.actions;
 export const contextReduxReducer = contextsSlice.reducer;
 
 const changeEditingContextName = (

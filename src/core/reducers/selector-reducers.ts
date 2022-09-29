@@ -25,6 +25,12 @@ const selectorsSlice = createSlice({
       const selectorId = action.payload;
       delete state.saved[selectorId];
     },
+    setSelectors: (
+      state,
+      action: PayloadAction<Record<string, SelectorDTO>>
+    ) => {
+      state.saved = action.payload;
+    },
     createNewSelectorItem: (
       state,
       action: PayloadAction<CreateSelectorItemPayload>
@@ -77,6 +83,7 @@ const selectorsSlice = createSlice({
 export const {
   saveSelector,
   deleteSelector,
+  setSelectors,
   createNewSelectorItem,
   editSelectorItem,
   deleteSelectorItem,

@@ -1,11 +1,11 @@
 import { createSendKeyPressAction } from '../../data/model/action/send-key/send-key';
 import {
   ActionsState,
-  selectAction,
   saveAction,
   actionReduxReducer,
   actionReactReducer,
   deleteAction,
+  setActions,
 } from './action-reducers';
 import {
   createPauseAction,
@@ -23,7 +23,6 @@ describe('action reducer', () => {
 
   const initialState: ActionsState = {
     saved: {},
-    editingId: undefined,
   };
 
   it('should handle initial state', () => {
@@ -37,7 +36,6 @@ describe('action reducer', () => {
 
     const preReducerState: ActionsState = {
       saved: {},
-      editingId: undefined,
     };
 
     const expectedSaved: Record<string, Action> = {};
@@ -55,7 +53,6 @@ describe('action reducer', () => {
 
     const preReducerState: ActionsState = {
       saved: {},
-      editingId: undefined,
     };
 
     const expectedSaved: Record<string, Action> = {};
@@ -65,33 +62,11 @@ describe('action reducer', () => {
     expect(actual.saved).toEqual(expectedSaved);
   });
 
-  it('should handle select', () => {
-    const preReducerState: ActionsState = {
-      saved: {},
-      editingId: undefined,
-    };
-
-    const actual = actionReduxReducer(preReducerState, selectAction('asdf'));
-    expect(actual.editingId).toEqual('asdf');
-  });
-
-  it('should handle clear', () => {
-    const preReducerState: ActionsState = {
-      saved: {},
-      editingId: 'asdf',
-    };
-
-    const actual = actionReduxReducer(preReducerState, selectAction(undefined));
-
-    expect(actual.editingId).toBeUndefined();
-  });
-
   it('should handle delete', () => {
     const obj = createPauseAction();
 
     const preReducerState: ActionsState = {
       saved: { [obj.id]: obj },
-      editingId: undefined,
     };
 
     const actual = actionReduxReducer(preReducerState, deleteAction(obj.id));
@@ -192,5 +167,24 @@ describe('action reducer', () => {
       ...obj,
       locked: !obj.locked,
     });
+  });
+
+  it('should handle set', () => {
+    const obj1 = createPauseAction();
+    const preReducerState: ActionsState = {
+      saved: { [obj1.id]: obj1 },
+    };
+
+    const obj2 = createPauseAction();
+    const newReducerState: ActionsState = {
+      saved: { [obj2.id]: obj2 },
+    };
+
+    const actual = actionReduxReducer(
+      preReducerState,
+      setActions(newReducerState.saved)
+    );
+
+    expect(actual).toEqual(newReducerState);
   });
 });

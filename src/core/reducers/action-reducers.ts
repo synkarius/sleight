@@ -45,12 +45,10 @@ import { Tokens } from '../../di/config/brandi-tokens';
 
 export type ActionsState = {
   saved: Record<string, Action>;
-  editingId: string | undefined;
 };
 
 const initialState: ActionsState = {
   saved: {},
-  editingId: undefined,
 };
 
 const addDefaults = (action: Action): Action => {
@@ -65,19 +63,19 @@ const actionsSlice = createSlice({
   name: 'actions',
   initialState,
   reducers: {
-    selectAction: (state, action: PayloadAction<string | undefined>) => {
-      state.editingId = action.payload;
-    },
     saveAction: (state, action: PayloadAction<Action>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
     },
     deleteAction: (state, action: PayloadAction<string>) => {
       delete state.saved[action.payload];
     },
+    setActions: (state, action: PayloadAction<Record<string, Action>>) => {
+      state.saved = action.payload;
+    },
   },
 });
 
-export const { selectAction, saveAction, deleteAction } = actionsSlice.actions;
+export const { saveAction, deleteAction, setActions } = actionsSlice.actions;
 export const actionReduxReducer = actionsSlice.reducer;
 
 const toggleModifier = (

@@ -40,10 +40,14 @@ const commandsSlice = createSlice({
     deleteCommand: (state, action: PayloadAction<string>) => {
       delete state.saved[action.payload];
     },
+    setCommands: (state, action: PayloadAction<Record<string, Command>>) => {
+      state.saved = action.payload;
+    },
   },
 });
 
-export const { saveCommand, deleteCommand } = commandsSlice.actions;
+export const { saveCommand, deleteCommand, setCommands } =
+  commandsSlice.actions;
 export const commandReduxReducer = commandsSlice.reducer;
 
 const changeEditingCommandName = (

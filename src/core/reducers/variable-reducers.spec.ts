@@ -19,6 +19,7 @@ import {
   variableReduxReducer,
   variableReactReducer,
   deleteVariable,
+  setVariables,
 } from './variable-reducers';
 import { VariableType } from '../../data/model/variable/variable-types';
 import { container } from '../../di/config/brandi-config';
@@ -507,5 +508,24 @@ describe('variable reducer', () => {
       ...obj,
       locked: !obj.locked,
     });
+  });
+
+  it('should handle set', () => {
+    const obj1 = createTextVariable();
+    const preReducerState: VariablesState = {
+      saved: { [obj1.id]: obj1 },
+    };
+
+    const obj2 = createTextVariable();
+    const newReducerState: VariablesState = {
+      saved: { [obj2.id]: obj2 },
+    };
+
+    const actual = variableReduxReducer(
+      preReducerState,
+      setVariables(newReducerState.saved)
+    );
+
+    expect(actual).toEqual(newReducerState);
   });
 });

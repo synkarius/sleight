@@ -9,6 +9,7 @@ import {
   specReduxReducer,
   specReactReducer,
   deleteSpec,
+  setSpecs,
 } from './spec-reducers';
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
@@ -44,7 +45,6 @@ describe('spec reducer', () => {
   it('should handle initial state', () => {
     expect(specReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editingId: undefined,
     });
   });
 
@@ -418,5 +418,24 @@ describe('spec reducer', () => {
       ...obj,
       locked: !obj.locked,
     });
+  });
+
+  it('should handle set', () => {
+    const obj1 = createTestSpecRedux({ id: 'asdf-12304987' });
+    const preReducerState: SpecsState = {
+      saved: { [obj1.id]: obj1 },
+    };
+
+    const obj2 = createTestSpecRedux({ id: 'zxcv-394872' });
+    const newReducerState: SpecsState = {
+      saved: { [obj2.id]: obj2 },
+    };
+
+    const actual = specReduxReducer(
+      preReducerState,
+      setSpecs(newReducerState.saved)
+    );
+
+    expect(actual).toEqual(newReducerState);
   });
 });

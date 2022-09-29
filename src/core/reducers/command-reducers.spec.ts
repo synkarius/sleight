@@ -8,6 +8,7 @@ import {
   commandReduxReducer,
   commandReactReducer,
   deleteCommand,
+  setCommands,
 } from './command-reducers';
 import { Tokens } from '../../di/config/brandi-tokens';
 import { container } from '../../di/config/brandi-config';
@@ -18,7 +19,6 @@ describe('command reducer', () => {
   it('should handle initial state', () => {
     expect(commandReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editingId: undefined,
     });
   });
 
@@ -290,5 +290,24 @@ describe('command reducer', () => {
       ...obj,
       locked: !obj.locked,
     });
+  });
+
+  it('should handle set', () => {
+    const obj1 = createCommand();
+    const preReducerState: CommandsState = {
+      saved: { [obj1.id]: obj1 },
+    };
+
+    const obj2 = createCommand();
+    const newReducerState: CommandsState = {
+      saved: { [obj2.id]: obj2 },
+    };
+
+    const actual = commandReduxReducer(
+      preReducerState,
+      setCommands(newReducerState.saved)
+    );
+
+    expect(actual).toEqual(newReducerState);
   });
 });

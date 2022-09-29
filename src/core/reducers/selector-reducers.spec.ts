@@ -12,6 +12,7 @@ import {
   editSelectorItem,
   deleteSelectorItem,
   selectorReduxReducer,
+  setSelectors,
 } from './selector-reducers';
 
 describe('selector reducer', () => {
@@ -170,5 +171,24 @@ describe('selector reducer', () => {
     };
 
     expect(actual.saved).toEqual(expected);
+  });
+
+  it('should handle set', () => {
+    const obj1 = createSelector();
+    const preReducerState: SelectorsState = {
+      saved: { [obj1.id]: obj1 },
+    };
+
+    const obj2 = createSelector();
+    const newReducerState: SelectorsState = {
+      saved: { [obj2.id]: obj2 },
+    };
+
+    const actual = selectorReduxReducer(
+      preReducerState,
+      setSelectors(newReducerState.saved)
+    );
+
+    expect(actual).toEqual(newReducerState);
   });
 });

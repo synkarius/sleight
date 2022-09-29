@@ -57,10 +57,17 @@ const variablesSlice = createSlice({
     deleteVariable: (state, action: PayloadAction<string>) => {
       delete state.saved[action.payload];
     },
+    setVariables: (
+      state,
+      action: PayloadAction<Record<string, VariableDTO>>
+    ) => {
+      state.saved = action.payload;
+    },
   },
 });
 
-export const { saveVariable, deleteVariable } = variablesSlice.actions;
+export const { saveVariable, deleteVariable, setVariables } =
+  variablesSlice.actions;
 export const variableReduxReducer = variablesSlice.reducer;
 
 const copyVariable = (
