@@ -36,14 +36,40 @@ export class CopyingImportDataMerger implements ImportDataMerger {
       baseCopy,
       evaluation.override
     );
-    // TODO: merge the results together, do the DI
 
     // the result here should be base with updated overlaid and idsRewritten added
     // -- spread base over rewritten (which SHOULD just be additive), then updated over base
-
     return {
-      ...baseCopy,
-      ...deserializedCopy,
+      actions: {
+        ...base.actions,
+        ...updated.actions,
+        ...idsRewrittenData.actions,
+      },
+      commands: {
+        ...base.commands,
+        ...updated.commands,
+        ...idsRewrittenData.commands,
+      },
+      contexts: {
+        ...base.contexts,
+        ...updated.contexts,
+        ...idsRewrittenData.contexts,
+      },
+      selectors: {
+        ...base.selectors,
+        ...updated.selectors,
+        ...idsRewrittenData.selectors,
+      },
+      specs: {
+        ...base.specs,
+        ...updated.specs,
+        ...idsRewrittenData.specs,
+      },
+      variables: {
+        ...base.variables,
+        ...updated.variables,
+        ...idsRewrittenData.variables,
+      },
     };
   }
 }

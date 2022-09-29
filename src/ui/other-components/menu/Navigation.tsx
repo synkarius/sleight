@@ -48,9 +48,9 @@ export const Navigation: React.FC<{}> = () => {
       const deserializationResult = deserializer.deserialize(fileContents);
       if (deserializationResult.type === DeserializationResultType.VALID) {
         // TODO: version adapters
-        const merged = dataMerger.merge(allData, deserializationResult.data);
-        const cleaned = cleaner.cleanData(merged);
-        const validationResult = validator.validateImportedData(cleaned);
+        const cleaned = cleaner.cleanData(deserializationResult.data);
+        const merged = dataMerger.merge(allData, cleaned);
+        const validationResult = validator.validateImportedData(merged);
         if (validationResult.status === ImportValidationResultType.VALID) {
           // TODO: add it to redux
         }
