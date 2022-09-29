@@ -1,7 +1,6 @@
 import { Context, createContext } from '../../data/model/context/context';
 import {
   ContextsState,
-  selectContext,
   contextReduxReducer,
   saveContext,
   contextReactReducer,
@@ -27,7 +26,6 @@ describe('context reducer', () => {
 
     const prereducerState: ContextsState = {
       saved: {},
-      editingId: undefined,
     };
 
     const actual = contextReduxReducer(prereducerState, saveContext(obj));
@@ -51,7 +49,6 @@ describe('context reducer', () => {
 
     const prereducerState: ContextsState = {
       saved: {},
-      editingId: undefined,
     };
 
     const actual = contextReduxReducer(prereducerState, saveContext(obj));
@@ -70,35 +67,11 @@ describe('context reducer', () => {
     expect(actual.saved).toEqual(expected);
   });
 
-  it('should handle select', () => {
-    const prereducerState: ContextsState = {
-      saved: {},
-      editingId: undefined,
-    };
-    const actual = contextReduxReducer(prereducerState, selectContext('asdf'));
-
-    expect(actual).toEqual({
-      saved: {},
-      editingId: 'asdf',
-    });
-  });
-
-  it('should handle clear', () => {
-    const prereducerState: ContextsState = {
-      saved: {},
-      editingId: 'asdf',
-    };
-    const actual = contextReduxReducer(prereducerState, selectContext());
-
-    expect(actual).toEqual({ saved: {}, editingId: undefined });
-  });
-
   it('should handle delete', () => {
     const obj = createContext();
 
     const preReducerState: ContextsState = {
       saved: { [obj.id]: obj },
-      editingId: undefined,
     };
 
     const actual = contextReduxReducer(preReducerState, deleteContext(obj.id));

@@ -12,10 +12,11 @@ import { SpecComponent } from './SpecComponent';
 import { SelectorDTO } from '../../../data/model/selector/selector-dto';
 import { InjectionContext } from '../../../di/injector-context';
 import { SpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 type SpecInitFunction = (specId?: string) => Spec;
 
@@ -37,6 +38,7 @@ const getSpecInitFunction = (
 
 export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const specs = useAppSelector((state) => state.spec.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
   const container = useContext(InjectionContext);
@@ -53,7 +55,7 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
 
   const handleDelete = () => {
     reduxDispatch(deleteSpec(editing.id));
-    reduxDispatch(setEditorFocus());
+    navigate(EMPTY_PATH);
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Spec);

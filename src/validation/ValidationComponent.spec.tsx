@@ -11,6 +11,7 @@ import { Context } from '../data/model/context/context';
 import { alwaysTrue } from '../core/common/common-functions';
 import { Tokens } from '../di/config/brandi-tokens';
 import { container } from '../di/config/brandi-config';
+import { BrowserRouter } from 'react-router-dom';
 
 let user: UserEvent;
 
@@ -37,7 +38,8 @@ beforeAll(() => {
       <InjectionContext.Provider value={container}>
         <ContextParentComponent />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 });
 

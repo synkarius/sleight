@@ -16,12 +16,10 @@ import { Tokens } from '../../di/config/brandi-tokens';
 
 export type CommandsState = {
   readonly saved: Record<string, Command>;
-  readonly editingId?: string;
 };
 
 const initialState: CommandsState = {
   saved: {},
-  editingId: undefined,
 };
 
 const addDefaults = (command: Command): Command => {
@@ -36,9 +34,6 @@ const commandsSlice = createSlice({
   name: 'commands',
   initialState,
   reducers: {
-    selectCommand: (state, action: PayloadAction<string | undefined>) => {
-      state.editingId = action.payload;
-    },
     saveCommand: (state, action: PayloadAction<Command>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
     },
@@ -48,8 +43,7 @@ const commandsSlice = createSlice({
   },
 });
 
-export const { selectCommand, saveCommand, deleteCommand } =
-  commandsSlice.actions;
+export const { saveCommand, deleteCommand } = commandsSlice.actions;
 export const commandReduxReducer = commandsSlice.reducer;
 
 const changeEditingCommandName = (

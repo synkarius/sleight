@@ -33,6 +33,7 @@ import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 const ACTION_NO_VAR_NAME = 'asdf-action-1';
 const ACTION_WITH_VAR_NAME = 'asdf-action-2';
@@ -126,7 +127,8 @@ beforeEach(async () => {
       <InjectionContext.Provider value={container}>
         <CommandParentComponent />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 });
 

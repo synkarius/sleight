@@ -1,37 +1,112 @@
 import React from 'react';
-import { useAppSelector } from '../../../../app/hooks';
+import { Route, Routes } from 'react-router-dom';
 import { ElementType } from '../../../../data/model/element-types';
 import { ActionParentComponent } from '../../../model/action/ActionParentComponent';
 import { CommandParentComponent } from '../../../model/command/CommandParentComponent';
 import { ContextParentComponent } from '../../../model/context/ContextParentComponent';
 import { SpecParentComponent } from '../../../model/spec/SpecParentComponent';
 import { VariableParentComponent } from '../../../model/variable/VariableParentComponent';
+import {
+  getEditorCreatePath,
+  getEditorEditPath,
+} from '../../../navigation/router-fns';
+import { RouterV6WorkaroundComponent } from './RouterV6WorkaroundComponent';
 
 export const EditorComponent: React.FC<{}> = () => {
-  const elementType = useAppSelector((state) => state.focus.elementType);
-  const actionId = useAppSelector((state) => state.action.editingId);
-  const commandId = useAppSelector((state) => state.command.editingId);
-  const contextId = useAppSelector((state) => state.context.editingId);
-  const specId = useAppSelector((state) => state.spec.editingId);
-  const variableId = useAppSelector((state) => state.variable.editingId);
-
   return (
-    <>
-      {elementType === ElementType.Enum.ACTION && (
-        <ActionParentComponent actionId={actionId} key={actionId} />
-      )}
-      {elementType === ElementType.Enum.COMMAND && (
-        <CommandParentComponent commandId={commandId} key={commandId} />
-      )}
-      {elementType === ElementType.Enum.CONTEXT && (
-        <ContextParentComponent contextId={contextId} key={contextId} />
-      )}
-      {elementType === ElementType.Enum.SPEC && (
-        <SpecParentComponent specId={specId} key={specId} />
-      )}
-      {elementType === ElementType.Enum.VARIABLE && (
-        <VariableParentComponent variableId={variableId} key={variableId} />
-      )}
-    </>
+    <Routes>
+      <Route
+        path={getEditorCreatePath(ElementType.Enum.ACTION)}
+        element={<ActionParentComponent actionId={undefined} key={undefined} />}
+      />
+      <Route
+        path={getEditorEditPath(ElementType.Enum.ACTION)}
+        element={
+          <RouterV6WorkaroundComponent
+            paramsFn={(params) => {
+              const actionId = params['actionId'];
+              return (
+                <ActionParentComponent actionId={actionId} key={actionId} />
+              );
+            }}
+          />
+        }
+      />
+      <Route
+        path={getEditorCreatePath(ElementType.Enum.COMMAND)}
+        element={
+          <CommandParentComponent commandId={undefined} key={undefined} />
+        }
+      />
+      <Route
+        path={getEditorEditPath(ElementType.Enum.COMMAND)}
+        element={
+          <RouterV6WorkaroundComponent
+            paramsFn={(params) => {
+              const commandId = params['commandId'];
+              return (
+                <CommandParentComponent commandId={commandId} key={commandId} />
+              );
+            }}
+          />
+        }
+      />
+      <Route
+        path={getEditorCreatePath(ElementType.Enum.CONTEXT)}
+        element={
+          <ContextParentComponent contextId={undefined} key={undefined} />
+        }
+      />
+      <Route
+        path={getEditorEditPath(ElementType.Enum.CONTEXT)}
+        element={
+          <RouterV6WorkaroundComponent
+            paramsFn={(params) => {
+              const contextId = params['contextId'];
+              return (
+                <ContextParentComponent contextId={contextId} key={contextId} />
+              );
+            }}
+          />
+        }
+      />
+      <Route
+        path={getEditorCreatePath(ElementType.Enum.SPEC)}
+        element={<SpecParentComponent specId={undefined} key={undefined} />}
+      />
+      <Route
+        path={getEditorEditPath(ElementType.Enum.SPEC)}
+        element={
+          <RouterV6WorkaroundComponent
+            paramsFn={(params) => {
+              const specId = params['specId'];
+              return <SpecParentComponent specId={specId} key={specId} />;
+            }}
+          />
+        }
+      />
+      <Route
+        path={getEditorCreatePath(ElementType.Enum.VARIABLE)}
+        element={
+          <VariableParentComponent variableId={undefined} key={undefined} />
+        }
+      />
+      <Route
+        path={getEditorEditPath(ElementType.Enum.VARIABLE)}
+        element={
+          <RouterV6WorkaroundComponent
+            paramsFn={(params) => {
+              const variableId = params['variableId'];
+              return (
+                <VariableParentComponent
+                  variableId={variableId}
+                  key={variableId}
+                />
+              );
+            }}
+          />
+        }
+      />
+    </Routes>
   );
 };

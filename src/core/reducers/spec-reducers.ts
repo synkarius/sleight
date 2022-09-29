@@ -25,12 +25,10 @@ import { Tokens } from '../../di/config/brandi-tokens';
 
 export type SpecsState = {
   readonly saved: Record<string, SpecDTO>;
-  readonly editingId?: string;
 };
 
 const initialState: SpecsState = {
   saved: {},
-  editingId: undefined,
 };
 
 const specItemIdMatches: (
@@ -50,9 +48,6 @@ const specsSlice = createSlice({
   name: 'specs',
   initialState,
   reducers: {
-    selectSpec: (state, action: PayloadAction<string | undefined>) => {
-      state.editingId = action.payload;
-    },
     saveSpec: (state, action: PayloadAction<SpecDTO>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
     },
@@ -62,7 +57,7 @@ const specsSlice = createSlice({
   },
 });
 
-export const { selectSpec, saveSpec, deleteSpec } = specsSlice.actions;
+export const { saveSpec, deleteSpec } = specsSlice.actions;
 export const specReduxReducer = specsSlice.reducer;
 
 const changeEditingSpecName = (

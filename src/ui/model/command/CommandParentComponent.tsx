@@ -2,7 +2,6 @@ import React, { useContext, useReducer, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Command, createCommand } from '../../../data/model/command/command';
 import { CommandEditingContext } from './command-editing-context';
@@ -13,6 +12,8 @@ import {
 import { CommandComponent } from './CommandComponent';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
   return (commandId?: string) => {
@@ -33,12 +34,13 @@ export const CommandParentComponent: React.FC<{ commandId?: string }> = (
     init(savedMap)
   );
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const handleDelete = () => {
     reduxDispatch(deleteCommand(editing.id));
-    reduxDispatch(setEditorFocus());
+    navigate(EMPTY_PATH);
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Command);

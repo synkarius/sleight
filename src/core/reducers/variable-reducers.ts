@@ -33,12 +33,10 @@ import { Tokens } from '../../di/config/brandi-tokens';
 
 export type VariablesState = {
   readonly saved: Record<string, VariableDTO>;
-  readonly editingId?: string;
 };
 
 const initialState: VariablesState = {
   saved: {},
-  editingId: undefined,
 };
 
 const addDefaults = (variable: VariableDTO): VariableDTO => {
@@ -53,9 +51,6 @@ const variablesSlice = createSlice({
   name: 'variables',
   initialState,
   reducers: {
-    selectVariable: (state, action: PayloadAction<string | undefined>) => {
-      state.editingId = action.payload;
-    },
     saveVariable: (state, action: PayloadAction<VariableDTO>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
     },
@@ -65,8 +60,7 @@ const variablesSlice = createSlice({
   },
 });
 
-export const { saveVariable, selectVariable, deleteVariable } =
-  variablesSlice.actions;
+export const { saveVariable, deleteVariable } = variablesSlice.actions;
 export const variableReduxReducer = variablesSlice.reducer;
 
 const copyVariable = (

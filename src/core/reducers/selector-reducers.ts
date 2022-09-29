@@ -8,12 +8,10 @@ import { SelectorDTO } from '../../data/model/selector/selector-dto';
 
 export type SelectorsState = {
   readonly saved: Record<string, SelectorDTO>;
-  readonly editingId?: string;
 };
 
 const initialState: SelectorsState = {
   saved: {},
-  editingId: undefined,
 };
 
 const selectorsSlice = createSlice({

@@ -11,9 +11,10 @@ import {
 } from '../../../core/reducers/action-reducers';
 import { ActionComponent } from './ActionComponent';
 import { createSendKeyPressAction } from '../../../data/model/action/send-key/send-key';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const init = (
   savedMap: Record<string, Action>
@@ -30,6 +31,7 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
   props
 ) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const savedMap = useAppSelector((state) => state.action.saved);
   const [editing, localDispatch] = useReducer(
     actionReactReducer,
@@ -41,7 +43,8 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
 
   const handleDelete = () => {
     reduxDispatch(deleteAction(editing.id));
-    reduxDispatch(setEditorFocus());
+    // reduxDispatch(setEditorFocus());
+    navigate(EMPTY_PATH);
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Action);

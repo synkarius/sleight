@@ -5,7 +5,6 @@ import { SpecReducerActionType } from '../../ui/model/spec/spec-editing-context'
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import {
   SpecsState,
-  selectSpec,
   saveSpec,
   specReduxReducer,
   specReactReducer,
@@ -59,7 +58,6 @@ describe('spec reducer', () => {
 
     const prereducerState: SpecsState = {
       saved: {},
-      editingId: undefined,
     };
     const actual = specReduxReducer(prereducerState, saveSpec(obj));
 
@@ -84,7 +82,6 @@ describe('spec reducer', () => {
 
     const prereducerState: SpecsState = {
       saved: {},
-      editingId: undefined,
     };
     const actual = specReduxReducer(prereducerState, saveSpec(obj));
 
@@ -99,36 +96,12 @@ describe('spec reducer', () => {
     expect(actual.saved).toEqual(expected);
   });
 
-  it('should handle select', () => {
-    const obj = createTestSpecRedux({
-      id: 'some-id',
-    });
-    const prereducerState: SpecsState = {
-      saved: {},
-      editingId: undefined,
-    };
-
-    const actual = specReduxReducer(prereducerState, selectSpec(obj.id));
-    expect(actual).toEqual({ saved: {}, editingId: obj.id });
-  });
-
-  it('should handle clear', () => {
-    const prereducerState: SpecsState = {
-      saved: {},
-      editingId: 'asdf-id',
-    };
-    const actual = specReduxReducer(prereducerState, selectSpec(undefined));
-
-    expect(actual.editingId).toBeUndefined();
-  });
-
   it('should handle delete', () => {
     const obj = createSpec();
     const dto = specMapper.mapFromDomain(obj);
 
     const preReducerState: SpecsState = {
       saved: { [dto.id]: dto },
-      editingId: undefined,
     };
 
     const actual = specReduxReducer(preReducerState, deleteSpec(obj.id));

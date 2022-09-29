@@ -12,7 +12,6 @@ import {
   ActionEditingContext,
   ActionReducerActionType,
 } from './action-editing-context';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { Field } from '../../../validation/validation-field';
 import { Action } from '../../../data/model/action/action';
 import { isMouseAction } from '../../../data/model/action/mouse/mouse';
@@ -35,12 +34,15 @@ import { BringAppComponent } from './bring-app/BringAppComponent';
 import { isCallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { CallFunctionComponent } from './call-function/CallFunctionComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
 
 export const ActionComponent: React.FC<{ action: Action }> = (props) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
   const container = useContext(InjectionContext);
@@ -84,7 +86,8 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveAction(props.action));
-      reduxDispatch(setEditorFocus());
+      navigate(EMPTY_PATH);
+      // reduxDispatch(setEditorFocus());
     }
   };
 
@@ -179,7 +182,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        onClick={() => navigate(EMPTY_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

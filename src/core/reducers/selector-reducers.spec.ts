@@ -17,12 +17,10 @@ import {
 describe('selector reducer', () => {
   const initialState: SelectorsState = {
     saved: {},
-    editingId: undefined,
   };
   it('should handle initial state', () => {
     expect(selectorReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editingId: undefined,
     });
   });
 

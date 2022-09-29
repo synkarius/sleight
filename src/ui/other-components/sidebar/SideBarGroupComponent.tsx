@@ -1,7 +1,10 @@
 import React from 'react';
 import { Accordion, ListGroup } from 'react-bootstrap';
-import { useAppDispatch } from '../../../app/hooks';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
+import { useNavigate } from 'react-router-dom';
+import {
+  getEditorCreatePath,
+  getEditorEditPath,
+} from '../../navigation/router-fns';
 import { SidebarSection } from './sidebar';
 
 export const SideBarGroupComponent: React.FC<{
@@ -9,33 +12,28 @@ export const SideBarGroupComponent: React.FC<{
   group: SidebarSection;
   eventKey: string;
 }> = (props) => {
-  const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const createNewItem = () => {
-    props.group.createFn();
-    reduxDispatch(setEditorFocus(props.group.type));
+    navigate(getEditorCreatePath(props.group.type));
   };
-  const selectItem = (itemId: string) => {
-    props.group.selectFn(itemId);
-    reduxDispatch(setEditorFocus(props.group.type));
+  const selectItem = (elementId: string) => {
+    navigate(getEditorEditPath(props.group.type, elementId));
   };
 
   return (
     <Accordion.Item eventKey={props.eventKey}>
       <Accordion.Header>{props.group.type}s</Accordion.Header>
       <Accordion.Body className="px-0">
-        <ListGroup
-          defaultActiveKey={'#create-new-' + props.group.type}
-          variant="flush"
-        >
+        <ListGroup defaultActiveKey={props.group.type} variant="flush">
           <ListGroup.Item
             action
-            href={'#create-new-' + props.group.type}
+            eventKey={props.group.type}
             onClick={createNewItem}
           >
             Create New {props.group.type}
           </ListGroup.Item>
-          {props.group.items.map((item) => (
+          {props.group.elements.map((item) => (
             <ListGroup.Item
               key={item.id}
               action

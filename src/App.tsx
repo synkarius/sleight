@@ -1,27 +1,25 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
 import { Navigation } from './ui/other-components/menu/Navigation';
-import { SidebarComponent } from './ui/other-components/sidebar/SidebarComponent';
-import { Col, Row } from 'react-bootstrap';
-import { EditorComponent } from './ui/other-components/menu/editor/EditorComponent';
 import { InjectionContext } from './di/injector-context';
 import { container } from './di/config/brandi-config';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { EditorViewComponent } from './ui/other-components/views/EditorViewComponent';
 
-function App() {
+const App: React.FC<{}> = () => {
   return (
-    <div>
-      <InjectionContext.Provider value={container}>
-        <Navigation />
-        <Row>
-          <Col sm="4">
-            <SidebarComponent />
-          </Col>
-          <Col sm="8">
-            <EditorComponent />
-          </Col>
-        </Row>
-      </InjectionContext.Provider>
-    </div>
+    <InjectionContext.Provider value={container}>
+      <Navigation />
+      <BrowserRouter>
+        <Routes>
+          {/* TODO: get rid of this "/*" path when the other 
+          views get added and the wizard is default */}
+          <Route path="/*" element={<EditorViewComponent />} />
+          <Route path="editor/*" element={<EditorViewComponent />} />
+        </Routes>
+      </BrowserRouter>
+    </InjectionContext.Provider>
   );
-}
+};
 
 export default App;

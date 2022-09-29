@@ -20,7 +20,6 @@ import {
   VariableReducerActionType,
 } from './variable-editing-context';
 import { ValidationContext } from '../../../validation/validation-context';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { saveSelector } from '../../../core/reducers/selector-reducers';
 import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
@@ -30,11 +29,14 @@ import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
 
 export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(VariableEditingContext);
   const container = useContext(InjectionContext);
@@ -104,7 +106,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       }
       const variableDTO = variableMapper.mapFromDomain(props.variable);
       reduxDispatch(saveVariable(variableDTO));
-      reduxDispatch(setEditorFocus());
+      navigate(EMPTY_PATH);
     }
   };
 
@@ -186,7 +188,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={() => reduxDispatch(setEditorFocus())}
+        onClick={() => navigate(EMPTY_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

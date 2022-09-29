@@ -15,7 +15,6 @@ import {
   SpecEditingContext,
   SpecReducerActionType,
 } from './spec-editing-context';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { InjectionContext } from '../../../di/injector-context';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
@@ -23,11 +22,14 @@ import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
 export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
   const container = useContext(InjectionContext);
@@ -83,7 +85,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       });
       const specRedux = specMapper.mapFromDomain(props.spec);
       reduxDispatch(saveSpec(specRedux));
-      reduxDispatch(setEditorFocus());
+      navigate(EMPTY_PATH);
     }
   };
 
@@ -172,7 +174,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           </Button>
         )}
         <Button
-          onClick={(_e) => reduxDispatch(setEditorFocus())}
+          onClick={(_e) => navigate(EMPTY_PATH)}
           className="me-3"
           variant="warning"
           size="lg"

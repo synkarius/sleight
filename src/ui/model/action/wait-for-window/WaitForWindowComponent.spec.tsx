@@ -19,6 +19,7 @@ import { createSelector } from '../../../../data/model/selector/selector-domain'
 import { saveSelector } from '../../../../core/reducers/selector-reducers';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -55,7 +56,8 @@ beforeEach(async () => {
       <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
     name: Field[Field.AC_TYPE],

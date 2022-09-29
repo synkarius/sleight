@@ -3,7 +3,6 @@ import { Button, Col, FormControl, FormText } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { VerticalMoveableComponent } from '../../other-components/VerticalMoveableComponent';
@@ -23,6 +22,8 @@ import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
@@ -30,6 +31,7 @@ const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
 export const CommandComponent: React.FC<{ command: Command }> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(CommandEditingContext);
   const container = useContext(InjectionContext);
@@ -72,7 +74,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveCommand(props.command));
-      reduxDispatch(setEditorFocus());
+      navigate(EMPTY_PATH);
     }
   };
   const fullErrorResults = validationContext.getErrorResults();
@@ -209,7 +211,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        onClick={(_e) => navigate(EMPTY_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

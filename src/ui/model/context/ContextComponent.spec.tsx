@@ -9,6 +9,7 @@ import { InjectionContext } from '../../../di/injector-context';
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { createContext } from '../../../data/model/context/context';
 import { container } from '../../../di/config/brandi-config';
+import { BrowserRouter } from 'react-router-dom';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
 const ROLE_KEY = 'ROLE_KEY';
@@ -32,7 +33,8 @@ beforeEach(async () => {
       <InjectionContext.Provider value={container}>
         <ContextParentComponent />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 });
 

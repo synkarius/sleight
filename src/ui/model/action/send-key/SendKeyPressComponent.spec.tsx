@@ -13,6 +13,7 @@ import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 const VARIABLE_NAME = 'asdf-range-var';
 const VARIABLE_RADIO = 1;
@@ -42,7 +43,8 @@ beforeEach(async () => {
       <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 });
 

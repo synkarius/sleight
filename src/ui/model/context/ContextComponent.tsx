@@ -6,7 +6,6 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { ElementType } from '../../../data/model/element-types';
@@ -19,11 +18,14 @@ import { saveContext } from '../../../core/reducers/context-reducers';
 import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
 export const ContextComponent: React.FC<{ context: Context }> = (props) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ContextEditingContext);
   const container = useContext(InjectionContext);
@@ -75,7 +77,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     const isValid = validationContext.validateForSave();
     if (isValid) {
       reduxDispatch(saveContext(props.context));
-      reduxDispatch(setEditorFocus());
+      navigate(EMPTY_PATH);
     }
   };
 
@@ -164,7 +166,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => reduxDispatch(setEditorFocus())}
+        onClick={(_e) => navigate(EMPTY_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

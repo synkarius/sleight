@@ -827,7 +827,7 @@ const getElementSelectButton = (
   elementType: ElementType.Type,
   savedName: string
 ): HTMLElement => {
-  const createButton = screen.getByRole<HTMLButtonElement>('link', {
+  const createButton = screen.getByRole<HTMLButtonElement>('button', {
     name: 'Create New ' + elementType,
   });
   const section = createButton.parentElement as HTMLElement;
@@ -841,7 +841,7 @@ const queryElementSelectButton = (
   elementType: ElementType.Type,
   savedName: string
 ) => {
-  const createButton = screen.getByRole<HTMLButtonElement>('link', {
+  const createButton = screen.getByRole<HTMLButtonElement>('button', {
     name: 'Create New ' + elementType,
   });
   const section = createButton.parentElement as HTMLElement;

@@ -18,6 +18,7 @@ import {
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
@@ -267,6 +268,7 @@ const doRender = (variableId?: string) => {
       <InjectionContext.Provider value={container}>
         <VariableParentComponent variableId={variableId} />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 };

@@ -2,7 +2,6 @@ import React, { useContext, useReducer, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { InjectionContext } from '../../../di/injector-context';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
-import { setEditorFocus } from '../../other-components/menu/editor/editor-focus-reducers';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { SelectorDTO } from '../../../data/model/selector/selector-dto';
 import {
@@ -19,6 +18,8 @@ import {
 import { VariableComponent } from './VariableComponent';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useNavigate } from 'react-router-dom';
+import { EMPTY_PATH } from '../../../core/common/consts';
 
 type VariableInitFunction = (specId?: string) => Variable;
 
@@ -42,6 +43,7 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
   props
 ) => {
   const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
   const variables = useAppSelector((state) => state.variable.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
   const container = useContext(InjectionContext);
@@ -58,7 +60,7 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
 
   const handleDelete = () => {
     reduxDispatch(deleteVariable(editing.id));
-    reduxDispatch(setEditorFocus());
+    navigate(EMPTY_PATH);
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Variable);

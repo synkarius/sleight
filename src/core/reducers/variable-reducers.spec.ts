@@ -16,7 +16,6 @@ import { VariableReducerActionType } from '../../ui/model/variable/variable-edit
 import {
   VariablesState,
   saveVariable,
-  selectVariable,
   variableReduxReducer,
   variableReactReducer,
   deleteVariable,
@@ -45,7 +44,6 @@ describe('variable reducer', () => {
 
   const initialState: VariablesState = {
     saved: {},
-    editingId: undefined,
   };
 
   it('should handle initial state', () => {
@@ -83,29 +81,11 @@ describe('variable reducer', () => {
     expect(actual.saved).toEqual(expected);
   });
 
-  it('should handle select', () => {
-    const prereducerState = { saved: {}, editingId: undefined };
-
-    const actual = variableReduxReducer(
-      prereducerState,
-      selectVariable(VARIABLE_ID_1)
-    );
-    expect(actual.editingId).toEqual(VARIABLE_ID_1);
-  });
-
-  it('should handle clear', () => {
-    const prereducerState = { saved: {}, editingId: VARIABLE_ID_1 };
-
-    const actual = variableReduxReducer(prereducerState, selectVariable());
-    expect(actual.editingId).toBeUndefined();
-  });
-
   it('should handle delete', () => {
     const obj = createTextVariable();
 
     const preReducerState: VariablesState = {
       saved: { [obj.id]: obj },
-      editingId: undefined,
     };
 
     const actual = variableReduxReducer(

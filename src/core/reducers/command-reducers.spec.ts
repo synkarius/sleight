@@ -4,7 +4,6 @@ import { createCommand, Command } from '../../data/model/command/command';
 import { CommandReducerActionType } from '../../ui/model/command/command-editing-context';
 import {
   CommandsState,
-  selectCommand,
   saveCommand,
   commandReduxReducer,
   commandReactReducer,
@@ -28,7 +27,6 @@ describe('command reducer', () => {
 
     const initialState: CommandsState = {
       saved: {},
-      editingId: undefined,
     };
 
     const actual = commandReduxReducer(initialState, saveCommand(obj));
@@ -47,7 +45,6 @@ describe('command reducer', () => {
 
     const initialState: CommandsState = {
       saved: {},
-      editingId: undefined,
     };
 
     const actual = commandReduxReducer(initialState, saveCommand(obj));
@@ -58,38 +55,11 @@ describe('command reducer', () => {
     expect(actual.saved).toEqual(expected);
   });
 
-  it('should handle select', () => {
-    const initialState: CommandsState = {
-      saved: {},
-      editingId: undefined,
-    };
-    const actual = commandReduxReducer(initialState, selectCommand('asdf'));
-
-    expect(actual).toEqual({
-      saved: {},
-      editingId: 'asdf',
-    });
-  });
-
-  it('should handle clear', () => {
-    const initialState: CommandsState = {
-      saved: {},
-      editingId: 'asdf',
-    };
-    const actual = commandReduxReducer(initialState, selectCommand());
-
-    expect(actual).toEqual({
-      saved: {},
-      editingId: undefined,
-    });
-  });
-
   it('should handle delete', () => {
     const obj = createCommand();
 
     const preReducerState: CommandsState = {
       saved: { [obj.id]: obj },
-      editingId: undefined,
     };
 
     const actual = commandReduxReducer(preReducerState, deleteCommand(obj.id));

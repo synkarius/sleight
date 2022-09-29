@@ -15,6 +15,7 @@ import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 const TEXT_VARIABLE_NAME = 'asdf-text-var';
 const VARIABLE_RADIO = 1;
@@ -41,7 +42,8 @@ beforeEach(async () => {
       <InjectionContext.Provider value={container}>
         <ActionParentComponent />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
     name: Field[Field.AC_TYPE],

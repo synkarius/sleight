@@ -25,6 +25,7 @@ import { variable01 } from '../../../test/resources/variable-01.json';
 import { variable02 } from '../../../test/resources/variable-02.json';
 import { castJsonForTest } from '../../../test/utils/import-test-json-util';
 import { container } from '../../../di/config/brandi-config';
+import { BrowserRouter } from 'react-router-dom';
 
 let specIdsForCleanup: string[];
 
@@ -79,7 +80,8 @@ const doRender = (specId?: string) => {
       <InjectionContext.Provider value={container}>
         <SpecParentComponent specId={specId} />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 };
 

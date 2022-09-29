@@ -20,6 +20,7 @@ import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { saveAction } from '../../../core/reducers/action-reducers';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 const SAVE = 'Save';
 const VARIABLE_1_ID = 'VARIABLE_1_ID';
@@ -59,8 +60,6 @@ beforeAll(() => {
   store.dispatch(saveAction(action));
   user = userEvent.setup();
 });
-
-beforeEach(async () => {});
 
 describe('variable component tests', () => {
   it('should have a placeholder name', () => {
@@ -185,6 +184,7 @@ const doRender = (variableId?: string) => {
       <InjectionContext.Provider value={container}>
         <VariableParentComponent variableId={variableId} />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 };

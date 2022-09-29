@@ -33,6 +33,7 @@ import { saveCommand } from '../../../core/reducers/command-reducers';
 import { LIST } from '../../../core/common/accessibility-roles';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { BrowserRouter } from 'react-router-dom';
 
 const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
 const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';
@@ -153,7 +154,8 @@ const doRender = (actionId?: string) => {
       <InjectionContext.Provider value={container}>
         <ActionParentComponent actionId={actionId} />
       </InjectionContext.Provider>
-    </Provider>
+    </Provider>,
+    { wrapper: BrowserRouter }
   );
 };
 

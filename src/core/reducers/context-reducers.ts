@@ -12,12 +12,10 @@ import { Tokens } from '../../di/config/brandi-tokens';
 
 export interface ContextsState {
   readonly saved: Record<string, Context>;
-  readonly editingId?: string;
 }
 
 const initialState: ContextsState = {
   saved: {},
-  editingId: undefined,
 };
 
 const addDefaults = (context: Context): Context => {
@@ -32,9 +30,6 @@ const contextsSlice = createSlice({
   name: 'contexts',
   initialState,
   reducers: {
-    selectContext: (state, action: PayloadAction<string | undefined>) => {
-      state.editingId = action.payload;
-    },
     saveContext: (state, action: PayloadAction<Context>) => {
       state.saved[action.payload.id] = addDefaults(action.payload);
     },
@@ -44,8 +39,7 @@ const contextsSlice = createSlice({
   },
 });
 
-export const { selectContext, saveContext, deleteContext } =
-  contextsSlice.actions;
+export const { saveContext, deleteContext } = contextsSlice.actions;
 export const contextReduxReducer = contextsSlice.reducer;
 
 const changeEditingContextName = (
