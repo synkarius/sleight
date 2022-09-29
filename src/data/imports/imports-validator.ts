@@ -1,6 +1,10 @@
+import { not } from '../../core/common/common-functions';
 import { SpecDomainMapper } from '../../core/mappers/spec-domain-mapper';
 import { VariableDomainMapper } from '../../core/mappers/variable-domain-mapper';
-import { FieldValidator } from '../../validation/field-validator';
+import {
+  FieldValidator,
+  isDeletionValidator,
+} from '../../validation/field-validator';
 import {
   ValidationResult,
   ValidationResultType,
@@ -41,26 +45,6 @@ export type ImportsValidator = {
   ) => ImportValidationResult;
 };
 
-const rewrap = <T extends Ided>(
-  ided: T,
-  result: ValidationResult
-): ImportValidationResult => {
-  switch (result.type) {
-    case ValidationResultType.VALID:
-      return { status: ImportValidationResultType.VALID };
-    default:
-      return {
-        status: ImportValidationResultType.INVALID,
-        invalidated: [
-          {
-            id: ided.id,
-            message: result.message,
-          },
-        ],
-      };
-  }
-};
-
 export class DefaultImportsValidator implements ImportsValidator {
   constructor(
     private actionValidators: FieldValidator<Action>[],
@@ -77,33 +61,40 @@ export class DefaultImportsValidator implements ImportsValidator {
   ): ImportValidationResult {
     const invalidatedResults = [
       ...Object.values(data.actions).flatMap((action) =>
-        this.actionValidators.map((v) =>
-          rewrap(action, v.validate(action, data))
-        )
+        this.actionValidators
+          .filter((v) => v.isApplicable(action))
+          .filter(not(isDeletionValidator))
+          .map((v) => this.rewrap(action, v.validate(action, data)))
       ),
       ...Object.values(data.commands).flatMap((command) =>
-        this.commandValidators.map((v) =>
-          rewrap(command, v.validate(command, data))
-        )
+        this.commandValidators
+          .filter((v) => v.isApplicable(command))
+          .filter(not(isDeletionValidator))
+          .map((v) => this.rewrap(command, v.validate(command, data)))
       ),
       ...Object.values(data.contexts).flatMap((context) =>
-        this.contextValidators.map((v) =>
-          rewrap(context, v.validate(context, data))
-        )
+        this.contextValidators
+          .filter((v) => v.isApplicable(context))
+          .filter(not(isDeletionValidator))
+          .map((v) => this.rewrap(context, v.validate(context, data)))
       ),
       ...Object.values(data.specs)
         .map((specDTO) => this.specMapper.mapToDomain(specDTO, data.selectors))
         .flatMap((spec) =>
-          this.specValidators.map((v) => rewrap(spec, v.validate(spec, data)))
+          this.specValidators
+            .filter((v) => v.isApplicable(spec))
+            .filter(not(isDeletionValidator))
+            .map((v) => this.rewrap(spec, v.validate(spec, data)))
         ),
       ...Object.values(data.variables)
         .map((variableDTO) =>
           this.variableMapper.mapToDomain(variableDTO, data.selectors)
         )
         .flatMap((variable) =>
-          this.variableValidators.map((v) =>
-            rewrap(variable, v.validate(variable, data))
-          )
+          this.variableValidators
+            .filter((v) => v.isApplicable(variable))
+            .filter(not(isDeletionValidator))
+            .map((v) => this.rewrap(variable, v.validate(variable, data)))
         ),
     ].filter(
       (result): result is ImportInvalidResult =>
@@ -119,5 +110,25 @@ export class DefaultImportsValidator implements ImportsValidator {
     return {
       status: ImportValidationResultType.VALID,
     };
+  }
+
+  rewrap<T extends Ided>(
+    ided: T,
+    result: ValidationResult
+  ): ImportValidationResult {
+    switch (result.type) {
+      case ValidationResultType.VALID:
+        return { status: ImportValidationResultType.VALID };
+      default:
+        return {
+          status: ImportValidationResultType.INVALID,
+          invalidated: [
+            {
+              id: ided.id,
+              message: result.message,
+            },
+          ],
+        };
+    }
   }
 }

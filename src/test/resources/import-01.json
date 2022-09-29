@@ -1,0 +1,94 @@
+{
+    "import01": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "686c0bff-038d-4912-8222-f430ff905418",
+                "name": "pause-act-686c0bff-038d",
+                "type": "Pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "centiseconds": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "1330555e-2282-41f7-8ec9-14ba56bda860"
+                }
+            }
+        ],
+        "commands": [
+            {
+                "id": "34480b22-a519-4fea-a632-c5fc0fe1fc76",
+                "name": "com-34480b22-a519",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "contextId": "344d14f4-5902-4b72-8330-2ba239d12325",
+                "specId": "6c564b91-fe35-4d2c-862e-f0bf813b85dd",
+                "actionIds": [
+                    "686c0bff-038d-4912-8222-f430ff905418"
+                ]
+            }
+        ],
+        "contexts": [
+            {
+                "id": "344d14f4-5902-4b72-8330-2ba239d12325",
+                "name": "win-con-344d14f4-5902",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "type": "Window Title",
+                "matcher": "gmail"
+            }
+        ],
+        "selectors": [
+            {
+                "id": "d9c0c6d5-952c-4556-8aa1-ac7f8af431db",
+                "items": [
+                    {
+                        "id": "fccbe6d1-b1c5-4b31-8b15-661b015f9d4f",
+                        "value": "do thing"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "6c564b91-fe35-4d2c-862e-f0bf813b85dd",
+                "name": "spe-6c564b91-fe35",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "33585c8a-cd36-49fe-81a6-9e84d551f58c",
+                        "itemType": "Selector",
+                        "itemId": "d9c0c6d5-952c-4556-8aa1-ac7f8af431db",
+                        "optional": false,
+                        "grouped": false
+                    },
+                    {
+                        "id": "15a7cd8a-690c-41a9-b1ba-f1ecbf5a983e",
+                        "itemType": "Variable",
+                        "itemId": "1330555e-2282-41f7-8ec9-14ba56bda860",
+                        "optional": true,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "1330555e-2282-41f7-8ec9-14ba56bda860",
+                "type": "Range",
+                "name": "range-var-1330555e-2282",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 1,
+                "endInclusive": 13,
+                "defaultValue": 5
+            }
+        ]
+    }
+}

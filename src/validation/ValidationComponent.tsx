@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { useAllData } from '../app/custom-hooks/use-all-data-hook';
 import { ExhaustivenessFailureError } from '../error/exhaustiveness-failure-error';
 import { listsIntersect } from '../core/common/common-functions';
-import { FieldValidator, ValidatorType } from './field-validator';
+import {
+  FieldValidator,
+  isDeletionValidator,
+  ValidatorType,
+} from './field-validator';
 import {
   ErrorOrFailureValidationResult,
   isErrorOrFailedValidationResult,
@@ -54,16 +58,13 @@ const shouldUseValidator = <E,>(
   validator: FieldValidator<E>,
   touched: Field[]
 ): boolean => {
-  const isDeletionValidator =
-    validator.validatorType === ValidatorType.FIELD &&
-    validator.exclusiveValidationMode === ValidateMode.DELETE;
   switch (mode) {
     case ValidateMode.DELETE:
-      return isDeletionValidator;
+      return isDeletionValidator(validator);
     case ValidateMode.SUBMIT:
-      return !isDeletionValidator;
+      return !isDeletionValidator(validator);
     case ValidateMode.TOUCH:
-      return !isDeletionValidator && isTouched(validator, touched);
+      return !isDeletionValidator(validator) && isTouched(validator, touched);
     default:
       throw new ExhaustivenessFailureError(mode);
   }

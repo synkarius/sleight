@@ -11,9 +11,17 @@ import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
 import { ImportValidationResultType } from '../../../data/imports/imports-validator';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { useAppDispatch } from '../../../app/hooks';
+import { setActions } from '../../../core/reducers/action-reducers';
+import { setCommands } from '../../../core/reducers/command-reducers';
+import { setContexts } from '../../../core/reducers/context-reducers';
+import { setSelectors } from '../../../core/reducers/selector-reducers';
+import { setSpecs } from '../../../core/reducers/spec-reducers';
+import { setVariables } from '../../../core/reducers/variable-reducers';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
+  const reduxDispatch = useAppDispatch();
   const container = useContext(InjectionContext);
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);
@@ -52,8 +60,22 @@ export const Navigation: React.FC<{}> = () => {
         const merged = dataMerger.merge(allData, cleaned);
         const validationResult = validator.validateImportedData(merged);
         if (validationResult.status === ImportValidationResultType.VALID) {
-          // TODO: add it to redux
+          reduxDispatch(setActions(merged.actions));
+          reduxDispatch(setCommands(merged.commands));
+          reduxDispatch(setContexts(merged.contexts));
+          reduxDispatch(setSelectors(merged.selectors));
+          reduxDispatch(setSpecs(merged.specs));
+          reduxDispatch(setVariables(merged.variables));
+          return;
+        } else {
+          // TODO: better logging
+          validationResult.invalidated.forEach((invalid) =>
+            console.log(`id: ${invalid.id} ; reason: ${invalid.message}`)
+          );
         }
+      } else {
+        // TODO: better logging
+        console.log('deserialization failure');
       }
       // TODO: error toast "Import Failed - See Logs" and log results
     }

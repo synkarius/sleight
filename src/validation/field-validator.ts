@@ -29,3 +29,7 @@ interface FieldsValidator<T> extends AbstractValidator<T> {
 }
 
 export type FieldValidator<T> = SingleFieldValidator<T> | FieldsValidator<T>;
+
+export const isDeletionValidator = <T>(validator: FieldValidator<T>): boolean =>
+  validator.validatorType === ValidatorType.FIELD &&
+  validator.exclusiveValidationMode === ValidateMode.DELETE;
