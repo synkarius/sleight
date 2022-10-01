@@ -1,6 +1,9 @@
 import { replaceNonAlphaNumeric } from '../../core/common/common-functions';
 
-type MustacheFn = (value: string, render: (value: string) => string) => string;
+export type MustacheFn = (
+  value: string,
+  render: (value: string) => string
+) => string;
 export const createMustacheFn = (fn: MustacheFn) => () => fn;
 
 export const utilViewFunctions = {

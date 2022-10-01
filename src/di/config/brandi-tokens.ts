@@ -59,6 +59,9 @@ import { SleightDataIdsRewriter } from '../../data/imports/model-update/id-rewri
 import { SleightDataEvaluator } from '../../data/imports/model-update/evaluators/sleight-data-evaluator';
 import { RoleKeyedDataUpdater } from '../../data/imports/model-update/rolekeyed-data-updater';
 import { ActionVariableIdsRewriterDelegate } from '../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/action-variable-ids-rewriter-delegate';
+import { ElementPrinter } from '../../data/exports/dragonfly/element-printers/element-printer';
+import { ElementNamePrinter } from '../../data/exports/element-name-printer';
+import { DragonflyMustacheFnsFactory } from '../../data/exports/dragonfly/dragonfly-mustache-helper-fns';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -218,5 +221,28 @@ export namespace Tokens {
   );
   export const SleightDataIdsRewriter = token<SleightDataIdsRewriter>(
     'SleightDataIdsRewriter'
+  );
+  export const ElementNamePrinter =
+    token<ElementNamePrinter>('ElementNamePrinter');
+  export const DragonElementPrinter_Action = token<ElementPrinter<Action>>(
+    'DragonElementPrinter_Action'
+  );
+  export const DragonElementPrinter_Command = token<ElementPrinter<Command>>(
+    'DragonElementPrinter_Command'
+  );
+  export const DragonElementPrinter_Context = token<ElementPrinter<Context>>(
+    'DragonElementPrinter_Context'
+  );
+  export const DragonElementPrinter_Selector = token<
+    ElementPrinter<SelectorDTO>
+  >('DragonElementPrinter_Selector');
+  export const DragonElementPrinter_Spec = token<ElementPrinter<SpecDTO>>(
+    'DragonElementPrinter_Spec'
+  );
+  export const DragonElementPrinter_Variable = token<
+    ElementPrinter<VariableDTO>
+  >('DragonElementPrinter_Variable');
+  export const DragonflyMustacheFnsFactory = token<DragonflyMustacheFnsFactory>(
+    'DragonflyMustacheFnsFactory'
   );
 }

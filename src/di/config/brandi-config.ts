@@ -15,6 +15,7 @@ import { bindImportsValidator } from './bindings/imports-validator-bindings';
 import { bindImportsCleaner } from './bindings/imports-cleaner-bindings';
 import { bindSleightDataIdsRewriter } from './bindings/sleight-data-ids-rewriter-bindings';
 import { bindRoleKeyedDataUpdater } from './bindings/rolekeyed-data-updater-bindings';
+import { bindElementPrinters } from './bindings/element-printer-bindings';
 
 export const container = new Container();
 [
@@ -23,6 +24,7 @@ export const container = new Container();
   bindDefaultNamers,
   bindDeserializer,
   bindElementEvaluators,
+  bindElementPrinters,
   bindExporters,
   bindFormatMapper,
   bindIdRewriters,

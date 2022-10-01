@@ -1,4 +1,3 @@
-const selectorName = '{{#printSelectorName}}{{id}}{{/printSelectorName}}';
 const elemNameSuffix = '{{#replaceNonAlphanum}}{{name}}{{/replaceNonAlphanum}}';
 
 export const dragonflyCompactTemplate = `
@@ -6,11 +5,6 @@ from dragonfly import Dictation
 from dragonfly import ShortIntegerRef
 from dragonfly import Choice
 from dragonfly import AppContext
-
-# selectors -- get rid of this
-{{#selectors}}
-#${selectorName} = "{{#printSelectorItems}}{{id}}{{/printSelectorItems}}"
-{{/selectors}}
 
 # specs
 {{#specs}}
@@ -26,4 +20,9 @@ variable_${elemNameSuffix} = {{#printVariable}}{{id}}{{/printVariable}}
 {{#contexts}}
 context_${elemNameSuffix} = {{#printContext}}{{id}}{{/printContext}}
 {{/contexts}}
+
+# actions
+{{#actions}}
+action_${elemNameSuffix} = None
+{{/actions}}
 `;
