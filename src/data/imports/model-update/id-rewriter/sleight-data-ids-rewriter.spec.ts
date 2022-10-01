@@ -8,6 +8,19 @@ import { IdRewriter, replaceIdInSlice } from '../id-rewriter/id-rewriter';
 import { Ided } from '../../../model/domain';
 
 describe('sleight data ids rewriter tests', () => {
+  /**
+   * This tests that if 2+ id rewriters (for the same element type) are supplied to
+   * DefaultSleightDataIdsRewriter, that it will use both (/all)
+   * of them and not just the first one.
+   *
+   * The way it tests this is a bit odd: each element's id rewriter
+   * array is passed two nearly identical copies of the same id
+   * rewriter. The end result is a duplication of the test data,
+   * but with the second copy having a new id.
+   *
+   * It's not a realistic scenario, but it does test
+   * that all passed id rewriters are used.
+   */
   it('all id rewriters should be used', () => {
     const formatMapper = container.get(Tokens.FormatMapper);
     const importData: SleightDataInternalFormat =
