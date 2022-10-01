@@ -26,6 +26,14 @@ export const Navigation: React.FC<{}> = () => {
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);
 
+  const newElementSet = () => {
+    reduxDispatch(setActions({}));
+    reduxDispatch(setCommands({}));
+    reduxDispatch(setContexts({}));
+    reduxDispatch(setSelectors({}));
+    reduxDispatch(setSpecs({}));
+    reduxDispatch(setVariables({}));
+  };
   const exportJson = () => {
     const jsonExporter = container.get(Tokens.JsonExporter);
     const data = jsonExporter.export(allData);
@@ -95,7 +103,7 @@ export const Navigation: React.FC<{}> = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavDropdown title="File" id="file-dropdown">
-              <NavDropdown.Item href="#action/3.1" disabled>
+              <NavDropdown.Item href="#action/3.1" onClick={newElementSet}>
                 New Element Set
               </NavDropdown.Item>
               <NavDropdown.Divider />
