@@ -183,7 +183,7 @@ const deletionValidator: FieldValidator<Variable> = {
 };
 
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
-  nameTakenValidator,
+  // nameTakenValidator,
   roleKeyTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,

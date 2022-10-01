@@ -15,19 +15,23 @@ export class SelectorIdWithinVariablesIdRewriter
     const oldId = selector.id;
 
     const variables = Object.values(data.variables)
-      .filter(isChoiceVariableDTO)
-      .map((variable) => ({
-        ...variable,
-        items: variable.items.map((item) => {
-          if (item.selectorId === oldId) {
-            return {
-              ...item,
-              selectorId: newId,
-            };
-          }
-          return item;
-        }),
-      }))
+      .map((variable) => {
+        if (isChoiceVariableDTO(variable)) {
+          return {
+            ...variable,
+            items: variable.items.map((item) => {
+              if (item.selectorId === oldId) {
+                return {
+                  ...item,
+                  selectorId: newId,
+                };
+              }
+              return item;
+            }),
+          };
+        }
+        return variable;
+      })
       .reduce(reduceIded, {});
 
     return { ...data, variables };

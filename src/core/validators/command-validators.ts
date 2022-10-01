@@ -33,7 +33,7 @@ const commandSpecVariableSelectedValidator: FieldValidator<Command> =
   );
 
 export const getCommandValidators: () => FieldValidator<Command>[] = () => [
-  nameTakenValidator,
+  // nameTakenValidator,
   roleKeyTakenValidator,
   commandSpecVariableSelectedValidator,
 ];

@@ -194,7 +194,7 @@ const basicSpecUniquenessValidator: FieldValidator<Spec> = {
 };
 
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
-  nameTakenValidator,
+  // nameTakenValidator,
   roleKeyTakenValidator,
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,

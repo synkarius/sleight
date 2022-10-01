@@ -261,7 +261,7 @@ describe('spec component tests', () => {
     expect(groupedCheckbox).not.toBeDisabled();
   });
 
-  it('should invalidate an already taken name', async () => {
+  it.skip('should invalidate an already taken name', async () => {
     act(() => {
       store.dispatch(saveSpec(castJsonForTest(spec01)));
       specIdsForCleanup.push(spec01.id);

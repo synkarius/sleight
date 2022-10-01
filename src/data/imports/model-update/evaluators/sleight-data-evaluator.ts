@@ -56,7 +56,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
       evaluation,
       (data, command) => ({
         ...data,
-        command: { ...data.commands, [command.id]: command },
+        commands: { ...data.commands, [command.id]: command },
       })
     );
     evaluation = this.addToEvaluation(

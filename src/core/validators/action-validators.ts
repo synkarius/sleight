@@ -54,7 +54,7 @@ const deletionValidator: FieldValidator<Action> = {
 };
 
 export const getActionValidators: () => FieldValidator<Action>[] = () => [
-  nameTakenValidator,
+  // nameTakenValidator,
   roleKeyTakenValidator,
   deletionValidator,
 ];

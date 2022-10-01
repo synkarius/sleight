@@ -58,6 +58,7 @@ import {
 import { SleightDataIdsRewriter } from '../../data/imports/model-update/id-rewriter/sleight-data-ids-rewriter';
 import { SleightDataEvaluator } from '../../data/imports/model-update/evaluators/sleight-data-evaluator';
 import { RoleKeyedDataUpdater } from '../../data/imports/model-update/rolekeyed-data-updater';
+import { ActionVariableIdsRewriterDelegate } from '../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/action-variable-ids-rewriter-delegate';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -203,6 +204,9 @@ export namespace Tokens {
   );
   export const VariableIdRewriter =
     token<IdRewriter<VariableDTO>>('VariableIdRewriter');
+  export const ActionVariableIdsRewriterDelegates = token<
+    ActionVariableIdsRewriterDelegate[]
+  >('ActionVariableIdsRewriterDelegates');
   export const VariableIdWithinActionsRewriter = token<IdRewriter<VariableDTO>>(
     'VariableIdWithinActionsRewriter'
   );

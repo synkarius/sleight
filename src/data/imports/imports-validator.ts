@@ -59,43 +59,49 @@ export class DefaultImportsValidator implements ImportsValidator {
   validateImportedData(
     data: SleightDataInternalFormat
   ): ImportValidationResult {
+    const actionResults = Object.values(data.actions).flatMap((action) =>
+      this.actionValidators
+        .filter((v) => v.isApplicable(action))
+        .filter(not(isDeletionValidator))
+        .map((v) => this.rewrap(action, v.validate(action, data)))
+    );
+    const commandResults = Object.values(data.commands).flatMap((command) =>
+      this.commandValidators
+        .filter((v) => v.isApplicable(command))
+        .filter(not(isDeletionValidator))
+        .map((v) => this.rewrap(command, v.validate(command, data)))
+    );
+    const contextResults = Object.values(data.contexts).flatMap((context) =>
+      this.contextValidators
+        .filter((v) => v.isApplicable(context))
+        .filter(not(isDeletionValidator))
+        .map((v) => this.rewrap(context, v.validate(context, data)))
+    );
+    const specResults = Object.values(data.specs)
+      .map((specDTO) => this.specMapper.mapToDomain(specDTO, data.selectors))
+      .flatMap((spec) =>
+        this.specValidators
+          .filter((v) => v.isApplicable(spec))
+          .filter(not(isDeletionValidator))
+          .map((v) => this.rewrap(spec, v.validate(spec, data)))
+      );
+    const variableResults = Object.values(data.variables)
+      .map((variableDTO) =>
+        this.variableMapper.mapToDomain(variableDTO, data.selectors)
+      )
+      .flatMap((variable) =>
+        this.variableValidators
+          .filter((v) => v.isApplicable(variable))
+          .filter(not(isDeletionValidator))
+          .map((v) => this.rewrap(variable, v.validate(variable, data)))
+      );
+
     const invalidatedResults = [
-      ...Object.values(data.actions).flatMap((action) =>
-        this.actionValidators
-          .filter((v) => v.isApplicable(action))
-          .filter(not(isDeletionValidator))
-          .map((v) => this.rewrap(action, v.validate(action, data)))
-      ),
-      ...Object.values(data.commands).flatMap((command) =>
-        this.commandValidators
-          .filter((v) => v.isApplicable(command))
-          .filter(not(isDeletionValidator))
-          .map((v) => this.rewrap(command, v.validate(command, data)))
-      ),
-      ...Object.values(data.contexts).flatMap((context) =>
-        this.contextValidators
-          .filter((v) => v.isApplicable(context))
-          .filter(not(isDeletionValidator))
-          .map((v) => this.rewrap(context, v.validate(context, data)))
-      ),
-      ...Object.values(data.specs)
-        .map((specDTO) => this.specMapper.mapToDomain(specDTO, data.selectors))
-        .flatMap((spec) =>
-          this.specValidators
-            .filter((v) => v.isApplicable(spec))
-            .filter(not(isDeletionValidator))
-            .map((v) => this.rewrap(spec, v.validate(spec, data)))
-        ),
-      ...Object.values(data.variables)
-        .map((variableDTO) =>
-          this.variableMapper.mapToDomain(variableDTO, data.selectors)
-        )
-        .flatMap((variable) =>
-          this.variableValidators
-            .filter((v) => v.isApplicable(variable))
-            .filter(not(isDeletionValidator))
-            .map((v) => this.rewrap(variable, v.validate(variable, data)))
-        ),
+      ...actionResults,
+      ...commandResults,
+      ...contextResults,
+      ...specResults,
+      ...variableResults,
     ].filter(
       (result): result is ImportInvalidResult =>
         result.status === ImportValidationResultType.INVALID

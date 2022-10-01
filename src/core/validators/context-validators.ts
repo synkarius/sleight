@@ -63,7 +63,7 @@ const deletionValidator: FieldValidator<Context> = {
 };
 
 export const getContextValidators: () => FieldValidator<Context>[] = () => [
-  nameTakenValidator,
+  // nameTakenValidator,
   roleKeyTakenValidator,
   contextMatcherValidator,
   deletionValidator,

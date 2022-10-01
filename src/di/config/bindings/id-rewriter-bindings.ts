@@ -20,19 +20,27 @@ import { SelectorIdWithinVariablesIdRewriter } from '../../../data/imports/model
 import { SpecIdWithinCommandsRewriter } from '../../../data/imports/model-update/id-rewriter/spec-id-within-commands-rewriter';
 import { VariableIdWithinSpecsRewriter } from '../../../data/imports/model-update/id-rewriter/variable-id-within-specs-rewriter';
 import { Tokens } from '../brandi-tokens';
+import { getBringAppActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/bring-app-action-variable-ids-rewriter-delegate';
+import { getCallFunctionActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/call-function-action-variable-ids-rewriter-delegate';
+import { getMimicActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/mimic-action-variable-ids-rewriter-delegate';
+import { getMouseActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/mouse-action-variable-ids-rewriter-delegate';
+import { getPauseActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/pause-action-variable-ids-rewriter-delegate';
+import { getSendKeyActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/send-key-action-variable-ids-rewriter-delegate';
+import { getSendTextActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/send-text-action-variable-ids-rewriter-delegate';
+import { getWaitForWindowActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/wait-for-window-action-variable-ids-rewriter-delegate';
 
 export const bindIdRewriters = (container: Container): void => {
-  // action id rewriter
+  /*
+   * ACTION ID REWRITERS
+   */
   container
     .bind(Tokens.ActionIdRewriter)
     .toInstance(ActionIdRewriter)
     .inSingletonScope();
-  // action ids (in command) rewriter
   container
     .bind(Tokens.ActionIdWithinCommandsRewriter)
     .toInstance(ActionIdWithinCommandsRewriter)
     .inSingletonScope();
-  //
   container
     .bind(Tokens.ActionIdRewriterArray)
     .toInstance(ActionIdRewriterArray)
@@ -42,79 +50,117 @@ export const bindIdRewriters = (container: Container): void => {
     Tokens.ActionIdRewriter,
     Tokens.ActionIdWithinCommandsRewriter
   );
-  // command id rewriter
+  /*
+   * COMMAND ID REWRITERS
+   */
   container
     .bind(Tokens.CommandIdRewriter)
     .toInstance(CommandIdRewriter)
     .inSingletonScope();
-  // context id rewriter
+  /*
+   * CONTEXT ID REWRITERS
+   */
   container
     .bind(Tokens.ContextIdRewriter)
     .toInstance(ContextIdRewriter)
     .inSingletonScope();
-  // context ids (in commands) rewriter
   container
     .bind(Tokens.ContextIdWithinCommandsRewriter)
     .toInstance(ContextIdWithinCommandsRewriter)
     .inSingletonScope();
-  //
   container
     .bind(Tokens.ContextIdRewriterArray)
     .toInstance(ContextIdRewriterArray)
     .inSingletonScope();
-  // selector id rewriter
+  injected(
+    ContextIdRewriterArray,
+    Tokens.ContextIdRewriter,
+    Tokens.ContextIdWithinCommandsRewriter
+  );
+  /*
+   * SELECTOR ID REWRITERS
+   */
   container
     .bind(Tokens.SelectorIdRewriter)
     .toInstance(SelectorIdRewriter)
     .inSingletonScope();
-  // selector ids (within specs) rewriter
   container
     .bind(Tokens.SelectorIdWithinSpecsRewriter)
     .toInstance(SelectorIdWithinSpecsIdRewriter)
     .inSingletonScope();
-  // selector ids (within variables) rewriter
   container
     .bind(Tokens.SelectorIdWithinVariablesRewriter)
     .toInstance(SelectorIdWithinVariablesIdRewriter)
     .inSingletonScope();
-  //
   container
     .bind(Tokens.SelectorIdRewriterArray)
     .toInstance(SelectorIdRewriterArray)
     .inSingletonScope();
-  // spec id rewriter
+  injected(
+    SelectorIdRewriterArray,
+    Tokens.SelectorIdRewriter,
+    Tokens.SelectorIdWithinSpecsRewriter,
+    Tokens.SelectorIdWithinVariablesRewriter
+  );
+  /*
+   * SPEC ID REWRITERS
+   */
   container
     .bind(Tokens.SpecIdRewriter)
     .toInstance(SpecIdRewriter)
     .inSingletonScope();
-  // spec ids (within commands) rewriter
   container
     .bind(Tokens.SpecIdWithinCommandsRewriter)
     .toInstance(SpecIdWithinCommandsRewriter)
     .inSingletonScope();
-  //
   container
     .bind(Tokens.SpecIdRewriterArray)
     .toInstance(SpecIdRewriterArray)
     .inSingletonScope();
-  // variable id rewriter
+  injected(
+    SpecIdRewriterArray,
+    Tokens.SpecIdRewriter,
+    Tokens.SpecIdWithinCommandsRewriter
+  );
+  /*
+   * VARIABLE ID REWRITERS
+   */
   container
     .bind(Tokens.VariableIdRewriter)
     .toInstance(VariableIdRewriter)
     .inSingletonScope();
-  // variable ids (in action) rewriter
+  container
+    .bind(Tokens.ActionVariableIdsRewriterDelegates)
+    .toConstant([
+      getBringAppActionVariableIdsRewriterDelegate(),
+      getCallFunctionActionVariableIdsRewriterDelegate(),
+      getMimicActionVariableIdsRewriterDelegate(),
+      getMouseActionVariableIdsRewriterDelegate(),
+      getPauseActionVariableIdsRewriterDelegate(),
+      getSendKeyActionVariableIdsRewriterDelegate(),
+      getSendTextActionVariableIdsRewriterDelegate(),
+      getWaitForWindowActionVariableIdsRewriterDelegate(),
+    ]);
   container
     .bind(Tokens.VariableIdWithinActionsRewriter)
     .toInstance(VariableIdWithinActionsRewriter)
     .inSingletonScope();
-  // variable ids (in specs) rewriter
+  injected(
+    VariableIdWithinActionsRewriter,
+    Tokens.ActionVariableIdsRewriterDelegates
+  );
   container
     .bind(Tokens.VariableIdWithinSpecsRewriter)
     .toInstance(VariableIdWithinSpecsRewriter)
     .inSingletonScope();
-  //
   container
     .bind(Tokens.VariableIdRewriterArray)
     .toInstance(VariableIdRewriterArray)
     .inSingletonScope();
+  injected(
+    VariableIdRewriterArray,
+    Tokens.VariableIdRewriter,
+    Tokens.VariableIdWithinActionsRewriter,
+    Tokens.VariableIdWithinSpecsRewriter
+  );
 };
