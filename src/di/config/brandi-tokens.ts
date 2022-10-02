@@ -51,6 +51,7 @@ import { IdRewriter } from '../../data/imports/model-update/id-rewriter/id-rewri
 import {
   ActionIdRewriterArray,
   ContextIdRewriterArray,
+  DragonflyActionPrinterDelegateArray,
   SelectorIdRewriterArray,
   SpecIdRewriterArray,
   VariableIdRewriterArray,
@@ -62,6 +63,10 @@ import { ActionVariableIdsRewriterDelegate } from '../../data/imports/model-upda
 import { ElementPrinter } from '../../data/exports/dragonfly/element-printers/element-printer';
 import { ElementNamePrinter } from '../../data/exports/element-name-printer';
 import { DragonflyMustacheFnsFactory } from '../../data/exports/dragonfly/dragonfly-mustache-helper-fns';
+import { DragonflyActionPrinterDelegate } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/action-printer-delegate';
+import { DragonflyBringAppPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-bring-app-action-printer-delegate';
+import { DragonflyPausePrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-pause-action-printer-delegate';
+import { DragonflyActionValueResolver } from '../../data/exports/dragonfly/element-printers/action-value/dragonfly-action-value-resolver';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -244,5 +249,17 @@ export namespace Tokens {
   >('DragonElementPrinter_Variable');
   export const DragonflyMustacheFnsFactory = token<DragonflyMustacheFnsFactory>(
     'DragonflyMustacheFnsFactory'
+  );
+  export const DragonflyActionValueResolver =
+    token<DragonflyActionValueResolver>('DragonflyActionValueResolver');
+  export const DragonflyActionPrinterDelegateArray =
+    token<DragonflyActionPrinterDelegateArray>(
+      'DragonflyActionPrinterDelegateArray'
+    );
+  export const DragonflyBringAppPrinter = token<DragonflyBringAppPrinter>(
+    'DragonflyBringAppPrinter'
+  );
+  export const DragonflyPausePrinter = token<DragonflyPausePrinter>(
+    'DragonflyPausePrinter'
   );
 }

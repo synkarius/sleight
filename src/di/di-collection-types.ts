@@ -1,3 +1,4 @@
+import { DragonflyActionPrinterDelegate } from '../data/exports/dragonfly/element-printers/action-printer-delegates/action-printer-delegate';
 import { IdRewriter } from '../data/imports/model-update/id-rewriter/id-rewriter';
 import { Action } from '../data/model/action/action';
 import { Context } from '../data/model/context/context';
@@ -19,3 +20,5 @@ export class ContextIdRewriterArray extends Array<IdRewriter<Context>> {}
 export class SelectorIdRewriterArray extends Array<IdRewriter<SelectorDTO>> {}
 export class SpecIdRewriterArray extends Array<IdRewriter<SpecDTO>> {}
 export class VariableIdRewriterArray extends Array<IdRewriter<VariableDTO>> {}
+// Dragonfly Action Printer Delegates
+export class DragonflyActionPrinterDelegateArray extends Array<DragonflyActionPrinterDelegate> {}
