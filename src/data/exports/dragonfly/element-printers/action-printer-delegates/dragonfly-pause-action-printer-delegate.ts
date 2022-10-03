@@ -4,7 +4,10 @@ import { Action } from '../../../../model/action/action';
 import { isPauseAction } from '../../../../model/action/pause/pause';
 import { ElementNamePrinter } from '../../../element-name-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
-import { resultToArg } from '../action-value/dragonfly-action-value-resolver-result';
+import {
+  resultIsEmpty,
+  resultToArg,
+} from '../action-value/dragonfly-action-value-resolver-result';
 import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
 
 export class DragonflyPausePrinter implements DragonflyActionPrinterDelegate {
@@ -24,9 +27,9 @@ export class DragonflyPausePrinter implements DragonflyActionPrinterDelegate {
         action.centiseconds,
         data
       );
-      if (!isEmpty(centisecondsResult.value)) {
+      if (!resultIsEmpty(centisecondsResult)) {
         args.push(
-          quote(resultToArg(centisecondsResult)(this.elementNamePrinter) + 'd')
+          quote(resultToArg(centisecondsResult)(this.elementNamePrinter))
         );
       }
       //

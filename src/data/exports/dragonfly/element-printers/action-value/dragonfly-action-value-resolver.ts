@@ -56,7 +56,8 @@ export class DefaultDragonflyActionValueResolver
         );
         return {
           type: DragonflyActionValueResolverResultType.USE_VARIABLE,
-          value: variable.name,
+          variableName: variable.name,
+          variableType: variable.type,
         };
       default:
         throw new ExhaustivenessFailureError(actionValueType);

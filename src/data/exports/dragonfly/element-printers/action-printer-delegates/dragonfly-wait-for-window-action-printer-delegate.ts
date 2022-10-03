@@ -1,7 +1,7 @@
 import { isEmpty, quote } from '../../../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
-import { isBringAppAction } from '../../../../model/action/bring-app/bring-app';
+import { isWaitForWindowAction } from '../../../../model/action/wait-for-window/wait-for-window';
 import { ElementNamePrinter } from '../../../element-name-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../action-value/dragonfly-action-value-resolver-result';
 import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
 
-export class DragonflyBringAppPrinter
+export class DragonflyWaitForWindowPrinter
   implements DragonflyActionPrinterDelegate
 {
   constructor(
@@ -21,38 +21,41 @@ export class DragonflyBringAppPrinter
     action: Action,
     data: SleightDataInternalFormat
   ): string | undefined {
-    if (isBringAppAction(action)) {
+    if (isWaitForWindowAction(action)) {
       const args: string[] = [];
       //
-      const appPathResult = this.actionValueResolver.resolve(
-        action.appPath,
+      const executableResult = this.actionValueResolver.resolve(
+        action.executable,
         data
       );
-      if (!resultIsEmpty(appPathResult)) {
-        args.push(quote(resultToArg(appPathResult)(this.elementNamePrinter)));
-      }
-      //
-      const appTitleResult = this.actionValueResolver.resolve(
-        action.appTitle,
-        data
-      );
-      if (!resultIsEmpty(appTitleResult)) {
+      if (!resultIsEmpty(executableResult)) {
         args.push(
-          'title=' + quote(resultToArg(appTitleResult)(this.elementNamePrinter))
+          quote(
+            'executable=' +
+              resultToArg(executableResult)(this.elementNamePrinter)
+          )
         );
       }
       //
-      const startDirResult = this.actionValueResolver.resolve(
-        action.startDir,
-        data
-      );
-      if (!resultIsEmpty(startDirResult)) {
+      const titleResult = this.actionValueResolver.resolve(action.title, data);
+      if (!resultIsEmpty(titleResult)) {
         args.push(
-          'cwd=' + quote(resultToArg(startDirResult)(this.elementNamePrinter))
+          'title=' + quote(resultToArg(titleResult)(this.elementNamePrinter))
         );
       }
       //
-      return ['BringApp(', args.join(', '), ')'].join('');
+      const waitSecondsResult = this.actionValueResolver.resolve(
+        action.waitSeconds,
+        data
+      );
+      if (!resultIsEmpty(waitSecondsResult)) {
+        args.push(
+          'timeout=' +
+            quote(resultToArg(waitSecondsResult)(this.elementNamePrinter))
+        );
+      }
+      //
+      return ['WaitForWindow(', args.join(', '), ')'].join('');
     }
   }
 }

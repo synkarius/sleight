@@ -67,6 +67,12 @@ import { DragonflyActionPrinterDelegate } from '../../data/exports/dragonfly/ele
 import { DragonflyBringAppPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-bring-app-action-printer-delegate';
 import { DragonflyPausePrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-pause-action-printer-delegate';
 import { DragonflyActionValueResolver } from '../../data/exports/dragonfly/element-printers/action-value/dragonfly-action-value-resolver';
+import { DragonflyCallFunctionPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-call-function-action-printer-delegate';
+import { DragonflyMimicPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-mimic-action-printer-delegate';
+import { DragonflyMousePrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-mouse-action-printer-delegate';
+import { DragonflySendKeyPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-send-key-action-printer-delegate';
+import { DragonflySendTextPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-send-text-action-printer-delegate';
+import { DragonflyWaitForWindowPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-wait-for-window-action-printer-delegate';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -259,7 +265,23 @@ export namespace Tokens {
   export const DragonflyBringAppPrinter = token<DragonflyBringAppPrinter>(
     'DragonflyBringAppPrinter'
   );
+  export const DragonflyCallFunctionPrinter =
+    token<DragonflyCallFunctionPrinter>('DragonflyCallFunctionPrinter');
+  export const DragonflyMimicPrinter = token<DragonflyMimicPrinter>(
+    'DragonflyMimicPrinter'
+  );
+  export const DragonflyMousePrinter = token<DragonflyMousePrinter>(
+    'DragonflyMousePrinter'
+  );
   export const DragonflyPausePrinter = token<DragonflyPausePrinter>(
     'DragonflyPausePrinter'
   );
+  export const DragonflySendKeyPrinter = token<DragonflySendKeyPrinter>(
+    'DragonflySendKeyPrinter'
+  );
+  export const DragonflySendTextPrinter = token<DragonflySendTextPrinter>(
+    'DragonflySendTextPrinter'
+  );
+  export const DragonflyWaitForWindowPrinter =
+    token<DragonflyWaitForWindowPrinter>('DragonflyWaitForWindowPrinter');
 }
