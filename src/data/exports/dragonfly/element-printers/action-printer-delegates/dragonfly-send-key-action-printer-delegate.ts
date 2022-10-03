@@ -18,7 +18,8 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
     data: SleightDataInternalFormat
   ): string | undefined {
     if (isSendKeyAction(action)) {
-      throw new NotImplementedError('DragonflySendKeyPrinter');
+      const args: string[] = [];
+      return ['Key(', args.join(', '), ')'].join('');
     }
     return undefined;
   }

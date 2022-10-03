@@ -5,6 +5,7 @@ import { isPauseAction } from '../../../../model/action/pause/pause';
 import { ElementNamePrinter } from '../../../element-name-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
+  DragonflyActionValueResolverResultType,
   resultIsEmpty,
   resultToArg,
 } from '../action-value/dragonfly-action-value-resolver-result';
@@ -28,10 +29,15 @@ export class DragonflyPausePrinter implements DragonflyActionPrinterDelegate {
         data
       );
       if (!resultIsEmpty(centisecondsResult)) {
+        const arg = resultToArg(centisecondsResult)(this.elementNamePrinter);
         args.push(
-          quote(resultToArg(centisecondsResult)(this.elementNamePrinter))
+          centisecondsResult.type ===
+            DragonflyActionValueResolverResultType.ENTER_NUMBER
+            ? arg
+            : quote(arg)
         );
       }
+
       //
       return ['Pause(', args.join(', '), ')'].join('');
     }

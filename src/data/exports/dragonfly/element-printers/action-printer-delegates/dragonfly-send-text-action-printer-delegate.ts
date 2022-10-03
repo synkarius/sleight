@@ -1,10 +1,13 @@
-import { NotImplementedError } from '../../../../../error/not-implemented-error';
+import { quote } from '../../../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
-import { isCallFunctionAction } from '../../../../model/action/call-function/call-function';
 import { isSendTextAction } from '../../../../model/action/send-text/send-text';
 import { ElementNamePrinter } from '../../../element-name-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
+import {
+  resultIsEmpty,
+  resultToArg,
+} from '../action-value/dragonfly-action-value-resolver-result';
 import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
 
 export class DragonflySendTextPrinter
@@ -20,8 +23,12 @@ export class DragonflySendTextPrinter
     data: SleightDataInternalFormat
   ): string | undefined {
     if (isSendTextAction(action)) {
-      throw new NotImplementedError('DragonflySendTextPrinter');
+      const args: string[] = [];
+      const textResult = this.actionValueResolver.resolve(action.text, data);
+      if (!resultIsEmpty(textResult)) {
+        args.push(quote(resultToArg(textResult)(this.elementNamePrinter)));
+      }
+      return ['Text(', args.join(', '), ')'].join('');
     }
-    return undefined;
   }
 }
