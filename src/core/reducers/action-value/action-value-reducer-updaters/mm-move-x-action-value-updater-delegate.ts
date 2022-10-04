@@ -27,7 +27,9 @@ export const getMMouseMoveXActionValueUpdaterDelegate: () => ActionValueUpdaterD
         action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
           ? changeNumericActionValueType(action)
           : changeActionValueValue(state.x, action);
-      if (state.mouseMovementType === MouseMovementType.Enum.WINDOW) {
+      if (
+        state.mouseMovementType === MouseMovementType.Enum.WINDOW_PERCENTAGE
+      ) {
         newX = limitNumericActionValueToPercentage(newX);
       }
       return { ...state, x: newX };

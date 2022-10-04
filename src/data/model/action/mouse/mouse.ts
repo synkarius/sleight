@@ -73,7 +73,7 @@ export const createMouseMoveAction = (): MoveMouseAction => ({
   ...createAbstractAction(),
   type: ActionType.Enum.MOUSE,
   mouseActionType: MouseActionType.Enum.MOVE,
-  mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
+  mouseMovementType: MouseMovementType.Enum.ABSOLUTE_PIXELS,
   x: createNumericValue(),
   y: createNumericValue(),
 });
@@ -83,7 +83,7 @@ export const copyIntoMouseMoveAction = (action: Action): MouseAction => {
     ...copyAction(action),
     type: ActionType.Enum.MOUSE,
     mouseActionType: MouseActionType.Enum.MOVE,
-    mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
+    mouseMovementType: MouseMovementType.Enum.ABSOLUTE_PIXELS,
     x: createNumericValue(),
     y: createNumericValue(),
   };

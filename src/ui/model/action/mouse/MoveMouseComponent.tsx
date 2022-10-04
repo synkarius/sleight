@@ -23,13 +23,13 @@ const getLocationDescriptionText = (
   ct: CoordType
 ): string => {
   switch (mma.mouseMovementType) {
-    case MouseMovementType.Enum.ABSOLUTE:
+    case MouseMovementType.Enum.ABSOLUTE_PIXELS:
       const side = CoordType.X === ct ? 'left' : 'upper';
       return `pixel distance from the ${side} corner of the screen`;
-    case MouseMovementType.Enum.RELATIVE:
+    case MouseMovementType.Enum.RELATIVE_PIXELS:
       const name = CoordType[ct];
       return `pixel distance from the cursor's current ${name} position`;
-    case MouseMovementType.Enum.WINDOW:
+    case MouseMovementType.Enum.WINDOW_PERCENTAGE:
       const dir = CoordType.X === ct ? 'horizontally' : 'vertically';
       return `percentage across the current window ${dir}`;
     default:

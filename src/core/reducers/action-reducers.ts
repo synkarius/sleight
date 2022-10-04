@@ -153,20 +153,20 @@ const changeEditingMouseMovementType = (
   action: ActionReducerMouseMovementTypePayloadAction
 ): MoveMouseAction => {
   switch (action.payload) {
-    case MouseMovementType.Enum.ABSOLUTE:
+    case MouseMovementType.Enum.ABSOLUTE_PIXELS:
       return {
         ...state,
-        mouseMovementType: MouseMovementType.Enum.ABSOLUTE,
+        mouseMovementType: MouseMovementType.Enum.ABSOLUTE_PIXELS,
       };
-    case MouseMovementType.Enum.RELATIVE:
+    case MouseMovementType.Enum.RELATIVE_PIXELS:
       return {
         ...state,
-        mouseMovementType: MouseMovementType.Enum.RELATIVE,
+        mouseMovementType: MouseMovementType.Enum.RELATIVE_PIXELS,
       };
-    case MouseMovementType.Enum.WINDOW:
+    case MouseMovementType.Enum.WINDOW_PERCENTAGE:
       return {
         ...state,
-        mouseMovementType: MouseMovementType.Enum.WINDOW,
+        mouseMovementType: MouseMovementType.Enum.WINDOW_PERCENTAGE,
         x: limitNumericActionValueToPercentage(state.x),
         y: limitNumericActionValueToPercentage(state.y),
       };
