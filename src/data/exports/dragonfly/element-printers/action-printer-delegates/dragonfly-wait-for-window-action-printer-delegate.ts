@@ -1,4 +1,4 @@
-import { isEmpty, quote } from '../../../../../core/common/common-functions';
+import { quote } from '../../../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isWaitForWindowAction } from '../../../../model/action/wait-for-window/wait-for-window';

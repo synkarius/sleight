@@ -1,6 +1,8 @@
 export enum ErrorCode {
   EXHAUSTIVENESS_FAILURE = 'this error can never happen at runtime',
 
+  EXPORT = 'problem occurred during export',
+
   MAP_KEY_MISSING = 'map key not found',
 
   MISSING_DELEGATE = 'missing delegate',
