@@ -83,13 +83,13 @@ const mouseButtonValidators: ActionValueValidators = {
   value: createValidator(
     Field.AC_MOUSE_MOUSE_BUTTON_VALUE,
     (action) =>
-      isMouseAction(action) &&
-      isClickMouseAction(action) &&
+      ((isMouseAction(action) && isClickMouseAction(action)) ||
+        (isMouseAction(action) && isHoldReleaseMouseAction(action))) &&
       !isVariableActionValue(action.mouseButton) &&
       isEnterEnumActionValue(action.mouseButton),
     (action) =>
-      isMouseAction(action) &&
-      isClickMouseAction(action) &&
+      ((isMouseAction(action) && isClickMouseAction(action)) ||
+        (isMouseAction(action) && isHoldReleaseMouseAction(action))) &&
       !isVariableActionValue(action.mouseButton) &&
       isEnterEnumActionValue(action.mouseButton) &&
       isEnumSelected(action.mouseButton.value),
@@ -99,12 +99,12 @@ const mouseButtonValidators: ActionValueValidators = {
   variable: createValidator(
     Field.AC_MOUSE_MOUSE_BUTTON_VAR,
     (action) =>
-      isMouseAction(action) &&
-      isClickMouseAction(action) &&
+      ((isMouseAction(action) && isClickMouseAction(action)) ||
+        (isMouseAction(action) && isHoldReleaseMouseAction(action))) &&
       isVariableActionValue(action.mouseButton),
     (action) =>
-      isMouseAction(action) &&
-      isClickMouseAction(action) &&
+      ((isMouseAction(action) && isClickMouseAction(action)) ||
+        (isMouseAction(action) && isHoldReleaseMouseAction(action))) &&
       isVariableActionValue(action.mouseButton) &&
       isIdSelected(action.mouseButton.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,

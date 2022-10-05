@@ -1,5 +1,5 @@
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
-import { getMcMouseButtonActionValueUpdaterDelegate } from './mc-mouse-button-action-value-updater-delegate';
+import { getMcMouseButtonActionValueUpdaterDelegate } from './mcmhr-mouse-button-action-value-updater-delegate';
 import { getMcMhrPauseActionValueUpdaterDelegate } from './mcmhr-pause-action-value-updater-delegate';
 import { getMcRepeatActionValueUpdaterDelegate } from './mc-repeat-action-value-updater-delegate';
 import { getPCentisecondsActionValueUpdaterDelegate } from './p-centiseconds-action-value-updater-delegate';

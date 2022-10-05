@@ -7,6 +7,7 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 import { mMouseButtonGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
 import {
   isClickMouseAction,
+  isHoldReleaseMouseAction,
   isMouseAction,
 } from '../../../../data/model/action/mouse/mouse';
 import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
@@ -16,7 +17,7 @@ export const getMcMouseButtonActionValueUpdaterDelegate: () => ActionValueUpdate
     if (
       groupIncludesField(mMouseButtonGroup, action.payload.field) &&
       isMouseAction(state) &&
-      isClickMouseAction(state)
+      (isClickMouseAction(state) || isHoldReleaseMouseAction(state))
     ) {
       return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
         ? { ...state, mouseButton: changeEnumActionValueType(action) }

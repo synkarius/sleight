@@ -86,6 +86,69 @@ const selectActionValueType = async (
 };
 
 describe('mouse hold/release action component tests', () => {
+  it('should invalidate empty mouse button value', async () => {
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VALUE],
+    });
+    await user.click(select);
+
+    await user.tab();
+
+    const errorText = screen.getByText('mouse button : value must be selected');
+
+    expect(errorText).toBeInTheDocument();
+    expect(select).toHaveClass('is-invalid');
+  });
+
+  it('should validate non-empty mouse button value', async () => {
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VALUE],
+    });
+    await user.click(select);
+
+    await user.selectOptions(select, 'Left');
+    await user.tab();
+
+    expect(select).not.toHaveClass('is-invalid');
+  });
+
+  it('should invalidate non-selected mouse button variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_MOUSE_MOUSE_BUTTON_RADIO,
+      VARIABLE_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VAR],
+    });
+    await user.click(select);
+
+    await user.tab();
+
+    const errorText = screen.getByText(
+      'mouse button : variable must be selected'
+    );
+
+    expect(errorText).toBeInTheDocument();
+    expect(select).toHaveClass('is-invalid');
+  });
+
+  it('should validate selected mouse button variable', async () => {
+    await selectActionValueType(
+      user,
+      Field.AC_MOUSE_MOUSE_BUTTON_RADIO,
+      VARIABLE_RADIO
+    );
+    const select = screen.getByRole('list', {
+      name: Field[Field.AC_MOUSE_MOUSE_BUTTON_VAR],
+    });
+    await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
+
+    await user.tab();
+
+    expect(select).not.toHaveClass('is-invalid');
+  });
+
   it('should invalidate non-selected pause variable', async () => {
     await selectActionValueType(
       user,

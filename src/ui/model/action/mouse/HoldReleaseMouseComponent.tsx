@@ -3,6 +3,7 @@ import { HoldReleaseMouseAction } from '../../../../data/model/action/mouse/mous
 import { ActionValueComponent } from '../ActionValueComponent';
 import {
   mDirectionGroup,
+  mMouseButtonGroup,
   mPauseGroup,
 } from './mouse-action-value-field-groups';
 
@@ -11,6 +12,12 @@ export const HoldReleaseMouseComponent: React.FC<{
 }> = (props) => {
   return (
     <>
+      <ActionValueComponent
+        actionValue={props.holdReleaseMouseAction.mouseButton}
+        labelText="Mouse Button"
+        descriptionText="which mouse button to hold/release"
+        fields={mMouseButtonGroup}
+      />
       <ActionValueComponent
         actionValue={props.holdReleaseMouseAction.pause}
         labelText="Pause"
