@@ -2,7 +2,7 @@ import { isEmpty, quote } from '../../../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isBringAppAction } from '../../../../model/action/bring-app/bring-app';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
   resultIsEmpty,
@@ -15,7 +15,7 @@ export class DragonflyBringAppPrinter
 {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementNamePrinter: ElementNamePrinter
+    private elementTokenPrinter: ElementTokenPrinter
   ) {}
   printAction(
     action: Action,
@@ -29,7 +29,7 @@ export class DragonflyBringAppPrinter
         data
       );
       if (!resultIsEmpty(appPathResult)) {
-        args.push(quote(resultToArg(appPathResult)(this.elementNamePrinter)));
+        args.push(quote(resultToArg(appPathResult)(this.elementTokenPrinter)));
       }
       //
       const appTitleResult = this.actionValueResolver.resolve(
@@ -38,7 +38,8 @@ export class DragonflyBringAppPrinter
       );
       if (!resultIsEmpty(appTitleResult)) {
         args.push(
-          'title=' + quote(resultToArg(appTitleResult)(this.elementNamePrinter))
+          'title=' +
+            quote(resultToArg(appTitleResult)(this.elementTokenPrinter))
         );
       }
       //
@@ -48,7 +49,7 @@ export class DragonflyBringAppPrinter
       );
       if (!resultIsEmpty(startDirResult)) {
         args.push(
-          'cwd=' + quote(resultToArg(startDirResult)(this.elementNamePrinter))
+          'cwd=' + quote(resultToArg(startDirResult)(this.elementTokenPrinter))
         );
       }
       //

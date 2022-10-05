@@ -3,7 +3,7 @@ import { Reader } from '../../../../../di/reader';
 import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
 import { ElementType } from '../../../../model/element-types';
 import { VariableType } from '../../../../model/variable/variable-types';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 
 export enum DragonflyActionValueResolverResultType {
   ENTER_TEXT,
@@ -22,7 +22,7 @@ type DragonflyActionValueResolverValueResult = {
 
 type DragonflyActionValueResolverVariableResult = {
   type: DragonflyActionValueResolverResultType.USE_VARIABLE;
-  variableName: string;
+  variableId: string;
   variableType: VariableType.Type;
 };
 
@@ -32,11 +32,11 @@ export type DragonflyActionValueResolverResult =
 
 export const resultToArg = (
   result: DragonflyActionValueResolverResult
-): Reader<ElementNamePrinter, string> => {
-  return (elementNamePrinter: ElementNamePrinter) => {
+): Reader<ElementTokenPrinter, string> => {
+  return (elementTokenPrinter: ElementTokenPrinter) => {
     const arg =
       result.type === DragonflyActionValueResolverResultType.USE_VARIABLE
-        ? resultToDFStrInterp(result)(elementNamePrinter)
+        ? resultToDFStrInterp(result)(elementTokenPrinter)
         : result.value;
     return arg;
   };
@@ -45,10 +45,10 @@ export const resultToArg = (
 /** Converts result to Dragonfly interpolation string. */
 export const resultToDFStrInterp = (
   result: DragonflyActionValueResolverVariableResult
-): Reader<ElementNamePrinter, string> => {
-  return (elementNamePrinter) =>
-    `%(${elementNamePrinter.printElementName(
-      result.variableName,
+): Reader<ElementTokenPrinter, string> => {
+  return (elementTokenPrinter) =>
+    `%(${elementTokenPrinter.printElementToken(
+      result.variableId,
       ElementType.Enum.VARIABLE
     )})` + resultStrInterpSuffix(result);
 };
@@ -59,7 +59,7 @@ export const resultIsEmpty = (
   const resultType = result.type;
   switch (resultType) {
     case DragonflyActionValueResolverResultType.USE_VARIABLE:
-      return isEmpty(result.variableName);
+      return isEmpty(result.variableId);
     default:
       return isEmpty(result.value);
   }

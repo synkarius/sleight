@@ -2,7 +2,7 @@ import { NotImplementedError } from '../../../../../error/not-implemented-error'
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isCallFunctionAction } from '../../../../model/action/call-function/call-function';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
 
@@ -11,7 +11,7 @@ export class DragonflyCallFunctionPrinter
 {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementNamePrinter: ElementNamePrinter
+    private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
   printAction(

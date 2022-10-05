@@ -1,3 +1,4 @@
+import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import08 } from '../../../../../test/resources/import-08.json';
@@ -8,6 +9,7 @@ import { SendTextAction } from '../../../../model/action/send-text/send-text';
 describe('dragonfly SendText printer tests', () => {
   const printer = container.get(Tokens.DragonflySendTextPrinter);
   const formatMapper = container.get(Tokens.FormatMapper);
+  const fmt = (value: string) => replaceNonAlphaNumeric(value, '_');
 
   it('should print entered values correctly', () => {
     const data = formatMapper.externalFormatToInternal(
@@ -26,7 +28,8 @@ describe('dragonfly SendText printer tests', () => {
     );
     const action: SendTextAction = castJsonForTest(import09.actions[0]);
 
-    const expected = 'Text("%(variable_text_var)s")';
+    const textVar = fmt('variable_d8c6f89e-59be-4adc-b4d0-66a03e09e8be');
+    const expected = `Text("%(${textVar})s")`;
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });

@@ -1,3 +1,4 @@
+import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import04 } from '../../../../../test/resources/import-04.json';
@@ -8,6 +9,7 @@ import { MimicAction } from '../../../../model/action/mimic/mimic';
 describe('dragonfly Mimic printer tests', () => {
   const printer = container.get(Tokens.DragonflyMimicPrinter);
   const formatMapper = container.get(Tokens.FormatMapper);
+  const fmt = (value: string) => replaceNonAlphaNumeric(value, '_');
 
   it('should print entered values correctly', () => {
     const data = formatMapper.externalFormatToInternal(
@@ -26,7 +28,8 @@ describe('dragonfly Mimic printer tests', () => {
     );
     const action: MimicAction = castJsonForTest(import05.actions[0]);
 
-    const expected = 'Mimic("%(variable_text_var_1)s")';
+    const textVar = fmt('variable_9bfe9ee5-ee03-46ef-a202-1f4e08a4a699');
+    const expected = `Mimic("%(${textVar})s")`;
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });

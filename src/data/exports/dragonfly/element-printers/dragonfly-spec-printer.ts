@@ -5,12 +5,12 @@ import { ElementType } from '../../../model/element-types';
 import { SelectorDTO } from '../../../model/selector/selector-dto';
 import { SpecDTO, SpecItemDTO } from '../../../model/spec/spec-dto';
 import { SpecItemType } from '../../../model/spec/spec-item-type';
-import { ElementNamePrinter } from '../../element-name-printer';
+import { ElementTokenPrinter } from '../../element-token-printer';
 import { ElementPrinter } from './element-printer';
 
 export class DragonflySpecPrinter implements ElementPrinter<SpecDTO> {
   constructor(
-    private elementNamePrinter: ElementNamePrinter,
+    private elementTokenPrinter: ElementTokenPrinter,
     private selectorPrinter: ElementPrinter<SelectorDTO>
   ) {}
 
@@ -36,8 +36,8 @@ export class DragonflySpecPrinter implements ElementPrinter<SpecDTO> {
         const variable = MapUtil.getOrThrow(data.variables, specItem.itemId);
         return (
           '<' +
-          this.elementNamePrinter.printElementName(
-            variable.name,
+          this.elementTokenPrinter.printElementToken(
+            variable.id,
             ElementType.Enum.VARIABLE
           ) +
           '>'

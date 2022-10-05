@@ -56,7 +56,7 @@ export class DefaultDragonflyActionValueResolver
         );
         return {
           type: DragonflyActionValueResolverResultType.USE_VARIABLE,
-          variableName: variable.name,
+          variableId: variable.id,
           variableType: variable.type,
         };
       default:

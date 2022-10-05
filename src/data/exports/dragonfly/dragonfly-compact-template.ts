@@ -1,4 +1,4 @@
-const elemNameSuffix = '{{#replaceNonAlphanum}}{{name}}{{/replaceNonAlphanum}}';
+const elemNameSuffix = '{{#replaceNonAlphanum}}{{id}}{{/replaceNonAlphanum}}';
 
 export const dragonflyCompactTemplate = `from dragonfly import Dictation
 from dragonfly import ShortIntegerRef

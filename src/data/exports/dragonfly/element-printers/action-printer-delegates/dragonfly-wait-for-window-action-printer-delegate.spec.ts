@@ -1,3 +1,4 @@
+import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import06 } from '../../../../../test/resources/import-06.json';
@@ -8,6 +9,7 @@ import { WaitForWindowAction } from '../../../../model/action/wait-for-window/wa
 describe('dragonfly WaitForWindow printer tests', () => {
   const printer = container.get(Tokens.DragonflyWaitForWindowPrinter);
   const formatMapper = container.get(Tokens.FormatMapper);
+  const fmt = (value: string) => replaceNonAlphaNumeric(value, '_');
 
   it('should print entered values correctly', () => {
     const data = formatMapper.externalFormatToInternal(
@@ -28,8 +30,10 @@ describe('dragonfly WaitForWindow printer tests', () => {
     const action: WaitForWindowAction = castJsonForTest(import06.actions[0]);
     //
 
-    const expected =
-      'WaitWindow(executable="%(variable_exe_var)s", title="%(variable_title_var)s", timeout="%(variable_wait_var)d")';
+    const exeVar = fmt('variable_21735747-e088-4001-bd6a-586e2c7b1a2b');
+    const titleVar = fmt('variable_c1b1ef49-0d54-4a84-959b-da1adaaa2a97');
+    const timeVar = fmt('variable_02162aaf-c78b-469f-912c-1335d671e75e');
+    const expected = `WaitWindow(executable="%(${exeVar})s", title="%(${titleVar})s", timeout="%(${timeVar})d")`;
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });

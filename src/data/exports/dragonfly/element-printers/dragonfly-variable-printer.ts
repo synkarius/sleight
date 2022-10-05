@@ -4,18 +4,18 @@ import { ElementType } from '../../../model/element-types';
 import { SelectorDTO } from '../../../model/selector/selector-dto';
 import { VariableDTO } from '../../../model/variable/variable-dto';
 import { VariableType } from '../../../model/variable/variable-types';
-import { ElementNamePrinter } from '../../element-name-printer';
+import { ElementTokenPrinter } from '../../element-token-printer';
 import { ElementPrinter } from './element-printer';
 
 export class DragonflyVariablePrinter implements ElementPrinter<VariableDTO> {
   constructor(
-    private elementNamePrinter: ElementNamePrinter,
+    private elementTokenPrinter: ElementTokenPrinter,
     private selectorPrinter: ElementPrinter<SelectorDTO>
   ) {}
 
   printElement(variable: VariableDTO, data: SleightDataInternalFormat): string {
-    const name = this.elementNamePrinter.printElementName(
-      variable.name,
+    const name = this.elementTokenPrinter.printElementToken(
+      variable.id,
       ElementType.Enum.VARIABLE
     );
     switch (variable.type) {

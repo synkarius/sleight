@@ -61,7 +61,7 @@ import { SleightDataEvaluator } from '../../data/imports/model-update/evaluators
 import { RoleKeyedDataUpdater } from '../../data/imports/model-update/rolekeyed-data-updater';
 import { ActionVariableIdsRewriterDelegate } from '../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/action-variable-ids-rewriter-delegate';
 import { ElementPrinter } from '../../data/exports/dragonfly/element-printers/element-printer';
-import { ElementNamePrinter } from '../../data/exports/element-name-printer';
+import { ElementTokenPrinter } from '../../data/exports/element-token-printer';
 import { DragonflyMustacheFnsFactory } from '../../data/exports/dragonfly/dragonfly-mustache-helper-fns';
 import { DragonflyActionPrinterDelegate } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/action-printer-delegate';
 import { DragonflyBringAppPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-bring-app-action-printer-delegate';
@@ -233,8 +233,9 @@ export namespace Tokens {
   export const SleightDataIdsRewriter = token<SleightDataIdsRewriter>(
     'SleightDataIdsRewriter'
   );
-  export const ElementNamePrinter =
-    token<ElementNamePrinter>('ElementNamePrinter');
+  export const ElementTokenPrinter = token<ElementTokenPrinter>(
+    'ElementTokenPrinter'
+  );
   export const DragonElementPrinter_Action = token<ElementPrinter<Action>>(
     'DragonElementPrinter_Action'
   );

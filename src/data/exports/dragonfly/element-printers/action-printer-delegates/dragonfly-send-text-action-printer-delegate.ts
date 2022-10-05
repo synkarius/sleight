@@ -2,7 +2,7 @@ import { quote } from '../../../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isSendTextAction } from '../../../../model/action/send-text/send-text';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
   resultIsEmpty,
@@ -15,7 +15,7 @@ export class DragonflySendTextPrinter
 {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementNamePrinter: ElementNamePrinter
+    private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
   printAction(
@@ -26,7 +26,7 @@ export class DragonflySendTextPrinter
       const args: string[] = [];
       const textResult = this.actionValueResolver.resolve(action.text, data);
       if (!resultIsEmpty(textResult)) {
-        args.push(quote(resultToArg(textResult)(this.elementNamePrinter)));
+        args.push(quote(resultToArg(textResult)(this.elementTokenPrinter)));
       }
       return ['Text(', args.join(', '), ')'].join('');
     }

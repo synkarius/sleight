@@ -15,7 +15,7 @@ import { DragonflyContextPrinter } from '../../../data/exports/dragonfly/element
 import { DragonflySelectorPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-selector-printer';
 import { DragonflySpecPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-spec-printer';
 import { DragonflyVariablePrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-variable-printer';
-import { DefaultElementNamePrinter } from '../../../data/exports/element-name-printer';
+import { DefaultElementTokenPrinter } from '../../../data/exports/element-token-printer';
 import { DragonflyActionPrinterDelegateArray } from '../../di-collection-types';
 import { Tokens } from '../brandi-tokens';
 
@@ -25,8 +25,8 @@ export const bindElementPrinters = (container: Container): void => {
    */
   // misc
   container
-    .bind(Tokens.ElementNamePrinter)
-    .toInstance(DefaultElementNamePrinter)
+    .bind(Tokens.ElementTokenPrinter)
+    .toInstance(DefaultElementTokenPrinter)
     .inSingletonScope();
   container
     .bind(Tokens.DragonflyActionValueResolver)
@@ -61,7 +61,7 @@ export const bindElementPrinters = (container: Container): void => {
     .inSingletonScope();
   injected(
     DragonflySpecPrinter,
-    Tokens.ElementNamePrinter,
+    Tokens.ElementTokenPrinter,
     Tokens.DragonElementPrinter_Selector
   );
   container
@@ -70,7 +70,7 @@ export const bindElementPrinters = (container: Container): void => {
     .inSingletonScope();
   injected(
     DragonflyVariablePrinter,
-    Tokens.ElementNamePrinter,
+    Tokens.ElementTokenPrinter,
     Tokens.DragonElementPrinter_Selector
   );
   container
@@ -95,7 +95,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyBringAppPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflyCallFunctionPrinter)
@@ -104,7 +104,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyCallFunctionPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflyMimicPrinter)
@@ -113,7 +113,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyMimicPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflyMousePrinter)
@@ -122,7 +122,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyMousePrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflyPausePrinter)
@@ -131,7 +131,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyPausePrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflySendKeyPrinter)
@@ -140,7 +140,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflySendKeyPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflySendTextPrinter)
@@ -149,7 +149,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflySendTextPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflyWaitForWindowPrinter)
@@ -158,7 +158,7 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyWaitForWindowPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementNamePrinter
+    Tokens.ElementTokenPrinter
   );
   container
     .bind(Tokens.DragonflyActionPrinterDelegateArray)

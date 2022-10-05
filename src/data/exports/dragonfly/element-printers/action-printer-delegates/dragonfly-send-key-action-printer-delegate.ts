@@ -10,7 +10,7 @@ import {
   SendKeyPressAction,
 } from '../../../../model/action/send-key/send-key';
 import { SendKeyMode } from '../../../../model/action/send-key/send-key-modes';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
   DragonflyActionValueResolverResult,
@@ -24,7 +24,7 @@ import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
 export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementNamePrinter: ElementNamePrinter
+    private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
   printAction(
@@ -66,13 +66,13 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
       data
     );
     if (!resultIsEmpty(innerPauseResult)) {
-      const arg = resultToArg(innerPauseResult)(this.elementNamePrinter);
+      const arg = resultToArg(innerPauseResult)(this.elementTokenPrinter);
       args.push('/' + arg);
     }
     //
     const repeatResult = this.actionValueResolver.resolve(action.repeat, data);
     if (!resultIsEmpty(repeatResult)) {
-      const arg = resultToArg(repeatResult)(this.elementNamePrinter);
+      const arg = resultToArg(repeatResult)(this.elementTokenPrinter);
       args.push(':' + arg);
     }
     //
@@ -81,7 +81,7 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
       data
     );
     if (!resultIsEmpty(outerPauseResult)) {
-      const arg = resultToArg(outerPauseResult)(this.elementNamePrinter);
+      const arg = resultToArg(outerPauseResult)(this.elementTokenPrinter);
       args.push('/' + arg);
     }
     return quote(args.join(''));
@@ -111,7 +111,7 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
       data
     );
     if (!resultIsEmpty(outerPauseResult)) {
-      const arg = resultToArg(outerPauseResult)(this.elementNamePrinter);
+      const arg = resultToArg(outerPauseResult)(this.elementTokenPrinter);
       args.push('/' + arg);
     }
     return quote(args.join(''));
@@ -137,7 +137,7 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
   ): string {
     const arg =
       result.type === DragonflyActionValueResolverResultType.USE_VARIABLE
-        ? resultToDFStrInterp(result)(this.elementNamePrinter)
+        ? resultToDFStrInterp(result)(this.elementTokenPrinter)
         : this.extractKeyFromEnumValueWithRegex(result.value);
     return arg;
   }
@@ -147,7 +147,7 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
   ): string => {
     const arg =
       result.type === DragonflyActionValueResolverResultType.USE_VARIABLE
-        ? resultToDFStrInterp(result)(this.elementNamePrinter)
+        ? resultToDFStrInterp(result)(this.elementTokenPrinter)
         : result.value.toLowerCase().replaceAll(' ', '');
     return arg;
   };

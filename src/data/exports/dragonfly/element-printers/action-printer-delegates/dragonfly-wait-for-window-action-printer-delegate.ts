@@ -2,7 +2,7 @@ import { quote } from '../../../../../core/common/common-functions';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isWaitForWindowAction } from '../../../../model/action/wait-for-window/wait-for-window';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
   DragonflyActionValueResolverResultType,
@@ -16,7 +16,7 @@ export class DragonflyWaitForWindowPrinter
 {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementNamePrinter: ElementNamePrinter
+    private elementTokenPrinter: ElementTokenPrinter
   ) {}
   printAction(
     action: Action,
@@ -32,14 +32,14 @@ export class DragonflyWaitForWindowPrinter
       if (!resultIsEmpty(executableResult)) {
         args.push(
           'executable=' +
-            quote(resultToArg(executableResult)(this.elementNamePrinter))
+            quote(resultToArg(executableResult)(this.elementTokenPrinter))
         );
       }
       //
       const titleResult = this.actionValueResolver.resolve(action.title, data);
       if (!resultIsEmpty(titleResult)) {
         args.push(
-          'title=' + quote(resultToArg(titleResult)(this.elementNamePrinter))
+          'title=' + quote(resultToArg(titleResult)(this.elementTokenPrinter))
         );
       }
       //
@@ -48,7 +48,7 @@ export class DragonflyWaitForWindowPrinter
         data
       );
       if (!resultIsEmpty(waitSecondsResult)) {
-        const arg = resultToArg(waitSecondsResult)(this.elementNamePrinter);
+        const arg = resultToArg(waitSecondsResult)(this.elementTokenPrinter);
         args.push(
           'timeout=' +
             (waitSecondsResult.type ===

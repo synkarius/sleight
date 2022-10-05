@@ -9,7 +9,7 @@ import {
   MoveMouseAction,
 } from '../../../../model/action/mouse/mouse';
 import { MouseActionType } from '../../../../model/action/mouse/mouse-action-type';
-import { ElementNamePrinter } from '../../../element-name-printer';
+import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
   DragonflyActionValueResolverResult,
@@ -24,7 +24,7 @@ import { MouseMovementType } from '../../../../model/action/mouse/mouse-movement
 export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementNamePrinter: ElementNamePrinter
+    private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
   printAction(
@@ -67,13 +67,13 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
     //
     const pauseResult = this.actionValueResolver.resolve(action.pause, data);
     if (!resultIsEmpty(pauseResult)) {
-      const arg = resultToArg(pauseResult)(this.elementNamePrinter);
+      const arg = resultToArg(pauseResult)(this.elementTokenPrinter);
       args.push(':' + arg);
     }
     //
     const repeatResult = this.actionValueResolver.resolve(action.repeat, data);
     if (!resultIsEmpty(repeatResult)) {
-      const arg = resultToArg(repeatResult)(this.elementNamePrinter);
+      const arg = resultToArg(repeatResult)(this.elementTokenPrinter);
       args.push('/' + arg);
     }
     return quote(args.join(''));
@@ -99,7 +99,7 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
     //
     const pauseResult = this.actionValueResolver.resolve(action.pause, data);
     if (!resultIsEmpty(pauseResult)) {
-      const arg = resultToArg(pauseResult)(this.elementNamePrinter);
+      const arg = resultToArg(pauseResult)(this.elementTokenPrinter);
       args.push(':' + arg);
     }
     return quote(args.join(''));
@@ -155,7 +155,7 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
     isPercentage: boolean
   ): string => {
     if (result.type === DragonflyActionValueResolverResultType.USE_VARIABLE) {
-      return resultToDFStrInterp(result)(this.elementNamePrinter);
+      return resultToDFStrInterp(result)(this.elementTokenPrinter);
     } else {
       let value = +result.value;
       value = isPercentage ? Math.min(0, Math.max(value, 100)) / 100 : value;
@@ -168,7 +168,7 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
   ): string => {
     const arg =
       result.type === DragonflyActionValueResolverResultType.USE_VARIABLE
-        ? resultToDFStrInterp(result)(this.elementNamePrinter)
+        ? resultToDFStrInterp(result)(this.elementTokenPrinter)
         : result.value.toLowerCase().replaceAll(' ', '');
     return arg;
   };
