@@ -74,7 +74,7 @@ describe('dragonfly Mouse printer tests', () => {
     );
     const action: HoldReleaseMouseAction = castJsonForTest(import05.actions[0]);
 
-    const expected = 'Mouse("kilo:up/14")';
+    const expected = 'Mouse("stepdown:down/3")';
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });
@@ -85,10 +85,10 @@ describe('dragonfly Mouse printer tests', () => {
     );
     const action: HoldReleaseMouseAction = castJsonForTest(import06.actions[0]);
 
-    const keyVar = fmt('variable_c527fae3-fb30-4f85-b8a2-f8cd39adcaeb');
-    const dirVar = fmt('variable_5585a4cd-d671-4d65-8057-0015b0ed10a3');
-    const outVar = fmt('variable_b61db350-b08f-460c-a65f-9f2e3cdc3370');
-    const expected = `Mouse("as-%(${keyVar})s:%(${dirVar})s/%(${outVar})d")`;
+    const btnVar = fmt('variable_f3b4643c-ccbb-4cf1-9b48-d80e3ad24a10');
+    const pauseVar = fmt('variable_7bc04596-ad0d-4527-a862-1e18bf88910a');
+    const dirVar = fmt('variable_869e23f3-325a-4f2e-bf77-23deb6df89f7');
+    const expected = `Mouse("%(${btnVar})s:%(${dirVar})s/%(${pauseVar})d")`;
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });

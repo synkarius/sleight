@@ -3,27 +3,27 @@
         "version": "0.1.0.alpha",
         "actions": [
             {
-                "id": "c69b7cec-b5e5-4f05-8b25-f63cd357e4a6",
-                "name": "mouse-act-c69b7cec-b5e5",
+                "id": "1a0f641e-c0e2-41c4-bc31-5259936eae5b",
+                "name": "mouse-act-1a0f641e-c0e2",
                 "type": "Mouse",
                 "roleKey": "",
                 "enabled": true,
                 "locked": false,
                 "mouseActionType": "Hold/Release",
                 "mouseButton": {
-                    "actionValueType": "Enter Value",
-                    "enteredValueType": "Choice",
-                    "value": "unselected-sleight-enum"
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "f3b4643c-ccbb-4cf1-9b48-d80e3ad24a10"
                 },
                 "pause": {
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
-                    "variableId": "8e936007-92d4-4467-9fc7-d261b31c557f"
+                    "variableId": "7bc04596-ad0d-4527-a862-1e18bf88910a"
                 },
                 "direction": {
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
-                    "variableId": "2ecc7cbb-6d8b-496d-b128-ac0ec77b16d1"
+                    "variableId": "869e23f3-325a-4f2e-bf77-23deb6df89f7"
                 }
             }
         ],
@@ -31,24 +31,29 @@
         "contexts": [],
         "selectors": [
             {
-                "id": "d363a33c-3186-4ba0-b36a-9e6a1a2fb96d",
+                "id": "43f0cdc7-2bce-4ab4-b073-ed92f644f674",
                 "items": [
                     {
-                        "id": "6839290e-d786-4cb2-826f-e928f65f7252",
-                        "value": "up"
+                        "id": "24c8c87a-ee82-4deb-b4f1-66b9fb6e24a3",
+                        "value": "left"
                     }
                 ]
             },
             {
-                "id": "863ffc0c-18a7-4536-9b05-2b288e931f7b",
+                "id": "01c9daae-3554-48fd-9697-b09981a17ca1",
                 "items": [
                     {
-                        "id": "92689117-614b-4016-a730-8a810172005d",
+                        "id": "bbf3344f-d81d-4a06-a43b-a12dc6154e37",
                         "value": "down"
-                    },
+                    }
+                ]
+            },
+            {
+                "id": "4177ac82-99ec-4c18-a473-d2f6350ff64f",
+                "items": [
                     {
-                        "id": "cc4a6837-8dfb-460a-86f0-8a53c8a600a8",
-                        "value": "done"
+                        "id": "eb69dbb2-10c1-4711-984a-2439295b8369",
+                        "value": "up"
                     }
                 ]
             }
@@ -56,17 +61,32 @@
         "specs": [],
         "variables": [
             {
-                "id": "8e936007-92d4-4467-9fc7-d261b31c557f",
+                "id": "f3b4643c-ccbb-4cf1-9b48-d80e3ad24a10",
+                "name": "button",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "3eb3308e-161d-4ab3-8b5d-68bb28f9a8b2",
+                        "selectorId": "43f0cdc7-2bce-4ab4-b073-ed92f644f674",
+                        "value": "left"
+                    }
+                ]
+            },
+            {
+                "id": "7bc04596-ad0d-4527-a862-1e18bf88910a",
                 "type": "Range",
                 "name": "pause",
                 "roleKey": "",
                 "enabled": true,
                 "locked": false,
-                "beginInclusive": 2,
-                "endInclusive": 9
+                "beginInclusive": 6,
+                "endInclusive": 15
             },
             {
-                "id": "2ecc7cbb-6d8b-496d-b128-ac0ec77b16d1",
+                "id": "869e23f3-325a-4f2e-bf77-23deb6df89f7",
                 "name": "dir",
                 "type": "Choice",
                 "roleKey": "",
@@ -74,14 +94,14 @@
                 "locked": false,
                 "items": [
                     {
-                        "id": "2c8df15e-21be-4a06-aa05-28e2415edf2d",
-                        "selectorId": "d363a33c-3186-4ba0-b36a-9e6a1a2fb96d",
-                        "value": "up"
+                        "id": "0227918a-f577-49b6-9227-66e0372954c2",
+                        "selectorId": "01c9daae-3554-48fd-9697-b09981a17ca1",
+                        "value": "down"
                     },
                     {
-                        "id": "210d8741-d1bd-4984-a3d3-cf1df3851408",
-                        "selectorId": "863ffc0c-18a7-4536-9b05-2b288e931f7b",
-                        "value": "down"
+                        "id": "88ea4b45-e229-4b0c-8e96-fef2c6bb7608",
+                        "selectorId": "4177ac82-99ec-4c18-a473-d2f6350ff64f",
+                        "value": "up"
                     }
                 ]
             }

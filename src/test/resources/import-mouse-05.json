@@ -3,8 +3,8 @@
         "version": "0.1.0.alpha",
         "actions": [
             {
-                "id": "c69b7cec-b5e5-4f05-8b25-f63cd357e4a6",
-                "name": "mouse-act-c69b7cec-b5e5",
+                "id": "9174f890-c55a-4c35-9552-6e8c9d06932b",
+                "name": "mouse-act-9174f890-c55a",
                 "type": "Mouse",
                 "roleKey": "",
                 "enabled": true,
@@ -13,12 +13,12 @@
                 "mouseButton": {
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
-                    "value": "unselected-sleight-enum"
+                    "value": "Step Down"
                 },
                 "pause": {
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
-                    "value": 14
+                    "value": 3
                 },
                 "direction": {
                     "actionValueType": "Enter Value",
