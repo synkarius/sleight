@@ -1,0 +1,36 @@
+{
+    "import03": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "ab37d6a1-ac3e-4079-8dae-8dda7f30a27b",
+                "name": "mouse-act-ab37d6a1-ac3e",
+                "type": "Mouse",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "mouseActionType": "Click",
+                "mouseButton": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "Middle"
+                },
+                "pause": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 1
+                },
+                "repeat": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 3
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

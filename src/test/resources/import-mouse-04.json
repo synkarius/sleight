@@ -1,0 +1,82 @@
+{
+    "import04": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "ab37d6a1-ac3e-4079-8dae-8dda7f30a27b",
+                "name": "mouse-act-ab37d6a1-ac3e",
+                "type": "Mouse",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "mouseActionType": "Click",
+                "mouseButton": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "d38dc993-fb9f-4319-8403-ca72a82cfeb9"
+                },
+                "pause": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "3817aca2-a3eb-458d-8060-e0f0939b0863"
+                },
+                "repeat": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "01f08aeb-3f70-4b91-ae34-f80c140a31ba"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [
+            {
+                "id": "30a51e38-3964-42e7-b8f3-08b923e4e1ea",
+                "items": [
+                    {
+                        "id": "ada1f773-2c3f-4001-a535-b164deba3107",
+                        "value": "left"
+                    }
+                ]
+            }
+        ],
+        "specs": [],
+        "variables": [
+            {
+                "id": "d38dc993-fb9f-4319-8403-ca72a82cfeb9",
+                "name": "button",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "bbe94f01-68f2-4752-83fb-d7e0e9afb95b",
+                        "selectorId": "30a51e38-3964-42e7-b8f3-08b923e4e1ea",
+                        "value": "left"
+                    }
+                ]
+            },
+            {
+                "id": "3817aca2-a3eb-458d-8060-e0f0939b0863",
+                "type": "Range",
+                "name": "pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 6,
+                "endInclusive": 8
+            },
+            {
+                "id": "01f08aeb-3f70-4b91-ae34-f80c140a31ba",
+                "type": "Range",
+                "name": "repeat",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 10
+            }
+        ]
+    }
+}

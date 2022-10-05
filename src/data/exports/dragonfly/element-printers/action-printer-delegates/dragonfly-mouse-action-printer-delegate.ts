@@ -65,15 +65,15 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
     );
     args.push(this.enumResultToArg(mouseButtonResult));
     //
-    const pauseResult = this.actionValueResolver.resolve(action.pause, data);
-    if (!resultIsEmpty(pauseResult)) {
-      const arg = resultToArg(pauseResult)(this.elementTokenPrinter);
-      args.push(':' + arg);
-    }
-    //
     const repeatResult = this.actionValueResolver.resolve(action.repeat, data);
     if (!resultIsEmpty(repeatResult)) {
       const arg = resultToArg(repeatResult)(this.elementTokenPrinter);
+      args.push(':' + arg);
+    }
+    //
+    const pauseResult = this.actionValueResolver.resolve(action.pause, data);
+    if (!resultIsEmpty(pauseResult)) {
+      const arg = resultToArg(pauseResult)(this.elementTokenPrinter);
       args.push('/' + arg);
     }
     return quote(args.join(''));
@@ -95,12 +95,12 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
       action.direction,
       data
     );
-    args.push(this.enumResultToArg(directionResult));
+    args.push(':' + this.enumResultToArg(directionResult));
     //
     const pauseResult = this.actionValueResolver.resolve(action.pause, data);
     if (!resultIsEmpty(pauseResult)) {
       const arg = resultToArg(pauseResult)(this.elementTokenPrinter);
-      args.push(':' + arg);
+      args.push('/' + arg);
     }
     return quote(args.join(''));
   }

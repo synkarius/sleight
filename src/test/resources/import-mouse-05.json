@@ -1,0 +1,36 @@
+{
+    "import05": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "c69b7cec-b5e5-4f05-8b25-f63cd357e4a6",
+                "name": "mouse-act-c69b7cec-b5e5",
+                "type": "Mouse",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "mouseActionType": "Hold/Release",
+                "mouseButton": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "unselected-sleight-enum"
+                },
+                "pause": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 14
+                },
+                "direction": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "Down"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

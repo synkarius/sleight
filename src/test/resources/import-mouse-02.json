@@ -1,0 +1,53 @@
+{
+    "import02": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "d9f682da-49ce-4ccc-82c9-ebc56665760b",
+                "name": "mouse-act-d9f682da-49ce",
+                "type": "Mouse",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "mouseActionType": "Move",
+                "mouseMovementType": "Relative Pixels",
+                "x": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "c6c21ba3-ff22-47b3-bdf6-7e6e9e742885"
+                },
+                "y": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "2ddf1139-714d-4a9a-ba5b-8ab3880ef828"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "c6c21ba3-ff22-47b3-bdf6-7e6e9e742885",
+                "type": "Range",
+                "name": "x",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 14
+            },
+            {
+                "id": "2ddf1139-714d-4a9a-ba5b-8ab3880ef828",
+                "type": "Range",
+                "name": "y",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 3,
+                "endInclusive": 9
+            }
+        ]
+    }
+}
