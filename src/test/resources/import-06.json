@@ -1,0 +1,95 @@
+{
+    "import06": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "992066c3-a8c2-4d51-a308-7ce3732870e1",
+                "name": "wait-for-window-act-992066c3-a8c2",
+                "type": "Wait for Window",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "executable": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "21735747-e088-4001-bd6a-586e2c7b1a2b"
+                },
+                "title": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "c1b1ef49-0d54-4a84-959b-da1adaaa2a97"
+                },
+                "waitSeconds": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "02162aaf-c78b-469f-912c-1335d671e75e"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [
+            {
+                "id": "f320c8ab-5e9c-4738-802f-6879bf86d29f",
+                "items": [
+                    {
+                        "id": "9f099fba-21c5-4464-8102-0d4098b5e5e5",
+                        "value": "chrome"
+                    }
+                ]
+            },
+            {
+                "id": "456a62f9-06b6-4b78-b6fe-32248281bae8",
+                "items": [
+                    {
+                        "id": "8fe84304-efaa-457f-83c6-2e7892dd07b9",
+                        "value": "gee mail"
+                    }
+                ]
+            }
+        ],
+        "specs": [],
+        "variables": [
+            {
+                "id": "21735747-e088-4001-bd6a-586e2c7b1a2b",
+                "name": "exe-var",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "3168d10e-bdea-4d67-80bd-e728b08734de",
+                        "selectorId": "f320c8ab-5e9c-4738-802f-6879bf86d29f",
+                        "value": "chrome.exe"
+                    }
+                ]
+            },
+            {
+                "id": "c1b1ef49-0d54-4a84-959b-da1adaaa2a97",
+                "name": "title-var",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "c877438d-1c21-42d0-aa6c-f016c5b82295",
+                        "selectorId": "456a62f9-06b6-4b78-b6fe-32248281bae8",
+                        "value": "Gmail"
+                    }
+                ]
+            },
+            {
+                "id": "02162aaf-c78b-469f-912c-1335d671e75e",
+                "type": "Range",
+                "name": "wait-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 2,
+                "endInclusive": 7
+            }
+        ]
+    }
+}

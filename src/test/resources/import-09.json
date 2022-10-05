@@ -1,0 +1,34 @@
+{
+    "import09": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "4da0bacc-97e3-4e2a-b176-f777408355ff",
+                "name": "send-text-act-4da0bacc-97e3",
+                "type": "Send Text",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "text": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Text",
+                    "variableId": "d8c6f89e-59be-4adc-b4d0-66a03e09e8be"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "d8c6f89e-59be-4adc-b4d0-66a03e09e8be",
+                "type": "Text",
+                "name": "text-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false
+            }
+        ]
+    }
+}

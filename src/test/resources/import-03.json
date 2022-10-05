@@ -1,0 +1,35 @@
+{
+    "import03": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "fd03e639-0ade-4ada-b07f-5563816405a1",
+                "name": "bring-app-act-fd03e639-0ade",
+                "type": "Bring App",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "appPath": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "/some-path"
+                },
+                "appTitle": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "Some Title"
+                },
+                "startDir": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "/start-dir"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

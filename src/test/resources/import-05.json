@@ -1,0 +1,34 @@
+{
+    "import05": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "edc4743a-3163-473d-b101-6427c53d5519",
+                "name": "mimic-act-edc4743a-3163",
+                "type": "Mimic",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "words": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Text",
+                    "variableId": "9bfe9ee5-ee03-46ef-a202-1f4e08a4a699"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "9bfe9ee5-ee03-46ef-a202-1f4e08a4a699",
+                "type": "Text",
+                "name": "text-var-1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false
+            }
+        ]
+    }
+}

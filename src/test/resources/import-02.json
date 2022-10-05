@@ -1,0 +1,151 @@
+{
+    "import02": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "144c5f99-f948-4819-bd61-f4191f67ab2b",
+                "name": "bring-app-1",
+                "type": "Bring App",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "appPath": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "c23384a3-f96b-41a1-9f3b-078b42d88260"
+                },
+                "appTitle": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "dbe6ae9a-33d2-4be7-be61-06ceba432337"
+                },
+                "startDir": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "e470eead-18a6-4049-af33-af6f9d04c959"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [
+            {
+                "id": "732e60ed-46bc-4272-83d3-c4e9983bb2bf",
+                "items": [
+                    {
+                        "id": "fc413658-f644-4a83-912b-a17656f84389",
+                        "value": "path one"
+                    }
+                ]
+            },
+            {
+                "id": "afe4fae5-cae6-4bd3-a45f-8f8eaf41fc91",
+                "items": [
+                    {
+                        "id": "85caf108-687a-4086-ae1b-35011ccc1b87",
+                        "value": "path two"
+                    }
+                ]
+            },
+            {
+                "id": "d841243a-57c4-4120-a298-a9b9f0364fa6",
+                "items": [
+                    {
+                        "id": "71e87fb8-20bc-4ef5-9204-72a8b0bf3ce0",
+                        "value": "title one"
+                    }
+                ]
+            },
+            {
+                "id": "a8964688-f05c-49ac-9837-ef61b1101342",
+                "items": [
+                    {
+                        "id": "7df434f0-4049-4d5d-8f40-7cb83f5cf0db",
+                        "value": "title two"
+                    }
+                ]
+            },
+            {
+                "id": "6f910ee6-60a3-4719-86fa-6d12f4f036ce",
+                "items": [
+                    {
+                        "id": "b961a83d-58cc-442e-82db-4029c12da6db",
+                        "value": "start directory one"
+                    }
+                ]
+            },
+            {
+                "id": "7b60aae6-412b-4dd0-8a1d-a639a1519f79",
+                "items": [
+                    {
+                        "id": "776eeee0-0c5b-4578-81d9-efacc4146028",
+                        "value": "start directory two"
+                    }
+                ]
+            }
+        ],
+        "specs": [],
+        "variables": [
+            {
+                "id": "c23384a3-f96b-41a1-9f3b-078b42d88260",
+                "name": "path-var",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "45731de6-c349-4cdf-b7bd-6cddafcdb2a2",
+                        "selectorId": "732e60ed-46bc-4272-83d3-c4e9983bb2bf",
+                        "value": "/path1"
+                    },
+                    {
+                        "id": "844fb186-4d76-4bfc-8f1c-d2aff19b5cfe",
+                        "selectorId": "afe4fae5-cae6-4bd3-a45f-8f8eaf41fc91",
+                        "value": "/path2"
+                    }
+                ]
+            },
+            {
+                "id": "dbe6ae9a-33d2-4be7-be61-06ceba432337",
+                "name": "title-var",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "295a9193-7ce7-44cd-8f7f-da55f433cbdd",
+                        "selectorId": "d841243a-57c4-4120-a298-a9b9f0364fa6",
+                        "value": "Title One"
+                    },
+                    {
+                        "id": "a3f97921-9bee-462a-a82b-89af34400673",
+                        "selectorId": "a8964688-f05c-49ac-9837-ef61b1101342",
+                        "value": "Title Two"
+                    }
+                ]
+            },
+            {
+                "id": "e470eead-18a6-4049-af33-af6f9d04c959",
+                "name": "start-dir-var",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "c0012caa-2217-4489-ad8f-5e21df344d36",
+                        "selectorId": "6f910ee6-60a3-4719-86fa-6d12f4f036ce",
+                        "value": "/start-dir-1"
+                    },
+                    {
+                        "id": "880a2c0c-e0a9-43d4-a1a4-626f0f622943",
+                        "selectorId": "7b60aae6-412b-4dd0-8a1d-a639a1519f79",
+                        "value": "/start-dir-2"
+                    }
+                ]
+            }
+        ]
+    }
+}

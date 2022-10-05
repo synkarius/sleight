@@ -1,0 +1,35 @@
+{
+    "import07": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "9120098b-1e1e-4a74-830f-19e1cc016b61",
+                "name": "wait-for-window-act-9120098b-1e1e",
+                "type": "Wait for Window",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "executable": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "chrome.exe"
+                },
+                "title": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "Gmail"
+                },
+                "waitSeconds": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 5
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

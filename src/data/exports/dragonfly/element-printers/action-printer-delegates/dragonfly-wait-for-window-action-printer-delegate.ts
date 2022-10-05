@@ -5,6 +5,7 @@ import { isWaitForWindowAction } from '../../../../model/action/wait-for-window/
 import { ElementNamePrinter } from '../../../element-name-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
+  DragonflyActionValueResolverResultType,
   resultIsEmpty,
   resultToArg,
 } from '../action-value/dragonfly-action-value-resolver-result';
@@ -30,10 +31,8 @@ export class DragonflyWaitForWindowPrinter
       );
       if (!resultIsEmpty(executableResult)) {
         args.push(
-          quote(
-            'executable=' +
-              resultToArg(executableResult)(this.elementNamePrinter)
-          )
+          'executable=' +
+            quote(resultToArg(executableResult)(this.elementNamePrinter))
         );
       }
       //
@@ -49,13 +48,17 @@ export class DragonflyWaitForWindowPrinter
         data
       );
       if (!resultIsEmpty(waitSecondsResult)) {
+        const arg = resultToArg(waitSecondsResult)(this.elementNamePrinter);
         args.push(
           'timeout=' +
-            quote(resultToArg(waitSecondsResult)(this.elementNamePrinter))
+            (waitSecondsResult.type ===
+            DragonflyActionValueResolverResultType.USE_VARIABLE
+              ? quote(arg)
+              : arg)
         );
       }
       //
-      return ['WaitForWindow(', args.join(', '), ')'].join('');
+      return ['WaitWindow(', args.join(', '), ')'].join('');
     }
   }
 }

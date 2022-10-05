@@ -1,0 +1,25 @@
+{
+    "import08": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "4da0bacc-97e3-4e2a-b176-f777408355ff",
+                "name": "send-text-act-4da0bacc-97e3",
+                "type": "Send Text",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "text": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Text",
+                    "value": "some text"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "import04": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "c19c6509-1ae3-474f-a11a-5aedb4d3886c",
+                "name": "mimic-act-c19c6509-1ae3",
+                "type": "Mimic",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "words": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Text",
+                    "value": "these three words"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}
