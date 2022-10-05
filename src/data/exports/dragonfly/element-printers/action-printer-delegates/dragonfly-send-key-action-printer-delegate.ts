@@ -153,14 +153,14 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
   };
 
   private extractKeyFromEnumValueWithRegex(value: string): string {
-    const matchPattern1 = value.match(/^(.{1})[ ]\(.+\)$/);
+    const matchPattern1 = value.match(/^.*\((.+)\)$/);
     if (matchPattern1) {
       return matchPattern1[1];
     }
-    const matchPattern2 = value.match(/^\((.+)\)$/);
-    if (matchPattern2) {
-      return matchPattern2[1];
-    }
+    // const matchPattern2 = value.match(/^\((.+)\)$/);
+    // if (matchPattern2) {
+    //   return matchPattern2[1];
+    // }
     throw new ExportError('unhandled keyboard key: ' + value);
   }
 }

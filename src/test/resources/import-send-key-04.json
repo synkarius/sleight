@@ -1,0 +1,102 @@
+{
+    "import04": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "ea3d3211-01da-4c92-9c5a-516c845ec275",
+                "name": "send-key-act-ea3d3211-01da",
+                "type": "Send Key",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "sendKeyMode": "Hold/Release",
+                "modifiers": {
+                    "control": false,
+                    "alt": true,
+                    "shift": true,
+                    "windows": false
+                },
+                "keyToSend": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "c527fae3-fb30-4f85-b8a2-f8cd39adcaeb"
+                },
+                "outerPause": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "b61db350-b08f-460c-a65f-9f2e3cdc3370"
+                },
+                "direction": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "5585a4cd-d671-4d65-8057-0015b0ed10a3"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [
+            {
+                "id": "eb2ff229-fd68-4647-9b09-f86a7e58ad21",
+                "items": [
+                    {
+                        "id": "6b7ea222-7da7-4a8d-9ea3-71ab5841dcfe",
+                        "value": "echo"
+                    }
+                ]
+            },
+            {
+                "id": "a339013c-e7da-4ff0-add5-a071fb565634",
+                "items": [
+                    {
+                        "id": "7980f3aa-86c7-4395-956f-112a7d656ed5",
+                        "value": "down"
+                    }
+                ]
+            }
+        ],
+        "specs": [],
+        "variables": [
+            {
+                "id": "c527fae3-fb30-4f85-b8a2-f8cd39adcaeb",
+                "name": "alphabet",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "5379aa5c-728b-440a-bbc1-5053bebbf2f6",
+                        "selectorId": "eb2ff229-fd68-4647-9b09-f86a7e58ad21",
+                        "value": "e"
+                    }
+                ]
+            },
+            {
+                "id": "b61db350-b08f-460c-a65f-9f2e3cdc3370",
+                "type": "Range",
+                "name": "outer",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 3,
+                "endInclusive": 9
+            },
+            {
+                "id": "5585a4cd-d671-4d65-8057-0015b0ed10a3",
+                "name": "dir",
+                "type": "Choice",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "5177690d-bdfa-4bd1-9570-61d227b5eb04",
+                        "selectorId": "a339013c-e7da-4ff0-add5-a071fb565634",
+                        "value": "down"
+                    }
+                ]
+            }
+        ]
+    }
+}

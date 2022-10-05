@@ -1,0 +1,42 @@
+{
+    "import03": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "594d9299-ce0d-43fe-a979-74a49ba1555f",
+                "name": "send-key-act-594d9299-ce0d",
+                "type": "Send Key",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "sendKeyMode": "Hold/Release",
+                "modifiers": {
+                    "control": false,
+                    "alt": false,
+                    "shift": false,
+                    "windows": false
+                },
+                "keyToSend": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "k (kilo)"
+                },
+                "outerPause": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 14
+                },
+                "direction": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "Up"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

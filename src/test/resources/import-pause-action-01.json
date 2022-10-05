@@ -1,0 +1,25 @@
+{
+    "import01": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "75003a33-10d5-4a5f-8316-fe4c95c6463f",
+                "name": "pause-act-75003a33-10d5",
+                "type": "Pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "centiseconds": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 1
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

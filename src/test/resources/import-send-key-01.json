@@ -1,0 +1,47 @@
+{
+    "import01": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "d247e4d5-da0c-4fca-8570-efcf1a592b42",
+                "name": "send-key-act-d247e4d5-da0c",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "type": "Send Key",
+                "sendKeyMode": "Press",
+                "modifiers": {
+                    "control": true,
+                    "alt": true,
+                    "shift": false,
+                    "windows": false
+                },
+                "keyToSend": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Choice",
+                    "value": "m (mike)"
+                },
+                "outerPause": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 1
+                },
+                "innerPause": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 3
+                },
+                "repeat": {
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 4
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

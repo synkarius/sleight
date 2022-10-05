@@ -1,0 +1,36 @@
+{
+    "import02": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "75003a33-10d5-4a5f-8316-fe4c95c6463f",
+                "name": "pause-act-75003a33-10d5",
+                "type": "Pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "centiseconds": {
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "ed48430e-ed5f-44b3-a304-1d733b622549"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "ed48430e-ed5f-44b3-a304-1d733b622549",
+                "type": "Range",
+                "name": "range-var-ed48430e-ed5f",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 4,
+                "endInclusive": 9
+            }
+        ]
+    }
+}
