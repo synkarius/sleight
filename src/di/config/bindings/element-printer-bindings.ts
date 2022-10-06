@@ -47,6 +47,11 @@ export const bindElementPrinters = (container: Container): void => {
     .bind(Tokens.DragonElementPrinter_Command)
     .toInstance(DragonflyCommandPrinter)
     .inSingletonScope();
+  injected(
+    DragonflyCommandPrinter,
+    Tokens.DragonElementPrinter_Spec,
+    Tokens.DragonElementPrinter_Action
+  );
   container
     .bind(Tokens.DragonElementPrinter_Context)
     .toInstance(DragonflyContextPrinter)

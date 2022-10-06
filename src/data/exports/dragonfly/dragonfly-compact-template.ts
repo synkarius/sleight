@@ -16,24 +16,38 @@ from dragonfly import Text
 from dragonfly import WaitWindow
 #
 from dragonfly import MappingRule
+from dragonfly import Grammar
 
-# specs
-{{#specs}}
-spec_${elemNameSuffix} = "{{#printSpec}}{{id}}{{/printSpec}}"
-{{/specs}}
 
-# extras
-{{#variables}}
-variable_${elemNameSuffix} = {{#printVariable}}{{id}}{{/printVariable}}
-{{/variables}}
+no_context_grammar = Grammar("no_context_grammar")
+no_context_rule = MappingRule(
+    name="no_context_rule",
+    mapping={
+        {{#commands}}
+        {{#printCommand}}{{id}}{{/printCommand}}
+        {{/commands}}
+    },
+    extras=[
+        {{#variables}}
+        {{#printVariable}}{{id}}{{/printVariable}},
+        {{/variables}}
+    ],
+    defaults={
 
-# contexts
+    }
+)
+
+no_context_grammar.add_rule(no_context_rule)
+no_context_grammar.load()
+
+
 {{#contexts}}
 context_${elemNameSuffix} = {{#printContext}}{{id}}{{/printContext}}
+context_${elemNameSuffix}_grammar = Grammar("context_${elemNameSuffix}", context=context_${elemNameSuffix})
 {{/contexts}}
 
-# actions
-{{#actions}}
-action_${elemNameSuffix} = {{#printAction}}{{id}}{{/printAction}}
-{{/actions}}
+def unload():
+    global no_context_grammar
+    if no_context_grammar: no_context_grammar.unload()
+    no_context_grammar = None
 `;

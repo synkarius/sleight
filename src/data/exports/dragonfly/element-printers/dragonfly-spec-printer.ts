@@ -1,3 +1,4 @@
+import { quote } from '../../../../core/common/common-functions';
 import { MapUtil } from '../../../../core/common/map-util';
 import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
 import { SleightDataInternalFormat } from '../../../data-formats';
@@ -76,10 +77,12 @@ export class DragonflySpecPrinter implements ElementPrinter<SpecDTO> {
         result.push(']');
       }
     }
-    return result
-      .join(' ')
-      .replaceAll(/[ ]{2,}/g, ' ')
-      .trim();
+    return quote(
+      result
+        .join(' ')
+        .replaceAll(/[ ]{2,}/g, ' ')
+        .trim()
+    );
   }
 }
 
