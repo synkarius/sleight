@@ -16,9 +16,11 @@ import { bindImportsCleaner } from './bindings/imports-cleaner-bindings';
 import { bindSleightDataIdsRewriter } from './bindings/sleight-data-ids-rewriter-bindings';
 import { bindRoleKeyedDataUpdater } from './bindings/rolekeyed-data-updater-bindings';
 import { bindElementPrinters } from './bindings/element-printer-bindings';
+import { bindActionValueUpdater } from './bindings/action-value-updater-bindings';
 
 export const container = new Container();
 [
+  bindActionValueUpdater,
   bindCleaners,
   bindDataMerger,
   bindDefaultNamers,

@@ -73,6 +73,9 @@ import { DragonflyMousePrinter } from '../../data/exports/dragonfly/element-prin
 import { DragonflySendKeyPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-send-key-action-printer-delegate';
 import { DragonflySendTextPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-send-text-action-printer-delegate';
 import { DragonflyWaitForWindowPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-wait-for-window-action-printer-delegate';
+import { DelegatingActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/delegating-action-value-updater';
+import { ActionValueUpdaterDelegate } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater-delegate';
+import { ActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -285,4 +288,9 @@ export namespace Tokens {
   );
   export const DragonflyWaitForWindowPrinter =
     token<DragonflyWaitForWindowPrinter>('DragonflyWaitForWindowPrinter');
+  export const ActionValueUpdater =
+    token<ActionValueUpdater>('ActionValueUpdater');
+  export const ActionValueUpdaterDelegates = token<
+    ActionValueUpdaterDelegate[]
+  >('ActionValueUpdaterDelegate');
 }

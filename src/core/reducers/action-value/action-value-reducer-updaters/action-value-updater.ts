@@ -4,9 +4,11 @@ import {
   ActionReducerChangePayloadAction,
 } from '../../../../ui/model/action/action-editing-context';
 
-export type ActionValueUpdater = (
-  state: Action,
-  action:
-    | ActionReducerChangePayloadAction
-    | ActionReducerActionValueTypePayloadAction
-) => Action;
+export type ActionValueUpdater = {
+  update: (
+    state: Action,
+    action:
+      | ActionReducerChangePayloadAction
+      | ActionReducerActionValueTypePayloadAction
+  ) => Action;
+};

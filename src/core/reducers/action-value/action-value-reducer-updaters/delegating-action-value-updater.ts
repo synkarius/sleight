@@ -1,17 +1,27 @@
+import { Action } from '../../../../data/model/action/action';
 import { MissingDelegateError } from '../../../../error/missing-delegate-error';
+import {
+  ActionReducerChangePayloadAction,
+  ActionReducerActionValueTypePayloadAction,
+} from '../../../../ui/model/action/action-editing-context';
 import { isDefined } from '../../../common/common-functions';
 import { ActionValueUpdater } from './action-value-updater';
-import { getActionValueUpdaterDelegates } from './action-value-updater-delegates';
+import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
-export const getDelegatingActionValueUpdater: () => ActionValueUpdater = () => {
-  const delegates = getActionValueUpdaterDelegates();
-  return (state, action) => {
-    const updated = delegates
+export class DelegatingActionValueUpdater implements ActionValueUpdater {
+  constructor(private delegates: ActionValueUpdaterDelegate[]) {}
+  update(
+    state: Action,
+    action:
+      | ActionReducerChangePayloadAction
+      | ActionReducerActionValueTypePayloadAction
+  ): Action {
+    const updated = this.delegates
       .map((delegate) => delegate(state, action))
       .find(isDefined);
     if (!updated) {
       throw new MissingDelegateError('ActionValueUpdaterDelegate');
     }
     return updated;
-  };
-};
+  }
+}

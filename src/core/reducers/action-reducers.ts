@@ -13,7 +13,6 @@ import {
 } from '../../ui/model/action/action-editing-context';
 import { ActionType } from '../../data/model/action/action-types';
 import { ActionValueUpdater } from './action-value/action-value-reducer-updaters/action-value-updater';
-import { getDelegatingActionValueUpdater } from './action-value/action-value-reducer-updaters/delegating-action-value-updater';
 import {
   copyIntoMouseClickAction,
   copyIntoMouseHoldAction,
@@ -225,12 +224,11 @@ const toggleEditingActionLocked = (state: Action): Action => ({
   locked: !state.locked,
 });
 
-const changeActionValue: ActionValueUpdater = getDelegatingActionValueUpdater();
-
 export const actionReactReducer = (
   state: Action,
   action: ActionReducerAction
 ): Action => {
+  const actionValueUpdater = container.get(Tokens.ActionValueUpdater);
   const actionType = action.type;
   switch (actionType) {
     case ActionReducerActionType.CHANGE_ACTION_TYPE:
@@ -238,7 +236,7 @@ export const actionReactReducer = (
     case ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE:
     case ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE:
     case ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID:
-      return changeActionValue(state, action);
+      return actionValueUpdater.update(state, action);
     case ActionReducerActionType.CHANGE_MODIFIERS:
       return toggleModifier(state, action);
     case ActionReducerActionType.CHANGE_NAME:
