@@ -33,14 +33,14 @@ no_context_rule = MappingRule(
         {{/variables}}
     ],
     defaults={
-
+        # TODO: defaults printer
     }
 )
 
 no_context_grammar.add_rule(no_context_rule)
 no_context_grammar.load()
 
-
+# TODO: split up grammars/rules by context
 {{#contexts}}
 context_${elemNameSuffix} = {{#printContext}}{{id}}{{/printContext}}
 context_${elemNameSuffix}_grammar = Grammar("context_${elemNameSuffix}", context=context_${elemNameSuffix})
