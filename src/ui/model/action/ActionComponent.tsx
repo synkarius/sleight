@@ -35,7 +35,7 @@ import { isCallFunctionAction } from '../../../data/model/action/call-function/c
 import { CallFunctionComponent } from './call-function/CallFunctionComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
@@ -86,8 +86,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveAction(props.action));
-      navigate(EMPTY_PATH);
-      // reduxDispatch(setEditorFocus());
+      navigate(ELEMENT_EDITOR_PATH);
     }
   };
 
@@ -182,7 +181,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={() => navigate(EMPTY_PATH)}
+        onClick={() => navigate(ELEMENT_EDITOR_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

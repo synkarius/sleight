@@ -19,7 +19,7 @@ export const isEnterValueActionValue = (
 ): actionValue is AbstractEnterValueActionValue =>
   actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE;
 
-interface EnterTextActionValue extends AbstractEnterValueActionValue {
+export interface EnterTextActionValue extends AbstractEnterValueActionValue {
   readonly enteredValueType: typeof VariableType.Enum.TEXT;
   readonly value: string;
 }
@@ -29,7 +29,7 @@ export const isEnterTextActionValue = (
 ): actionValue is EnterTextActionValue =>
   actionValue.enteredValueType === VariableType.Enum.TEXT;
 
-interface EnterNumberActionValue extends AbstractEnterValueActionValue {
+export interface EnterNumberActionValue extends AbstractEnterValueActionValue {
   readonly enteredValueType: typeof VariableType.Enum.NUMBER;
   readonly value: number;
 }
@@ -39,7 +39,7 @@ export const isEnterNumberActionValue = (
 ): actionValue is EnterNumberActionValue =>
   actionValue.enteredValueType === VariableType.Enum.NUMBER;
 
-interface EnterEnumActionValue extends AbstractEnterValueActionValue {
+export interface EnterEnumActionValue extends AbstractEnterValueActionValue {
   readonly enteredValueType: typeof VariableType.Enum.ENUM;
   readonly value: string;
 }
@@ -49,7 +49,7 @@ export const isEnterEnumActionValue = (
 ): actionValue is EnterEnumActionValue =>
   actionValue.enteredValueType === VariableType.Enum.ENUM;
 
-interface AbstractVariableActionValue extends AbstractActionValue {
+export interface AbstractVariableActionValue extends AbstractActionValue {
   readonly actionValueType: typeof ActionValueType.Enum.USE_VARIABLE;
   // if the user has chosen variable binding, this is the variable type
   readonly variableType: VariableType.Type;

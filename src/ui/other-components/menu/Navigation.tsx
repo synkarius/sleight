@@ -18,6 +18,13 @@ import { setContexts } from '../../../core/reducers/context-reducers';
 import { setSelectors } from '../../../core/reducers/selector-reducers';
 import { setSpecs } from '../../../core/reducers/spec-reducers';
 import { setVariables } from '../../../core/reducers/variable-reducers';
+import { useNavigate } from 'react-router-dom';
+import {
+  COMMAND_GRID_PATH,
+  ELEMENT_EDITOR_PATH,
+  RESOURCE_EDITOR_PATH,
+  WIZARD_PATH,
+} from '../../../core/common/consts';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
@@ -25,6 +32,7 @@ export const Navigation: React.FC<{}> = () => {
   const container = useContext(InjectionContext);
   const importInputId = useId();
   const importInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const newElementSet = () => {
     reduxDispatch(setActions({}));
@@ -103,72 +111,57 @@ export const Navigation: React.FC<{}> = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavDropdown title="File" id="file-dropdown">
-              <NavDropdown.Item href="#action/3.1" onClick={newElementSet}>
+              <NavDropdown.Item onClick={newElementSet}>
                 New Element Set
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.2" disabled>
-                Open Element Set
-              </NavDropdown.Item>
+              <NavDropdown.Item disabled>Open Element Set</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item
-                href="#action/3.3"
-                onClick={importFileClickHandler}
-              >
+              <NavDropdown.Item onClick={importFileClickHandler}>
                 Import Element Set
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.4" onClick={exportJson}>
+              <NavDropdown.Item onClick={exportJson}>
                 Export Element Set
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.5" disabled>
-                Export Caster
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.6" onClick={exportDragonfly}>
+              <NavDropdown.Item disabled>Export Caster</NavDropdown.Item>
+              <NavDropdown.Item onClick={exportDragonfly}>
                 Export Dragonfly
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.7" disabled>
-                Export Talon
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.8" disabled>
-                Export Vocola 2
-              </NavDropdown.Item>
+              <NavDropdown.Item disabled>Export Talon</NavDropdown.Item>
+              <NavDropdown.Item disabled>Export Vocola 2</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Edit" id="edit-dropdown">
-              <NavDropdown.Item href="#action/4.1" disabled>
+              <NavDropdown.Item disabled>
                 Duplicate Selected Element
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/4.2" disabled>
+              <NavDropdown.Item disabled>
                 Delete Selected Element
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/4.3" disabled>
-                Preferences
-              </NavDropdown.Item>
+              <NavDropdown.Item disabled>Preferences</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="View" id="view-dropdown">
-              <NavDropdown.Item href="#action/6.1">
-                Editor Mode
+              <NavDropdown.Item onClick={() => navigate(COMMAND_GRID_PATH)}>
+                Command Grid
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/6.2" disabled>
-                Wizard Mode
+              <NavDropdown.Item onClick={() => navigate(ELEMENT_EDITOR_PATH)}>
+                Element Editor
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate(RESOURCE_EDITOR_PATH)}>
+                Resource Editor
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate(WIZARD_PATH)}>
+                Wizard
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Help" id="help-dropdown">
-              <NavDropdown.Item href="#action/5.1" disabled>
-                Documentation
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/5.2" disabled>
-                Release Notes
-              </NavDropdown.Item>
+              <NavDropdown.Item disabled>Documentation</NavDropdown.Item>
+              <NavDropdown.Item disabled>Release Notes</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/5.3" disabled>
-                View License
-              </NavDropdown.Item>
+              <NavDropdown.Item disabled>View License</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/5.4" disabled>
-                About
-              </NavDropdown.Item>
+              <NavDropdown.Item disabled>About</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

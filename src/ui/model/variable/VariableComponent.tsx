@@ -30,7 +30,7 @@ import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const VAR_ROLE_KEY = Field.VAR_ROLE_KEY;
 
@@ -106,7 +106,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
       }
       const variableDTO = variableMapper.mapFromDomain(props.variable);
       reduxDispatch(saveVariable(variableDTO));
-      navigate(EMPTY_PATH);
+      navigate(ELEMENT_EDITOR_PATH);
     }
   };
 
@@ -188,7 +188,7 @@ export const VariableComponent: React.FC<{ variable: Variable }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={() => navigate(EMPTY_PATH)}
+        onClick={() => navigate(ELEMENT_EDITOR_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

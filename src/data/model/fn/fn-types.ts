@@ -1,4 +1,4 @@
-export namespace FunctionType {
+export namespace FnType {
   export const Enum = {
     PYTHON: 'Python',
   } as const;

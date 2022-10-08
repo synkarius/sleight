@@ -5,12 +5,14 @@ import { contextReduxReducer } from '../core/reducers/context-reducers';
 import { variableReduxReducer } from '../core/reducers/variable-reducers';
 import { selectorReduxReducer } from '../core/reducers/selector-reducers';
 import { specReduxReducer } from '../core/reducers/spec-reducers';
+import { fnReduxReducer } from '../core/reducers/fn-reducers';
 
 export const store = configureStore({
   reducer: {
     action: actionReduxReducer,
     command: commandReduxReducer,
     context: contextReduxReducer,
+    fn: fnReduxReducer,
     selector: selectorReduxReducer,
     spec: specReduxReducer,
     variable: variableReduxReducer,

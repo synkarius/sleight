@@ -1,13 +1,16 @@
 import { ElementType } from '../../data/model/element-types';
+import { ResourceType } from '../../data/model/resource-types';
 
-export const getEditorCreatePath = (elementType: ElementType.Type): string =>
-  `${elementType.toLowerCase()}s/create`;
+type StringEnumType = ElementType.Type | ResourceType.Type;
+
+export const getEditorCreatePath = (type: StringEnumType): string =>
+  `${type.toLowerCase()}s/create`;
 
 export const getEditorEditPath = (
-  elementType: ElementType.Type,
+  type: StringEnumType,
   id?: string
 ): string => {
-  const etLower = elementType.toLowerCase();
+  const etLower = type.toLowerCase();
   const idParam = id ?? `:${etLower}Id`;
   return `${etLower}s/edit/${idParam}`;
 };

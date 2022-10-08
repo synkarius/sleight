@@ -19,7 +19,10 @@ export class DragonflyCallFunctionPrinter
     data: SleightDataInternalFormat
   ): string | undefined {
     if (isCallFunctionAction(action)) {
-      const args: string[] = [];
+      // const args: string[] = [];
+      // for (let i = 0; i < action.parameters.length; i++) {
+      //   // action DTO has to happen before this
+      // }
       throw new NotImplementedError('DragonflyCallFunctionPrinter');
     }
     return undefined;

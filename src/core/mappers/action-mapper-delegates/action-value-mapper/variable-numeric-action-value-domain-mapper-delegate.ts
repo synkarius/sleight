@@ -1,13 +1,8 @@
-import { NumericActionValue } from '../../../../data/model/action/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value-type';
+import { VariableRangeActionValue } from '../../../../data/model/action/action-value';
 import { DomainMapper } from '../../mapper';
 
-type T = NumericActionValue & {
-  actionValueType: typeof ActionValueType.Enum.USE_VARIABLE;
-};
-
 export const getVariableNumericActionValueDomainMapperDelegate =
-  (): DomainMapper<T, T> => {
+  (): DomainMapper<VariableRangeActionValue, VariableRangeActionValue> => {
     return {
       mapToDomain: (dto) => {
         return {

@@ -23,7 +23,7 @@ import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
@@ -85,7 +85,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       });
       const specRedux = specMapper.mapFromDomain(props.spec);
       reduxDispatch(saveSpec(specRedux));
-      navigate(EMPTY_PATH);
+      navigate(ELEMENT_EDITOR_PATH);
     }
   };
 
@@ -174,7 +174,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           </Button>
         )}
         <Button
-          onClick={(_e) => navigate(EMPTY_PATH)}
+          onClick={(_e) => navigate(ELEMENT_EDITOR_PATH)}
           className="me-3"
           variant="warning"
           size="lg"

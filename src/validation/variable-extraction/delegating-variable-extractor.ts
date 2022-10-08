@@ -2,7 +2,6 @@ import { isDefined } from '../../core/common/common-functions';
 import { Action } from '../../data/model/action/action';
 import { ActionValueType } from '../../data/model/action/action-value-type';
 import { MissingDelegateError } from '../../error/missing-delegate-error';
-import { getVariableExtractionDelegates } from './variable-extraction-delegates/variable-extraction-delegates';
 import { ExtractedVariable, VariableExtractor } from './variable-extractor';
 import { VariableExtractorDelegate } from './variable-extractor-delegate';
 

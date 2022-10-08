@@ -23,7 +23,7 @@ import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
@@ -74,7 +74,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveCommand(props.command));
-      navigate(EMPTY_PATH);
+      navigate(ELEMENT_EDITOR_PATH);
     }
   };
   const fullErrorResults = validationContext.getErrorResults();
@@ -211,7 +211,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => navigate(EMPTY_PATH)}
+        onClick={(_e) => navigate(ELEMENT_EDITOR_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

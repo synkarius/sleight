@@ -10,9 +10,9 @@ import {
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
 
-export interface ContextsState {
+export type ContextsState = {
   readonly saved: Record<string, Context>;
-}
+};
 
 const initialState: ContextsState = {
   saved: {},

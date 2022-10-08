@@ -76,6 +76,7 @@ import { DragonflyWaitForWindowPrinter } from '../../data/exports/dragonfly/elem
 import { DelegatingActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/delegating-action-value-updater';
 import { ActionValueUpdaterDelegate } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater-delegate';
 import { ActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater';
+import { Fn } from '../../data/model/fn/fn';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -108,6 +109,7 @@ export namespace Tokens {
     token<FieldValidator<Command>[]>('Validators_Command');
   export const Validators_Context =
     token<FieldValidator<Context>[]>('Validators_Context');
+  export const Validators_Fn = token<FieldValidator<Fn>[]>('Validators_Fn');
   export const Validators_Spec =
     token<FieldValidator<Spec>[]>('Validators_Spec');
   export const Validators_Variable = token<FieldValidator<Variable>[]>(

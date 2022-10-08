@@ -19,7 +19,7 @@ import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
@@ -77,7 +77,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     const isValid = validationContext.validateForSave();
     if (isValid) {
       reduxDispatch(saveContext(props.context));
-      navigate(EMPTY_PATH);
+      navigate(ELEMENT_EDITOR_PATH);
     }
   };
 
@@ -166,7 +166,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => navigate(EMPTY_PATH)}
+        onClick={(_e) => navigate(ELEMENT_EDITOR_PATH)}
         className="me-3"
         variant="warning"
         size="lg"

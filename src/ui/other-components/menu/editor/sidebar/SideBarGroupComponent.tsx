@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   getEditorCreatePath,
   getEditorEditPath,
-} from '../../navigation/router-fns';
+} from '../../../../navigation/router-fns';
 import { SidebarSection } from './sidebar';
 
 export const SideBarGroupComponent: React.FC<{

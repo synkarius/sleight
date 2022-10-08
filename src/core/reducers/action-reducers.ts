@@ -12,7 +12,6 @@ import {
   ActionReducerMouseMovementTypePayloadAction,
 } from '../../ui/model/action/action-editing-context';
 import { ActionType } from '../../data/model/action/action-types';
-import { ActionValueUpdater } from './action-value/action-value-reducer-updaters/action-value-updater';
 import {
   copyIntoMouseClickAction,
   copyIntoMouseHoldAction,

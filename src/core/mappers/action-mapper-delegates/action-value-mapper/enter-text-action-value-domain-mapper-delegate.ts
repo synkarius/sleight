@@ -1,14 +1,9 @@
-import { TextActionValue } from '../../../../data/model/action/action-value';
-import { ActionValueType } from '../../../../data/model/action/action-value-type';
+import { EnterTextActionValue } from '../../../../data/model/action/action-value';
 import { DomainMapper } from '../../mapper';
 
-type T = TextActionValue & {
-  actionValueType: typeof ActionValueType.Enum.ENTER_VALUE;
-};
-
 export const getEnterTextActionValueDomainMapperDelegate = (): DomainMapper<
-  T,
-  T
+  EnterTextActionValue,
+  EnterTextActionValue
 > => {
   return {
     mapToDomain: (dto) => {

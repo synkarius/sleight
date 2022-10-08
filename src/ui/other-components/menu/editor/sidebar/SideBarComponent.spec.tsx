@@ -2,34 +2,37 @@ import { render, screen, within } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import App from '../../../App';
-import { store } from '../../../app/store';
-import { ElementType } from '../../../data/model/element-types';
+import App from '../../../../../App';
+import { store } from '../../../../../app/store';
+import { ElementType } from '../../../../../data/model/element-types';
 import {
   deleteAction,
   saveAction,
-} from '../../../core/reducers/action-reducers';
-import { createPauseAction } from '../../../data/model/action/pause/pause';
+} from '../../../../../core/reducers/action-reducers';
+import { createPauseAction } from '../../../../../data/model/action/pause/pause';
 import {
   deleteCommand,
   saveCommand,
-} from '../../../core/reducers/command-reducers';
-import { Command } from '../../../data/model/command/command';
-import { Context, createContext } from '../../../data/model/context/context';
-import { saveContext } from '../../../core/reducers/context-reducers';
-import { SpecDTO } from '../../../data/model/spec/spec-dto';
-import { saveSpec } from '../../../core/reducers/spec-reducers';
-import { saveVariable } from '../../../core/reducers/variable-reducers';
-import { Field } from '../../../validation/validation-field';
-import { TEXT_BOX } from '../../../core/common/accessibility-roles';
+} from '../../../../../core/reducers/command-reducers';
+import { Command } from '../../../../../data/model/command/command';
+import {
+  Context,
+  createContext,
+} from '../../../../../data/model/context/context';
+import { saveContext } from '../../../../../core/reducers/context-reducers';
+import { SpecDTO } from '../../../../../data/model/spec/spec-dto';
+import { saveSpec } from '../../../../../core/reducers/spec-reducers';
+import { saveVariable } from '../../../../../core/reducers/variable-reducers';
+import { Field } from '../../../../../validation/validation-field';
+import { TEXT_BOX } from '../../../../../core/common/accessibility-roles';
 import {
   createRangeVariable,
   RangeVariable,
-} from '../../../data/model/variable/variable';
-import { Action } from '../../../data/model/action/action';
+} from '../../../../../data/model/variable/variable';
+import { Action } from '../../../../../data/model/action/action';
 import { act } from 'react-dom/test-utils';
-import { VariableType } from '../../../data/model/variable/variable-types';
-import { ActionValueType } from '../../../data/model/action/action-value-type';
+import { VariableType } from '../../../../../data/model/variable/variable-types';
+import { ActionValueType } from '../../../../../data/model/action/action-value-type';
 
 let user: UserEvent;
 

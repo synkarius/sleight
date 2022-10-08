@@ -51,6 +51,8 @@ export const bindValidators = (container: Container): void => {
       ...getContextValidators(),
       ...getCrossSliceContextValidators(),
     ]);
+  // fn validators
+  container.bind(Tokens.Validators_Fn).toConstant([]); // TODO
   // spec validators
   container
     .bind(Tokens.Validators_Spec)

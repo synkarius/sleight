@@ -1,6 +1,6 @@
 import { Accordion } from 'react-bootstrap';
-import { useAppSelector } from '../../../app/hooks';
-import { ElementType } from '../../../data/model/element-types';
+import { useAppSelector } from '../../../../../app/hooks';
+import { ElementType } from '../../../../../data/model/element-types';
 import { SideBarGroupComponent } from './SideBarGroupComponent';
 import { SidebarSection } from './sidebar';
 

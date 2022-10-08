@@ -10,7 +10,7 @@ import {
   getEditorCreatePath,
   getEditorEditPath,
 } from '../../../navigation/router-fns';
-import { RouterV6WorkaroundComponent } from './RouterV6WorkaroundComponent';
+import { RouterV6WorkaroundComponent } from '../RouterV6WorkaroundComponent';
 
 export const EditorComponent: React.FC<{}> = () => {
   return (

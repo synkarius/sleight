@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { EditorComponent } from '../menu/editor/EditorComponent';
-import { SidebarComponent } from '../sidebar/SidebarComponent';
+import { SidebarComponent } from '../menu/editor/sidebar/SidebarComponent';
 
 export const EditorViewComponent: React.FC<{}> = () => {
   return (
