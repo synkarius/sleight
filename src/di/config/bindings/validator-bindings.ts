@@ -20,6 +20,7 @@ import { getContextValidators } from '../../../core/validators/context-validator
 import { getSpecValidators } from '../../../core/validators/spec-validators';
 import { getVariableValidators } from '../../../core/validators/variable-validators';
 import { Tokens } from '../brandi-tokens';
+import { getFnValidators } from '../../../core/validators/fn-validators';
 
 export const bindValidators = (container: Container): void => {
   // action validators
@@ -52,7 +53,7 @@ export const bindValidators = (container: Container): void => {
       ...getCrossSliceContextValidators(),
     ]);
   // fn validators
-  container.bind(Tokens.Validators_Fn).toConstant([]); // TODO
+  container.bind(Tokens.Validators_Fn).toConstant([...getFnValidators()]);
   // spec validators
   container
     .bind(Tokens.Validators_Spec)

@@ -42,3 +42,14 @@ export const createPythonFn = (): PythonFn => ({
   importTokens: [],
   parameters: [],
 });
+
+export const copyIntoPythonFn = (fn: Fn): PythonFn => ({
+  id: fn.id,
+  type: FnType.Enum.PYTHON,
+  name: fn.name,
+  roleKey: fn.roleKey,
+  enabled: fn.enabled,
+  locked: fn.locked,
+  importTokens: [],
+  parameters: [],
+});

@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Fn } from '../../data/model/fn/fn';
-import { NotImplementedError } from '../../error/not-implemented-error';
-import { FnReducerAction } from '../../ui/model/fn/fn-editing-context';
+import { copyIntoPythonFn, Fn } from '../../data/model/fn/fn';
+import { FnType } from '../../data/model/fn/fn-types';
+import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
+import {
+  FnReducerAction,
+  FnReducerActionType,
+  FnReducerStringAction,
+  FnReducerTypeAction,
+} from '../../ui/model/fn/fn-editing-context';
 
 export type FnsState = {
   readonly saved: Record<string, Fn>;
@@ -30,6 +36,45 @@ const fnsSlice = createSlice({
 export const { saveFn, deleteFn, setFns } = fnsSlice.actions;
 export const fnReduxReducer = fnsSlice.reducer;
 
+const changeName = (state: Fn, action: FnReducerStringAction): Fn => {
+  return { ...state, name: action.payload };
+};
+
+const changeRoleKey = (state: Fn, action: FnReducerStringAction): Fn => {
+  return { ...state, roleKey: action.payload };
+};
+
+const changeType = (state: Fn, action: FnReducerTypeAction): Fn => {
+  const fnType = action.payload;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      return copyIntoPythonFn(state);
+    default:
+      throw new ExhaustivenessFailureError(fnType);
+  }
+};
+
+const toggleEnabled = (state: Fn): Fn => ({
+  ...state,
+  enabled: !state.enabled,
+});
+
+const toggleLocked = (state: Fn): Fn => ({ ...state, locked: !state.locked });
+
 export const fnReactReducer = (state: Fn, action: FnReducerAction): Fn => {
-  throw new NotImplementedError('fnReactReducer');
+  const actionType = action.type;
+  switch (actionType) {
+    case FnReducerActionType.CHANGE_NAME:
+      return changeName(state, action);
+    case FnReducerActionType.CHANGE_ROLE_KEY:
+      return changeRoleKey(state, action);
+    case FnReducerActionType.CHANGE_TYPE:
+      return changeType(state, action);
+    case FnReducerActionType.TOGGLE_ENABLED:
+      return toggleEnabled(state);
+    case FnReducerActionType.TOGGLE_LOCKED:
+      return toggleLocked(state);
+    default:
+      throw new ExhaustivenessFailureError(actionType);
+  }
 };
