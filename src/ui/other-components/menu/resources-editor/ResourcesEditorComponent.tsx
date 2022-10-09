@@ -21,7 +21,7 @@ export const ResourcesEditorComponent: React.FC<{}> = (props) => {
           element={
             <RouterV6WorkaroundComponent
               paramsFn={(params) => {
-                const fnId = params['fnId'];
+                const fnId = params['functionId'];
                 return <FnParentComponent fnId={fnId} key={fnId} />;
               }}
             />
