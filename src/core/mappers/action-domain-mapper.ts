@@ -1,15 +1,13 @@
 import { Action } from '../../data/model/action/action';
-import { Tokens } from '../../di/config/brandi-tokens';
+import { ActionDomainMapperDelegateArray } from '../../di/di-collection-types';
 import { MissingDelegateError } from '../../error/missing-delegate-error';
 import { isDefined } from '../common/common-functions';
-import { ActionDomainMapperDelegate } from './action-mapper-delegates/action-domain-mapper-delegate';
-import { getActionDomainMapperDelegates } from './action-mapper-delegates/action-domain-mapper-delegates';
 import { DomainMapper } from './mapper';
 
 export class DelegatingActionDomainMapper
   implements DomainMapper<Action, Action>
 {
-  constructor(private delegates: ActionDomainMapperDelegate[]) {}
+  constructor(private delegates: ActionDomainMapperDelegateArray) {}
 
   mapToDomain(dto: Action): Action {
     const mapped = this.delegates

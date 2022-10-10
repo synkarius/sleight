@@ -2,6 +2,7 @@ import { Container, injected } from 'brandi';
 import { ActionMappingCleaner } from '../../../core/cleaners/action-cleaner';
 import { CommandMappingCleaner } from '../../../core/cleaners/command-cleaner';
 import { ContextMappingCleaner } from '../../../core/cleaners/context-cleaner';
+import { DefaultFnCleaner } from '../../../core/cleaners/fn-cleaner';
 import { SelectorMappingCleaner } from '../../../core/cleaners/selector-cleaner';
 import { DefaultSpecCleaner } from '../../../core/cleaners/spec-cleaner';
 import { DefaultVariableCleaner } from '../../../core/cleaners/variable-cleaner';
@@ -26,6 +27,11 @@ export const bindCleaners = (container: Container): void => {
     .toInstance(ContextMappingCleaner)
     .inSingletonScope();
   injected(ContextMappingCleaner, Tokens.DomainMapper_Context);
+  // fn cleaner
+  container
+    .bind(Tokens.Cleaner_Fn)
+    .toInstance(DefaultFnCleaner)
+    .inSingletonScope();
   // selector cleaner
   container
     .bind(Tokens.Cleaner_Selector)

@@ -1,31 +1,40 @@
+import { Action } from '../../../data/model/action/action';
 import { ActionType } from '../../../data/model/action/action-types';
-import { getAbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
+import { ActionValue } from '../../../data/model/action/action-value';
+import { DomainMapper } from '../mapper';
+import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
 import { ActionDomainMapperDelegate } from './action-domain-mapper-delegate';
-import { getNumericActionValueDomainMapper } from './action-value-mapper/numeric-action-value-domain-mapper';
+import { MultiMethodActionValueMapper } from './action-value-mapper/delegating-action-value-domain-mapper';
 
-export const getPauseDomainMapperDelegate = (): ActionDomainMapperDelegate => {
-  const abstractDelegate = getAbstractActionDomainMapperDelegate();
-  const numericActionValueMapper = getNumericActionValueDomainMapper();
-  return {
-    mapToDomain: (dto) => {
-      if (dto.type === ActionType.Enum.PAUSE) {
-        return {
-          ...abstractDelegate.mapToDomain(dto),
-          type: dto.type,
-          centiseconds: numericActionValueMapper.mapToDomain(dto.centiseconds),
-        };
-      }
-    },
-    mapFromDomain: (domain) => {
-      if (domain.type === ActionType.Enum.PAUSE) {
-        return {
-          ...abstractDelegate.mapFromDomain(domain),
-          type: domain.type,
-          centiseconds: numericActionValueMapper.mapFromDomain(
-            domain.centiseconds
-          ),
-        };
-      }
-    },
-  };
-};
+export class PauseActionDomainMapperDelegate
+  extends AbstractActionDomainMapperDelegate
+  implements ActionDomainMapperDelegate
+{
+  constructor(private actionValueMapper: MultiMethodActionValueMapper) {
+    super();
+  }
+
+  mapToDomain(dto: Action) {
+    if (dto.type === ActionType.Enum.PAUSE) {
+      return {
+        ...this.mapToDomainBase(dto),
+        type: dto.type,
+        centiseconds: this.actionValueMapper.mapToNumericDomain(
+          dto.centiseconds
+        ),
+      };
+    }
+  }
+
+  mapFromDomain(domain: Action) {
+    if (domain.type === ActionType.Enum.PAUSE) {
+      return {
+        ...this.mapFromDomainBase(domain),
+        type: domain.type,
+        centiseconds: this.actionValueMapper.mapFromNumericDomain(
+          domain.centiseconds
+        ),
+      };
+    }
+  }
+}

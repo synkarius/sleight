@@ -20,6 +20,7 @@ export class DefaultRoleKeyedDataUpdater implements RoleKeyedDataUpdater {
       actions: this.updateTargets(base.actions, rkDeserialized.actions),
       commands: this.updateTargets(base.commands, rkDeserialized.commands),
       contexts: this.updateTargets(base.contexts, rkDeserialized.contexts),
+      fns: this.updateTargets(base.fns, rkDeserialized.fns),
       selectors: base.selectors,
       specs: this.updateTargets(base.specs, rkDeserialized.specs),
       variables: this.updateTargets(base.variables, rkDeserialized.variables),

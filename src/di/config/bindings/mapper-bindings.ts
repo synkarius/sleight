@@ -1,6 +1,15 @@
 import { Container, injected } from 'brandi';
 import { DelegatingActionDomainMapper } from '../../../core/mappers/action-domain-mapper';
-import { getActionDomainMapperDelegates } from '../../../core/mappers/action-mapper-delegates/action-domain-mapper-delegates';
+import { DelegatingActionValueDomainMapper } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/delegating-action-value-domain-mapper';
+import { EnterEnumActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/enter-enum-action-value-domain-mapper-delegate';
+import { EnterNumberActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/enter-numeric-action-value-domain-mapper-delegate';
+import { EnterTextActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/enter-text-action-value-domain-mapper-delegate';
+import { VariableEnumActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-enum-action-value-domain-mapper-delegate';
+import { VariableNumericActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-numeric-action-value-domain-mapper-delegate';
+import { VariableTextActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-text-action-value-domain-mapper-delegate';
+import { PauseActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/pause-action-domain-mapper-delegate';
+import { SendKeyActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/send-key-action-domain-mapper-delegate';
+import { SendKeyModifiersDomainMapper } from '../../../core/mappers/action-mapper-delegates/send-key-modifiers-domain-mapper';
 import {
   DefaultChoiceItemDomainMapper,
   DefaultChoiceVariableDomainMapper,
@@ -14,19 +23,23 @@ import { DefaultSpecDomainMapper } from '../../../core/mappers/spec-domain-mappe
 import { DefaultSpecItemDomainMapper } from '../../../core/mappers/spec-item-domain-mapper';
 import { DefaultTextVariableDomainMapper } from '../../../core/mappers/text-variable-domain-mapper-delegate';
 import { DefaultVariableDomainMapper } from '../../../core/mappers/variable-domain-mapper';
+import { ActionDomainMapperDelegateArray } from '../../di-collection-types';
 import { Tokens } from '../brandi-tokens';
 
 export const bindMappers = (container: Container): void => {
+  // action value mappers
+  bindActionValueMappers(container);
   // action mapper delegates
-  container
-    .bind(Tokens.ActionDomainMapperDelegates)
-    .toConstant(getActionDomainMapperDelegates());
+  bindActionMapperDelegates(container);
   // action domain mapper
   container
     .bind(Tokens.DomainMapper_Action)
     .toInstance(DelegatingActionDomainMapper)
     .inSingletonScope();
-  injected(DelegatingActionDomainMapper, Tokens.ActionDomainMapperDelegates);
+  injected(
+    DelegatingActionDomainMapper,
+    Tokens.ActionDomainMapperDelegateArray
+  );
   // command domain mapper
   container
     .bind(Tokens.DomainMapper_Command)
@@ -92,5 +105,69 @@ export const bindMappers = (container: Container): void => {
     Tokens.VariableMapperDelegate_Text,
     Tokens.VariableMapperDelegate_Range,
     Tokens.VariableMapperDelegate_Choice
+  );
+};
+
+const bindActionMapperDelegates = (container: Container): void => {
+  container
+    .bind(Tokens.DomainMapper_SendKeyModifiers)
+    .toInstance(SendKeyModifiersDomainMapper)
+    .inSingletonScope();
+  container
+    .bind(Tokens.PauseActionDomainMapperDelegate)
+    .toInstance(PauseActionDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.SendKeyActionDomainMapperDelegate)
+    .toInstance(SendKeyActionDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.ActionDomainMapperDelegateArray)
+    .toInstance(ActionDomainMapperDelegateArray)
+    .inSingletonScope();
+  injected(
+    ActionDomainMapperDelegateArray,
+    Tokens.PauseActionDomainMapperDelegate,
+    Tokens.SendKeyActionDomainMapperDelegate
+  );
+};
+
+const bindActionValueMappers = (container: Container): void => {
+  container
+    .bind(Tokens.DomainMapper_ActionValue_Enter_Text)
+    .toInstance(EnterTextActionValueDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DomainMapper_ActionValue_Enter_Number)
+    .toInstance(EnterNumberActionValueDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DomainMapper_ActionValue_Enter_Enum)
+    .toInstance(EnterEnumActionValueDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DomainMapper_ActionValue_Variable_Text)
+    .toInstance(VariableTextActionValueDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DomainMapper_ActionValue_Variable_Number)
+    .toInstance(VariableNumericActionValueDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DomainMapper_ActionValue_Variable_Enum)
+    .toInstance(VariableEnumActionValueDomainMapperDelegate)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DomainMapper_ActionValue)
+    .toInstance(DelegatingActionValueDomainMapper)
+    .inSingletonScope();
+  injected(
+    DelegatingActionValueDomainMapper,
+    Tokens.DomainMapper_ActionValue_Enter_Text,
+    Tokens.DomainMapper_ActionValue_Enter_Number,
+    Tokens.DomainMapper_ActionValue_Enter_Enum,
+    Tokens.DomainMapper_ActionValue_Variable_Text,
+    Tokens.DomainMapper_ActionValue_Variable_Number,
+    Tokens.DomainMapper_ActionValue_Variable_Enum
   );
 };

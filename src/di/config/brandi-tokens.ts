@@ -34,7 +34,7 @@ import {
 } from '../../data/model/variable/variable-dto';
 import { FieldValidator } from '../../validation/field-validator';
 import { VariableExtractorDelegate } from '../../validation/variable-extraction/variable-extractor-delegate';
-import { tag, token } from 'brandi';
+import { token } from 'brandi';
 import { FormatMapper } from '../../data/data-format-mapper';
 import { Deserializer } from '../../data/imports/deserializer';
 import { SpecItemDomainMapper } from '../../core/mappers/spec-item-domain-mapper';
@@ -49,6 +49,7 @@ import { Cleaner } from '../../core/cleaners/cleaner';
 import { ImportsCleaner } from '../../data/imports/imports-cleaner';
 import { IdRewriter } from '../../data/imports/model-update/id-rewriter/id-rewriter';
 import {
+  ActionDomainMapperDelegateArray,
   ActionIdRewriterArray,
   ContextIdRewriterArray,
   DragonflyActionPrinterDelegateArray,
@@ -63,7 +64,6 @@ import { ActionVariableIdsRewriterDelegate } from '../../data/imports/model-upda
 import { ElementPrinter } from '../../data/exports/dragonfly/element-printers/element-printer';
 import { ElementTokenPrinter } from '../../data/exports/element-token-printer';
 import { DragonflyMustacheFnsFactory } from '../../data/exports/dragonfly/dragonfly-mustache-helper-fns';
-import { DragonflyActionPrinterDelegate } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/action-printer-delegate';
 import { DragonflyBringAppPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-bring-app-action-printer-delegate';
 import { DragonflyPausePrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-pause-action-printer-delegate';
 import { DragonflyActionValueResolver } from '../../data/exports/dragonfly/element-printers/action-value/dragonfly-action-value-resolver';
@@ -73,10 +73,19 @@ import { DragonflyMousePrinter } from '../../data/exports/dragonfly/element-prin
 import { DragonflySendKeyPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-send-key-action-printer-delegate';
 import { DragonflySendTextPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-send-text-action-printer-delegate';
 import { DragonflyWaitForWindowPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-wait-for-window-action-printer-delegate';
-import { DelegatingActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/delegating-action-value-updater';
 import { ActionValueUpdaterDelegate } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater-delegate';
 import { ActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater';
 import { Fn } from '../../data/model/fn/fn';
+import {
+  EnterEnumActionValue,
+  EnterNumberActionValue,
+  EnterTextActionValue,
+  VariableEnumActionValue,
+  VariableRangeActionValue,
+  VariableTextActionValue,
+} from '../../data/model/action/action-value';
+import { MultiMethodActionValueMapper } from '../../core/mappers/action-mapper-delegates/action-value-mapper/delegating-action-value-domain-mapper';
+import { Modifiers } from '../../data/model/action/send-key/send-key';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -116,9 +125,12 @@ export namespace Tokens {
     'Validators_Variable'
   );
   // mapper dependencies
-  export const ActionDomainMapperDelegates = token<
-    ActionDomainMapperDelegate[]
-  >('ActionDomainMapperDelegates');
+  export const PauseActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('PauseActionDomainMapperDelegate');
+  export const SendKeyActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('SendKeyActionDomainMapperDelegate');
+  export const ActionDomainMapperDelegateArray =
+    token<ActionDomainMapperDelegateArray>('ActionDomainMapperDelegateArray');
   export const VariableMapperDelegate_Text = token<
     DomainMapper<TextVariable, TextVariableDTO>
   >('VariableMapperDelegate_Text');
@@ -153,6 +165,30 @@ export namespace Tokens {
   export const DomainMapper_Variable = token<VariableDomainMapper>(
     'DomainMapper_Variable'
   );
+  export const DomainMapper_ActionValue_Enter_Text = token<
+    DomainMapper<EnterTextActionValue, EnterTextActionValue>
+  >('DomainMapper_ActionValue_Enter_Text');
+  export const DomainMapper_ActionValue_Enter_Number = token<
+    DomainMapper<EnterNumberActionValue, EnterNumberActionValue>
+  >('DomainMapper_ActionValue_Enter_Number');
+  export const DomainMapper_ActionValue_Enter_Enum = token<
+    DomainMapper<EnterEnumActionValue, EnterEnumActionValue>
+  >('DomainMapper_ActionValue_Enter_Enum');
+  export const DomainMapper_ActionValue_Variable_Text = token<
+    DomainMapper<VariableTextActionValue, VariableTextActionValue>
+  >('DomainMapper_ActionValue_Variable_Text');
+  export const DomainMapper_ActionValue_Variable_Number = token<
+    DomainMapper<VariableRangeActionValue, VariableRangeActionValue>
+  >('DomainMapper_ActionValue_Variable_Number');
+  export const DomainMapper_ActionValue_Variable_Enum = token<
+    DomainMapper<VariableEnumActionValue, VariableEnumActionValue>
+  >('DomainMapper_ActionValue_Variable_Enum');
+  export const DomainMapper_ActionValue = token<MultiMethodActionValueMapper>(
+    'DomainMapper_ActionValue'
+  );
+  export const DomainMapper_SendKeyModifiers = token<
+    DomainMapper<Modifiers, Modifiers>
+  >('DomainMapper_SendKeyModifiers');
   //
   export const ImportsValidator = token<ImportsValidator>('ImportsValidator');
   export const VariableExtractorDelegates = token<VariableExtractorDelegate[]>(
@@ -179,6 +215,7 @@ export namespace Tokens {
   export const Cleaner_Action = token<Cleaner<Action>>('Cleaner_Action');
   export const Cleaner_Command = token<Cleaner<Command>>('Cleaner_Command');
   export const Cleaner_Context = token<Cleaner<Context>>('Cleaner_Context');
+  export const Cleaner_Fn = token<Cleaner<Fn>>('Cleaner_Fn');
   export const Cleaner_Selector =
     token<Cleaner<SelectorDTO>>('Cleaner_Selector');
   export const Cleaner_Spec = token<Cleaner<SpecDTO>>('Cleaner_Spec');

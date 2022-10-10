@@ -13,6 +13,7 @@ export const bindImportsCleaner = (container: Container): void => {
     Tokens.Cleaner_Action,
     Tokens.Cleaner_Command,
     Tokens.Cleaner_Context,
+    Tokens.Cleaner_Fn,
     Tokens.Cleaner_Selector,
     Tokens.Cleaner_Spec,
     Tokens.Cleaner_Variable

@@ -56,6 +56,7 @@ export class CopyingImportDataMerger implements ImportDataMerger {
         ...updated.contexts,
         ...idsRewrittenData.contexts,
       },
+      fns: { ...base.fns, ...updated.fns, ...idsRewrittenData.fns },
       selectors: {
         ...base.selectors,
         ...updated.selectors,

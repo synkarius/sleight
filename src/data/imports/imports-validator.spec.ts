@@ -1,10 +1,7 @@
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
 import { castJsonForTest } from '../../test/utils/import-test-json-util';
-import {
-  SleightDataExportFormat,
-  SleightDataInternalFormat,
-} from '../data-formats';
+import { SleightDataInternalFormat } from '../data-formats';
 import { import01 } from '../../test/resources/import-01.json';
 import { ImportValidationResultType } from './imports-validator';
 

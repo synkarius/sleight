@@ -41,6 +41,7 @@
                 "matcher": "gmail"
             }
         ],
+        "fns": [],
         "selectors": [
             {
                 "id": "d9c0c6d5-952c-4556-8aa1-ac7f8af431db",
