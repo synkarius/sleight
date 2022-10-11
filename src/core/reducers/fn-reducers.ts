@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { copyIntoPythonFn, Fn } from '../../data/model/fn/fn';
 import { FnType } from '../../data/model/fn/fn-types';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
+import { NotImplementedError } from '../../error/not-implemented-error';
 import {
   FnReducerAction,
   FnReducerActionType,
@@ -61,6 +62,16 @@ const toggleEnabled = (state: Fn): Fn => ({
 
 const toggleLocked = (state: Fn): Fn => ({ ...state, locked: !state.locked });
 
+const changeImportPath = (state: Fn, action: FnReducerStringAction): Fn => {
+  const fnType = state.type;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      return { ...state, importTokens: action.payload.split('.') };
+    default:
+      throw new NotImplementedError(fnType);
+  }
+};
+
 export const fnReactReducer = (state: Fn, action: FnReducerAction): Fn => {
   const actionType = action.type;
   switch (actionType) {
@@ -74,6 +85,8 @@ export const fnReactReducer = (state: Fn, action: FnReducerAction): Fn => {
       return toggleEnabled(state);
     case FnReducerActionType.TOGGLE_LOCKED:
       return toggleLocked(state);
+    case FnReducerActionType.CHANGE_IMPORT_PATH:
+      return changeImportPath(state, action);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

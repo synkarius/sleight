@@ -25,6 +25,9 @@ export interface PythonFn extends AbstractFn {
   parameters: PythonFnParameter[];
 }
 
+export const isPythonFn = (fn: Fn): fn is PythonFn =>
+  fn.type === FnType.Enum.PYTHON;
+
 export type PythonFnParameter = {
   name: string;
   type: VariableType.Type;

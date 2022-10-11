@@ -5,7 +5,7 @@ import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { useAppDispatch } from '../../../app/hooks';
 import { RESOURCE_EDITOR_PATH } from '../../../core/common/consts';
 import { saveFn } from '../../../core/reducers/fn-reducers';
-import { Fn } from '../../../data/model/fn/fn';
+import { Fn, isPythonFn } from '../../../data/model/fn/fn';
 import { FnType } from '../../../data/model/fn/fn-types';
 import { ResourceType } from '../../../data/model/resource-types';
 import { InjectionContext } from '../../../di/injector-context';
@@ -56,6 +56,15 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
     editingContext.localDispatch({
       type: FnReducerActionType.TOGGLE_LOCKED,
     });
+  };
+  const importPathChangedHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    editingContext.localDispatch({
+      type: FnReducerActionType.CHANGE_IMPORT_PATH,
+      payload: event.target.value,
+    });
+    validationContext.touch(Field.FN_IMPORT_PATH);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForSave();
@@ -120,6 +129,23 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
           ))}
         </FormSelect>
       </FormGroupRowComponent>
+      {isPythonFn(props.fn) && (
+        <FormGroupRowComponent
+          labelText="Import Path"
+          descriptionText="import path of function"
+          errorMessage={errorResults([Field.FN_IMPORT_PATH])}
+        >
+          <FormControl
+            aria-label={Field[Field.FN_IMPORT_PATH]}
+            type="text"
+            onChange={importPathChangedHandler}
+            onBlur={() => validationContext.touch(Field.FN_IMPORT_PATH)}
+            isInvalid={!!errorResults([Field.FN_IMPORT_PATH])}
+            value={props.fn.importTokens.join('.')}
+          />
+        </FormGroupRowComponent>
+      )}
+
       {isSaved && (
         <Button
           onClick={() => editingContext.deleteModalConfig.setShow(true)}

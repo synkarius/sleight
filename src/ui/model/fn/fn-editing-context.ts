@@ -5,6 +5,7 @@ export enum FnReducerActionType {
   CHANGE_NAME,
   CHANGE_ROLE_KEY,
   CHANGE_TYPE,
+  CHANGE_IMPORT_PATH,
   TOGGLE_ENABLED,
   TOGGLE_LOCKED,
 }
@@ -17,7 +18,8 @@ type AbstractFnReducerAction<T> = {
 export interface FnReducerStringAction extends AbstractFnReducerAction<string> {
   type:
     | typeof FnReducerActionType.CHANGE_NAME
-    | typeof FnReducerActionType.CHANGE_ROLE_KEY;
+    | typeof FnReducerActionType.CHANGE_ROLE_KEY
+    | typeof FnReducerActionType.CHANGE_IMPORT_PATH;
 }
 
 export interface FnReducerTypeAction
