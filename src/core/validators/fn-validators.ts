@@ -1,4 +1,5 @@
 import { Fn, isPythonFn } from '../../data/model/fn/fn';
+import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 import { WrongTypeError } from '../../error/wrong-type-error';
 import { FieldValidator } from '../../validation/field-validator';
 import { ValidationErrorCode } from '../../validation/validation-error-code';
@@ -35,7 +36,8 @@ const pythonImportPathFormatValidator: FieldValidator<Fn> = createValidator(
         importPath.match(/^[0-9]/)
       );
     }
-    throw new WrongTypeError(fn.type);
+    // there are no other types at time of writing
+    throw new ExhaustivenessFailureError(fn);
   },
   ValidationErrorCode.FN_INVALID_IMPORT_PATH,
   'import path must follow python import format'

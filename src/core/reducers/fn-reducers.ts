@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { copyIntoPythonFn, Fn } from '../../data/model/fn/fn';
 import { FnType } from '../../data/model/fn/fn-types';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
-import { NotImplementedError } from '../../error/not-implemented-error';
 import {
   FnReducerAction,
   FnReducerActionType,
+  FnReducerAddParamAction,
+  FnReducerParamNameAction,
+  FnReducerParamTypeAction,
   FnReducerStringAction,
   FnReducerTypeAction,
 } from '../../ui/model/fn/fn-editing-context';
@@ -68,7 +70,59 @@ const changeImportPath = (state: Fn, action: FnReducerStringAction): Fn => {
     case FnType.Enum.PYTHON:
       return { ...state, importTokens: action.payload.split('.') };
     default:
-      throw new NotImplementedError(fnType);
+      throw new ExhaustivenessFailureError(fnType);
+  }
+};
+
+const addParameter = (state: Fn, action: FnReducerAddParamAction): Fn => {
+  const fnType = state.type;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      return { ...state, parameters: [...state.parameters, action.payload] };
+    default:
+      throw new ExhaustivenessFailureError(fnType);
+  }
+};
+
+export const changeParameterName = (
+  state: Fn,
+  action: FnReducerParamNameAction
+): Fn => {
+  const fnType = state.type;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      return {
+        ...state,
+        parameters: state.parameters.map((param) => {
+          if (param.id === action.payload.id) {
+            return { ...param, name: action.payload.value };
+          }
+          return param;
+        }),
+      };
+    default:
+      throw new ExhaustivenessFailureError(fnType);
+  }
+};
+
+export const changeParameterType = (
+  state: Fn,
+  action: FnReducerParamTypeAction
+): Fn => {
+  const fnType = state.type;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      return {
+        ...state,
+        parameters: state.parameters.map((param) => {
+          if (param.id === action.payload.id) {
+            return { ...param, type: action.payload.value };
+          }
+          return param;
+        }),
+      };
+    default:
+      throw new ExhaustivenessFailureError(fnType);
   }
 };
 
@@ -87,6 +141,12 @@ export const fnReactReducer = (state: Fn, action: FnReducerAction): Fn => {
       return toggleLocked(state);
     case FnReducerActionType.CHANGE_IMPORT_PATH:
       return changeImportPath(state, action);
+    case FnReducerActionType.ADD_PARAMETER:
+      return addParameter(state, action);
+    case FnReducerActionType.CHANGE_PARAMETER_NAME:
+      return changeParameterName(state, action);
+    case FnReducerActionType.CHANGE_PARAMETER_TYPE:
+      return changeParameterType(state, action);
     default:
       throw new ExhaustivenessFailureError(actionType);
   }

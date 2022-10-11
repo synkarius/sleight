@@ -1,6 +1,6 @@
 import { Fn } from '../../data/model/fn/fn';
 import { FnType } from '../../data/model/fn/fn-types';
-import { NotImplementedError } from '../../error/not-implemented-error';
+import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 import { Cleaner } from './cleaner';
 
 export class DefaultFnCleaner implements Cleaner<Fn> {
@@ -21,13 +21,14 @@ export class DefaultFnCleaner implements Cleaner<Fn> {
             type: FnType.Enum.PYTHON,
             importTokens: [...fn.importTokens],
             parameters: fn.parameters.map((param) => ({
+              id: param.id,
               name: param.name,
               type: param.type,
             })),
           };
           return result;
         default:
-          throw new NotImplementedError(fnType);
+          throw new ExhaustivenessFailureError(fnType);
       }
     });
   }

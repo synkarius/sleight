@@ -11,14 +11,6 @@ interface AbstractFn
     Enablable,
     Lockable {}
 
-/**
- * Temporary -- here only so that code elsewhere gets built out
- * correctly. Delete when there's a second function type.
- */
-interface OtherFnType extends Ided, Named, RoleKeyed, Enablable, Lockable {
-  type: 'other';
-}
-
 export interface PythonFn extends AbstractFn {
   type: typeof FnType.Enum.PYTHON;
   importTokens: string[];
@@ -28,12 +20,19 @@ export interface PythonFn extends AbstractFn {
 export const isPythonFn = (fn: Fn): fn is PythonFn =>
   fn.type === FnType.Enum.PYTHON;
 
-export type PythonFnParameter = {
-  name: string;
-  type: VariableType.Type;
-};
+interface AbstractFnParameter extends Ided, Named, Typed<VariableType.Type> {}
 
-export type Fn = PythonFn | OtherFnType;
+export interface PythonFnParameter extends AbstractFnParameter {}
+
+export type FnParameter = PythonFnParameter;
+
+export type Fn = PythonFn;
+
+export const createPythonFnParameter = (): PythonFnParameter => ({
+  id: getRandomId(),
+  name: '',
+  type: VariableType.Enum.TEXT,
+});
 
 export const createPythonFn = (): PythonFn => ({
   id: getRandomId(),

@@ -1,3 +1,4 @@
+import { Ided } from '../../../data/model/domain';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { Field } from '../../../validation/validation-field';
 
@@ -8,7 +9,7 @@ interface AbstractActionFieldGroup {
   readonly variable: Field;
 }
 
-interface TextActionFieldGroup extends AbstractActionFieldGroup {
+interface TextActionFieldGroup extends AbstractActionFieldGroup, Partial<Ided> {
   readonly type: typeof VariableType.Enum.TEXT;
 }
 
@@ -16,7 +17,9 @@ export const isTextActionFieldGroup = (
   group: ActionValueFieldGroup
 ): group is TextActionFieldGroup => group.type === VariableType.Enum.TEXT;
 
-interface NumericActionFieldGroup extends AbstractActionFieldGroup {
+interface NumericActionFieldGroup
+  extends AbstractActionFieldGroup,
+    Partial<Ided> {
   readonly type: typeof VariableType.Enum.NUMBER;
   readonly min?: number;
   readonly max?: number;
@@ -26,7 +29,7 @@ export const isNumericActionFieldGroup = (
   group: ActionValueFieldGroup
 ): group is NumericActionFieldGroup => group.type === VariableType.Enum.NUMBER;
 
-interface EnumActionFieldGroup extends AbstractActionFieldGroup {
+interface EnumActionFieldGroup extends AbstractActionFieldGroup, Partial<Ided> {
   readonly type: typeof VariableType.Enum.ENUM;
   readonly enumValues: string[];
 }

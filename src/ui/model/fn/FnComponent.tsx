@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
-import { Button, FormControl, FormSelect } from 'react-bootstrap';
+import { Button, Col, FormControl, FormSelect } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { useAppDispatch } from '../../../app/hooks';
 import { RESOURCE_EDITOR_PATH } from '../../../core/common/consts';
 import { saveFn } from '../../../core/reducers/fn-reducers';
-import { Fn, isPythonFn } from '../../../data/model/fn/fn';
+import {
+  createPythonFnParameter,
+  Fn,
+  isPythonFn,
+} from '../../../data/model/fn/fn';
 import { FnType } from '../../../data/model/fn/fn-types';
 import { ResourceType } from '../../../data/model/resource-types';
 import { InjectionContext } from '../../../di/injector-context';
@@ -15,7 +19,9 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
+import { ActionValueComponent } from '../action/ActionValueComponent';
 import { FnEditingContext, FnReducerActionType } from './fn-editing-context';
+import { FnParameterComponent } from './FnParameterComponent';
 
 export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
   const reduxDispatch = useAppDispatch();
@@ -65,6 +71,13 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
       payload: event.target.value,
     });
     validationContext.touch(Field.FN_IMPORT_PATH);
+  };
+  const addFnParamHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
+    editingContext.localDispatch({
+      type: FnReducerActionType.ADD_PARAMETER,
+      payload: createPythonFnParameter(),
+    });
+    validationContext.touch(Field.FN_ADD_NEW_PARAMETER);
   };
   const submitHandler = (_event: React.MouseEvent<HTMLButtonElement>) => {
     const isValid = validationContext.validateForSave();
@@ -130,20 +143,41 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
         </FormSelect>
       </FormGroupRowComponent>
       {isPythonFn(props.fn) && (
-        <FormGroupRowComponent
-          labelText="Import Path"
-          descriptionText="import path of function"
-          errorMessage={errorResults([Field.FN_IMPORT_PATH])}
-        >
-          <FormControl
-            aria-label={Field[Field.FN_IMPORT_PATH]}
-            type="text"
-            onChange={importPathChangedHandler}
-            onBlur={() => validationContext.touch(Field.FN_IMPORT_PATH)}
-            isInvalid={!!errorResults([Field.FN_IMPORT_PATH])}
-            value={props.fn.importTokens.join('.')}
-          />
-        </FormGroupRowComponent>
+        <>
+          <FormGroupRowComponent
+            labelText="Import Path"
+            descriptionText="import path of function"
+            errorMessage={errorResults([Field.FN_IMPORT_PATH])}
+          >
+            <FormControl
+              aria-label={Field[Field.FN_IMPORT_PATH]}
+              type="text"
+              onChange={importPathChangedHandler}
+              onBlur={() => validationContext.touch(Field.FN_IMPORT_PATH)}
+              isInvalid={!!errorResults([Field.FN_IMPORT_PATH])}
+              value={props.fn.importTokens.join('.')}
+            />
+          </FormGroupRowComponent>
+          <FormGroupRowComponent
+            labelText="Parameters"
+            descriptionText="parameters of function"
+          >
+            <Col sm="12" className="mb-2">
+              <Button
+                aria-label={Field[Field.FN_ADD_NEW_PARAMETER]}
+                variant="outline-primary"
+                onClick={addFnParamHandler}
+                size="lg"
+              >
+                Add New Parameter
+              </Button>
+            </Col>
+
+            {props.fn.parameters.map((param) => (
+              <FnParameterComponent param={param} key={param.id} />
+            ))}
+          </FormGroupRowComponent>
+        </>
       )}
 
       {isSaved && (
