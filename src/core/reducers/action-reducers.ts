@@ -36,7 +36,11 @@ import { limitNumericActionValueToPercentage } from './action-value/action-value
 import { copyIntoSendTextAction } from '../../data/model/action/send-text/send-text';
 import { copyIntoWaitForWindowAction } from '../../data/model/action/wait-for-window/wait-for-window';
 import { copyIntoMimicAction } from '../../data/model/action/mimic/mimic';
-import { copyIntoCallFunctionAction } from '../../data/model/action/call-function/call-function';
+import {
+  CallFunctionAction,
+  copyIntoCallFunctionAction,
+  isCallFunctionAction,
+} from '../../data/model/action/call-function/call-function';
 import { copyIntoBringAppAction } from '../../data/model/action/bring-app/bring-app';
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
@@ -223,6 +227,13 @@ const toggleEditingActionLocked = (state: Action): Action => ({
   locked: !state.locked,
 });
 
+const changeFn = (
+  state: CallFunctionAction,
+  action: ActionReducerStringPayloadAction
+): CallFunctionAction => {
+  return { ...state, functionId: action.payload };
+};
+
 export const actionReactReducer = (
   state: Action,
   action: ActionReducerAction
@@ -238,6 +249,11 @@ export const actionReactReducer = (
       return actionValueUpdater.update(state, action);
     case ActionReducerActionType.CHANGE_MODIFIERS:
       return toggleModifier(state, action);
+    case ActionReducerActionType.CHANGE_FN:
+      if (isCallFunctionAction(state)) {
+        return changeFn(state, action);
+      }
+      throw new WrongTypeError('CHANGE_FN');
     case ActionReducerActionType.CHANGE_NAME:
       return changeEditingActionName(state, action);
     case ActionReducerActionType.CHANGE_ROLE_KEY:

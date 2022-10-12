@@ -21,6 +21,7 @@ import { getBringAppTitleActionValueUpdaterDelegate } from '../../../core/reduce
 import { getBringAppStartDirActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/bring-app-start-dir-action-value-updater-delegate';
 import { Tokens } from '../brandi-tokens';
 import { DelegatingActionValueUpdater } from '../../../core/reducers/action-value/action-value-reducer-updaters/delegating-action-value-updater';
+import { getCallFunctionActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/call-function-action-value-updater-delegate';
 
 export const bindActionValueUpdater = (container: Container): void => {
   container.bind(Tokens.ActionValueUpdaterDelegates).toConstant([
@@ -29,7 +30,7 @@ export const bindActionValueUpdater = (container: Container): void => {
     getBringAppTitleActionValueUpdaterDelegate(),
     getBringAppStartDirActionValueUpdaterDelegate(),
     // call function
-    // TODO: call function
+    getCallFunctionActionValueUpdaterDelegate(),
     // mimic
     getMimicWordsActionValueUpdaterDelegate(),
     // mouse

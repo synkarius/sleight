@@ -13,6 +13,7 @@ export enum ActionReducerActionType {
   CHANGE_ACTION_VALUE_TYPE,
   CHANGE_ACTION_VALUE_VARIABLE_ID,
   CHANGE_MODIFIERS,
+  CHANGE_FN,
   CHANGE_NAME,
   CHANGE_ROLE_KEY,
   CHANGE_SEND_KEY_MODE,
@@ -40,7 +41,8 @@ export interface ActionReducerStringPayloadAction
   extends AbstractActionReducerAction<string> {
   type:
     | typeof ActionReducerActionType.CHANGE_NAME
-    | typeof ActionReducerActionType.CHANGE_ROLE_KEY;
+    | typeof ActionReducerActionType.CHANGE_ROLE_KEY
+    | typeof ActionReducerActionType.CHANGE_FN;
 }
 export interface ActionReducerActionTypePayloadAction
   extends AbstractActionReducerAction<ActionType.Type> {
