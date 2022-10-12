@@ -1,4 +1,5 @@
 import { createEditingContext } from '../../../core/common/editing-context';
+import { MoveDirection } from '../../../core/common/move-direction';
 import { FnParameter } from '../../../data/model/fn/fn';
 import { FnType } from '../../../data/model/fn/fn-types';
 import { VariableType } from '../../../data/model/variable/variable-types';
@@ -9,6 +10,8 @@ export enum FnReducerActionType {
   CHANGE_TYPE,
   CHANGE_IMPORT_PATH,
   ADD_PARAMETER,
+  MOVE_PARAMETER,
+  DELETE_PARAMETER,
   CHANGE_PARAMETER_NAME,
   CHANGE_PARAMETER_TYPE,
   TOGGLE_ENABLED,
@@ -18,6 +21,11 @@ export enum FnReducerActionType {
 type ParameterPayload<T> = {
   id: string;
   value: T;
+};
+
+type MoveParameterPayload = {
+  index: number;
+  direction: MoveDirection;
 };
 
 type AbstractFnReducerAction<T> = {
@@ -35,6 +43,15 @@ export interface FnReducerStringAction extends AbstractFnReducerAction<string> {
 export interface FnReducerAddParamAction
   extends AbstractFnReducerAction<FnParameter> {
   type: typeof FnReducerActionType.ADD_PARAMETER;
+}
+
+export interface FnReducerMoveParamAction
+  extends AbstractFnReducerAction<MoveParameterPayload> {
+  type: typeof FnReducerActionType.MOVE_PARAMETER;
+}
+
+export interface FnReducerNumberAction extends AbstractFnReducerAction<number> {
+  type: typeof FnReducerActionType.DELETE_PARAMETER;
 }
 
 export interface FnReducerParamNameAction
@@ -61,7 +78,9 @@ export interface FnReducerToggleAction
 
 export type FnReducerAction =
   | FnReducerStringAction
+  | FnReducerNumberAction
   | FnReducerAddParamAction
+  | FnReducerMoveParamAction
   | FnReducerParamNameAction
   | FnReducerParamTypeAction
   | FnReducerTypeAction

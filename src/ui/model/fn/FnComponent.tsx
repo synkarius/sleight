@@ -12,14 +12,13 @@ import {
 } from '../../../data/model/fn/fn';
 import { FnType } from '../../../data/model/fn/fn-types';
 import { ResourceType } from '../../../data/model/resource-types';
-import { InjectionContext } from '../../../di/injector-context';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
-import { ActionValueComponent } from '../action/ActionValueComponent';
+import { VerticalMoveableComponent } from '../../other-components/VerticalMoveableComponent';
 import { FnEditingContext, FnReducerActionType } from './fn-editing-context';
 import { FnParameterComponent } from './FnParameterComponent';
 
@@ -28,7 +27,6 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
   const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(FnEditingContext);
-  const container = useContext(InjectionContext);
   const isSaved = useSaved(ResourceType.Enum.FN, props.fn.id);
   //
   const nameChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,10 +156,7 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
               value={props.fn.importTokens.join('.')}
             />
           </FormGroupRowComponent>
-          <FormGroupRowComponent
-            labelText="Parameters"
-            descriptionText="parameters of function"
-          >
+          <FormGroupRowComponent labelText="Parameters">
             <Col sm="12" className="mb-2">
               <Button
                 aria-label={Field[Field.FN_ADD_NEW_PARAMETER]}
@@ -173,8 +168,26 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
               </Button>
             </Col>
 
-            {props.fn.parameters.map((param) => (
-              <FnParameterComponent param={param} key={param.id} />
+            {props.fn.parameters.map((param, index) => (
+              <VerticalMoveableComponent
+                deleteField={Field.FN_DELETE_PARAMETER}
+                moveFn={(direction) => {
+                  editingContext.localDispatch({
+                    type: FnReducerActionType.MOVE_PARAMETER,
+                    payload: { index: index, direction: direction },
+                  });
+                }}
+                deleteFn={() => {
+                  editingContext.localDispatch({
+                    type: FnReducerActionType.DELETE_PARAMETER,
+                    payload: index,
+                  });
+                  validationContext.touch(Field.FN_DELETE_PARAMETER);
+                }}
+                key={param.id + '-' + index}
+              >
+                <FnParameterComponent param={param} />
+              </VerticalMoveableComponent>
             ))}
           </FormGroupRowComponent>
         </>

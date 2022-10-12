@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { FormControl } from 'react-bootstrap';
+import { FormControl, FormSelect } from 'react-bootstrap';
+import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { FnParameter } from '../../../data/model/fn/fn';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
-import { PanelComponent } from '../../other-components/PanelComponent';
 import { FnEditingContext, FnReducerActionType } from './fn-editing-context';
 
 export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
@@ -40,7 +40,7 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
   const errorResults = processErrorResults(fullErrorResults);
 
   return (
-    <PanelComponent>
+    <>
       <FormGroupRowComponent
         labelText="Parameter Name"
         descriptionText="name of parameter"
@@ -55,6 +55,26 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
           value={props.param.name}
         />
       </FormGroupRowComponent>
-    </PanelComponent>
+      <FormGroupRowComponent
+        labelText="Parameter Type"
+        descriptionText="type of parameter"
+        errorMessage={errorResults([Field.FN_PARAMETER_TYPE])}
+      >
+        <FormSelect
+          aria-label={Field[Field.FN_PARAMETER_TYPE]}
+          onChange={typeChangedHandler}
+          onBlur={() => validationContext.touch(Field.FN_PARAMETER_TYPE)}
+          value={props.param.type}
+          role={LIST}
+          isInvalid={!!errorResults([Field.FN_PARAMETER_TYPE])}
+        >
+          {VariableType.values().map((vt) => (
+            <option key={vt} value={vt} role={LIST_ITEM}>
+              {vt}
+            </option>
+          ))}
+        </FormSelect>
+      </FormGroupRowComponent>
+    </>
   );
 };

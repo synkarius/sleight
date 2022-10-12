@@ -6,11 +6,14 @@ import {
   FnReducerAction,
   FnReducerActionType,
   FnReducerAddParamAction,
+  FnReducerMoveParamAction,
+  FnReducerNumberAction,
   FnReducerParamNameAction,
   FnReducerParamTypeAction,
   FnReducerStringAction,
   FnReducerTypeAction,
 } from '../../ui/model/fn/fn-editing-context';
+import { MoveDirection } from '../common/move-direction';
 
 export type FnsState = {
   readonly saved: Record<string, Fn>;
@@ -84,6 +87,48 @@ const addParameter = (state: Fn, action: FnReducerAddParamAction): Fn => {
   }
 };
 
+const moveParameter = (state: Fn, action: FnReducerMoveParamAction): Fn => {
+  const fnType = state.type;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      const param = state.parameters[action.payload.index];
+      if (param) {
+        const newIndex =
+          action.payload.direction === MoveDirection.UP
+            ? action.payload.index - 1
+            : action.payload.index + 1;
+        if (newIndex >= 0 && newIndex < state.parameters.length) {
+          const displaced = state.parameters[newIndex];
+          const parametersCopy = [...state.parameters];
+          parametersCopy[newIndex] = param;
+          parametersCopy[action.payload.index] = displaced;
+          return {
+            ...state,
+            parameters: parametersCopy,
+          };
+        }
+      }
+      return state;
+    default:
+      throw new ExhaustivenessFailureError(fnType);
+  }
+};
+
+const deleteParameter = (state: Fn, action: FnReducerNumberAction): Fn => {
+  const fnType = state.type;
+  switch (fnType) {
+    case FnType.Enum.PYTHON:
+      const parametersCopy = [...state.parameters];
+      parametersCopy.splice(action.payload, 1);
+      return {
+        ...state,
+        parameters: parametersCopy,
+      };
+    default:
+      throw new ExhaustivenessFailureError(fnType);
+  }
+};
+
 export const changeParameterName = (
   state: Fn,
   action: FnReducerParamNameAction
@@ -143,6 +188,10 @@ export const fnReactReducer = (state: Fn, action: FnReducerAction): Fn => {
       return changeImportPath(state, action);
     case FnReducerActionType.ADD_PARAMETER:
       return addParameter(state, action);
+    case FnReducerActionType.MOVE_PARAMETER:
+      return moveParameter(state, action);
+    case FnReducerActionType.DELETE_PARAMETER:
+      return deleteParameter(state, action);
     case FnReducerActionType.CHANGE_PARAMETER_NAME:
       return changeParameterName(state, action);
     case FnReducerActionType.CHANGE_PARAMETER_TYPE:
