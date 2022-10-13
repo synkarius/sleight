@@ -1,9 +1,9 @@
-import { NumericActionValue } from '../../../../data/model/action/action-value';
+import { NumberActionValue } from '../../../../data/model/action/action-value';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
 
 export const limitNumericActionValueToPercentage = (
-  actionValue: NumericActionValue
-): NumericActionValue => {
+  actionValue: NumberActionValue
+): NumberActionValue => {
   if (actionValue.actionValueType === ActionValueType.Enum.ENTER_VALUE) {
     return {
       ...actionValue,

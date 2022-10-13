@@ -1,7 +1,7 @@
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 import { mRepeatGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
@@ -22,7 +22,7 @@ export const getMcRepeatActionValueUpdaterDelegate: () => ActionValueUpdaterDele
         ...state,
         repeat:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumericActionValueType(state.repeat, action)
+            ? changeNumberActionValueType(state.repeat, action)
             : changeActionValueValue(state.repeat, action),
       };
     }

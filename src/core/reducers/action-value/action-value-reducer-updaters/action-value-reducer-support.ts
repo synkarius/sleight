@@ -9,7 +9,7 @@ import {
 import {
   ActionValue,
   EnumActionValue,
-  NumericActionValue,
+  NumberActionValue,
   TextActionValue,
 } from '../../../../data/model/action/action-value';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
@@ -39,10 +39,10 @@ export const changeTextActionValueType = (
   }
 };
 
-export const changeNumericActionValueType = (
-  state: NumericActionValue,
+export const changeNumberActionValueType = (
+  state: NumberActionValue,
   action: ActionReducerActionValueTypePayloadAction
-): NumericActionValue => {
+): NumberActionValue => {
   const actionValueType = action.payload.actionValueType;
   switch (actionValueType) {
     case ActionValueType.Enum.ENTER_VALUE:
@@ -90,7 +90,7 @@ export const changeEnumActionValueType = (
 };
 
 export const changeActionValueValue = <
-  T extends TextActionValue | NumericActionValue | EnumActionValue
+  T extends TextActionValue | NumberActionValue | EnumActionValue
 >(
   actionValue: T,
   action: ActionReducerActionValueChangePayloadAction

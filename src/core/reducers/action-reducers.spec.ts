@@ -12,7 +12,7 @@ import {
   PauseAction,
 } from '../../data/model/action/pause/pause';
 import { ActionType } from '../../data/model/action/action-types';
-import { createNumericValue } from '../../data/model/action/action-value';
+import { createNumberValue } from '../../data/model/action/action-value';
 import { ActionReducerActionType } from '../../ui/model/action/action-editing-context';
 import { Action } from '../../data/model/action/action';
 import { container } from '../../di/config/brandi-config';
@@ -134,7 +134,7 @@ describe('action reducer', () => {
       type: ActionType.Enum.PAUSE,
       enabled: true,
       locked: false,
-      centiseconds: { ...createNumericValue(), id: expect.any(String) },
+      centiseconds: { ...createNumberValue(), id: expect.any(String) },
     };
 
     expect(actual).not.toBe(obj);

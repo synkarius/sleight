@@ -16,7 +16,7 @@ import {
   isEnterTextActionValue,
   isEnterValueActionValue,
   isVariableActionValue,
-  NumericActionValue,
+  NumberActionValue,
   TextActionValue,
 } from '../../../data/model/action/action-value';
 import { UNSELECTED_ENUM } from '../../../core/common/consts';
@@ -38,7 +38,7 @@ import {
 
 type AVCProps = {
   // value
-  readonly actionValue: TextActionValue | NumericActionValue | EnumActionValue;
+  readonly actionValue: TextActionValue | NumberActionValue | EnumActionValue;
   readonly fields: ActionValueFieldGroup;
   // display
   readonly labelText: string;

@@ -1,0 +1,82 @@
+{
+    "import02": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "c199b382-c85f-471c-ae1c-c8024d747e78",
+                "name": "call-function-act-c199b382-c85f",
+                "type": "Call Function",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "functionId": "efc47836-3fd1-4b11-b5f3-a0654c515ae7",
+                "parameters": [
+                    {
+                        "id": "263ab301-7b7a-45cb-84f8-ec251439cce6",
+                        "actionValueType": "Use Variable",
+                        "variableType": "Text",
+                        "variableId": "63d5ad29-3f6d-496f-8a1b-2a033fadcef3"
+                    },
+                    {
+                        "id": "76bd0491-abd4-42a9-8734-fe2fd4fc621c",
+                        "actionValueType": "Use Variable",
+                        "variableType": "Range",
+                        "variableId": "390edf4c-f732-489e-a38d-7680700385f7"
+                    }
+                ]
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "fns": [
+            {
+                "id": "efc47836-3fd1-4b11-b5f3-a0654c515ae7",
+                "type": "Python",
+                "name": "func1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "importTokens": [
+                    "f",
+                    "f",
+                    "f",
+                    "f"
+                ],
+                "parameters": [
+                    {
+                        "id": "2065e755-8798-4c97-a2b1-deff2d4f6d8d",
+                        "name": "t1",
+                        "type": "Text"
+                    },
+                    {
+                        "id": "a26f4586-143e-4de9-ae1b-fc113510d0ff",
+                        "name": "n1",
+                        "type": "Range"
+                    }
+                ]
+            }
+        ],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "63d5ad29-3f6d-496f-8a1b-2a033fadcef3",
+                "type": "Text",
+                "name": "text-var-63d5ad29-3f6d",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false
+            },
+            {
+                "id": "390edf4c-f732-489e-a38d-7680700385f7",
+                "type": "Range",
+                "name": "range-var-390edf4c-f732",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9
+            }
+        ]
+    }
+}

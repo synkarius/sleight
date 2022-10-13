@@ -4,7 +4,7 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 import { wfwWaitSecondsGroup } from '../../../../ui/model/action/wait-for-window/wait-for-window-action-value-field-group';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
@@ -18,7 +18,7 @@ export const getWfwWaitSecondsActionValueUpdaterDelegate: () => ActionValueUpdat
         ...state,
         waitSeconds:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumericActionValueType(state.waitSeconds, action)
+            ? changeNumberActionValueType(state.waitSeconds, action)
             : changeActionValueValue(state.waitSeconds, action),
       };
     }

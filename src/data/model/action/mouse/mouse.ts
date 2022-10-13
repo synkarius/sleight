@@ -7,9 +7,9 @@ import { Action } from '../action';
 import { ActionType } from '../action-types';
 import {
   createEnumValue,
-  createNumericValue,
+  createNumberValue,
   EnumActionValue,
-  NumericActionValue,
+  NumberActionValue,
 } from '../action-value';
 import { MouseActionType } from './mouse-action-type';
 import { MouseMovementType } from './mouse-movement-type';
@@ -25,8 +25,8 @@ export const isMouseAction = (action: Action): action is MouseAction =>
 export interface MoveMouseAction extends AbstractMouseAction {
   readonly mouseActionType: typeof MouseActionType.Enum.MOVE;
   readonly mouseMovementType: MouseMovementType.Type;
-  readonly x: NumericActionValue;
-  readonly y: NumericActionValue;
+  readonly x: NumberActionValue;
+  readonly y: NumberActionValue;
 }
 
 export const isMoveMouseAction = (
@@ -39,12 +39,12 @@ interface AbstractButtonMouseAction extends AbstractMouseAction {
     | typeof MouseActionType.Enum.CLICK
     | typeof MouseActionType.Enum.HOLD_RELEASE;
   readonly mouseButton: EnumActionValue;
-  readonly pause: NumericActionValue;
+  readonly pause: NumberActionValue;
 }
 
 export interface ClickMouseAction extends AbstractButtonMouseAction {
   readonly mouseActionType: typeof MouseActionType.Enum.CLICK;
-  readonly repeat: NumericActionValue;
+  readonly repeat: NumberActionValue;
 }
 
 export const isClickMouseAction = (
@@ -74,8 +74,8 @@ export const createMouseMoveAction = (): MoveMouseAction => ({
   type: ActionType.Enum.MOUSE,
   mouseActionType: MouseActionType.Enum.MOVE,
   mouseMovementType: MouseMovementType.Enum.ABSOLUTE_PIXELS,
-  x: createNumericValue(),
-  y: createNumericValue(),
+  x: createNumberValue(),
+  y: createNumberValue(),
 });
 
 export const copyIntoMouseMoveAction = (action: Action): MouseAction => {
@@ -84,8 +84,8 @@ export const copyIntoMouseMoveAction = (action: Action): MouseAction => {
     type: ActionType.Enum.MOUSE,
     mouseActionType: MouseActionType.Enum.MOVE,
     mouseMovementType: MouseMovementType.Enum.ABSOLUTE_PIXELS,
-    x: createNumericValue(),
-    y: createNumericValue(),
+    x: createNumberValue(),
+    y: createNumberValue(),
   };
 };
 
@@ -95,8 +95,8 @@ export const createMouseClickAction = (): ClickMouseAction => {
     type: ActionType.Enum.MOUSE,
     mouseActionType: MouseActionType.Enum.CLICK,
     mouseButton: createEnumValue(),
-    pause: createNumericValue(),
-    repeat: createNumericValue(),
+    pause: createNumberValue(),
+    repeat: createNumberValue(),
   };
 };
 
@@ -106,8 +106,8 @@ export const copyIntoMouseClickAction = (action: Action): ClickMouseAction => {
     type: ActionType.Enum.MOUSE,
     mouseActionType: MouseActionType.Enum.CLICK,
     mouseButton: createEnumValue(),
-    pause: createNumericValue(),
-    repeat: createNumericValue(),
+    pause: createNumberValue(),
+    repeat: createNumberValue(),
   };
 };
 
@@ -117,7 +117,7 @@ export const createMouseHoldAction = (): HoldReleaseMouseAction => {
     type: ActionType.Enum.MOUSE,
     mouseActionType: MouseActionType.Enum.HOLD_RELEASE,
     mouseButton: createEnumValue(),
-    pause: createNumericValue(),
+    pause: createNumberValue(),
     direction: createEnumValue(),
   };
 };
@@ -130,7 +130,7 @@ export const copyIntoMouseHoldAction = (
     type: ActionType.Enum.MOUSE,
     mouseActionType: MouseActionType.Enum.HOLD_RELEASE,
     mouseButton: createEnumValue(),
-    pause: createNumericValue(),
+    pause: createNumberValue(),
     direction: createEnumValue(),
   };
 };

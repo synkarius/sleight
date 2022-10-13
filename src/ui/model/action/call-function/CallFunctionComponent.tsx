@@ -16,7 +16,7 @@ import {
 import {
   ActionValue,
   createEnumValue,
-  createNumericValue,
+  createNumberValue,
   createTextValue,
 } from '../../../../data/model/action/action-value';
 
@@ -36,8 +36,7 @@ export const CallFunctionComponent: React.FC<{
       radio: Field.AC_CALL_FUNC_PARAMETER_RADIO,
       value: Field.AC_CALL_FUNC_PARAMETER_VALUE,
       variable: Field.AC_CALL_FUNC_PARAMETER_VAR,
-      // TODO: some kind of per-parameter identifier... might need to be index?
-      //id: props.callFunctionAction.parameters[index].
+      id: props.callFunctionAction.parameters[index].id,
     };
     switch (paramType) {
       case VariableType.Enum.TEXT:
@@ -61,7 +60,7 @@ export const CallFunctionComponent: React.FC<{
         case VariableType.Enum.TEXT:
           return createTextValue();
         case VariableType.Enum.NUMBER:
-          return createNumericValue();
+          return createNumberValue();
         case VariableType.Enum.ENUM:
           return createEnumValue();
         default:

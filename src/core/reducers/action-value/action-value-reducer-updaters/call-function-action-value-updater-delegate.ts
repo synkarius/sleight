@@ -1,36 +1,49 @@
-import { isBringAppAction } from '../../../../data/model/action/bring-app/bring-app';
+import {
+  isEnumActionValue,
+  isNumberActionValue,
+  isTextActionValue,
+} from '../../../../data/model/action/action-value';
 import { isCallFunctionAction } from '../../../../data/model/action/call-function/call-function';
-import { NotImplementedError } from '../../../../error/not-implemented-error';
+import { MissingGuardError } from '../../../../error/missing-guard-error';
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
-import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
-import { bringAppTitleGroup } from '../../../../ui/model/action/bring-app/bring-app-action-value-field-group';
-import { Field } from '../../../../validation/validation-field';
+import { isIdIdentifiedActionValuePayload } from '../../../../ui/model/action/action-editing-context-support';
 import {
   changeActionValueValue,
   changeEnumActionValueType,
+  changeNumberActionValueType,
+  changeTextActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
 export const getCallFunctionActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
-    const callFunctionFields = [
-      Field.AC_CALL_FUNC_PARAMETER_RADIO,
-      Field.AC_CALL_FUNC_PARAMETER_VALUE,
-      Field.AC_CALL_FUNC_PARAMETER_VAR,
-    ];
     if (
-      // callFunctionFields.includes(action.payload.field) &&
-      isCallFunctionAction(state)
+      isCallFunctionAction(state) &&
+      isIdIdentifiedActionValuePayload(action.payload)
     ) {
-      throw new NotImplementedError(
-        'getCallFunctionActionValueUpdaterDelegate'
-      );
-      // return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      //   ? { ...state, appTitle: changeEnumActionValueType(something, action) }
-      //   : {
-      //       ...state,
-      //       appTitle: changeActionValueValue(state.appTitle, action),
-      //     };
+      const actionValueId = action.payload.id;
+      return {
+        ...state,
+        parameters: state.parameters.map((param) => {
+          if (param.id === actionValueId) {
+            if (
+              action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ) {
+              if (isTextActionValue(param)) {
+                return changeTextActionValueType(param, action);
+              } else if (isNumberActionValue(param)) {
+                return changeNumberActionValueType(param, action);
+              } else if (isEnumActionValue(param)) {
+                return changeEnumActionValueType(param, action);
+              } else {
+                throw new MissingGuardError('CallFunctionActionValueUpdater');
+              }
+            } else {
+              return changeActionValueValue(param, action);
+            }
+          }
+          return param;
+        }),
+      };
     }
-    return undefined;
   };

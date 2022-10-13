@@ -1,7 +1,7 @@
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
@@ -25,7 +25,7 @@ export const getMMouseMoveXActionValueUpdaterDelegate: () => ActionValueUpdaterD
     ) {
       let newX =
         action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-          ? changeNumericActionValueType(state.x, action)
+          ? changeNumberActionValueType(state.x, action)
           : changeActionValueValue(state.x, action);
       if (
         state.mouseMovementType === MouseMovementType.Enum.WINDOW_PERCENTAGE

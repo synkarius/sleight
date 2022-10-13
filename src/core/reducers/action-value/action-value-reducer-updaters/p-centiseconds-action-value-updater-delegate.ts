@@ -2,7 +2,7 @@ import { ActionReducerActionType } from '../../../../ui/model/action/action-edit
 import { isPauseAction } from '../../../../data/model/action/pause/pause';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
@@ -13,7 +13,7 @@ export const getPCentisecondsActionValueUpdaterDelegate: () => ActionValueUpdate
         ...state,
         centiseconds:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumericActionValueType(state.centiseconds, action)
+            ? changeNumberActionValueType(state.centiseconds, action)
             : changeActionValueValue(state.centiseconds, action),
       };
     }

@@ -1,7 +1,7 @@
 import { Action } from '../../data/model/action/action';
 import {
   EnumActionValue,
-  NumericActionValue,
+  NumberActionValue,
   TextActionValue,
   VariableEnumActionValue,
   VariableRangeActionValue,
@@ -18,7 +18,7 @@ type FieldData = {
 /** action value, action, field */
 export type ExtractedActionValue = (
   | TextActionValue
-  | NumericActionValue
+  | NumberActionValue
   | EnumActionValue
 ) &
   FieldData;

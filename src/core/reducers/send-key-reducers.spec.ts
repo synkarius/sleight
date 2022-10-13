@@ -11,7 +11,7 @@ import { ActionReducerActionType } from '../../ui/model/action/action-editing-co
 import { ActionType } from '../../data/model/action/action-types';
 import {
   createEnumValue,
-  createNumericValue,
+  createNumberValue,
 } from '../../data/model/action/action-value';
 
 const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
@@ -30,9 +30,9 @@ const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
       windows: false,
     },
     keyToSend: { ...createEnumValue(), id: expect.any(String) },
-    outerPause: { ...createNumericValue(), id: expect.any(String) },
-    innerPause: { ...createNumericValue(), id: expect.any(String) },
-    repeat: { ...createNumericValue(), id: expect.any(String) },
+    outerPause: { ...createNumberValue(), id: expect.any(String) },
+    innerPause: { ...createNumberValue(), id: expect.any(String) },
+    repeat: { ...createNumberValue(), id: expect.any(String) },
   };
 };
 
@@ -54,7 +54,7 @@ const createTestSendKeyHoldReleaseAction = (
       windows: false,
     },
     keyToSend: { ...createEnumValue(), id: expect.any(String) },
-    outerPause: { ...createNumericValue(), id: expect.any(String) },
+    outerPause: { ...createNumberValue(), id: expect.any(String) },
     direction: { ...createEnumValue(), id: expect.any(String) },
   };
 };

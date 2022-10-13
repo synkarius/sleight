@@ -5,9 +5,9 @@ import {
 } from '../abstract-action';
 import {
   createEnumValue,
-  createNumericValue,
+  createNumberValue,
   EnumActionValue,
-  NumericActionValue,
+  NumberActionValue,
 } from '../action-value';
 import { SendKeyMode } from './send-key-modes';
 import { ActionType } from '../action-types';
@@ -34,7 +34,7 @@ interface AbstractSendKeyAction extends AbstractAction {
   readonly sendKeyMode: SendKeyMode.Type;
   readonly modifiers: Modifiers;
   readonly keyToSend: EnumActionValue;
-  readonly outerPause: NumericActionValue;
+  readonly outerPause: NumberActionValue;
 }
 
 export const isSendKeyAction = (action: Action): action is SendKeyAction =>
@@ -42,8 +42,8 @@ export const isSendKeyAction = (action: Action): action is SendKeyAction =>
 
 export interface SendKeyPressAction extends AbstractSendKeyAction {
   readonly sendKeyMode: typeof SendKeyMode.Enum.PRESS;
-  readonly innerPause: NumericActionValue;
-  readonly repeat: NumericActionValue;
+  readonly innerPause: NumberActionValue;
+  readonly repeat: NumberActionValue;
 }
 
 export const isSendKeyPressAction = (
@@ -58,9 +58,9 @@ export const createSendKeyPressAction = (): SendKeyPressAction => {
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
     keyToSend: createEnumValue(),
-    outerPause: createNumericValue(),
-    innerPause: createNumericValue(),
-    repeat: createNumericValue(),
+    outerPause: createNumberValue(),
+    innerPause: createNumberValue(),
+    repeat: createNumberValue(),
   };
 };
 
@@ -73,9 +73,9 @@ export const copyIntoSendKeyPressAction = (
     sendKeyMode: SendKeyMode.Enum.PRESS,
     modifiers: createModifiers(),
     keyToSend: createEnumValue(),
-    outerPause: createNumericValue(),
-    innerPause: createNumericValue(),
-    repeat: createNumericValue(),
+    outerPause: createNumberValue(),
+    innerPause: createNumberValue(),
+    repeat: createNumberValue(),
   };
 };
 
@@ -96,7 +96,7 @@ export const createSendKeyHoldReleaseAction = (): SendKeyHoldReleaseAction => {
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
     keyToSend: createEnumValue(),
-    outerPause: createNumericValue(),
+    outerPause: createNumberValue(),
     direction: createEnumValue(),
   };
 };
@@ -110,7 +110,7 @@ export const copyIntoSendKeyHoldReleaseAction = (
     sendKeyMode: SendKeyMode.Enum.HOLD_RELEASE,
     modifiers: createModifiers(),
     keyToSend: createEnumValue(),
-    outerPause: createNumericValue(),
+    outerPause: createNumberValue(),
     direction: createEnumValue(),
   };
 };

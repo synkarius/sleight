@@ -77,7 +77,7 @@ export interface VariableRangeActionValue extends AbstractVariableActionValue {
   readonly variableType: typeof VariableType.Enum.NUMBER;
 }
 
-export const isVariableRangeActionValue = (
+export const isVariableNumberActionValue = (
   actionValue: AbstractVariableActionValue
 ): actionValue is VariableRangeActionValue =>
   actionValue.variableType === VariableType.Enum.NUMBER;
@@ -93,16 +93,37 @@ export const isVariableEnumActionValue = (
 
 export type TextActionValue = EnterTextActionValue | VariableTextActionValue;
 
-export type NumericActionValue =
+export type NumberActionValue =
   | EnterNumberActionValue
   | VariableRangeActionValue;
 
 export type EnumActionValue = EnterEnumActionValue | VariableEnumActionValue;
 
-export type ActionValue =
-  | TextActionValue
-  | NumericActionValue
-  | EnumActionValue;
+export type ActionValue = TextActionValue | NumberActionValue | EnumActionValue;
+
+export const isTextActionValue = (
+  actionValue: ActionValue
+): actionValue is TextActionValue =>
+  (isEnterValueActionValue(actionValue) &&
+    isEnterTextActionValue(actionValue)) ||
+  (isVariableActionValue(actionValue) &&
+    isVariableTextActionValue(actionValue));
+
+export const isNumberActionValue = (
+  actionValue: ActionValue
+): actionValue is NumberActionValue =>
+  (isEnterValueActionValue(actionValue) &&
+    isEnterNumberActionValue(actionValue)) ||
+  (isVariableActionValue(actionValue) &&
+    isVariableNumberActionValue(actionValue));
+
+export const isEnumActionValue = (
+  actionValue: ActionValue
+): actionValue is NumberActionValue =>
+  (isEnterValueActionValue(actionValue) &&
+    isEnterEnumActionValue(actionValue)) ||
+  (isVariableActionValue(actionValue) &&
+    isVariableEnumActionValue(actionValue));
 
 //========================================
 //========================================
@@ -117,7 +138,7 @@ export const createTextValue = (): EnterTextActionValue => {
   };
 };
 
-export const createNumericValue = (): EnterNumberActionValue => {
+export const createNumberValue = (): EnterNumberActionValue => {
   return {
     id: getRandomId(),
     actionValueType: ActionValueType.Enum.ENTER_VALUE,

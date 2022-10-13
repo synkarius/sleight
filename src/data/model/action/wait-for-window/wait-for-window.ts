@@ -7,16 +7,16 @@ import { Action } from '../action';
 import { ActionType } from '../action-types';
 import {
   createHybridTextEnumValue,
-  createNumericValue,
+  createNumberValue,
   EnumActionValue,
-  NumericActionValue,
+  NumberActionValue,
 } from '../action-value';
 
 export interface WaitForWindowAction extends AbstractAction {
   type: typeof ActionType.Enum.WAIT_FOR_WINDOW;
   executable: EnumActionValue;
   title: EnumActionValue;
-  waitSeconds: NumericActionValue;
+  waitSeconds: NumberActionValue;
 }
 
 export const isWaitForWindowAction = (
@@ -29,7 +29,7 @@ export const createWaitForWindowAction = (): WaitForWindowAction => ({
   type: ActionType.Enum.WAIT_FOR_WINDOW,
   executable: createHybridTextEnumValue(),
   title: createHybridTextEnumValue(),
-  waitSeconds: createNumericValue(),
+  waitSeconds: createNumberValue(),
 });
 
 export const copyIntoWaitForWindowAction = (
@@ -39,5 +39,5 @@ export const copyIntoWaitForWindowAction = (
   type: ActionType.Enum.WAIT_FOR_WINDOW,
   executable: createHybridTextEnumValue(),
   title: createHybridTextEnumValue(),
-  waitSeconds: createNumericValue(),
+  waitSeconds: createNumberValue(),
 });

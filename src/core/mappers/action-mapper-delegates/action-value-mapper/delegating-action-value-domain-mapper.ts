@@ -1,7 +1,7 @@
 import {
   ActionValue,
   EnumActionValue,
-  NumericActionValue,
+  NumberActionValue,
   TextActionValue,
 } from '../../../../data/model/action/action-value';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
@@ -20,8 +20,8 @@ export interface MultiMethodActionValueMapper
   mapToTextDomain: (dto: TextActionValue) => TextActionValue;
   mapFromTextDomain: (domain: TextActionValue) => TextActionValue;
 
-  mapToNumericDomain: (dto: NumericActionValue) => NumericActionValue;
-  mapFromNumericDomain: (domain: NumericActionValue) => NumericActionValue;
+  mapToNumericDomain: (dto: NumberActionValue) => NumberActionValue;
+  mapFromNumericDomain: (domain: NumberActionValue) => NumberActionValue;
 
   mapToEnumDomain: (dto: EnumActionValue) => EnumActionValue;
   mapFromEnumDomain: (domain: EnumActionValue) => EnumActionValue;
@@ -51,13 +51,13 @@ export class DelegatingActionValueDomainMapper
       : this.variableTextDelegate.mapFromDomain(domain);
   }
 
-  mapToNumericDomain(dto: NumericActionValue) {
+  mapToNumericDomain(dto: NumberActionValue) {
     return dto.actionValueType === ActionValueType.Enum.ENTER_VALUE
       ? this.enterNumberValueDelegate.mapToDomain(dto)
       : this.variableNumberDelegate.mapToDomain(dto);
   }
 
-  mapFromNumericDomain(domain: NumericActionValue) {
+  mapFromNumericDomain(domain: NumberActionValue) {
     return domain.actionValueType === ActionValueType.Enum.ENTER_VALUE
       ? this.enterNumberValueDelegate.mapFromDomain(domain)
       : this.variableNumberDelegate.mapFromDomain(domain);

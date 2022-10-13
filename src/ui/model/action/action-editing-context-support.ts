@@ -71,6 +71,11 @@ export const createIdedActionValueChangeType = (
   };
 };
 
+export const isIdIdentifiedActionValuePayload = (
+  payload: ActionValueChange | ActionValueTypeChange
+): payload is IdedActionValueChange | IdedActionValueChangeType =>
+  payload.type === ActionValueChangeIdentifierType.ID;
+
 export type ActionValueChange =
   | FieldedActionValueChange
   | IdedActionValueChange;

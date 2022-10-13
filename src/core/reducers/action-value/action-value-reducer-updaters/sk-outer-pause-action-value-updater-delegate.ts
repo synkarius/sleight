@@ -3,7 +3,7 @@ import { isSendKeyAction } from '../../../../data/model/action/send-key/send-key
 import { skOuterPauseGroup } from '../../../../ui/model/action/send-key/send-key-action-value-field-groups';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
@@ -18,7 +18,7 @@ export const getSkOuterPauseActionValueUpdaterDelegate: () => ActionValueUpdater
         ...state,
         outerPause:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumericActionValueType(state.outerPause, action)
+            ? changeNumberActionValueType(state.outerPause, action)
             : changeActionValueValue(state.outerPause, action),
       };
     }

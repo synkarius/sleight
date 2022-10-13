@@ -6,7 +6,7 @@ import {
 import { skInnerPauseGroup } from '../../../../ui/model/action/send-key/send-key-action-value-field-groups';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 import { groupIncludesField } from '../../../../ui/model/action/action-value-type-name-group';
@@ -22,7 +22,7 @@ export const getSkInnerPauseActionValueUpdaterDelegate: () => ActionValueUpdater
         ...state,
         innerPause:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumericActionValueType(state.innerPause, action)
+            ? changeNumberActionValueType(state.innerPause, action)
             : changeActionValueValue(state.innerPause, action),
       };
     }

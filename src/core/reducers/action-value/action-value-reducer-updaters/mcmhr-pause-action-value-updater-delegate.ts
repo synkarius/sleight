@@ -1,7 +1,7 @@
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import {
   changeActionValueValue,
-  changeNumericActionValueType,
+  changeNumberActionValueType,
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 import { mPauseGroup } from '../../../../ui/model/action/mouse/mouse-action-value-field-groups';
@@ -26,7 +26,7 @@ export const getMcMhrPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDe
         ...state,
         pause:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumericActionValueType(state.pause, action)
+            ? changeNumberActionValueType(state.pause, action)
             : changeActionValueValue(state.pause, action),
       };
     }
