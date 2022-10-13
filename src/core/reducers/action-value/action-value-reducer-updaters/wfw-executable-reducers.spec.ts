@@ -1,9 +1,6 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import { UNSELECTED_ENUM } from '../../../common/consts';
@@ -11,6 +8,7 @@ import {
   createWaitForWindowAction,
   WaitForWindowAction,
 } from '../../../../data/model/action/wait-for-window/wait-for-window';
+import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 
 describe('wait for window action reducer: action.executable', () => {
   it('should handle change action.executable.actionValueType', () => {

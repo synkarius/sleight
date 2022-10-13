@@ -1,9 +1,6 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import { UNSELECTED_ENUM } from '../../../common/consts';
@@ -11,6 +8,10 @@ import {
   BringAppAction,
   createBringAppAction,
 } from '../../../../data/model/action/bring-app/bring-app';
+import {
+  ActionValueChangeIdentifierType,
+  createFieldedActionValueChangeType,
+} from '../../../../ui/model/action/action-editing-context-support';
 
 describe('bring app action reducer: action.appPath', () => {
   it('should handle change action.appPath.actionValueType', () => {
@@ -26,11 +27,10 @@ describe('bring app action reducer: action.appPath', () => {
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
-      payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_BRING_PATH_RADIO,
-        actionValueType: ActionValueType.Enum.ENTER_VALUE,
-      },
+      payload: createFieldedActionValueChangeType(
+        Field.AC_BRING_PATH_RADIO,
+        ActionValueType.Enum.ENTER_VALUE
+      ),
     });
 
     expect(actual).not.toBe(obj);

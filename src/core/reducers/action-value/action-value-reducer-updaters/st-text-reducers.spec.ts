@@ -1,15 +1,13 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import {
   createSendTextAction,
   SendTextAction,
 } from '../../../../data/model/action/send-text/send-text';
+import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 
 describe('send text action reducer: action.text', () => {
   it('should handle change action.text.actionValueType', () => {

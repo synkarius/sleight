@@ -1,15 +1,13 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import {
   createMouseMoveAction,
   MouseAction,
 } from '../../../../data/model/action/mouse/mouse';
+import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 
 describe('mouse move action reducer: action.x', () => {
   it('should handle change action.x.actionValueType', () => {

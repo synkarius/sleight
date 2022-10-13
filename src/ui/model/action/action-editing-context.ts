@@ -1,12 +1,14 @@
-import { Field } from '../../../validation/validation-field';
 import { createEditingContext } from '../../../core/common/editing-context';
 import { ActionType } from '../../../data/model/action/action-types';
-import { ActionValueType } from '../../../data/model/action/action-value-type';
 import { MouseActionType } from '../../../data/model/action/mouse/mouse-action-type';
 import { MouseMovementType } from '../../../data/model/action/mouse/mouse-movement-type';
 import { SendKeyMode } from '../../../data/model/action/send-key/send-key-modes';
 import { SendKeyModifiers } from '../../../data/model/action/send-key/send-key-modifiers';
 import { ActionValue } from '../../../data/model/action/action-value';
+import {
+  ActionValueChange,
+  ActionValueTypeChange,
+} from './action-editing-context-support';
 
 export enum ActionReducerActionType {
   CHANGE_ACTION_TYPE,
@@ -29,51 +31,6 @@ type AbstractActionReducerAction<T> = {
   payload: T;
 };
 //====== payloads:
-export enum ActionValueChangeIdentifierType {
-  ID,
-  FIELD,
-}
-interface AbstractIdentifiedActionValuePayload {
-  type:
-    | ActionValueChangeIdentifierType.ID
-    | ActionValueChangeIdentifierType.FIELD;
-}
-interface AbstractActionValueChangePayload {
-  value: string;
-}
-interface AbstractActionValueTypePayload {
-  actionValueType: ActionValueType.Type;
-}
-interface IdedActionValueChange
-  extends AbstractIdentifiedActionValuePayload,
-    AbstractActionValueChangePayload {
-  type: typeof ActionValueChangeIdentifierType.ID;
-  id: string;
-}
-interface FieldActionValueChange
-  extends AbstractIdentifiedActionValuePayload,
-    AbstractActionValueChangePayload {
-  type: typeof ActionValueChangeIdentifierType.FIELD;
-  field: Field;
-}
-interface IdedActionValueChangeType
-  extends AbstractIdentifiedActionValuePayload,
-    AbstractActionValueTypePayload {
-  type: typeof ActionValueChangeIdentifierType.ID;
-  id: string;
-}
-interface FieldActionValueChangeType
-  extends AbstractIdentifiedActionValuePayload,
-    AbstractActionValueTypePayload {
-  type: typeof ActionValueChangeIdentifierType.FIELD;
-  field: Field;
-}
-
-type ActionValueChange = FieldActionValueChange | IdedActionValueChange;
-
-type ActionValueTypeChange =
-  | FieldActionValueChangeType
-  | IdedActionValueChangeType;
 
 type ChangeFnPayload = {
   functionId: string;

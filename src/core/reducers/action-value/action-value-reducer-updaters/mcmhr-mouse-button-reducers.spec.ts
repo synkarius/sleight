@@ -1,9 +1,6 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import {
   ClickMouseAction,
@@ -11,6 +8,7 @@ import {
 } from '../../../../data/model/action/mouse/mouse';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import { UNSELECTED_ENUM } from '../../../common/consts';
+import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 
 describe('mouse action reducer: action.mouseButton', () => {
   it('should handle change action.mouseButton.actionValueType', () => {

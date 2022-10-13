@@ -4,10 +4,8 @@ import {
   SendKeyPressAction,
 } from '../../../../data/model/action/send-key/send-key';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
+import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 import { Field } from '../../../../validation/validation-field';
 import { actionReactReducer } from '../../action-reducers';
 

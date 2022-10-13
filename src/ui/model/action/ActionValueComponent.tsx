@@ -7,7 +7,6 @@ import { ValidationContext } from '../../../validation/validation-context';
 import {
   ActionEditingContext,
   ActionReducerActionType,
-  ActionValueChangeIdentifierType,
 } from './action-editing-context';
 import { Field } from '../../../validation/validation-field';
 import {
@@ -29,6 +28,13 @@ import {
 } from './action-value-type-name-group';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
+import { isDefined } from '../../../core/common/common-functions';
+import {
+  createFieldedActionValueChange,
+  createFieldedActionValueChangeType,
+  createIdedActionValueChange,
+  createIdedActionValueChangeType,
+} from './action-editing-context-support';
 
 type AVCProps = {
   // value
@@ -61,37 +67,35 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   const useVariableId = useId();
 
   const typeChangedFn = (type: string) => {
+    const actionValueType = type as ActionValueType.Type;
+    const payload = isDefined(props.fields.id)
+      ? createIdedActionValueChangeType(props.fields.id, actionValueType)
+      : createFieldedActionValueChangeType(props.fields.radio, actionValueType);
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
-      payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: props.fields.radio,
-        actionValueType: type as ActionValueType.Type,
-      },
+      payload,
     });
     validationContext.touch(props.fields.radio);
   };
   const touchEnteredValue = () => validationContext.touch(props.fields.value);
   const enteredValueChangedFn = (value: string) => {
+    const payload = isDefined(props.fields.id)
+      ? createIdedActionValueChange(props.fields.id, value)
+      : createFieldedActionValueChange(props.fields.radio, value);
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
-      payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: props.fields.value,
-        value: value,
-      },
+      payload,
     });
     touchEnteredValue();
   };
   const touchVariable = () => validationContext.touch(props.fields.variable);
-  const variableIdChangedFn = (id: string) => {
+  const variableIdChangedFn = (variableId: string) => {
+    const payload = isDefined(props.fields.id)
+      ? createIdedActionValueChange(props.fields.id, variableId)
+      : createFieldedActionValueChange(props.fields.radio, variableId);
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
-      payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: props.fields.variable,
-        value: id,
-      },
+      payload,
     });
     touchVariable();
   };

@@ -1,9 +1,6 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import {
-  ActionReducerActionType,
-  ActionValueChangeIdentifierType,
-} from '../../../../ui/model/action/action-editing-context';
+import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import { UNSELECTED_ENUM } from '../../../common/consts';
@@ -12,6 +9,7 @@ import {
   createBringAppAction,
 } from '../../../../data/model/action/bring-app/bring-app';
 import { NotImplementedError } from '../../../../error/not-implemented-error';
+import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 
 describe('bring app action reducer: action.appTitle', () => {
   it('should handle change action.appTitle.actionValueType', () => {

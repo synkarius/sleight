@@ -4,8 +4,8 @@ import { Field } from '../../../validation/validation-field';
 import {
   ActionReducerActionValueChangePayloadAction,
   ActionReducerActionValueTypePayloadAction,
-  ActionValueChangeIdentifierType,
 } from './action-editing-context';
+import { ActionValueChangeIdentifierType } from './action-editing-context-support';
 
 interface AbstractActionFieldGroup {
   readonly type: VariableType.Type;
@@ -49,9 +49,6 @@ export type ActionValueFieldGroup =
   | NumericActionFieldGroup
   | EnumActionFieldGroup;
 
-/** Should use this instead of Object.values(group).includes(field) because
- * values are not all fields and some are numeric.
- */
 export const groupIncludesField = (
   group: ActionValueFieldGroup,
   action:
