@@ -52,6 +52,7 @@ beforeAll(() => {
   const action: PauseAction = {
     ...createPauseAction(),
     centiseconds: {
+      id: '123',
       variableType: VariableType.Enum.NUMBER,
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableId: variable1.id,

@@ -1,7 +1,7 @@
 import { Action } from '../../../../data/model/action/action';
 import { MissingDelegateError } from '../../../../error/missing-delegate-error';
 import {
-  ActionReducerChangePayloadAction,
+  ActionReducerActionValueChangePayloadAction,
   ActionReducerActionValueTypePayloadAction,
 } from '../../../../ui/model/action/action-editing-context';
 import { isDefined } from '../../../common/common-functions';
@@ -13,7 +13,7 @@ export class DelegatingActionValueUpdater implements ActionValueUpdater {
   update(
     state: Action,
     action:
-      | ActionReducerChangePayloadAction
+      | ActionReducerActionValueChangePayloadAction
       | ActionReducerActionValueTypePayloadAction
   ): Action {
     const updated = this.delegates

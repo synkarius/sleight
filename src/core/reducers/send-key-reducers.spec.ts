@@ -29,10 +29,10 @@ const createTestSendKeyPressAction = (id: string): SendKeyPressAction => {
       shift: false,
       windows: false,
     },
-    keyToSend: createEnumValue(),
-    outerPause: createNumericValue(),
-    innerPause: createNumericValue(),
-    repeat: createNumericValue(),
+    keyToSend: { ...createEnumValue(), id: expect.any(String) },
+    outerPause: { ...createNumericValue(), id: expect.any(String) },
+    innerPause: { ...createNumericValue(), id: expect.any(String) },
+    repeat: { ...createNumericValue(), id: expect.any(String) },
   };
 };
 
@@ -53,9 +53,9 @@ const createTestSendKeyHoldReleaseAction = (
       shift: false,
       windows: false,
     },
-    keyToSend: createEnumValue(),
-    outerPause: createNumericValue(),
-    direction: createEnumValue(),
+    keyToSend: { ...createEnumValue(), id: expect.any(String) },
+    outerPause: { ...createNumericValue(), id: expect.any(String) },
+    direction: { ...createEnumValue(), id: expect.any(String) },
   };
 };
 

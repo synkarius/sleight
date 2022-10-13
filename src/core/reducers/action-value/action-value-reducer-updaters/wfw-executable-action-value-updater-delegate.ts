@@ -11,14 +11,15 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 export const getWfwExecutableActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(wfwExecutableGroup, action.payload.field) &&
+      groupIncludesField(wfwExecutableGroup, action) &&
       isWaitForWindowAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, executable: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            executable: changeActionValueValue(state.executable, action),
-          };
+      return {
+        ...state,
+        executable:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.executable, action)
+            : changeActionValueValue(state.executable, action),
+      };
     }
   };

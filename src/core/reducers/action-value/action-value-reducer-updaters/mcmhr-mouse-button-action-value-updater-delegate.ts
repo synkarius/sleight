@@ -15,15 +15,16 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getMcMouseButtonActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(mMouseButtonGroup, action.payload.field) &&
+      groupIncludesField(mMouseButtonGroup, action) &&
       isMouseAction(state) &&
       (isClickMouseAction(state) || isHoldReleaseMouseAction(state))
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, mouseButton: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            mouseButton: changeActionValueValue(state.mouseButton, action),
-          };
+      return {
+        ...state,
+        mouseButton:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.mouseButton, action)
+            : changeActionValueValue(state.mouseButton, action),
+      };
     }
   };

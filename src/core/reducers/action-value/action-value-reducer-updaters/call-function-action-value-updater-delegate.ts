@@ -19,14 +19,14 @@ export const getCallFunctionActionValueUpdaterDelegate: () => ActionValueUpdater
       Field.AC_CALL_FUNC_PARAMETER_VAR,
     ];
     if (
-      callFunctionFields.includes(action.payload.field) &&
+      // callFunctionFields.includes(action.payload.field) &&
       isCallFunctionAction(state)
     ) {
       throw new NotImplementedError(
         'getCallFunctionActionValueUpdaterDelegate'
       );
       // return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-      //   ? { ...state, appTitle: changeEnumActionValueType(action) }
+      //   ? { ...state, appTitle: changeEnumActionValueType(something, action) }
       //   : {
       //       ...state,
       //       appTitle: changeActionValueValue(state.appTitle, action),

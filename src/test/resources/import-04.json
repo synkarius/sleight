@@ -10,6 +10,7 @@
                 "enabled": true,
                 "locked": false,
                 "words": {
+                    "id": "10011",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Text",
                     "value": "these three words"

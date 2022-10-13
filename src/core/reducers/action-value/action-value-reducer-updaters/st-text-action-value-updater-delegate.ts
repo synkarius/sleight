@@ -10,15 +10,13 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
 export const getStTextActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
-    if (
-      groupIncludesField(stTextGroup, action.payload.field) &&
-      isSendTextAction(state)
-    ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, text: changeTextActionValueType(action) }
-        : {
-            ...state,
-            text: changeActionValueValue(state.text, action),
-          };
+    if (groupIncludesField(stTextGroup, action) && isSendTextAction(state)) {
+      return {
+        ...state,
+        text:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeTextActionValueType(state.text, action)
+            : changeActionValueValue(state.text, action),
+      };
     }
   };

@@ -9,11 +9,12 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 export const getPCentisecondsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (isPauseAction(state)) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, centiseconds: changeNumericActionValueType(action) }
-        : {
-            ...state,
-            centiseconds: changeActionValueValue(state.centiseconds, action),
-          };
+      return {
+        ...state,
+        centiseconds:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeNumericActionValueType(state.centiseconds, action)
+            : changeActionValueValue(state.centiseconds, action),
+      };
     }
   };

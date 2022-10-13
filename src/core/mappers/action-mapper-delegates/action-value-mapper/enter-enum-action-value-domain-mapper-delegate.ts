@@ -6,6 +6,7 @@ export class EnterEnumActionValueDomainMapperDelegate
 {
   mapToDomain(dto: EnterEnumActionValue) {
     return {
+      id: dto.id,
       actionValueType: dto.actionValueType,
       enteredValueType: dto.enteredValueType,
       value: dto.value,
@@ -13,6 +14,7 @@ export class EnterEnumActionValueDomainMapperDelegate
   }
   mapFromDomain(domain: EnterEnumActionValue) {
     return {
+      id: domain.id,
       actionValueType: domain.actionValueType,
       enteredValueType: domain.enteredValueType,
       value: domain.value,

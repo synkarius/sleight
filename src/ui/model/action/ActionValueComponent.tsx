@@ -7,6 +7,7 @@ import { ValidationContext } from '../../../validation/validation-context';
 import {
   ActionEditingContext,
   ActionReducerActionType,
+  ActionValueChangeIdentifierType,
 } from './action-editing-context';
 import { Field } from '../../../validation/validation-field';
 import {
@@ -63,6 +64,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: props.fields.radio,
         actionValueType: type as ActionValueType.Type,
       },
@@ -74,6 +76,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: props.fields.value,
         value: value,
       },
@@ -85,6 +88,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: props.fields.variable,
         value: id,
       },

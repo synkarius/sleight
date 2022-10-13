@@ -12,11 +12,13 @@
                 "mouseActionType": "Move",
                 "mouseMovementType": "Relative Pixels",
                 "x": {
+                    "id": "10021",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 1
                 },
                 "y": {
+                    "id": "10022",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 2

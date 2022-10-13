@@ -92,6 +92,7 @@ beforeAll(() => {
     ...createPauseAction(),
     name: ACTION_NO_VAR_NAME,
     centiseconds: {
+      id: '123',
       actionValueType: ActionValueType.Enum.ENTER_VALUE,
       enteredValueType: VariableType.Enum.NUMBER,
       value: 0,
@@ -102,6 +103,7 @@ beforeAll(() => {
     ...createPauseAction(),
     name: ACTION_WITH_VAR_NAME,
     centiseconds: {
+      id: '234',
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableType: VariableType.Enum.NUMBER,
       variableId: rangeVariable.id,

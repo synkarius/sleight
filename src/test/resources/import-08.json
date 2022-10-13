@@ -10,6 +10,7 @@
                 "enabled": true,
                 "locked": false,
                 "text": {
+                    "id": "10019",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Text",
                     "value": "some text"

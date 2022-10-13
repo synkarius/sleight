@@ -11,16 +11,19 @@
                 "locked": false,
                 "mouseActionType": "Hold/Release",
                 "mouseButton": {
+                    "id": "10031",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "Step Down"
                 },
                 "pause": {
+                    "id": "10032",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 3
                 },
                 "direction": {
+                    "id": "10033",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "Down"

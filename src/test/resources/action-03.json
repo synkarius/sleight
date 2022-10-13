@@ -7,6 +7,7 @@
         "locked": false,
         "type": "Pause",
         "centiseconds": {
+            "id": "10003",
             "actionValueType": "Use Variable",
             "variableType": "Range",
             "variableId": "some-other-variable-id-29470239470289"

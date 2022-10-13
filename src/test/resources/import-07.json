@@ -10,16 +10,19 @@
                 "enabled": true,
                 "locked": false,
                 "executable": {
+                    "id": "10016",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "chrome.exe"
                 },
                 "title": {
+                    "id": "10017",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "Gmail"
                 },
                 "waitSeconds": {
+                    "id": "10018",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 5

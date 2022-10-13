@@ -10,16 +10,19 @@
                 "enabled": true,
                 "locked": false,
                 "appPath": {
+                    "id": "10008",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "/some-path"
                 },
                 "appTitle": {
+                    "id": "10009",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "Some Title"
                 },
                 "startDir": {
+                    "id": "10010",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "/start-dir"

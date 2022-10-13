@@ -10,6 +10,7 @@ import {
   ActionReducerActionTypePayloadAction,
   ActionReducerMouseActionTypePayloadAction,
   ActionReducerMouseMovementTypePayloadAction,
+  ActionReducerChangeFnPayloadAction,
 } from '../../ui/model/action/action-editing-context';
 import { ActionType } from '../../data/model/action/action-types';
 import {
@@ -229,9 +230,13 @@ const toggleEditingActionLocked = (state: Action): Action => ({
 
 const changeFn = (
   state: CallFunctionAction,
-  action: ActionReducerStringPayloadAction
+  action: ActionReducerChangeFnPayloadAction
 ): CallFunctionAction => {
-  return { ...state, functionId: action.payload };
+  return {
+    ...state,
+    functionId: action.payload.functionId,
+    parameters: action.payload.defaultActionValues,
+  };
 };
 
 export const actionReactReducer = (

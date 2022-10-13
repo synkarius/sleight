@@ -10,16 +10,19 @@
                 "enabled": true,
                 "locked": false,
                 "executable": {
+                    "id": "10013",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "21735747-e088-4001-bd6a-586e2c7b1a2b"
                 },
                 "title": {
+                    "id": "10014",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "c1b1ef49-0d54-4a84-959b-da1adaaa2a97"
                 },
                 "waitSeconds": {
+                    "id": "10015",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "02162aaf-c78b-469f-912c-1335d671e75e"

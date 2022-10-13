@@ -18,15 +18,16 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getMcMhrPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(mPauseGroup, action.payload.field) &&
+      groupIncludesField(mPauseGroup, action) &&
       ((isMouseAction(state) && isClickMouseAction(state)) ||
         (isMouseAction(state) && isHoldReleaseMouseAction(state)))
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, pause: changeNumericActionValueType(action) }
-        : {
-            ...state,
-            pause: changeActionValueValue(state.pause, action),
-          };
+      return {
+        ...state,
+        pause:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeNumericActionValueType(state.pause, action)
+            : changeActionValueValue(state.pause, action),
+      };
     }
   };

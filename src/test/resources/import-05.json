@@ -10,6 +10,7 @@
                 "enabled": true,
                 "locked": false,
                 "words": {
+                    "id": "10012",
                     "actionValueType": "Use Variable",
                     "variableType": "Text",
                     "variableId": "9bfe9ee5-ee03-46ef-a202-1f4e08a4a699"

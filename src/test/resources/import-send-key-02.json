@@ -17,21 +17,25 @@
                     "windows": true
                 },
                 "keyToSend": {
+                    "id": "10043",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "ff8b413c-fa02-4593-9539-1448ed95bf77"
                 },
                 "outerPause": {
+                    "id": "10044",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "e72d4bc7-6ef8-42e4-ac18-2e2795256ea1"
                 },
                 "innerPause": {
+                    "id": "10045",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "48158209-b7bc-4401-a99e-ed9eb291cc8c"
                 },
                 "repeat": {
+                    "id": "10046",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "0cffbe4c-203b-4b8e-ad2d-5f2aaefa83d4"

@@ -11,14 +11,15 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getSkOuterPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(skOuterPauseGroup, action.payload.field) &&
+      groupIncludesField(skOuterPauseGroup, action) &&
       isSendKeyAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, outerPause: changeNumericActionValueType(action) }
-        : {
-            ...state,
-            outerPause: changeActionValueValue(state.outerPause, action),
-          };
+      return {
+        ...state,
+        outerPause:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeNumericActionValueType(state.outerPause, action)
+            : changeActionValueValue(state.outerPause, action),
+      };
     }
   };

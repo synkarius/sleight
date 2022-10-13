@@ -11,16 +11,19 @@
                 "locked": false,
                 "mouseActionType": "Hold/Release",
                 "mouseButton": {
+                    "id": "10034",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "f3b4643c-ccbb-4cf1-9b48-d80e3ad24a10"
                 },
                 "pause": {
+                    "id": "10035",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "7bc04596-ad0d-4527-a862-1e18bf88910a"
                 },
                 "direction": {
+                    "id": "10036",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "869e23f3-325a-4f2e-bf77-23deb6df89f7"

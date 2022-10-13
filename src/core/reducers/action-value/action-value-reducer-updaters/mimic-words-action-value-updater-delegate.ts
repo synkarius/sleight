@@ -10,15 +10,13 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
 export const getMimicWordsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
-    if (
-      groupIncludesField(mimicWordsGroup, action.payload.field) &&
-      isMimicAction(state)
-    ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, words: changeTextActionValueType(action) }
-        : {
-            ...state,
-            words: changeActionValueValue(state.words, action),
-          };
+    if (groupIncludesField(mimicWordsGroup, action) && isMimicAction(state)) {
+      return {
+        ...state,
+        words:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeTextActionValueType(state.words, action)
+            : changeActionValueValue(state.words, action),
+      };
     }
   };

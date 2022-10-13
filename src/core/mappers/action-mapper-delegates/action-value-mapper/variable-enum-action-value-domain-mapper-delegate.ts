@@ -6,6 +6,7 @@ export class VariableEnumActionValueDomainMapperDelegate
 {
   mapToDomain(dto: VariableEnumActionValue) {
     return {
+      id: dto.id,
       actionValueType: dto.actionValueType,
       variableType: dto.variableType,
       variableId: dto.variableId,
@@ -13,6 +14,7 @@ export class VariableEnumActionValueDomainMapperDelegate
   }
   mapFromDomain(domain: VariableEnumActionValue) {
     return {
+      id: domain.id,
       actionValueType: domain.actionValueType,
       variableType: domain.variableType,
       variableId: domain.variableId,

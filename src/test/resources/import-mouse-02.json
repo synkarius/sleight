@@ -12,11 +12,13 @@
                 "mouseActionType": "Move",
                 "mouseMovementType": "Relative Pixels",
                 "x": {
+                    "id": "10023",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "c6c21ba3-ff22-47b3-bdf6-7e6e9e742885"
                 },
                 "y": {
+                    "id": "10024",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "2ddf1139-714d-4a9a-ba5b-8ab3880ef828"

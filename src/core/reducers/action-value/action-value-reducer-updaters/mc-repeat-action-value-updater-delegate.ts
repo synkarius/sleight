@@ -14,15 +14,16 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getMcRepeatActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(mRepeatGroup, action.payload.field) &&
+      groupIncludesField(mRepeatGroup, action) &&
       isMouseAction(state) &&
       isClickMouseAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, repeat: changeNumericActionValueType(action) }
-        : {
-            ...state,
-            repeat: changeActionValueValue(state.repeat, action),
-          };
+      return {
+        ...state,
+        repeat:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeNumericActionValueType(state.repeat, action)
+            : changeActionValueValue(state.repeat, action),
+      };
     }
   };

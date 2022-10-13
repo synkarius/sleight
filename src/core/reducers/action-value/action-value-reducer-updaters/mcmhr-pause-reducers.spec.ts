@@ -4,7 +4,10 @@ import {
   createMouseClickAction,
 } from '../../../../data/model/action/mouse/mouse';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
+import {
+  ActionReducerActionType,
+  ActionValueChangeIdentifierType,
+} from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { actionReactReducer } from '../../action-reducers';
 
@@ -13,6 +16,7 @@ describe('mouse action reducer: action.pause', () => {
     const obj: ClickMouseAction = {
       ...createMouseClickAction(),
       pause: {
+        id: '123',
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.NUMBER,
         variableId: 'asdf',
@@ -22,6 +26,7 @@ describe('mouse action reducer: action.pause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_PAUSE_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
@@ -31,6 +36,7 @@ describe('mouse action reducer: action.pause', () => {
     expect(actual).toEqual({
       ...obj,
       pause: {
+        id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
@@ -44,6 +50,7 @@ describe('mouse action reducer: action.pause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_PAUSE_VALUE,
         value: '34',
       },
@@ -65,6 +72,7 @@ describe('mouse action reducer: action.pause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_PAUSE_VAR,
         value: 'asdf',
       },

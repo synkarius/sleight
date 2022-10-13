@@ -66,6 +66,7 @@ beforeEach(() => {
     id: ACTION_ID_1,
     name: ACTION_NAME_1,
     centiseconds: {
+      id: '123',
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableType: VariableType.Enum.NUMBER,
       variableId: VARIABLE_ID_1,

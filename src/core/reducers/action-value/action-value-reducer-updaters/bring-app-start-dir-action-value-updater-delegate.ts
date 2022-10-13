@@ -11,14 +11,15 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 export const getBringAppStartDirActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(bringAppStarDirGroup, action.payload.field) &&
+      groupIncludesField(bringAppStarDirGroup, action) &&
       isBringAppAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, startDir: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            startDir: changeActionValueValue(state.startDir, action),
-          };
+      return {
+        ...state,
+        startDir:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.startDir, action)
+            : changeActionValueValue(state.startDir, action),
+      };
     }
   };

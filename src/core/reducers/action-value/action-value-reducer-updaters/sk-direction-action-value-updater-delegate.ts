@@ -14,15 +14,16 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getSkDirectionActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(skDirectionGroup, action.payload.field) &&
+      groupIncludesField(skDirectionGroup, action) &&
       isSendKeyAction(state) &&
       isSendKeyHoldReleaseAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, direction: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            direction: changeActionValueValue(state.direction, action),
-          };
+      return {
+        ...state,
+        direction:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.direction, action)
+            : changeActionValueValue(state.direction, action),
+      };
     }
   };

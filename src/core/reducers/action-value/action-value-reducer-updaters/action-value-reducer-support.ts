@@ -4,9 +4,10 @@ import { VariableType } from '../../../../data/model/variable/variable-types';
 import {
   ActionReducerActionType,
   ActionReducerActionValueTypePayloadAction,
-  ActionReducerChangePayloadAction,
+  ActionReducerActionValueChangePayloadAction,
 } from '../../../../ui/model/action/action-editing-context';
 import {
+  ActionValue,
   EnumActionValue,
   NumericActionValue,
   TextActionValue,
@@ -14,18 +15,21 @@ import {
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
 
 export const changeTextActionValueType = (
+  state: TextActionValue,
   action: ActionReducerActionValueTypePayloadAction
 ): TextActionValue => {
   const actionValueType = action.payload.actionValueType;
   switch (actionValueType) {
     case ActionValueType.Enum.ENTER_VALUE:
       return {
+        id: state.id,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.TEXT,
         value: '',
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
+        id: state.id,
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.TEXT,
         variableId: UNSELECTED_ID,
@@ -36,18 +40,21 @@ export const changeTextActionValueType = (
 };
 
 export const changeNumericActionValueType = (
+  state: NumericActionValue,
   action: ActionReducerActionValueTypePayloadAction
 ): NumericActionValue => {
   const actionValueType = action.payload.actionValueType;
   switch (actionValueType) {
     case ActionValueType.Enum.ENTER_VALUE:
       return {
+        id: state.id,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
+        id: state.id,
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.NUMBER,
         variableId: UNSELECTED_ID,
@@ -58,18 +65,21 @@ export const changeNumericActionValueType = (
 };
 
 export const changeEnumActionValueType = (
+  state: EnumActionValue,
   action: ActionReducerActionValueTypePayloadAction
 ): EnumActionValue => {
   const actionValueType = action.payload.actionValueType;
   switch (actionValueType) {
     case ActionValueType.Enum.ENTER_VALUE:
       return {
+        id: state.id,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.ENUM,
         value: UNSELECTED_ENUM,
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
+        id: state.id,
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.ENUM,
         variableId: UNSELECTED_ID,
@@ -83,7 +93,7 @@ export const changeActionValueValue = <
   T extends TextActionValue | NumericActionValue | EnumActionValue
 >(
   actionValue: T,
-  action: ActionReducerChangePayloadAction
+  action: ActionReducerActionValueChangePayloadAction
 ): T => {
   const actionType = action.type;
   switch (actionType) {

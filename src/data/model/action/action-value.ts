@@ -1,8 +1,10 @@
 import { UNSELECTED_ENUM } from '../../../core/common/consts';
+import { getRandomId } from '../../../core/common/random-id';
+import { Ided } from '../domain';
 import { VariableType } from '../variable/variable-types';
 import { ActionValueType } from './action-value-type';
 
-interface AbstractActionValue {
+interface AbstractActionValue extends Ided {
   /* this is how the user specifies the value in an action:
    * a value of ActionValueType
    */
@@ -108,6 +110,7 @@ export type ActionValue =
 
 export const createTextValue = (): EnterTextActionValue => {
   return {
+    id: getRandomId(),
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
     enteredValueType: VariableType.Enum.TEXT,
     value: '',
@@ -116,6 +119,7 @@ export const createTextValue = (): EnterTextActionValue => {
 
 export const createNumericValue = (): EnterNumberActionValue => {
   return {
+    id: getRandomId(),
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
     enteredValueType: VariableType.Enum.NUMBER,
     value: 0,
@@ -124,6 +128,7 @@ export const createNumericValue = (): EnterNumberActionValue => {
 
 export const createEnumValue = (): EnterEnumActionValue => {
   return {
+    id: getRandomId(),
     actionValueType: ActionValueType.Enum.ENTER_VALUE,
     enteredValueType: VariableType.Enum.ENUM,
     value: UNSELECTED_ENUM,

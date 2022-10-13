@@ -17,16 +17,19 @@
                     "windows": false
                 },
                 "keyToSend": {
+                    "id": "10047",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "k (kilo)"
                 },
                 "outerPause": {
+                    "id": "10048",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 14
                 },
                 "direction": {
+                    "id": "10049",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "Up"

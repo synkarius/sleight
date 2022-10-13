@@ -10,16 +10,19 @@
                 "enabled": true,
                 "locked": false,
                 "appPath": {
+                    "id": "10005",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "c23384a3-f96b-41a1-9f3b-078b42d88260"
                 },
                 "appTitle": {
+                    "id": "10006",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "dbe6ae9a-33d2-4be7-be61-06ceba432337"
                 },
                 "startDir": {
+                    "id": "10007",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "e470eead-18a6-4049-af33-af6f9d04c959"

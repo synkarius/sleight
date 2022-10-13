@@ -14,15 +14,16 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getMhrDirectionActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(mDirectionGroup, action.payload.field) &&
+      groupIncludesField(mDirectionGroup, action) &&
       isMouseAction(state) &&
       isHoldReleaseMouseAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, direction: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            direction: changeActionValueValue(state.direction, action),
-          };
+      return {
+        ...state,
+        direction:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.direction, action)
+            : changeActionValueValue(state.direction, action),
+      };
     }
   };

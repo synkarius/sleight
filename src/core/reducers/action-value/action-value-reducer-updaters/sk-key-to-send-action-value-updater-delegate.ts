@@ -11,14 +11,15 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getSkKeyToSendActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(skKeyToSendGroup, action.payload.field) &&
+      groupIncludesField(skKeyToSendGroup, action) &&
       isSendKeyAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, keyToSend: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            keyToSend: changeActionValueValue(state.keyToSend, action),
-          };
+      return {
+        ...state,
+        keyToSend:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.keyToSend, action)
+            : changeActionValueValue(state.keyToSend, action),
+      };
     }
   };

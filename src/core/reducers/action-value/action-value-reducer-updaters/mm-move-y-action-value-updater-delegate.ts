@@ -16,13 +16,13 @@ import { limitNumericActionValueToPercentage } from './mm-move-reducer-support';
 export const getMMouseMoveYActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(mMoveYGroup, action.payload.field) &&
+      groupIncludesField(mMoveYGroup, action) &&
       isMouseAction(state) &&
       isMoveMouseAction(state)
     ) {
       let newY =
         action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-          ? changeNumericActionValueType(action)
+          ? changeNumericActionValueType(state.y, action)
           : changeActionValueValue(state.y, action);
       if (
         state.mouseMovementType === MouseMovementType.Enum.WINDOW_PERCENTAGE

@@ -6,6 +6,7 @@ export class VariableTextActionValueDomainMapperDelegate
 {
   mapToDomain(dto: VariableTextActionValue) {
     return {
+      id: dto.id,
       actionValueType: dto.actionValueType,
       variableType: dto.variableType,
       variableId: dto.variableId,
@@ -13,6 +14,7 @@ export class VariableTextActionValueDomainMapperDelegate
   }
   mapFromDomain(domain: VariableTextActionValue) {
     return {
+      id: domain.id,
       actionValueType: domain.actionValueType,
       variableType: domain.variableType,
       variableId: domain.variableId,

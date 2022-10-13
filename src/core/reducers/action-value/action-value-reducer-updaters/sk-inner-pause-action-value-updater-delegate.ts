@@ -14,15 +14,16 @@ import { groupIncludesField } from '../../../../ui/model/action/action-value-typ
 export const getSkInnerPauseActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(skInnerPauseGroup, action.payload.field) &&
+      groupIncludesField(skInnerPauseGroup, action) &&
       isSendKeyAction(state) &&
       isSendKeyPressAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, innerPause: changeNumericActionValueType(action) }
-        : {
-            ...state,
-            innerPause: changeActionValueValue(state.innerPause, action),
-          };
+      return {
+        ...state,
+        innerPause:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeNumericActionValueType(state.innerPause, action)
+            : changeActionValueValue(state.innerPause, action),
+      };
     }
   };

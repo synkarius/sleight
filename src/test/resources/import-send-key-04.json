@@ -17,16 +17,19 @@
                     "windows": false
                 },
                 "keyToSend": {
+                    "id": "10050",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "c527fae3-fb30-4f85-b8a2-f8cd39adcaeb"
                 },
                 "outerPause": {
+                    "id": "10051",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "b61db350-b08f-460c-a65f-9f2e3cdc3370"
                 },
                 "direction": {
+                    "id": "10052",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "5585a4cd-d671-4d65-8057-0015b0ed10a3"

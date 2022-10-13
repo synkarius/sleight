@@ -11,14 +11,15 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 export const getWfwTitleActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(wfwTitleGroup, action.payload.field) &&
+      groupIncludesField(wfwTitleGroup, action) &&
       isWaitForWindowAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, title: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            title: changeActionValueValue(state.title, action),
-          };
+      return {
+        ...state,
+        title:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.title, action)
+            : changeActionValueValue(state.title, action),
+      };
     }
   };

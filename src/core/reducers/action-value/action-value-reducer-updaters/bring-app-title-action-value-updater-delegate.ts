@@ -11,14 +11,15 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 export const getBringAppTitleActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(bringAppTitleGroup, action.payload.field) &&
+      groupIncludesField(bringAppTitleGroup, action) &&
       isBringAppAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, appTitle: changeEnumActionValueType(action) }
-        : {
-            ...state,
-            appTitle: changeActionValueValue(state.appTitle, action),
-          };
+      return {
+        ...state,
+        appTitle:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeEnumActionValueType(state.appTitle, action)
+            : changeActionValueValue(state.appTitle, action),
+      };
     }
   };

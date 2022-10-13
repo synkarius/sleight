@@ -11,16 +11,19 @@
                 "locked": false,
                 "mouseActionType": "Click",
                 "mouseButton": {
+                    "id": "10025",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "Middle"
                 },
                 "pause": {
+                    "id": "10026",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 1
                 },
                 "repeat": {
+                    "id": "10027",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 3

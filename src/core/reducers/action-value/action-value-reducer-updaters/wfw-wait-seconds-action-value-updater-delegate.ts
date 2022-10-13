@@ -11,14 +11,15 @@ import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 export const getWfwWaitSecondsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (
-      groupIncludesField(wfwWaitSecondsGroup, action.payload.field) &&
+      groupIncludesField(wfwWaitSecondsGroup, action) &&
       isWaitForWindowAction(state)
     ) {
-      return action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-        ? { ...state, waitSeconds: changeNumericActionValueType(action) }
-        : {
-            ...state,
-            waitSeconds: changeActionValueValue(state.waitSeconds, action),
-          };
+      return {
+        ...state,
+        waitSeconds:
+          action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
+            ? changeNumericActionValueType(state.waitSeconds, action)
+            : changeActionValueValue(state.waitSeconds, action),
+      };
     }
   };

@@ -4,7 +4,10 @@ import {
   SendKeyAction,
 } from '../../../../data/model/action/send-key/send-key';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
+import {
+  ActionReducerActionType,
+  ActionValueChangeIdentifierType,
+} from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { UNSELECTED_ENUM } from '../../../common/consts';
 import { actionReactReducer } from '../../action-reducers';
@@ -14,6 +17,7 @@ describe('sk action reducer: action.keyToSend', () => {
     const obj: SendKeyAction = {
       ...createSendKeyPressAction(),
       keyToSend: {
+        id: '123',
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.ENUM,
         variableId: 'asdf',
@@ -23,6 +27,7 @@ describe('sk action reducer: action.keyToSend', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_SK_KEY_TO_SEND_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
@@ -32,6 +37,7 @@ describe('sk action reducer: action.keyToSend', () => {
     expect(actual).toEqual({
       ...obj,
       keyToSend: {
+        id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.ENUM,
         value: UNSELECTED_ENUM,
@@ -45,6 +51,7 @@ describe('sk action reducer: action.keyToSend', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_SK_KEY_TO_SEND_VALUE,
         value: 'asdf',
       },
@@ -66,6 +73,7 @@ describe('sk action reducer: action.keyToSend', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_SK_KEY_TO_SEND_VAR,
         value: 'asdf',
       },

@@ -1,6 +1,9 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
+import {
+  ActionReducerActionType,
+  ActionValueChangeIdentifierType,
+} from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import {
@@ -13,6 +16,7 @@ describe('mouse move action reducer: action.y', () => {
     const obj: MouseAction = {
       ...createMouseMoveAction(),
       y: {
+        id: '123',
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.NUMBER,
         variableId: 'asdf',
@@ -22,6 +26,7 @@ describe('mouse move action reducer: action.y', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_Y_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
@@ -31,6 +36,7 @@ describe('mouse move action reducer: action.y', () => {
     expect(actual).toEqual({
       ...obj,
       y: {
+        id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
@@ -44,6 +50,7 @@ describe('mouse move action reducer: action.y', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_Y_VALUE,
         value: '34',
       },
@@ -65,6 +72,7 @@ describe('mouse move action reducer: action.y', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_Y_VAR,
         value: 'asdf',
       },

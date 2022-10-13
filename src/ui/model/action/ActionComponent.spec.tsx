@@ -130,6 +130,7 @@ beforeEach(async () => {
     name: ACTION_NAME_1,
     roleKey: ROLE_KEY,
     centiseconds: {
+      id: '123',
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableType: VariableType.Enum.NUMBER,
       variableId: VARIABLE_ID_1,
@@ -140,6 +141,7 @@ beforeEach(async () => {
     ...createPauseAction(),
     id: ACTION_NO_VARS,
     centiseconds: {
+      id: '234',
       actionValueType: ActionValueType.Enum.ENTER_VALUE,
       enteredValueType: VariableType.Enum.NUMBER,
       value: 789,

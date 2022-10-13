@@ -4,7 +4,10 @@ import {
   SendKeyPressAction,
 } from '../../../../data/model/action/send-key/send-key';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
+import {
+  ActionReducerActionType,
+  ActionValueChangeIdentifierType,
+} from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { actionReactReducer } from '../../action-reducers';
 
@@ -13,6 +16,7 @@ describe('sk action reducer: action.innerPause', () => {
     const obj: SendKeyPressAction = {
       ...createSendKeyPressAction(),
       innerPause: {
+        id: '123',
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.NUMBER,
         variableId: 'asdf',
@@ -22,6 +26,7 @@ describe('sk action reducer: action.innerPause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_SK_INNER_PAUSE_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
@@ -31,6 +36,7 @@ describe('sk action reducer: action.innerPause', () => {
     expect(actual).toEqual({
       ...obj,
       innerPause: {
+        id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.NUMBER,
         value: 0,
@@ -44,6 +50,7 @@ describe('sk action reducer: action.innerPause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_SK_INNER_PAUSE_VALUE,
         value: '34',
       },
@@ -65,6 +72,7 @@ describe('sk action reducer: action.innerPause', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_SK_INNER_PAUSE_VAR,
         value: 'asdf',
       },

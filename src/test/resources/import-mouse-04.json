@@ -11,16 +11,19 @@
                 "locked": false,
                 "mouseActionType": "Click",
                 "mouseButton": {
+                    "id": "10028",
                     "actionValueType": "Use Variable",
                     "variableType": "Choice",
                     "variableId": "d38dc993-fb9f-4319-8403-ca72a82cfeb9"
                 },
                 "pause": {
+                    "id": "10029",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "3817aca2-a3eb-458d-8060-e0f0939b0863"
                 },
                 "repeat": {
+                    "id": "10030",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",
                     "variableId": "01f08aeb-3f70-4b91-ae34-f80c140a31ba"

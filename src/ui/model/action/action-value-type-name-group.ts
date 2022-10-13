@@ -1,6 +1,11 @@
 import { Ided } from '../../../data/model/domain';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { Field } from '../../../validation/validation-field';
+import {
+  ActionReducerActionValueChangePayloadAction,
+  ActionReducerActionValueTypePayloadAction,
+  ActionValueChangeIdentifierType,
+} from './action-editing-context';
 
 interface AbstractActionFieldGroup {
   readonly type: VariableType.Type;
@@ -49,6 +54,12 @@ export type ActionValueFieldGroup =
  */
 export const groupIncludesField = (
   group: ActionValueFieldGroup,
-  field: Field
-): boolean =>
-  group.radio === field || group.value === field || group.variable === field;
+  action:
+    | ActionReducerActionValueChangePayloadAction
+    | ActionReducerActionValueTypePayloadAction
+): boolean => {
+  return (
+    action.payload.type === ActionValueChangeIdentifierType.FIELD &&
+    [group.radio, group.value, group.variable].includes(action.payload.field)
+  );
+};

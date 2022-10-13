@@ -17,21 +17,25 @@
                     "windows": false
                 },
                 "keyToSend": {
+                    "id": "10039",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Choice",
                     "value": "m (mike)"
                 },
                 "outerPause": {
+                    "id": "10040",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 1
                 },
                 "innerPause": {
+                    "id": "10041",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 3
                 },
                 "repeat": {
+                    "id": "10042",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",
                     "value": 4

@@ -1,6 +1,9 @@
 import { actionReactReducer } from '../../action-reducers';
 import { ActionValueType } from '../../../../data/model/action/action-value-type';
-import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
+import {
+  ActionReducerActionType,
+  ActionValueChangeIdentifierType,
+} from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import {
   ClickMouseAction,
@@ -14,6 +17,7 @@ describe('mouse action reducer: action.mouseButton', () => {
     const obj: ClickMouseAction = {
       ...createMouseClickAction(),
       mouseButton: {
+        id: '123',
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.ENUM,
         variableId: 'asdf',
@@ -23,6 +27,7 @@ describe('mouse action reducer: action.mouseButton', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_MOUSE_BUTTON_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
@@ -32,6 +37,7 @@ describe('mouse action reducer: action.mouseButton', () => {
     expect(actual).toEqual({
       ...obj,
       mouseButton: {
+        id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.ENUM,
         value: UNSELECTED_ENUM,
@@ -45,6 +51,7 @@ describe('mouse action reducer: action.mouseButton', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_MOUSE_BUTTON_VALUE,
         value: 'Left',
       },
@@ -66,6 +73,7 @@ describe('mouse action reducer: action.mouseButton', () => {
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
+        type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_MOUSE_MOUSE_BUTTON_VAR,
         value: 'asdf',
       },

@@ -10,13 +10,15 @@ import { VariableType } from '../../../../data/model/variable/variable-types';
 import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
 import { ValidationContext } from '../../../../validation/validation-context';
 import {
-  FnEditingContext,
-  FnReducerActionType,
-} from '../../fn/fn-editing-context';
-import {
   ActionEditingContext,
   ActionReducerActionType,
 } from '../action-editing-context';
+import {
+  ActionValue,
+  createEnumValue,
+  createNumericValue,
+  createTextValue,
+} from '../../../../data/model/action/action-value';
 
 export const CallFunctionComponent: React.FC<{
   callFunctionAction: CallFunctionAction;
@@ -51,9 +53,28 @@ export const CallFunctionComponent: React.FC<{
     }
   };
   const fnChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newFnId = event.target.value;
+    const newFn = fns[newFnId];
+    const defaultActionValues: ActionValue[] = newFn.parameters.map((param) => {
+      const paramType = param.type;
+      switch (paramType) {
+        case VariableType.Enum.TEXT:
+          return createTextValue();
+        case VariableType.Enum.NUMBER:
+          return createNumericValue();
+        case VariableType.Enum.ENUM:
+          return createEnumValue();
+        default:
+          throw new ExhaustivenessFailureError(paramType);
+      }
+    });
+
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_FN,
-      payload: event.target.value,
+      payload: {
+        functionId: newFnId,
+        defaultActionValues,
+      },
     });
   };
 
@@ -74,7 +95,10 @@ export const CallFunctionComponent: React.FC<{
       </FormGroupRowComponent>
       {fn &&
         fn.parameters.map((param, index) => (
-          <FormGroupRowComponent labelText={param.name}>
+          <FormGroupRowComponent
+            labelText={param.name}
+            key={param.name + index}
+          >
             <ActionValueComponent
               fields={getActionValueFieldGroup(index)}
               actionValue={props.callFunctionAction.parameters[index]}

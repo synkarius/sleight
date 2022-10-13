@@ -6,6 +6,7 @@ import { MouseActionType } from '../../../data/model/action/mouse/mouse-action-t
 import { MouseMovementType } from '../../../data/model/action/mouse/mouse-movement-type';
 import { SendKeyMode } from '../../../data/model/action/send-key/send-key-modes';
 import { SendKeyModifiers } from '../../../data/model/action/send-key/send-key-modifiers';
+import { ActionValue } from '../../../data/model/action/action-value';
 
 export enum ActionReducerActionType {
   CHANGE_ACTION_TYPE,
@@ -28,29 +29,70 @@ type AbstractActionReducerAction<T> = {
   payload: T;
 };
 //====== payloads:
-type ActionValueChange = {
-  field: Field;
+export enum ActionValueChangeIdentifierType {
+  ID,
+  FIELD,
+}
+interface AbstractIdentifiedActionValuePayload {
+  type:
+    | ActionValueChangeIdentifierType.ID
+    | ActionValueChangeIdentifierType.FIELD;
+}
+interface AbstractActionValueChangePayload {
   value: string;
-};
-type ActionValueTypeChange = {
-  field: Field;
+}
+interface AbstractActionValueTypePayload {
   actionValueType: ActionValueType.Type;
+}
+interface IdedActionValueChange
+  extends AbstractIdentifiedActionValuePayload,
+    AbstractActionValueChangePayload {
+  type: typeof ActionValueChangeIdentifierType.ID;
+  id: string;
+}
+interface FieldActionValueChange
+  extends AbstractIdentifiedActionValuePayload,
+    AbstractActionValueChangePayload {
+  type: typeof ActionValueChangeIdentifierType.FIELD;
+  field: Field;
+}
+interface IdedActionValueChangeType
+  extends AbstractIdentifiedActionValuePayload,
+    AbstractActionValueTypePayload {
+  type: typeof ActionValueChangeIdentifierType.ID;
+  id: string;
+}
+interface FieldActionValueChangeType
+  extends AbstractIdentifiedActionValuePayload,
+    AbstractActionValueTypePayload {
+  type: typeof ActionValueChangeIdentifierType.FIELD;
+  field: Field;
+}
+
+type ActionValueChange = FieldActionValueChange | IdedActionValueChange;
+
+type ActionValueTypeChange =
+  | FieldActionValueChangeType
+  | IdedActionValueChangeType;
+
+type ChangeFnPayload = {
+  functionId: string;
+  defaultActionValues: ActionValue[];
 };
 //====== reducer actions:
 export interface ActionReducerStringPayloadAction
   extends AbstractActionReducerAction<string> {
   type:
     | typeof ActionReducerActionType.CHANGE_NAME
-    | typeof ActionReducerActionType.CHANGE_ROLE_KEY
-    | typeof ActionReducerActionType.CHANGE_FN;
+    | typeof ActionReducerActionType.CHANGE_ROLE_KEY;
 }
 export interface ActionReducerActionTypePayloadAction
   extends AbstractActionReducerAction<ActionType.Type> {
   type: typeof ActionReducerActionType.CHANGE_ACTION_TYPE;
 }
-export interface ActionReducerActionValueTypePayloadAction
-  extends AbstractActionReducerAction<ActionValueTypeChange> {
-  type: typeof ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE;
+export interface ActionReducerChangeFnPayloadAction
+  extends AbstractActionReducerAction<ChangeFnPayload> {
+  type: typeof ActionReducerActionType.CHANGE_FN;
 }
 export interface ActionReducerSendKeyModePayloadAction
   extends AbstractActionReducerAction<SendKeyMode.Type> {
@@ -69,11 +111,15 @@ export interface ActionReducerMouseMovementTypePayloadAction
   type: typeof ActionReducerActionType.CHANGE_MOUSE_MOVEMENT_TYPE;
 }
 // change action value: value/variable
-export interface ActionReducerChangePayloadAction
+export interface ActionReducerActionValueChangePayloadAction
   extends AbstractActionReducerAction<ActionValueChange> {
   type:
     | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE
     | typeof ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID;
+}
+export interface ActionReducerActionValueTypePayloadAction
+  extends AbstractActionReducerAction<ActionValueTypeChange> {
+  type: typeof ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE;
 }
 export interface ActionReducerToggleAction
   extends Omit<AbstractActionReducerAction<unknown>, 'payload'> {
@@ -85,9 +131,10 @@ export type ActionReducerAction =
   | ActionReducerStringPayloadAction
   | ActionReducerActionTypePayloadAction
   | ActionReducerActionValueTypePayloadAction
+  | ActionReducerChangeFnPayloadAction
   | ActionReducerSendKeyModePayloadAction
   | ActionReducerModifiersPayloadAction
-  | ActionReducerChangePayloadAction
+  | ActionReducerActionValueChangePayloadAction
   | ActionReducerMouseActionTypePayloadAction
   | ActionReducerMouseMovementTypePayloadAction
   | ActionReducerToggleAction;
