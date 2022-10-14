@@ -9,6 +9,7 @@ import { VariableType } from '../../../../model/variable/variable-types';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
 import {
+  DragonflyActionValueResolverResultType,
   resultIsEmpty,
   resultToArg,
 } from '../action-value/dragonfly-action-value-resolver-result';
@@ -41,10 +42,10 @@ export class DragonflyCallFunctionPrinter
         if (!resultIsEmpty(result)) {
           const paramName = `${fnParam.name}=`;
           const arg = resultToArg(result)(this.elementTokenPrinter);
-          args.push(
-            paramName +
-              (fnParam.type === VariableType.Enum.NUMBER ? arg : quote(arg))
-          );
+          const dontQuote =
+            fnParam.type === VariableType.Enum.NUMBER &&
+            result.type !== DragonflyActionValueResolverResultType.USE_VARIABLE;
+          args.push(paramName + (dontQuote ? arg : quote(arg)));
         }
       }
       return ['Function(', args.join(', '), ')'].join('');

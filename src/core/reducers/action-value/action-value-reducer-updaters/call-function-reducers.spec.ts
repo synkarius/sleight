@@ -10,84 +10,117 @@ import {
 } from '../../../../data/model/action/bring-app/bring-app';
 import { NotImplementedError } from '../../../../error/not-implemented-error';
 import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
+import {
+  CallFunctionAction,
+  createCallFunctionAction,
+} from '../../../../data/model/action/call-function/call-function';
 
-describe('bring app action reducer: action.appTitle', () => {
-  it('should handle change action.appTitle.actionValueType', () => {
-    const obj: BringAppAction = {
-      ...createBringAppAction(),
-      appTitle: {
-        id: '123',
-        actionValueType: ActionValueType.Enum.USE_VARIABLE,
-        variableType: VariableType.Enum.ENUM,
-        variableId: 'asdf',
-      },
+describe('call function action reducer: action.appTitle', () => {
+  it('should handle change action.parameters[].actionValueType', () => {
+    const obj: CallFunctionAction = {
+      ...createCallFunctionAction(),
+      parameters: [
+        {
+          id: '123',
+          actionValueType: ActionValueType.Enum.USE_VARIABLE,
+          variableType: VariableType.Enum.ENUM,
+          variableId: 'asdf',
+        },
+      ],
     };
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_BRING_TITLE_RADIO,
+        type: ActionValueChangeIdentifierType.ID,
+        id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
 
     expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
+    expect(actual).toEqual<CallFunctionAction>({
       ...obj,
-      appTitle: {
-        id: '123',
-        actionValueType: ActionValueType.Enum.ENTER_VALUE,
-        enteredValueType: VariableType.Enum.ENUM,
-        value: UNSELECTED_ENUM,
-      },
+      parameters: [
+        {
+          id: '123',
+          actionValueType: ActionValueType.Enum.ENTER_VALUE,
+          enteredValueType: VariableType.Enum.ENUM,
+          value: UNSELECTED_ENUM,
+        },
+      ],
     });
-    throw new NotImplementedError('call function action value reducer tests');
   });
 
-  it('should handle change action.appTitle.value', () => {
-    const obj = createBringAppAction();
+  it('should handle change action.parameters[].value', () => {
+    const obj: CallFunctionAction = {
+      ...createCallFunctionAction(),
+      parameters: [
+        {
+          id: '123',
+          actionValueType: ActionValueType.Enum.ENTER_VALUE,
+          enteredValueType: VariableType.Enum.ENUM,
+          value: 'hi',
+        },
+      ],
+    };
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_BRING_TITLE_VALUE,
-        value: 'asdf',
+        type: ActionValueChangeIdentifierType.ID,
+        id: '123',
+        value: 'zxcv',
       },
     });
 
     expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
+    expect(actual).toEqual<CallFunctionAction>({
       ...obj,
-      appTitle: {
-        ...obj.appTitle,
-        value: 'asdf',
-      },
+      parameters: [
+        {
+          id: '123',
+          actionValueType: ActionValueType.Enum.ENTER_VALUE,
+          enteredValueType: VariableType.Enum.ENUM,
+          value: 'zxcv',
+        },
+      ],
     });
-    throw new NotImplementedError('call function action value reducer tests');
   });
 
-  it('should handle change action.appTitle.variableId', () => {
-    const obj = createBringAppAction();
+  it('should handle change action.parameters[].variableId', () => {
+    const obj: CallFunctionAction = {
+      ...createCallFunctionAction(),
+      parameters: [
+        {
+          id: '123',
+          actionValueType: ActionValueType.Enum.USE_VARIABLE,
+          variableType: VariableType.Enum.ENUM,
+          variableId: '1234',
+        },
+      ],
+    };
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
-        type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_BRING_TITLE_VAR,
+        type: ActionValueChangeIdentifierType.ID,
+        id: '123',
         value: 'asdf',
       },
     });
 
     expect(actual).not.toBe(obj);
-    expect(actual).toEqual({
+    expect(actual).toEqual<CallFunctionAction>({
       ...obj,
-      appTitle: {
-        ...obj.appTitle,
-        variableId: 'asdf',
-      },
+      parameters: [
+        {
+          id: '123',
+          actionValueType: ActionValueType.Enum.USE_VARIABLE,
+          variableType: VariableType.Enum.ENUM,
+          variableId: 'asdf',
+        },
+      ],
     });
-    throw new NotImplementedError('call function action value reducer tests');
   });
 });

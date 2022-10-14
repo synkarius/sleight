@@ -1,10 +1,11 @@
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { BringAppAction } from '../../../../model/action/bring-app/bring-app';
-import { import02 } from '../../../../../test/resources/import-02.json';
-import { import03 } from '../../../../../test/resources/import-03.json';
+import { import01 } from '../../../../../test/resources/import-call-function-01.json';
+import { import02 } from '../../../../../test/resources/import-call-function-02.json';
 import { castJsonForTest } from '../../../../../test/utils/import-test-json-util';
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { CallFunctionAction } from '../../../../model/action/call-function/call-function';
 
 describe('dragonfly CallFunction printer tests', () => {
   const printer = container.get(Tokens.DragonflyCallFunctionPrinter);
@@ -13,12 +14,11 @@ describe('dragonfly CallFunction printer tests', () => {
 
   it('should print entered values correctly', () => {
     const data = formatMapper.externalFormatToInternal(
-      castJsonForTest(import03)
+      castJsonForTest(import01)
     );
-    const action: BringAppAction = castJsonForTest(import03.actions[0]);
+    const action: CallFunctionAction = castJsonForTest(import01.actions[0]);
 
-    const expected =
-      'BringApp("/some-path", title="Some Title", cwd="/start-dir")';
+    const expected = 'Function(t1="some value", n1=-20)';
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });
@@ -27,13 +27,12 @@ describe('dragonfly CallFunction printer tests', () => {
     const data = formatMapper.externalFormatToInternal(
       castJsonForTest(import02)
     );
-    const action: BringAppAction = castJsonForTest(import02.actions[0]);
+    const action: CallFunctionAction = castJsonForTest(import02.actions[0]);
     //
 
-    const pathVar = fmt('variable_c23384a3-f96b-41a1-9f3b-078b42d88260');
-    const titleVar = fmt('variable_dbe6ae9a-33d2-4be7-be61-06ceba432337');
-    const startVar = fmt('variable_e470eead-18a6-4049-af33-af6f9d04c959');
-    const expected = `BringApp("%(${pathVar})s", title="%(${titleVar})s", cwd="%(${startVar})s")`;
+    const t1Var = fmt('variable_63d5ad29-3f6d-496f-8a1b-2a033fadcef3');
+    const n1Var = fmt('variable_390edf4c-f732-489e-a38d-7680700385f7');
+    const expected = `Function(t1="%(${t1Var})s", n1="%(${n1Var})d")`;
     const actual = printer.printAction(action, data);
     expect(actual).toBe(expected);
   });
