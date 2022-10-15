@@ -117,10 +117,16 @@ const bindActionMapperDelegates = (container: Container): void => {
     .bind(Tokens.PauseActionDomainMapperDelegate)
     .toInstance(PauseActionDomainMapperDelegate)
     .inSingletonScope();
+  injected(PauseActionDomainMapperDelegate, Tokens.DomainMapper_ActionValue);
   container
     .bind(Tokens.SendKeyActionDomainMapperDelegate)
     .toInstance(SendKeyActionDomainMapperDelegate)
     .inSingletonScope();
+  injected(
+    SendKeyActionDomainMapperDelegate,
+    Tokens.DomainMapper_ActionValue,
+    Tokens.DomainMapper_SendKeyModifiers
+  );
   container
     .bind(Tokens.ActionDomainMapperDelegateArray)
     .toInstance(ActionDomainMapperDelegateArray)

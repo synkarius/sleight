@@ -1,7 +1,5 @@
 import { Action } from '../../../data/model/action/action';
 import { ActionType } from '../../../data/model/action/action-types';
-import { ActionValue } from '../../../data/model/action/action-value';
-import { DomainMapper } from '../mapper';
 import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
 import { ActionDomainMapperDelegate } from './action-domain-mapper-delegate';
 import { MultiMethodActionValueMapper } from './action-value-mapper/delegating-action-value-domain-mapper';
