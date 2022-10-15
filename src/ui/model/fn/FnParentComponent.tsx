@@ -1,7 +1,7 @@
 import React, { useContext, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { EMPTY_PATH, RESOURCE_EDITOR_PATH } from '../../../core/common/consts';
+import { RESOURCE_EDITOR_PATH } from '../../../core/common/consts';
 import { deleteFn, fnReactReducer } from '../../../core/reducers/fn-reducers';
 import { createPythonFn, Fn } from '../../../data/model/fn/fn';
 import { Tokens } from '../../../di/config/brandi-tokens';

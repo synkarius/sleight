@@ -60,13 +60,33 @@ const getRadioButtonLabel = (
   }
 };
 
+const createRadioButtonDatum = (
+  id: string,
+  actionValueType: ActionValueType.Type
+) => ({
+  id,
+  actionValueType,
+});
+
 export const ActionValueComponent: React.FC<AVCProps> = (props) => {
+  /*
+   * hooks
+   */
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
   const enterValueId = useId();
   const useVariableId = useId();
 
-  const typeChangedFn = (type: string) => {
+  /**
+   * touch field functions
+   */
+  const touchEnteredValue = () => validationContext.touch(props.fields.value);
+  const touchVariable = () => validationContext.touch(props.fields.variable);
+
+  /**
+   * event handlers
+   */
+  const typeChangedHandler = (type: string) => {
     const actionValueType = type as ActionValueType.Type;
     const payload = isDefined(props.fields.id)
       ? createIdedActionValueChangeType(props.fields.id, actionValueType)
@@ -77,8 +97,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     });
     validationContext.touch(props.fields.radio);
   };
-  const touchEnteredValue = () => validationContext.touch(props.fields.value);
-  const enteredValueChangedFn = (value: string) => {
+  const enteredValueChangedHandler = (value: string) => {
     const payload = isDefined(props.fields.id)
       ? createIdedActionValueChange(props.fields.id, value)
       : createFieldedActionValueChange(props.fields.radio, value);
@@ -88,8 +107,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     });
     touchEnteredValue();
   };
-  const touchVariable = () => validationContext.touch(props.fields.variable);
-  const variableIdChangedFn = (variableId: string) => {
+  const variableIdChangedHandler = (variableId: string) => {
     const payload = isDefined(props.fields.id)
       ? createIdedActionValueChange(props.fields.id, variableId)
       : createFieldedActionValueChange(props.fields.radio, variableId);
@@ -100,23 +118,30 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
     touchVariable();
   };
 
+  /**
+   * Error processing
+   */
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
+  const getIdForError = () => {
+    if (isVariableActionValue(props.actionValue)) {
+      if (props.fields.id) {
+        return props.fields.id;
+      }
+      return props.actionValue.variableId;
+    }
+  };
+  const idForError = getIdForError();
+
+  /**
+   * misc other form stuff
+   */
   const enteredValueFieldName = Field[props.fields.value];
   const isChecked = (actionValueType: string): boolean =>
     props.actionValue.actionValueType === actionValueType;
-  const variableId = isVariableActionValue(props.actionValue)
-    ? props.actionValue.variableId
-    : undefined;
   const radioButtonData = [
-    {
-      id: enterValueId,
-      actionValueType: ActionValueType.Enum.ENTER_VALUE,
-    },
-    {
-      id: useVariableId,
-      actionValueType: ActionValueType.Enum.USE_VARIABLE,
-    },
+    createRadioButtonDatum(enterValueId, ActionValueType.Enum.ENTER_VALUE),
+    createRadioButtonDatum(useVariableId, ActionValueType.Enum.USE_VARIABLE),
   ];
 
   return (
@@ -125,7 +150,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       descriptionText={props.descriptionText}
       errorMessage={errorResults(
         [props.fields.value, props.fields.variable],
-        variableId
+        idForError
       )}
       required={props.required}
     >
@@ -141,7 +166,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             checked={isChecked(d.actionValueType)}
             aria-checked={isChecked(d.actionValueType)}
             tabIndex={isChecked(d.actionValueType) ? 0 : -1}
-            onChange={(_e) => typeChangedFn(d.actionValueType)}
+            onChange={(_e) => typeChangedHandler(d.actionValueType)}
           />
         ))}
       </div>
@@ -150,7 +175,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           <FormControl
             type="text"
             value={props.actionValue.value}
-            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults([props.fields.value])}
             name={enteredValueFieldName}
@@ -166,7 +191,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             value={props.actionValue.value}
             min={props.fields.min}
             max={props.fields.max}
-            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults([props.fields.value])}
             name={enteredValueFieldName}
@@ -181,7 +206,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           <FormSelect
             value={props.actionValue.value}
             aria-label={Field[props.fields.value]}
-            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults([props.fields.value])}
             role="list"
@@ -202,7 +227,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           <FormControl
             type="text"
             value={props.actionValue.value}
-            onChange={(e) => enteredValueChangedFn(e.target.value)}
+            onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults([props.fields.value])}
             name={enteredValueFieldName}
@@ -214,14 +239,9 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
         <VariablesDropdownComponent
           field={props.fields.variable}
           selectedVariableId={props.actionValue.variableId}
-          onChange={(e) => variableIdChangedFn(e.target.value)}
+          onChange={(e) => variableIdChangedHandler(e.target.value)}
           onBlur={(_e) => touchVariable()}
-          isInvalid={
-            !!errorResults(
-              [props.fields.variable],
-              props.actionValue.variableId
-            )
-          }
+          isInvalid={!!errorResults([props.fields.variable], idForError)}
           variableTypeFilter={[props.actionValue.variableType]}
         />
       )}

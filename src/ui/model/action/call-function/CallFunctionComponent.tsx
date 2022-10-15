@@ -19,6 +19,9 @@ import {
   createNumberValue,
   createTextValue,
 } from '../../../../data/model/action/action-value';
+import { UNSELECTED_ID } from '../../../../core/common/consts';
+import { processErrorResults } from '../../../../validation/validation-result-processing';
+import { ErrorTextComponent } from '../../../other-components/ErrorTextComponent';
 
 export const CallFunctionComponent: React.FC<{
   callFunctionAction: CallFunctionAction;
@@ -54,55 +57,80 @@ export const CallFunctionComponent: React.FC<{
   const fnChangedHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newFnId = event.target.value;
     const newFn = fns[newFnId];
-    const defaultActionValues: ActionValue[] = newFn.parameters.map((param) => {
-      const paramType = param.type;
-      switch (paramType) {
-        case VariableType.Enum.TEXT:
-          return createTextValue();
-        case VariableType.Enum.NUMBER:
-          return createNumberValue();
-        case VariableType.Enum.ENUM:
-          return createEnumValue();
-        default:
-          throw new ExhaustivenessFailureError(paramType);
+    const getDefaultActionValues = (): ActionValue[] => {
+      if (newFn) {
+        return newFn.parameters.map((param) => {
+          const paramType = param.type;
+          switch (paramType) {
+            case VariableType.Enum.TEXT:
+              return createTextValue();
+            case VariableType.Enum.NUMBER:
+              return createNumberValue();
+            case VariableType.Enum.ENUM:
+              return createEnumValue();
+            default:
+              throw new ExhaustivenessFailureError(paramType);
+          }
+        });
       }
-    });
+      return [];
+    };
 
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_FN,
       payload: {
         functionId: newFnId,
-        defaultActionValues,
+        defaultActionValues: getDefaultActionValues(),
       },
     });
+    validationContext.touch(Field.AC_CALL_FUNC_FN);
   };
+
+  const fullErrorResults = validationContext.getErrorResults();
+  const errorResults = processErrorResults(fullErrorResults);
+  // const paramNameErrorResult = errorResults(
+  //   [Field.AC_CALL_FUNC_PARAMETER_VAR],
+  //   props.param.id
+  // );
 
   return (
     <>
       <FormGroupRowComponent
         labelText="Function"
         descriptionText="function to call"
+        errorMessage={errorResults([Field.AC_CALL_FUNC_FN])}
       >
         <FnDropdownComponent
           field={Field.AC_CALL_FUNC_FN}
-          fnId={fn?.id}
+          fnId={fn?.id || UNSELECTED_ID}
           onChange={fnChangedHandler}
           onBlur={() => {
             validationContext.touch(Field.AC_CALL_FUNC_FN);
           }}
+          isInvalid={!!errorResults([Field.AC_CALL_FUNC_FN])}
         />
       </FormGroupRowComponent>
       {fn &&
         fn.parameters.map((param, index) => (
           <FormGroupRowComponent
-            labelText={param.name}
+            labelText={'Custom Parameter'}
             key={param.name + index}
+            errorMessage={errorResults(
+              [Field.AC_CALL_FUNC_PARAMETER_VAR],
+              param.id
+            )}
           >
             <ActionValueComponent
               fields={getActionValueFieldGroup(index)}
               actionValue={props.callFunctionAction.parameters[index]}
-              labelText="TODO-label"
-              descriptionText="TODO-descr"
+              labelText={param.name}
+              descriptionText={`parameter "${param.name}" for function "${fn.name}"`}
+            />
+            <ErrorTextComponent
+              errorMessage={errorResults(
+                [Field.AC_CALL_FUNC_PARAMETER_VAR],
+                param.id
+              )}
             />
           </FormGroupRowComponent>
         ))}
