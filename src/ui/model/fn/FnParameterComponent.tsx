@@ -38,20 +38,24 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
+  const paramNameErrorResult = errorResults(
+    [Field.FN_PARAMETER_NAME],
+    props.param.id
+  );
 
   return (
     <>
       <FormGroupRowComponent
         labelText="Parameter Name"
         descriptionText="name of parameter"
-        errorMessage={errorResults([Field.FN_PARAMETER_NAME])}
+        errorMessage={paramNameErrorResult}
       >
         <FormControl
           aria-label={Field[Field.FN_PARAMETER_NAME]}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_PARAMETER_NAME)}
-          isInvalid={!!errorResults([Field.FN_PARAMETER_NAME])}
+          isInvalid={!!paramNameErrorResult}
           value={props.param.name}
         />
       </FormGroupRowComponent>
