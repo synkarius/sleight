@@ -2,6 +2,7 @@ import { getRandomId } from '../../../../core/common/random-id';
 import {
   ActionIdRewriterArray,
   ContextIdRewriterArray,
+  FnIdRewriterArray,
   SelectorIdRewriterArray,
   SpecIdRewriterArray,
   VariableIdRewriterArray,
@@ -18,6 +19,7 @@ export class DefaultSleightDataIdsRewriter implements SleightDataIdsRewriter {
     private actionIdRewriters: ActionIdRewriterArray,
     private commandIdRewriter: CommandIdRewriter,
     private contextIdRewriters: ContextIdRewriterArray,
+    private fnIdRewriters: FnIdRewriterArray,
     private selectorIdRewriters: SelectorIdRewriterArray,
     private specIdRewriters: SpecIdRewriterArray,
     private variableIdRewriters: VariableIdRewriterArray
@@ -40,6 +42,13 @@ export class DefaultSleightDataIdsRewriter implements SleightDataIdsRewriter {
       const newContextId = getRandomId();
       for (const contextIdRewriter of this.contextIdRewriters) {
         data = contextIdRewriter.rewriteId(context, newContextId, data);
+      }
+    }
+
+    for (const fn of Object.values(data.fns)) {
+      const newFnId = getRandomId();
+      for (const fnIdRewriter of this.fnIdRewriters) {
+        data = fnIdRewriter.rewriteId(fn, newFnId, data);
       }
     }
 

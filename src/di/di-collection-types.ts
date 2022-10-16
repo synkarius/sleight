@@ -3,6 +3,7 @@ import { DragonflyActionPrinterDelegate } from '../data/exports/dragonfly/elemen
 import { IdRewriter } from '../data/imports/model-update/id-rewriter/id-rewriter';
 import { Action } from '../data/model/action/action';
 import { Context } from '../data/model/context/context';
+import { Fn } from '../data/model/fn/fn';
 import { SelectorDTO } from '../data/model/selector/selector-dto';
 import { SpecDTO } from '../data/model/spec/spec-dto';
 import { VariableDTO } from '../data/model/variable/variable-dto';
@@ -18,6 +19,7 @@ import { VariableDTO } from '../data/model/variable/variable-dto';
 // id rewriters
 export class ActionIdRewriterArray extends Array<IdRewriter<Action>> {}
 export class ContextIdRewriterArray extends Array<IdRewriter<Context>> {}
+export class FnIdRewriterArray extends Array<IdRewriter<Fn>> {}
 export class SelectorIdRewriterArray extends Array<IdRewriter<SelectorDTO>> {}
 export class SpecIdRewriterArray extends Array<IdRewriter<SpecDTO>> {}
 export class VariableIdRewriterArray extends Array<IdRewriter<VariableDTO>> {}

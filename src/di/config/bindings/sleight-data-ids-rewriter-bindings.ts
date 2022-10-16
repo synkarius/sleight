@@ -12,6 +12,7 @@ export const bindSleightDataIdsRewriter = (container: Container): void => {
     Tokens.ActionIdRewriterArray,
     Tokens.CommandIdRewriter,
     Tokens.ContextIdRewriterArray,
+    Tokens.FnIdRewriterArray,
     Tokens.SelectorIdRewriterArray,
     Tokens.SpecIdRewriterArray,
     Tokens.VariableIdRewriterArray

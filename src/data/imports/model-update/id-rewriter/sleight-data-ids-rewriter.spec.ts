@@ -61,6 +61,17 @@ describe('sleight data ids rewriter tests', () => {
           contexts: replaceIdInSlice(ided, id2, data.contexts),
         })),
       ],
+      // fns
+      [
+        createTestIdRewriter((ided, _, data) => ({
+          ...data,
+          fns: replaceIdInSlice(ided, id1, data.fns),
+        })),
+        createTestIdRewriter((ided, _, data) => ({
+          ...data,
+          fns: replaceIdInSlice(ided, id2, data.fns),
+        })),
+      ],
       // selectors
       [
         createTestIdRewriter((ided, _, data) => ({

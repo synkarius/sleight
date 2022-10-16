@@ -135,7 +135,8 @@ const pythonParameterCharactersValidator: FieldValidator<Fn> = {
           type: ValidationResultType.ID_LIST,
           field: Field.FN_PARAMETER_NAME,
           code: ValidationErrorCode.FN_PARAM_STARTS_NUM,
-          message: 'parameter names may not start with a number',
+          message:
+            'parameter names may only use alphanumeric characters and the underscore character',
           ids: invalidParameterIds,
         };
   },
@@ -157,9 +158,11 @@ const fnUsedFnTypeChangedValidator: FieldValidator<Fn> = {
     const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
       .map((action) => quote(action.name))
       .join(', ');
-    return !actionsFnUsedIn.length
-      ? validResult(Field.FN_TYPE)
-      : {
+    if (actionsFnUsedIn.length) {
+      const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
+      const typeChanged = fn.type !== fnFromData.type;
+      if (typeChanged) {
+        return {
           type: ValidationResultType.BASIC,
           field: Field.FN_PARAMETER_NAME,
           code: ValidationErrorCode.FN_USED_FN_TYPE_CHANGED,
@@ -167,6 +170,9 @@ const fnUsedFnTypeChangedValidator: FieldValidator<Fn> = {
             'cannot change function type since function is already used' +
             ` in Call Function Action(s): ${actionsFnUsedIn}`,
         };
+      }
+    }
+    return validResult(Field.FN_TYPE);
   },
 };
 
@@ -181,13 +187,12 @@ const getNumParamsChangedValidator = (
       const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
         .map((action) => quote(action.name))
         .join(', ');
-      const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
-      const numParamsChanged =
-        fn.parameters.length !== fnFromData.parameters.length;
-
-      return !actionsFnUsedIn || !numParamsChanged
-        ? validResult(field)
-        : {
+      if (actionsFnUsedIn.length) {
+        const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
+        const numParamsChanged =
+          fn.parameters.length !== fnFromData.parameters.length;
+        if (numParamsChanged) {
+          return {
             type: ValidationResultType.BASIC,
             field,
             code: ValidationErrorCode.FN_USED_CHANGED_NUM_PARAMS,
@@ -195,6 +200,9 @@ const getNumParamsChangedValidator = (
               'cannot change number of parameters since function is already used' +
               ` in Call Function Action(s): ${actionsFnUsedIn}`,
           };
+        }
+      }
+      return validResult(field);
     },
   };
 };
@@ -215,11 +223,11 @@ const fnUsedParamTypeChangedValidator: FieldValidator<Fn> = {
     const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
       .map((action) => quote(action.name))
       .join(', ');
-    const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
     const paramsWithTypeChanged: string[] = [];
 
     // find params with types changed if fn is used
     if (actionsFnUsedIn.length) {
+      const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
       for (let i = 0; i < fn.parameters.length; i++) {
         const newParamType = fn.parameters[i].type;
         const oldParamType = fnFromData.parameters[i].type;
@@ -252,11 +260,11 @@ const fnUsedParamOrderChangedValidator: FieldValidator<Fn> = {
     const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
       .map((action) => quote(action.name))
       .join(', ');
-    const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
     const paramsWithOrderChanged: string[] = [];
 
     // find params with types changed if fn is used
     if (actionsFnUsedIn.length) {
+      const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
       for (let i = 0; i < fn.parameters.length; i++) {
         const newParamId = fn.parameters[i].id;
         const oldParamId = fnFromData.parameters[i].id;
@@ -318,6 +326,6 @@ export const getFnValidators = () => [
   fnUsedAddParamValidator,
   fnUsedDeleteParamValidator,
   fnUsedParamTypeChangedValidator,
-  fnUsedParamOrderChangedValidator,
+  // fnUsedParamOrderChangedValidator, -- shouldn't matter
   deletionValidator,
 ];

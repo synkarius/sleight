@@ -14,6 +14,7 @@ import { Action } from '../model/action/action';
 import { Command } from '../model/command/command';
 import { Context } from '../model/context/context';
 import { Ided } from '../model/domain';
+import { Fn } from '../model/fn/fn';
 import { Spec } from '../model/spec/spec-domain';
 import { Variable } from '../model/variable/variable';
 
@@ -50,6 +51,7 @@ export class DefaultImportsValidator implements ImportsValidator {
     private actionValidators: FieldValidator<Action>[],
     private commandValidators: FieldValidator<Command>[],
     private contextValidators: FieldValidator<Context>[],
+    private fnValidators: FieldValidator<Fn>[],
     private specValidators: FieldValidator<Spec>[],
     private variableValidators: FieldValidator<Variable>[],
     private specMapper: SpecDomainMapper,
@@ -77,6 +79,12 @@ export class DefaultImportsValidator implements ImportsValidator {
         .filter(not(isDeletionValidator))
         .map((v) => this.rewrap(context, v.validate(context, data)))
     );
+    const fnResults = Object.values(data.fns).flatMap((fn) =>
+      this.fnValidators
+        .filter((v) => v.isApplicable(fn))
+        .filter(not(isDeletionValidator))
+        .map((v) => this.rewrap(fn, v.validate(fn, data)))
+    );
     const specResults = Object.values(data.specs)
       .map((specDTO) => this.specMapper.mapToDomain(specDTO, data.selectors))
       .flatMap((spec) =>
@@ -100,6 +108,7 @@ export class DefaultImportsValidator implements ImportsValidator {
       ...actionResults,
       ...commandResults,
       ...contextResults,
+      ...fnResults,
       ...specResults,
       ...variableResults,
     ].filter(

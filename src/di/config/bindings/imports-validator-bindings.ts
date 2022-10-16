@@ -12,6 +12,7 @@ export const bindImportsValidator = (container: Container): void => {
     Tokens.Validators_Action,
     Tokens.Validators_Command,
     Tokens.Validators_Context,
+    Tokens.Validators_Fn,
     Tokens.Validators_Spec,
     Tokens.Validators_Variable,
     Tokens.DomainMapper_Spec,

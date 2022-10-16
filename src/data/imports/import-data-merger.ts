@@ -32,7 +32,6 @@ export class CopyingImportDataMerger implements ImportDataMerger {
     const idsRewrittenData = this.sleightDataIdsRewriter.rewriteIds(
       evaluation.rewriteIds
     );
-    const ird = JSON.stringify(idsRewrittenData);
     const updated = this.rolekeyedDataUpdater.update(
       baseCopy,
       evaluation.override

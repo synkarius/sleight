@@ -10,6 +10,7 @@ import { VariableIdRewriter } from '../../../data/imports/model-update/id-rewrit
 import {
   ActionIdRewriterArray,
   ContextIdRewriterArray,
+  FnIdRewriterArray,
   SelectorIdRewriterArray,
   SpecIdRewriterArray,
   VariableIdRewriterArray,
@@ -28,6 +29,8 @@ import { getPauseActionVariableIdsRewriterDelegate } from '../../../data/imports
 import { getSendKeyActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/send-key-action-variable-ids-rewriter-delegate';
 import { getSendTextActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/send-text-action-variable-ids-rewriter-delegate';
 import { getWaitForWindowActionVariableIdsRewriterDelegate } from '../../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/wait-for-window-action-variable-ids-rewriter-delegate';
+import { FnIdRewriter } from '../../../data/imports/model-update/id-rewriter/fn-id-rewriter';
+import { FnIdWithinActionsRewriter } from '../../../data/imports/model-update/id-rewriter/fn-id-within-actions-rewriter';
 
 export const bindIdRewriters = (container: Container): void => {
   /*
@@ -76,6 +79,26 @@ export const bindIdRewriters = (container: Container): void => {
     ContextIdRewriterArray,
     Tokens.ContextIdRewriter,
     Tokens.ContextIdWithinCommandsRewriter
+  );
+  /*
+   * FN ID REWRITERS
+   */
+  container
+    .bind(Tokens.FnIdRewriter)
+    .toInstance(FnIdRewriter)
+    .inSingletonScope();
+  container
+    .bind(Tokens.FnIdWithinActionsRewriter)
+    .toInstance(FnIdWithinActionsRewriter)
+    .inSingletonScope();
+  container
+    .bind(Tokens.FnIdRewriterArray)
+    .toInstance(FnIdRewriterArray)
+    .inSingletonScope();
+  injected(
+    FnIdRewriterArray,
+    Tokens.FnIdRewriter,
+    Tokens.FnIdWithinActionsRewriter
   );
   /*
    * SELECTOR ID REWRITERS

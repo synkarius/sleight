@@ -12,6 +12,7 @@ export const bindSleightDataEvaluator = (container: Container): void => {
     Tokens.ActionEvaluator,
     Tokens.CommandEvaluator,
     Tokens.ContextEvaluator,
+    Tokens.FnEvaluator,
     Tokens.SelectorEvaluator,
     Tokens.SpecEvaluator,
     Tokens.VariableEvaluator

@@ -8,7 +8,7 @@ import { SpecDomainMapper } from '../../core/mappers/spec-domain-mapper';
 import { VariableDomainMapper } from '../../core/mappers/variable-domain-mapper';
 import { Exporter } from '../../data/exports/exporter';
 import { ImportDataMerger } from '../../data/imports/import-data-merger';
-import { ElementEvaluator } from '../../data/imports/model-update/evaluators/element-evaluator';
+import { ImportProcessEvaluator } from '../../data/imports/model-update/evaluators/import-process-evaluator';
 import { Action } from '../../data/model/action/action';
 import { Command } from '../../data/model/command/command';
 import { Context } from '../../data/model/context/context';
@@ -53,6 +53,7 @@ import {
   ActionIdRewriterArray,
   ContextIdRewriterArray,
   DragonflyActionPrinterDelegateArray,
+  FnIdRewriterArray,
   SelectorIdRewriterArray,
   SpecIdRewriterArray,
   VariableIdRewriterArray,
@@ -92,17 +93,18 @@ export namespace Tokens {
   export const FormatMapper = token<FormatMapper>('FormatMapper');
   export const Deserializer = token<Deserializer>('Deserializer');
   export const ActionEvaluator =
-    token<ElementEvaluator<Action>>('ActionEvaluator');
+    token<ImportProcessEvaluator<Action>>('ActionEvaluator');
   export const CommandEvaluator =
-    token<ElementEvaluator<Command>>('CommandEvaluator');
+    token<ImportProcessEvaluator<Command>>('CommandEvaluator');
   export const ContextEvaluator =
-    token<ElementEvaluator<Context>>('ContextEvaluator');
+    token<ImportProcessEvaluator<Context>>('ContextEvaluator');
+  export const FnEvaluator = token<ImportProcessEvaluator<Fn>>('FnEvaluator');
   export const SelectorEvaluator =
-    token<ElementEvaluator<SelectorDTO>>('SelectorEvaluator');
+    token<ImportProcessEvaluator<SelectorDTO>>('SelectorEvaluator');
   export const SpecEvaluator =
-    token<ElementEvaluator<SpecDTO>>('SpecEvaluator');
+    token<ImportProcessEvaluator<SpecDTO>>('SpecEvaluator');
   export const VariableEvaluator =
-    token<ElementEvaluator<VariableDTO>>('VariableEvaluator');
+    token<ImportProcessEvaluator<VariableDTO>>('VariableEvaluator');
   export const SleightDataEvaluator = token<SleightDataEvaluator>(
     'SleightDataEvaluator'
   );
@@ -125,6 +127,8 @@ export namespace Tokens {
     'Validators_Variable'
   );
   // mapper dependencies
+  export const CallFunctionActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('CallFunctionActionDomainMapperDelegate');
   export const PauseActionDomainMapperDelegate =
     token<ActionDomainMapperDelegate>('PauseActionDomainMapperDelegate');
   export const SendKeyActionDomainMapperDelegate =
@@ -240,6 +244,12 @@ export namespace Tokens {
   export const ContextIdRewriterArray = token<ContextIdRewriterArray>(
     'ContextIdRewriterArray'
   );
+  export const FnIdRewriter = token<IdRewriter<Fn>>('FnIdRewriter');
+  export const FnIdWithinActionsRewriter = token<IdRewriter<Fn>>(
+    'FnIdWithinActionsRewriter'
+  );
+  export const FnIdRewriterArray =
+    token<FnIdRewriterArray>('FnIdRewriterArray');
   export const SelectorIdRewriter =
     token<IdRewriter<SelectorDTO>>('SelectorIdRewriter');
   export const SelectorIdWithinSpecsRewriter = token<IdRewriter<SelectorDTO>>(

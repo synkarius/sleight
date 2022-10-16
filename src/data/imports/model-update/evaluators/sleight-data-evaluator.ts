@@ -6,11 +6,12 @@ import {
 import { Action } from '../../../model/action/action';
 import { Command } from '../../../model/command/command';
 import { Context } from '../../../model/context/context';
+import { Fn } from '../../../model/fn/fn';
 import { SelectorDTO } from '../../../model/selector/selector-dto';
 import { SpecDTO } from '../../../model/spec/spec-dto';
 import { VariableDTO } from '../../../model/variable/variable-dto';
-import { ElementEvaluationType } from './element-evaluation-type';
-import { ElementEvaluator } from './element-evaluator';
+import { ImportProcessEvaluationType } from './import-process-evaluation-type';
+import { ImportProcessEvaluator } from './import-process-evaluator';
 import { SleightDataEvaluation } from './sleight-data-evaluation';
 
 export type SleightDataEvaluator = {
@@ -22,12 +23,13 @@ export type SleightDataEvaluator = {
 
 export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
   constructor(
-    private actionEvaluator: ElementEvaluator<Action>,
-    private commandEvaluator: ElementEvaluator<Command>,
-    private contextEvaluator: ElementEvaluator<Context>,
-    private selectorEvaluator: ElementEvaluator<SelectorDTO>,
-    private specEvaluator: ElementEvaluator<SpecDTO>,
-    private variableEvaluator: ElementEvaluator<VariableDTO>
+    private actionEvaluator: ImportProcessEvaluator<Action>,
+    private commandEvaluator: ImportProcessEvaluator<Command>,
+    private contextEvaluator: ImportProcessEvaluator<Context>,
+    private fnEvaluator: ImportProcessEvaluator<Fn>,
+    private selectorEvaluator: ImportProcessEvaluator<SelectorDTO>,
+    private specEvaluator: ImportProcessEvaluator<SpecDTO>,
+    private variableEvaluator: ImportProcessEvaluator<VariableDTO>
   ) {}
 
   evaluate(
@@ -70,6 +72,13 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
       })
     );
     evaluation = this.addToEvaluation(
+      base.fns,
+      deserialized.fns,
+      this.fnEvaluator,
+      evaluation,
+      (data, fn) => ({ ...data, fns: { ...data.fns, [fn.id]: fn } })
+    );
+    evaluation = this.addToEvaluation(
       base.selectors,
       deserialized.selectors,
       this.selectorEvaluator,
@@ -107,7 +116,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
   addToEvaluation<T>(
     base: Record<string, T>,
     deserialized: Record<string, T>,
-    evaluator: ElementEvaluator<T>,
+    evaluator: ImportProcessEvaluator<T>,
     sleightDataEvaluation: SleightDataEvaluation,
     resultSetter: (
       data: SleightDataInternalFormat,
@@ -121,9 +130,9 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
     for (const evaluatedElement of evaluatedElements) {
       const evaluationType = evaluatedElement.evaluationType;
       switch (evaluationType) {
-        case ElementEvaluationType.DISCARD:
+        case ImportProcessEvaluationType.DISCARD:
           continue;
-        case ElementEvaluationType.ID_REWRITE:
+        case ImportProcessEvaluationType.ID_REWRITE:
           sleightDataEvaluation = {
             ...sleightDataEvaluation,
             rewriteIds: resultSetter(
@@ -132,7 +141,7 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
             ),
           };
           break;
-        case ElementEvaluationType.OVERRIDE:
+        case ImportProcessEvaluationType.OVERRIDE:
           sleightDataEvaluation = {
             ...sleightDataEvaluation,
             override: resultSetter(

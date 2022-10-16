@@ -25,6 +25,7 @@ import {
   RESOURCE_EDITOR_PATH,
   WIZARD_PATH,
 } from '../../../core/common/consts';
+import { setFns } from '../../../core/reducers/fn-reducers';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
@@ -38,6 +39,7 @@ export const Navigation: React.FC<{}> = () => {
     reduxDispatch(setActions({}));
     reduxDispatch(setCommands({}));
     reduxDispatch(setContexts({}));
+    reduxDispatch(setFns({}));
     reduxDispatch(setSelectors({}));
     reduxDispatch(setSpecs({}));
     reduxDispatch(setVariables({}));
@@ -79,6 +81,7 @@ export const Navigation: React.FC<{}> = () => {
           reduxDispatch(setActions(merged.actions));
           reduxDispatch(setCommands(merged.commands));
           reduxDispatch(setContexts(merged.contexts));
+          reduxDispatch(setFns(merged.fns));
           reduxDispatch(setSelectors(merged.selectors));
           reduxDispatch(setSpecs(merged.specs));
           reduxDispatch(setVariables(merged.variables));
@@ -94,6 +97,7 @@ export const Navigation: React.FC<{}> = () => {
         console.log('deserialization failure');
       }
       // TODO: error toast "Import Failed - See Logs" and log results
+      console.log('Import failed');
     }
   };
   return (

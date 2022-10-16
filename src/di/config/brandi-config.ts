@@ -1,5 +1,5 @@
-import { Container, injected } from 'brandi';
-import { bindElementEvaluators } from './bindings/element-evaluator-bindings';
+import { Container } from 'brandi';
+import { bindImportProcessEvaluators } from './bindings/import-process-evaluator-bindings';
 import { bindValidators } from './bindings/validator-bindings';
 import { bindMappers } from './bindings/mapper-bindings';
 import { bindDefaultNamers } from './bindings/default-namer-bindings';
@@ -25,7 +25,7 @@ export const container = new Container();
   bindDataMerger,
   bindDefaultNamers,
   bindDeserializer,
-  bindElementEvaluators,
+  bindImportProcessEvaluators,
   bindElementPrinters,
   bindExporters,
   bindFormatMapper,

@@ -7,6 +7,7 @@ import { EnterTextActionValueDomainMapperDelegate } from '../../../core/mappers/
 import { VariableEnumActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-enum-action-value-domain-mapper-delegate';
 import { VariableNumericActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-numeric-action-value-domain-mapper-delegate';
 import { VariableTextActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-text-action-value-domain-mapper-delegate';
+import { CallFunctionActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/call-function-action-domain-mapper-delegate';
 import { PauseActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/pause-action-domain-mapper-delegate';
 import { SendKeyActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/send-key-action-domain-mapper-delegate';
 import { SendKeyModifiersDomainMapper } from '../../../core/mappers/action-mapper-delegates/send-key-modifiers-domain-mapper';
@@ -114,6 +115,14 @@ const bindActionMapperDelegates = (container: Container): void => {
     .toInstance(SendKeyModifiersDomainMapper)
     .inSingletonScope();
   container
+    .bind(Tokens.CallFunctionActionDomainMapperDelegate)
+    .toInstance(CallFunctionActionDomainMapperDelegate)
+    .inSingletonScope();
+  injected(
+    CallFunctionActionDomainMapperDelegate,
+    Tokens.DomainMapper_ActionValue
+  );
+  container
     .bind(Tokens.PauseActionDomainMapperDelegate)
     .toInstance(PauseActionDomainMapperDelegate)
     .inSingletonScope();
@@ -133,6 +142,7 @@ const bindActionMapperDelegates = (container: Container): void => {
     .inSingletonScope();
   injected(
     ActionDomainMapperDelegateArray,
+    Tokens.CallFunctionActionDomainMapperDelegate,
     Tokens.PauseActionDomainMapperDelegate,
     Tokens.SendKeyActionDomainMapperDelegate
   );

@@ -3,17 +3,18 @@ import { ModelUpdateEvaluationFailureError } from '../../../../error/model-updat
 import { Action } from '../../../model/action/action';
 import { Command } from '../../../model/command/command';
 import { Context } from '../../../model/context/context';
+import { Fn } from '../../../model/fn/fn';
 import { SpecDTO } from '../../../model/spec/spec-dto';
 import { VariableDTO } from '../../../model/variable/variable-dto';
 import { ImportTargetable } from '../import-targetable';
-import { ElementEvaluation } from './element-evaluation';
-import { ElementEvaluationType } from './element-evaluation-type';
-import { ElementEvaluator } from './element-evaluator';
+import { ImportProcessEvaluation } from './import-process-evaluation';
+import { ImportProcessEvaluationType } from './import-process-evaluation-type';
+import { ImportProcessEvaluator } from './import-process-evaluator';
 
-abstract class AbstractElementEvaluator<T extends ImportTargetable>
-  implements ElementEvaluator<T>
+abstract class AbstractImportProcessEvaluator<T extends ImportTargetable>
+  implements ImportProcessEvaluator<T>
 {
-  evaluate(candidate: T, baseDataElements: T[]): ElementEvaluation<T> {
+  evaluate(candidate: T, baseDataElements: T[]): ImportProcessEvaluation<T> {
     /* If the candidate has no role key or the candidate
      * matches no existing element: pass through and rewrite id. */
     if (
@@ -21,7 +22,7 @@ abstract class AbstractElementEvaluator<T extends ImportTargetable>
       !baseDataElements.find((elem) => elem.roleKey === candidate.roleKey)
     ) {
       return {
-        evaluationType: ElementEvaluationType.ID_REWRITE,
+        evaluationType: ImportProcessEvaluationType.ID_REWRITE,
         candidate,
       };
     }
@@ -34,7 +35,7 @@ abstract class AbstractElementEvaluator<T extends ImportTargetable>
       )
     ) {
       return {
-        evaluationType: ElementEvaluationType.DISCARD,
+        evaluationType: ImportProcessEvaluationType.DISCARD,
         candidate,
       };
     }
@@ -46,7 +47,7 @@ abstract class AbstractElementEvaluator<T extends ImportTargetable>
     );
     if (target) {
       return {
-        evaluationType: ElementEvaluationType.OVERRIDE,
+        evaluationType: ImportProcessEvaluationType.OVERRIDE,
         overridden: target,
         candidate,
       };
@@ -60,9 +61,10 @@ abstract class AbstractElementEvaluator<T extends ImportTargetable>
   }
 }
 
-export class ActionEvaluator extends AbstractElementEvaluator<Action> {}
-export class CommandEvaluator extends AbstractElementEvaluator<Command> {}
-export class ContextEvaluator extends AbstractElementEvaluator<Context> {}
+export class ActionEvaluator extends AbstractImportProcessEvaluator<Action> {}
+export class CommandEvaluator extends AbstractImportProcessEvaluator<Command> {}
+export class ContextEvaluator extends AbstractImportProcessEvaluator<Context> {}
+export class FnEvaluator extends AbstractImportProcessEvaluator<Fn> {}
 // selector evaluator doesn't extend this interface
-export class SpecEvaluator extends AbstractElementEvaluator<SpecDTO> {}
-export class VariableEvaluator extends AbstractElementEvaluator<VariableDTO> {}
+export class SpecEvaluator extends AbstractImportProcessEvaluator<SpecDTO> {}
+export class VariableEvaluator extends AbstractImportProcessEvaluator<VariableDTO> {}
