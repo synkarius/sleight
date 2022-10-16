@@ -1,3 +1,8 @@
+import { SleightDataInternalFormat } from '../../data/data-formats';
+import {
+  CallFunctionAction,
+  isCallFunctionAction,
+} from '../../data/model/action/call-function/call-function';
 import { Fn, isPythonFn } from '../../data/model/fn/fn';
 import {
   FieldValidator,
@@ -9,11 +14,13 @@ import {
   ValidationResultType,
   validResult,
 } from '../../validation/validation-result';
+import { ValidateMode } from '../../validation/ValidationComponent';
 import {
   createRoleKeyTakenValidator,
   createValidator,
 } from '../../validation/validator-factories';
-import { alwaysTrue, isEmpty } from '../common/common-functions';
+import { alwaysTrue, isEmpty, quote } from '../common/common-functions';
+import { MapUtil } from '../common/map-util';
 
 const getStartsNumericRegex = () => /^[0-9]/;
 const getAlphaNumAndUnderScoreOnlyRegex = () => /^[A-z0-9_]*$/;
@@ -134,14 +141,183 @@ const pythonParameterCharactersValidator: FieldValidator<Fn> = {
   },
 };
 
+const getActionsFnUsedIn = (
+  fn: Fn,
+  data: Readonly<SleightDataInternalFormat>
+): CallFunctionAction[] =>
+  Object.values(data.actions)
+    .filter(isCallFunctionAction)
+    .filter((action) => action.functionId === fn.id);
+
+const fnUsedFnTypeChangedValidator: FieldValidator<Fn> = {
+  validatorType: ValidatorType.FIELD,
+  field: Field.FN_TYPE,
+  isApplicable: alwaysTrue,
+  validate: (fn, data) => {
+    const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
+      .map((action) => quote(action.name))
+      .join(', ');
+    return !actionsFnUsedIn.length
+      ? validResult(Field.FN_TYPE)
+      : {
+          type: ValidationResultType.BASIC,
+          field: Field.FN_PARAMETER_NAME,
+          code: ValidationErrorCode.FN_USED_FN_TYPE_CHANGED,
+          message:
+            'cannot change function type since function is already used' +
+            ` in Call Function Action(s): ${actionsFnUsedIn}`,
+        };
+  },
+};
+
+const getNumParamsChangedValidator = (
+  field: Field.FN_ADD_NEW_PARAMETER | Field.FN_DELETE_PARAMETER
+): FieldValidator<Fn> => {
+  return {
+    validatorType: ValidatorType.FIELD,
+    field,
+    isApplicable: alwaysTrue,
+    validate: (fn, data) => {
+      const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
+        .map((action) => quote(action.name))
+        .join(', ');
+      const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
+      const numParamsChanged =
+        fn.parameters.length !== fnFromData.parameters.length;
+
+      return !actionsFnUsedIn || !numParamsChanged
+        ? validResult(field)
+        : {
+            type: ValidationResultType.BASIC,
+            field,
+            code: ValidationErrorCode.FN_USED_CHANGED_NUM_PARAMS,
+            message:
+              'cannot change number of parameters since function is already used' +
+              ` in Call Function Action(s): ${actionsFnUsedIn}`,
+          };
+    },
+  };
+};
+
+const fnUsedAddParamValidator = getNumParamsChangedValidator(
+  Field.FN_ADD_NEW_PARAMETER
+);
+const fnUsedDeleteParamValidator = getNumParamsChangedValidator(
+  Field.FN_DELETE_PARAMETER
+);
+
+const fnUsedParamTypeChangedValidator: FieldValidator<Fn> = {
+  validatorType: ValidatorType.FIELD,
+  field: Field.FN_PARAMETER_TYPE,
+  isApplicable: alwaysTrue,
+  validate: (fn, data) => {
+    // setup
+    const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
+      .map((action) => quote(action.name))
+      .join(', ');
+    const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
+    const paramsWithTypeChanged: string[] = [];
+
+    // find params with types changed if fn is used
+    if (actionsFnUsedIn.length) {
+      for (let i = 0; i < fn.parameters.length; i++) {
+        const newParamType = fn.parameters[i].type;
+        const oldParamType = fnFromData.parameters[i].type;
+        if (newParamType !== oldParamType) {
+          paramsWithTypeChanged.push(fn.parameters[i].id);
+        }
+      }
+    }
+
+    return !paramsWithTypeChanged.length
+      ? validResult(Field.FN_PARAMETER_TYPE)
+      : {
+          type: ValidationResultType.ID_LIST,
+          field: Field.FN_PARAMETER_TYPE,
+          code: ValidationErrorCode.FN_USED_CHANGED_PARAM_TYPE,
+          message:
+            'cannot change parameter type since function is already used' +
+            ` in Call Function Action(s): ${actionsFnUsedIn}`,
+          ids: paramsWithTypeChanged,
+        };
+  },
+};
+
+const fnUsedParamOrderChangedValidator: FieldValidator<Fn> = {
+  validatorType: ValidatorType.FIELD,
+  field: Field.FN_MOVE_PARAMETER,
+  isApplicable: alwaysTrue,
+  validate: (fn, data) => {
+    // setup
+    const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
+      .map((action) => quote(action.name))
+      .join(', ');
+    const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
+    const paramsWithOrderChanged: string[] = [];
+
+    // find params with types changed if fn is used
+    if (actionsFnUsedIn.length) {
+      for (let i = 0; i < fn.parameters.length; i++) {
+        const newParamId = fn.parameters[i].id;
+        const oldParamId = fnFromData.parameters[i].id;
+        if (newParamId !== oldParamId) {
+          paramsWithOrderChanged.push(fn.parameters[i].id);
+        }
+      }
+    }
+
+    return !paramsWithOrderChanged.length
+      ? validResult(Field.FN_MOVE_PARAMETER)
+      : {
+          type: ValidationResultType.ID_LIST,
+          field: Field.FN_MOVE_PARAMETER,
+          code: ValidationErrorCode.FN_USED_CHANGED_PARAM_ORDER,
+          message:
+            'cannot change parameter order since function is already used' +
+            ` in Call Function Action(s): ${actionsFnUsedIn}`,
+          ids: paramsWithOrderChanged,
+        };
+  },
+};
+
+const deletionValidator: FieldValidator<Fn> = {
+  validatorType: ValidatorType.FIELD,
+  exclusiveValidationMode: ValidateMode.DELETE,
+  field: Field.FN_DELETE,
+  isApplicable: alwaysTrue,
+  validate: (fn, data) => {
+    const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
+      .map((action) => quote(action.name))
+      .join(', ');
+    return actionsFnUsedIn.length === 0
+      ? validResult(Field.FN_DELETE)
+      : {
+          type: ValidationResultType.BASIC,
+          field: Field.FN_DELETE,
+          code: ValidationErrorCode.FN_USED_AND_DELETE_ATTEMPTED,
+          message:
+            'cannot delete: this function is used in call function action(s):' +
+            ` ${actionsFnUsedIn}`,
+        };
+  },
+};
+
 export const getFnValidators = () => [
   nameNonEmptyValidator,
   roleKeyTakenValidator,
   nameNotStartsWithNumberValidator,
+  parameterNameNotEmptyValidator,
+  parameterNameNotStartsWithNumberValidator,
+  // python functions:
   pythonFnNameCharactersValidator,
   pythonImportPathCharactersValidator,
   pythonImportPathFormatValidator,
-  parameterNameNotEmptyValidator,
-  parameterNameNotStartsWithNumberValidator,
   pythonParameterCharactersValidator,
+  // fn used:
+  fnUsedFnTypeChangedValidator,
+  fnUsedAddParamValidator,
+  fnUsedDeleteParamValidator,
+  fnUsedParamTypeChangedValidator,
+  fnUsedParamOrderChangedValidator,
+  deletionValidator,
 ];
