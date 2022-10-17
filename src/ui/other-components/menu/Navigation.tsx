@@ -136,13 +136,6 @@ export const Navigation: React.FC<{}> = () => {
               <NavDropdown.Item disabled>Export Vocola 2</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Edit" id="edit-dropdown">
-              <NavDropdown.Item disabled>
-                Duplicate Selected Element
-              </NavDropdown.Item>
-              <NavDropdown.Item disabled>
-                Delete Selected Element
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
               <NavDropdown.Item disabled>Preferences</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="View" id="view-dropdown">
