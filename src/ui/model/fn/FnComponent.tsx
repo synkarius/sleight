@@ -15,6 +15,7 @@ import { ResourceType } from '../../../data/model/resource-types';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
+import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
@@ -126,12 +127,14 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
       <FormGroupRowComponent
         labelText="Type"
         descriptionText="kind of function"
+        errorMessage={errorResults([Field.FN_TYPE])}
       >
         <FormSelect
           aria-label={Field[Field.FN_TYPE]}
           role="list"
           onChange={typeChangedHandler}
           value={props.fn.type}
+          isInvalid={!!errorResults([Field.FN_TYPE])}
         >
           {FnType.values().map((ft) => (
             <option key={ft} value={ft} role="listitem">
@@ -176,6 +179,7 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
                     type: FnReducerActionType.MOVE_PARAMETER,
                     payload: { index: index, direction: direction },
                   });
+                  validationContext.touch(Field.FN_DELETE_PARAMETER);
                 }}
                 deleteFn={() => {
                   editingContext.localDispatch({
@@ -189,6 +193,12 @@ export const FnComponent: React.FC<{ fn: Fn }> = (props) => {
                 <FnParameterComponent param={param} />
               </VerticalMoveableComponent>
             ))}
+            <ErrorTextComponent
+              errorMessage={errorResults([
+                Field.FN_ADD_NEW_PARAMETER,
+                Field.FN_DELETE_PARAMETER,
+              ])}
+            />
           </FormGroupRowComponent>
         </>
       )}

@@ -215,8 +215,12 @@ const fnUsedDeleteParamValidator = getNumParamsChangedValidator(
 );
 
 const fnUsedParamTypeChangedValidator: FieldValidator<Fn> = {
-  validatorType: ValidatorType.FIELD,
-  field: Field.FN_PARAMETER_TYPE,
+  validatorType: ValidatorType.FIELDS,
+  fields: [
+    Field.FN_PARAMETER_TYPE,
+    Field.FN_MOVE_PARAMETER,
+    Field.FN_DELETE_PARAMETER,
+  ],
   isApplicable: alwaysTrue,
   validate: (fn, data) => {
     // setup
@@ -230,7 +234,7 @@ const fnUsedParamTypeChangedValidator: FieldValidator<Fn> = {
       const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
       for (let i = 0; i < fn.parameters.length; i++) {
         const newParamType = fn.parameters[i].type;
-        const oldParamType = fnFromData.parameters[i].type;
+        const oldParamType = fnFromData.parameters[i]?.type;
         if (newParamType !== oldParamType) {
           paramsWithTypeChanged.push(fn.parameters[i].id);
         }
@@ -247,43 +251,6 @@ const fnUsedParamTypeChangedValidator: FieldValidator<Fn> = {
             'cannot change parameter type since function is already used' +
             ` in Call Function Action(s): ${actionsFnUsedIn}`,
           ids: paramsWithTypeChanged,
-        };
-  },
-};
-
-const fnUsedParamOrderChangedValidator: FieldValidator<Fn> = {
-  validatorType: ValidatorType.FIELD,
-  field: Field.FN_MOVE_PARAMETER,
-  isApplicable: alwaysTrue,
-  validate: (fn, data) => {
-    // setup
-    const actionsFnUsedIn = getActionsFnUsedIn(fn, data)
-      .map((action) => quote(action.name))
-      .join(', ');
-    const paramsWithOrderChanged: string[] = [];
-
-    // find params with types changed if fn is used
-    if (actionsFnUsedIn.length) {
-      const fnFromData = MapUtil.getOrThrow(data.fns, fn.id);
-      for (let i = 0; i < fn.parameters.length; i++) {
-        const newParamId = fn.parameters[i].id;
-        const oldParamId = fnFromData.parameters[i].id;
-        if (newParamId !== oldParamId) {
-          paramsWithOrderChanged.push(fn.parameters[i].id);
-        }
-      }
-    }
-
-    return !paramsWithOrderChanged.length
-      ? validResult(Field.FN_MOVE_PARAMETER)
-      : {
-          type: ValidationResultType.ID_LIST,
-          field: Field.FN_MOVE_PARAMETER,
-          code: ValidationErrorCode.FN_USED_CHANGED_PARAM_ORDER,
-          message:
-            'cannot change parameter order since function is already used' +
-            ` in Call Function Action(s): ${actionsFnUsedIn}`,
-          ids: paramsWithOrderChanged,
         };
   },
 };
@@ -326,6 +293,5 @@ export const getFnValidators = () => [
   fnUsedAddParamValidator,
   fnUsedDeleteParamValidator,
   fnUsedParamTypeChangedValidator,
-  // fnUsedParamOrderChangedValidator, -- shouldn't matter
   deletionValidator,
 ];
