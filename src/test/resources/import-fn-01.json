@@ -1,0 +1,42 @@
+{
+    "import01": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [],
+        "fns": [
+            {
+                "id": "8ff8432b-25e3-4085-a6ec-e43412e3c2fd",
+                "type": "Python",
+                "name": "fn1",
+                "roleKey": "rk1",
+                "enabled": true,
+                "locked": false,
+                "importTokens": [
+                    "some",
+                    "path"
+                ],
+                "parameters": [
+                    {
+                        "id": "a081e39b-074b-4419-8846-a28598c8fafa",
+                        "name": "t1",
+                        "type": "Text"
+                    },
+                    {
+                        "id": "f8f99ff8-a03c-43f2-9df0-58b22e47c6dc",
+                        "name": "t2",
+                        "type": "Text"
+                    },
+                    {
+                        "id": "2c2ba40c-6a95-4962-b269-f15d6d38ce2a",
+                        "name": "n1",
+                        "type": "Range"
+                    }
+                ]
+            }
+        ],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

@@ -279,8 +279,8 @@ const deletionValidator: FieldValidator<Fn> = {
 
 export const getFnValidators = () => [
   nameNonEmptyValidator,
-  roleKeyTakenValidator,
   nameNotStartsWithNumberValidator,
+  roleKeyTakenValidator,
   parameterNameNotEmptyValidator,
   parameterNameNotStartsWithNumberValidator,
   // python functions:
