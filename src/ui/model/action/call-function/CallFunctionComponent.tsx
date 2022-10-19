@@ -88,10 +88,6 @@ export const CallFunctionComponent: React.FC<{
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  // const paramNameErrorResult = errorResults(
-  //   [Field.AC_CALL_FUNC_PARAMETER_VAR],
-  //   props.param.id
-  // );
 
   return (
     <>

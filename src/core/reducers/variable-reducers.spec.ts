@@ -50,7 +50,6 @@ describe('variable reducer', () => {
   it('should handle initial state', () => {
     expect(variableReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editing: undefined,
     });
   });
 

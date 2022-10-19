@@ -18,7 +18,6 @@ describe('context reducer', () => {
   it('should handle initial state', () => {
     expect(contextReduxReducer(undefined, { type: 'unknown' })).toEqual({
       saved: {},
-      editing: undefined,
     });
   });
 

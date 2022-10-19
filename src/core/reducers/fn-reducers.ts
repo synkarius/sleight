@@ -108,7 +108,7 @@ const moveParameter = (state: Fn, action: FnReducerMoveParamAction): Fn => {
           };
         }
       }
-      return state;
+      return { ...state };
     default:
       throw new ExhaustivenessFailureError(fnType);
   }
