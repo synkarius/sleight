@@ -9,11 +9,20 @@ import { ActionType } from '../../../../data/model/action/action-types';
 import { ActionParentComponent } from '../ActionParentComponent';
 import { container } from '../../../../di/config/brandi-config';
 import { BrowserRouter } from 'react-router-dom';
-import { NotImplementedError } from '../../../../error/not-implemented-error';
+import { act } from 'react-dom/test-utils';
+import { castJsonForTest } from '../../../../test/utils/import-test-json-util';
+import { saveFn, setFns } from '../../../../core/reducers/fn-reducers';
+import { Tokens } from '../../../../di/config/brandi-tokens';
+import { import03 } from '../../../../test/resources/import-call-function-03.json';
+import {
+  saveVariable,
+  setVariables,
+} from '../../../../core/reducers/variable-reducers';
 
-const RANGE_VARIABLE_NAME = 'asdf-range-var';
+const TEXT_VAR_1_NAME = 'text-var-2141bbc2-1dcd';
+const FN_1_NAME = 'fn1';
 const VARIABLE_RADIO = 1;
-type Radio = 0 | 1;
+const formatMapper = container.get(Tokens.FormatMapper);
 let user: UserEvent;
 
 beforeAll(() => {
@@ -21,6 +30,7 @@ beforeAll(() => {
 });
 
 beforeEach(async () => {
+  await setupTestData(import03);
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
@@ -35,54 +45,109 @@ beforeEach(async () => {
   await user.selectOptions(actionTypeSelect, ActionType.Enum.CALL_FUNCTION);
 });
 
+afterEach(async () => {
+  store.dispatch(setFns({}));
+  store.dispatch(setVariables({}));
+});
+
 describe('call function action component tests', () => {
+  it('should invalidate non-selected fn', async () => {
+    const fnSelect = screen.getByRole('list', {
+      name: Field[Field.AC_CALL_FUNC_FN],
+    });
+    await user.click(fnSelect);
+    await user.tab();
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const errorText = screen.getByText('a function must be selected');
+
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+    expect(fnSelect).toHaveClass('is-invalid');
+  });
+
+  it('should validate selected fn', async () => {
+    const fnSelect = screen.getByRole('list', {
+      name: Field[Field.AC_CALL_FUNC_FN],
+    });
+    await user.selectOptions(fnSelect, FN_1_NAME);
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const errorText = screen.queryByText('a function must be selected');
+
+    expect(errorText).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+    expect(fnSelect).not.toHaveClass('is-invalid');
+  });
+
   it('should invalidate non-selected parameter variable', async () => {
-    // await selectActionValueType(
-    //   user,
-    //   Field.AC_CENTISECONDS_RADIO,
-    //   VARIABLE_RADIO
-    // );
-    // const select = screen.getByRole('list', {
-    //   name: Field[Field.AC_CENTISECONDS_VAR],
-    // });
-    // await user.click(select);
-    // await user.tab();
+    // select a fn
+    const fnSelect = screen.getByRole('list', {
+      name: Field[Field.AC_CALL_FUNC_FN],
+    });
+    await user.selectOptions(fnSelect, FN_1_NAME);
 
-    // const errorText = screen.getByText(
-    //   'centiseconds : variable must be selected'
-    // );
+    // change the parameter to "Use Variable"
+    const paramVarSelectRadio = screen.getAllByRole('radiogroup', {
+      name: Field[Field.AC_CALL_FUNC_PARAMETER_RADIO],
+    })[0];
+    const options = await within(paramVarSelectRadio).getAllByRole('radio');
+    await user.click(options[VARIABLE_RADIO]);
 
-    // expect(errorText).toBeInTheDocument();
-    // expect(select).toHaveClass('is-invalid');
-    throw new NotImplementedError('CFA functional tests');
+    // click on the variable select and then tab away
+    const paramVarSelect = screen.getAllByRole('list', {
+      name: Field[Field.AC_CALL_FUNC_PARAMETER_VAR],
+    })[0];
+    await user.click(paramVarSelect);
+    await user.tab();
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const errorText = screen.getByText('variable parameters must be selected');
+
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+    expect(paramVarSelect).toHaveClass('is-invalid');
   });
 
   it('should validate selected parameter variable', async () => {
-    // await selectActionValueType(
-    //   user,
-    //   Field.AC_CENTISECONDS_RADIO,
-    //   VARIABLE_RADIO
-    // );
-    // const select = screen.getByRole('list', {
-    //   name: Field[Field.AC_CENTISECONDS_VAR],
-    // });
-    // await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
+    // select a fn
+    const fnSelect = screen.getByRole('list', {
+      name: Field[Field.AC_CALL_FUNC_FN],
+    });
+    await user.selectOptions(fnSelect, FN_1_NAME);
 
-    // await user.tab();
+    // change the parameter to "Use Variable"
+    const paramVarSelectRadio = screen.getAllByRole('radiogroup', {
+      name: Field[Field.AC_CALL_FUNC_PARAMETER_RADIO],
+    })[0];
+    const options = await within(paramVarSelectRadio).getAllByRole('radio');
+    await user.click(options[VARIABLE_RADIO]);
 
-    // expect(select).not.toHaveClass('is-invalid');
-    throw new NotImplementedError('CFA functional tests');
+    // select a variable
+    const paramVarSelect = screen.getAllByRole('list', {
+      name: Field[Field.AC_CALL_FUNC_PARAMETER_VAR],
+    })[0];
+    await user.selectOptions(paramVarSelect, TEXT_VAR_1_NAME);
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const errorText = screen.queryByText(
+      'variable parameters must be selected'
+    );
+
+    expect(errorText).not.toBeInTheDocument();
+    expect(saveButton).not.toBeDisabled();
+    expect(paramVarSelect).not.toHaveClass('is-invalid');
   });
 });
 
-const selectActionValueType = async (
-  user: UserEvent,
-  field: Field,
-  index: Radio
-): Promise<void> => {
-  const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+const setupTestData = async (jsonData: unknown) => {
+  act(() => {
+    const data = formatMapper.externalFormatToInternal(
+      castJsonForTest(jsonData)
+    );
+    Object.values(data.fns).forEach((fn) => store.dispatch(saveFn(fn)));
+    Object.values(data.variables).forEach((variable) =>
+      store.dispatch(saveVariable(variable))
+    );
   });
-  const options = await within(radioGroup).findAllByRole('radio');
-  await user.click(options[index]);
 };
