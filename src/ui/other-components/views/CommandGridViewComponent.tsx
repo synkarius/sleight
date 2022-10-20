@@ -1,5 +1,15 @@
 import React, { useId, useState } from 'react';
-import { Accordion, Col, Form, FormControl, Row } from 'react-bootstrap';
+import {
+  Accordion,
+  Button,
+  ButtonGroup,
+  Col,
+  Dropdown,
+  DropdownButton,
+  Form,
+  FormControl,
+  Row,
+} from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Command } from '../../../data/model/command/command';
 import { Context } from '../../../data/model/context/context';
@@ -32,6 +42,7 @@ export const CommandGridViewComponent: React.FC<{}> = () => {
   const commands = useAppSelector((state) => state.command.saved);
   const contexts = useAppSelector((state) => state.context.saved);
   const [contextSearch, setContextSearch] = useState('');
+  const [showCommand, setShowCommand] = useState<string | undefined>();
   const searchFormId = useId();
 
   const items: GridItem[] = Object.values(commands)
@@ -77,6 +88,32 @@ export const CommandGridViewComponent: React.FC<{}> = () => {
                 </Col>
               </Accordion.Header>
               <Accordion.Body>
+                <Row className="px-1">
+                  <Col sm="12">
+                    <Button className="mx-1">Command</Button>
+                    <Button className="mx-1">Spec</Button>
+                    {item.context && <Button className="mx-1">Context</Button>}
+                    <DropdownButton
+                      className="mx-1"
+                      as={ButtonGroup}
+                      title="Actions"
+                      id="bg-nested-dropdown"
+                    >
+                      <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
+                      <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
+                    </DropdownButton>
+                    <DropdownButton
+                      className="mx-1"
+                      as={ButtonGroup}
+                      title="Variables"
+                      id="bg-nested-dropdown"
+                    >
+                      <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
+                      <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
+                    </DropdownButton>
+                  </Col>
+                </Row>
+
                 <CommandParentComponent commandId={item.command.id} />
               </Accordion.Body>
             </Accordion.Item>
