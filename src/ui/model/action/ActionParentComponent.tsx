@@ -13,8 +13,7 @@ import { ActionComponent } from './ActionComponent';
 import { createSendKeyPressAction } from '../../../data/model/action/send-key/send-key';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { doNothing } from '../../../core/common/common-functions';
 
 const init = (
   savedMap: Record<string, Action>
@@ -27,11 +26,11 @@ const init = (
   };
 };
 
-export const ActionParentComponent: React.FC<{ actionId?: string }> = (
-  props
-) => {
+export const ActionParentComponent: React.FC<{
+  actionId?: string;
+  closeFn?: () => void;
+}> = (props) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const savedMap = useAppSelector((state) => state.action.saved);
   const [editing, localDispatch] = useReducer(
     actionReactReducer,
@@ -41,10 +40,10 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
   const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
+  const closeFn = props.closeFn ?? doNothing;
   const handleDelete = () => {
     reduxDispatch(deleteAction(editing.id));
-    // reduxDispatch(setEditorFocus());
-    navigate(EMPTY_PATH);
+    closeFn();
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Action);
@@ -54,7 +53,7 @@ export const ActionParentComponent: React.FC<{ actionId?: string }> = (
       <ActionEditingContext.Provider
         value={{ localDispatch, deleteModalConfig }}
       >
-        <ActionComponent action={editing} />
+        <ActionComponent action={editing} closeFn={closeFn} />
         <DeleteModalComponent
           /** editing.name is fine here because the modal won't show unless
            * the element is saved, and the element can't be saved without a name

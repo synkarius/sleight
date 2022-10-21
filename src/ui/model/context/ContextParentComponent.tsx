@@ -12,8 +12,7 @@ import {
 import { ContextComponent } from './ContextComponent';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { doNothing } from '../../../core/common/common-functions';
 
 const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
   return (contextId?: string) => {
@@ -24,11 +23,11 @@ const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
   };
 };
 
-export const ContextParentComponent: React.FC<{ contextId?: string }> = (
-  props
-) => {
+export const ContextParentComponent: React.FC<{
+  contextId?: string;
+  closeFn?: () => void;
+}> = (props) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const savedMap = useAppSelector((state) => state.context.saved);
   const [editing, localDispatch] = useReducer(
     contextReactReducer,
@@ -38,9 +37,10 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
   const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
+  const closeFn = props.closeFn ?? doNothing;
   const handleDelete = () => {
     reduxDispatch(deleteContext(editing.id));
-    navigate(EMPTY_PATH);
+    closeFn();
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Context);
@@ -50,7 +50,7 @@ export const ContextParentComponent: React.FC<{ contextId?: string }> = (
       <ContextEditingContext.Provider
         value={{ localDispatch, deleteModalConfig }}
       >
-        <ContextComponent context={editing} />
+        <ContextComponent context={editing} closeFn={closeFn} />
         <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}

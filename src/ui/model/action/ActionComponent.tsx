@@ -34,15 +34,15 @@ import { BringAppComponent } from './bring-app/BringAppComponent';
 import { isCallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { CallFunctionComponent } from './call-function/CallFunctionComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
 
-export const ActionComponent: React.FC<{ action: Action }> = (props) => {
+export const ActionComponent: React.FC<{
+  action: Action;
+  closeFn: () => void;
+}> = (props) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ActionEditingContext);
   const container = useContext(InjectionContext);
@@ -86,7 +86,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveAction(props.action));
-      navigate(ELEMENT_EDITOR_PATH);
+      props.closeFn();
     }
   };
 
@@ -181,7 +181,7 @@ export const ActionComponent: React.FC<{ action: Action }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={() => navigate(ELEMENT_EDITOR_PATH)}
+        onClick={props.closeFn}
         className="me-3"
         variant="warning"
         size="lg"

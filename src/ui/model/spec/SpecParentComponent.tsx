@@ -15,8 +15,7 @@ import { SpecDomainMapper } from '../../../core/mappers/spec-domain-mapper';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { doNothing } from '../../../core/common/common-functions';
 
 type SpecInitFunction = (specId?: string) => Spec;
 
@@ -36,9 +35,11 @@ const getSpecInitFunction = (
   };
 };
 
-export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
+export const SpecParentComponent: React.FC<{
+  specId?: string;
+  closeFn?: () => void;
+}> = (props) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const specs = useAppSelector((state) => state.spec.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
   const container = useContext(InjectionContext);
@@ -53,9 +54,10 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
   );
   const [show, setShow] = useState(false);
 
+  const closeFn = props.closeFn ?? doNothing;
   const handleDelete = () => {
     reduxDispatch(deleteSpec(editing.id));
-    navigate(EMPTY_PATH);
+    closeFn();
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Spec);
@@ -63,7 +65,7 @@ export const SpecParentComponent: React.FC<{ specId?: string }> = (props) => {
   return (
     <ValidationComponent<Spec> validators={validators} editing={editing}>
       <SpecEditingContext.Provider value={{ localDispatch, deleteModalConfig }}>
-        <SpecComponent spec={editing} />
+        <SpecComponent spec={editing} closeFn={closeFn} />
         <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}

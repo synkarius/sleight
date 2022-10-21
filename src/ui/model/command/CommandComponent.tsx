@@ -22,16 +22,16 @@ import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
 
-export const CommandComponent: React.FC<{ command: Command }> = (props) => {
+export const CommandComponent: React.FC<{
+  command: Command;
+  closeFn: () => void;
+}> = (props) => {
   const actionsSaved = useAppSelector((state) => state.action.saved);
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(CommandEditingContext);
   const container = useContext(InjectionContext);
@@ -74,7 +74,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
     const formIsValid = validationContext.validateForSave();
     if (formIsValid) {
       reduxDispatch(saveCommand(props.command));
-      navigate(ELEMENT_EDITOR_PATH);
+      props.closeFn();
     }
   };
   const fullErrorResults = validationContext.getErrorResults();
@@ -211,7 +211,7 @@ export const CommandComponent: React.FC<{ command: Command }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => navigate(ELEMENT_EDITOR_PATH)}
+        onClick={props.closeFn}
         className="me-3"
         variant="warning"
         size="lg"

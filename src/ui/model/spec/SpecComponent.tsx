@@ -22,14 +22,13 @@ import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
-export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
+export const SpecComponent: React.FC<{ spec: Spec; closeFn: () => void }> = (
+  props
+) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(SpecEditingContext);
   const container = useContext(InjectionContext);
@@ -85,7 +84,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
       });
       const specRedux = specMapper.mapFromDomain(props.spec);
       reduxDispatch(saveSpec(specRedux));
-      navigate(ELEMENT_EDITOR_PATH);
+      props.closeFn();
     }
   };
 
@@ -174,7 +173,7 @@ export const SpecComponent: React.FC<{ spec: Spec }> = (props) => {
           </Button>
         )}
         <Button
-          onClick={(_e) => navigate(ELEMENT_EDITOR_PATH)}
+          onClick={props.closeFn}
           className="me-3"
           variant="warning"
           size="lg"

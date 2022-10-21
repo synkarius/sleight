@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { EditorViewComponent } from './ui/other-components/views/EditorViewComponent';
 import { WizardViewComponent } from './ui/other-components/views/WizardViewComponent';
 import { ResourcesEditorViewComponent } from './ui/other-components/views/ResourcesEditorViewComponent';
-import { CommandGridViewComponent } from './ui/other-components/views/CommandGridViewComponent';
+import { CommandListViewComponent } from './ui/other-components/views/CommandListViewComponent';
 import {
   COMMAND_GRID_PATH,
   ELEMENT_EDITOR_PATH,
@@ -33,7 +33,7 @@ const App: React.FC<{}> = () => {
           <Route path="/*" element={<EditorViewComponent />} />
           <Route
             path={getPath(COMMAND_GRID_PATH)}
-            element={<CommandGridViewComponent />}
+            element={<CommandListViewComponent />}
           />
           <Route
             path={getPath(ELEMENT_EDITOR_PATH)}

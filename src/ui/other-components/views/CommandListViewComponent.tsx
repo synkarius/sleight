@@ -11,7 +11,6 @@ import {
   Row,
 } from 'react-bootstrap';
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
-import { GridItem } from '../../../core/command-grid/command-grid-helper';
 import { OpenGridItem } from '../../../core/command-grid/open-grid-item';
 import { ElementType } from '../../../data/model/element-types';
 import { Tokens } from '../../../di/config/brandi-tokens';
@@ -23,15 +22,16 @@ import { SpecParentComponent } from '../../model/spec/SpecParentComponent';
 import { VariableParentComponent } from '../../model/variable/VariableParentComponent';
 import { PanelComponent } from '../PanelComponent';
 
-export const CommandGridViewComponent: React.FC<{}> = () => {
-  const container = useContext(InjectionContext);
-  const data = useAllData();
+export const CommandListViewComponent: React.FC<{}> = () => {
   const [contextSearch, setContextSearch] = useState('');
   const [openItem, setOpenItem] = useState<OpenGridItem | undefined>();
   const searchFormId = useId();
+  const container = useContext(InjectionContext);
+  const data = useAllData();
 
   const contextSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
     setContextSearch(event.target.value);
+  const closeItem = () => setOpenItem(undefined);
   const helper = container.get(Tokens.CommandGridHelper);
 
   const items = helper.mapDataToGridItems(data, { contextSearch });
@@ -160,24 +160,36 @@ export const CommandGridViewComponent: React.FC<{}> = () => {
                   openItem.type === ElementType.Enum.ACTION &&
                   openItem.commandId === item.command.id &&
                   item.command.actionIds.includes(openItem.actionId) && (
-                    <ActionParentComponent actionId={openItem.actionId} />
+                    <ActionParentComponent
+                      actionId={openItem.actionId}
+                      closeFn={closeItem}
+                    />
                   )}
                 {openItem &&
                   openItem.type === ElementType.Enum.COMMAND &&
                   openItem.commandId === item.command.id && (
-                    <CommandParentComponent commandId={openItem.commandId} />
+                    <CommandParentComponent
+                      commandId={openItem.commandId}
+                      closeFn={closeItem}
+                    />
                   )}
                 {openItem &&
                   openItem.type === ElementType.Enum.CONTEXT &&
                   openItem.commandId === item.command.id &&
                   openItem.contextId === item.context?.id && (
-                    <ContextParentComponent contextId={openItem.contextId} />
+                    <ContextParentComponent
+                      contextId={openItem.contextId}
+                      closeFn={closeItem}
+                    />
                   )}
                 {openItem &&
                   openItem.type === ElementType.Enum.SPEC &&
                   openItem.commandId === item.command.id &&
                   openItem.specId === item.spec.id && (
-                    <SpecParentComponent specId={openItem.specId} />
+                    <SpecParentComponent
+                      specId={openItem.specId}
+                      closeFn={closeItem}
+                    />
                   )}
                 {openItem &&
                   openItem.type === ElementType.Enum.VARIABLE &&
@@ -185,7 +197,10 @@ export const CommandGridViewComponent: React.FC<{}> = () => {
                   item.variables
                     .map((v) => v.id)
                     .includes(openItem.variableId) && (
-                    <VariableParentComponent variableId={openItem.variableId} />
+                    <VariableParentComponent
+                      variableId={openItem.variableId}
+                      closeFn={closeItem}
+                    />
                   )}
               </Accordion.Body>
             </Accordion.Item>

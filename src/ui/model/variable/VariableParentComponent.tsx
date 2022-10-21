@@ -18,8 +18,7 @@ import {
 import { VariableComponent } from './VariableComponent';
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { EMPTY_PATH } from '../../../core/common/consts';
+import { doNothing } from '../../../core/common/common-functions';
 
 type VariableInitFunction = (specId?: string) => Variable;
 
@@ -39,11 +38,11 @@ const getVariableInitFunction = (
   };
 };
 
-export const VariableParentComponent: React.FC<{ variableId?: string }> = (
-  props
-) => {
+export const VariableParentComponent: React.FC<{
+  variableId?: string;
+  closeFn?: () => void;
+}> = (props) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const variables = useAppSelector((state) => state.variable.saved);
   const selectors = useAppSelector((state) => state.selector.saved);
   const container = useContext(InjectionContext);
@@ -58,9 +57,10 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
   );
   const [show, setShow] = useState(false);
 
+  const closeFn = props.closeFn ?? doNothing;
   const handleDelete = () => {
     reduxDispatch(deleteVariable(editing.id));
-    navigate(EMPTY_PATH);
+    closeFn();
   };
   const deleteModalConfig = { show, setShow };
   const validators = container.get(Tokens.Validators_Variable);
@@ -70,7 +70,7 @@ export const VariableParentComponent: React.FC<{ variableId?: string }> = (
       <VariableEditingContext.Provider
         value={{ localDispatch, deleteModalConfig }}
       >
-        <VariableComponent variable={editing} />
+        <VariableComponent variable={editing} closeFn={closeFn} />
         <DeleteModalComponent
           deletingName={editing.name}
           config={deleteModalConfig}

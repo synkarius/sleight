@@ -40,3 +40,5 @@ export const replaceNonAlphaNumeric = (
 ): string => value.replaceAll(/[^a-zA-Z\d]/g, replacement);
 
 export const quote = (value: unknown): string => `"${value}"`;
+
+export const doNothing = (): void => {};

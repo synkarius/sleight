@@ -18,14 +18,14 @@ import { saveContext } from '../../../core/reducers/context-reducers';
 import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useNavigate } from 'react-router-dom';
-import { ELEMENT_EDITOR_PATH } from '../../../core/common/consts';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
-export const ContextComponent: React.FC<{ context: Context }> = (props) => {
+export const ContextComponent: React.FC<{
+  context: Context;
+  closeFn: () => void;
+}> = (props) => {
   const reduxDispatch = useAppDispatch();
-  const navigate = useNavigate();
   const validationContext = useContext(ValidationContext);
   const editingContext = useContext(ContextEditingContext);
   const container = useContext(InjectionContext);
@@ -77,7 +77,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
     const isValid = validationContext.validateForSave();
     if (isValid) {
       reduxDispatch(saveContext(props.context));
-      navigate(ELEMENT_EDITOR_PATH);
+      props.closeFn();
     }
   };
 
@@ -166,7 +166,7 @@ export const ContextComponent: React.FC<{ context: Context }> = (props) => {
         </Button>
       )}
       <Button
-        onClick={(_e) => navigate(ELEMENT_EDITOR_PATH)}
+        onClick={props.closeFn}
         className="me-3"
         variant="warning"
         size="lg"
