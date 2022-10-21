@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react';
+import React, { useContext, useId, useState } from 'react';
 import {
   Accordion,
   Button,
@@ -10,52 +10,31 @@ import {
   FormControl,
   Row,
 } from 'react-bootstrap';
-import { useAppSelector } from '../../../app/hooks';
-import { Command } from '../../../data/model/command/command';
-import { Context } from '../../../data/model/context/context';
+import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
+import { GridItem } from '../../../core/command-grid/command-grid-helper';
+import { OpenGridItem } from '../../../core/command-grid/open-grid-item';
+import { ElementType } from '../../../data/model/element-types';
+import { Tokens } from '../../../di/config/brandi-tokens';
+import { InjectionContext } from '../../../di/injector-context';
+import { ActionParentComponent } from '../../model/action/ActionParentComponent';
 import { CommandParentComponent } from '../../model/command/CommandParentComponent';
+import { ContextParentComponent } from '../../model/context/ContextParentComponent';
+import { SpecParentComponent } from '../../model/spec/SpecParentComponent';
+import { VariableParentComponent } from '../../model/variable/VariableParentComponent';
 import { PanelComponent } from '../PanelComponent';
 
-const GLOBAL_CONTEXT = 'global';
-
-const getContextKey = (contextId?: string): string => contextId ?? '';
-type GridItem = {
-  command: Command;
-  context?: Context;
-};
-const sortCommands = (a: Command, b: Command): number => {
-  return getContextKey(a.contextId) < getContextKey(b.contextId) ? -1 : 1;
-};
-const filterItem = (item: GridItem, contextSearch: string): boolean => {
-  const global =
-    !item.context &&
-    (contextSearch === '' || contextSearch.toLowerCase() === GLOBAL_CONTEXT);
-  const contextMatch = !!(
-    item.context &&
-    (item.context.name.toLowerCase().includes(contextSearch.toLowerCase()) ||
-      item.context.matcher.toLowerCase().includes(contextSearch.toLowerCase()))
-  );
-  return global || contextMatch;
-};
-
 export const CommandGridViewComponent: React.FC<{}> = () => {
-  const commands = useAppSelector((state) => state.command.saved);
-  const contexts = useAppSelector((state) => state.context.saved);
+  const container = useContext(InjectionContext);
+  const data = useAllData();
   const [contextSearch, setContextSearch] = useState('');
-  const [showCommand, setShowCommand] = useState<string | undefined>();
+  const [openItem, setOpenItem] = useState<OpenGridItem | undefined>();
   const searchFormId = useId();
 
-  const items: GridItem[] = Object.values(commands)
-    .sort(sortCommands)
-    .map((command) => ({
-      command,
-      context: contexts[command.contextId ?? GLOBAL_CONTEXT],
-    }))
-    .filter((item) => filterItem(item, contextSearch));
-
-  const contextSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const contextSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
     setContextSearch(event.target.value);
-  };
+  const helper = container.get(Tokens.CommandGridHelper);
+
+  const items = helper.mapDataToGridItems(data, { contextSearch });
 
   return (
     <>
@@ -90,31 +69,124 @@ export const CommandGridViewComponent: React.FC<{}> = () => {
               <Accordion.Body>
                 <Row className="px-1">
                   <Col sm="12">
-                    <Button className="mx-1">Command</Button>
-                    <Button className="mx-1">Spec</Button>
-                    {item.context && <Button className="mx-1">Context</Button>}
-                    <DropdownButton
+                    <Button
                       className="mx-1"
-                      as={ButtonGroup}
-                      title="Actions"
-                      id="bg-nested-dropdown"
+                      onClick={() =>
+                        setOpenItem({
+                          type: ElementType.Enum.COMMAND,
+                          commandId: item.command.id,
+                        })
+                      }
                     >
-                      <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
-                      <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
-                    </DropdownButton>
-                    <DropdownButton
+                      Command
+                    </Button>
+                    <Button
                       className="mx-1"
-                      as={ButtonGroup}
-                      title="Variables"
-                      id="bg-nested-dropdown"
+                      onClick={() =>
+                        setOpenItem({
+                          type: ElementType.Enum.SPEC,
+                          commandId: item.command.id,
+                          specId: item.spec.id,
+                        })
+                      }
                     >
-                      <Dropdown.Item eventKey="1">Dropdown link</Dropdown.Item>
-                      <Dropdown.Item eventKey="2">Dropdown link</Dropdown.Item>
-                    </DropdownButton>
+                      Spec
+                    </Button>
+                    {item.context && (
+                      <Button
+                        className="mx-1"
+                        onClick={() =>
+                          setOpenItem({
+                            type: ElementType.Enum.CONTEXT,
+                            commandId: item.command.id,
+                            contextId: item.context!.id,
+                          })
+                        }
+                      >
+                        Context
+                      </Button>
+                    )}
+                    {!!item.actions.length && (
+                      <DropdownButton
+                        className="mx-1"
+                        as={ButtonGroup}
+                        title="Actions"
+                        id={`${item.command.id}-actions`}
+                      >
+                        {item.actions.map((action, index) => (
+                          <Dropdown.Item
+                            key={`${item.command.id}-${action.id}`}
+                            eventKey={`${index}`}
+                            onClick={() =>
+                              setOpenItem({
+                                type: ElementType.Enum.ACTION,
+                                commandId: item.command.id,
+                                actionId: action.id,
+                              })
+                            }
+                          >
+                            {action.name}
+                          </Dropdown.Item>
+                        ))}
+                      </DropdownButton>
+                    )}
+                    {!!item.variables.length && (
+                      <DropdownButton
+                        className="mx-1"
+                        as={ButtonGroup}
+                        title="Variables"
+                        id={`${item.command.id}-variables`}
+                      >
+                        {item.variables.map((variable, index) => (
+                          <Dropdown.Item
+                            key={`${item.command.id}-${variable.id}`}
+                            eventKey={`${index}`}
+                            onClick={() =>
+                              setOpenItem({
+                                type: ElementType.Enum.VARIABLE,
+                                commandId: item.command.id,
+                                variableId: variable.id,
+                              })
+                            }
+                          >
+                            {variable.name}
+                          </Dropdown.Item>
+                        ))}
+                      </DropdownButton>
+                    )}
                   </Col>
                 </Row>
-
-                <CommandParentComponent commandId={item.command.id} />
+                {openItem &&
+                  openItem.type === ElementType.Enum.ACTION &&
+                  openItem.commandId === item.command.id &&
+                  item.command.actionIds.includes(openItem.actionId) && (
+                    <ActionParentComponent actionId={openItem.actionId} />
+                  )}
+                {openItem &&
+                  openItem.type === ElementType.Enum.COMMAND &&
+                  openItem.commandId === item.command.id && (
+                    <CommandParentComponent commandId={openItem.commandId} />
+                  )}
+                {openItem &&
+                  openItem.type === ElementType.Enum.CONTEXT &&
+                  openItem.commandId === item.command.id &&
+                  openItem.contextId === item.context?.id && (
+                    <ContextParentComponent contextId={openItem.contextId} />
+                  )}
+                {openItem &&
+                  openItem.type === ElementType.Enum.SPEC &&
+                  openItem.commandId === item.command.id &&
+                  openItem.specId === item.spec.id && (
+                    <SpecParentComponent specId={openItem.specId} />
+                  )}
+                {openItem &&
+                  openItem.type === ElementType.Enum.VARIABLE &&
+                  openItem.commandId === item.command.id &&
+                  item.variables
+                    .map((v) => v.id)
+                    .includes(openItem.variableId) && (
+                    <VariableParentComponent variableId={openItem.variableId} />
+                  )}
               </Accordion.Body>
             </Accordion.Item>
           ))}

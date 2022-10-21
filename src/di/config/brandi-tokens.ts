@@ -87,6 +87,7 @@ import {
 } from '../../data/model/action/action-value';
 import { MultiMethodActionValueMapper } from '../../core/mappers/action-mapper-delegates/action-value-mapper/delegating-action-value-domain-mapper';
 import { Modifiers } from '../../data/model/action/send-key/send-key';
+import { CommandGridHelper } from '../../core/command-grid/command-grid-helper';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -342,4 +343,6 @@ export namespace Tokens {
   export const ActionValueUpdaterDelegates = token<
     ActionValueUpdaterDelegate[]
   >('ActionValueUpdaterDelegate');
+  export const CommandGridHelper =
+    token<CommandGridHelper>('CommandGridHelper');
 }
