@@ -1,0 +1,22 @@
+{
+    "import09": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [
+            {
+                "id": "593cabd7-e279-4fd9-8e94-1bdaf3e18e81",
+                "name": "firefox",
+                "roleKey": "ff-ctx-rk",
+                "enabled": true,
+                "locked": false,
+                "type": "Executable Name",
+                "matcher": "firefox"
+            }
+        ],
+        "fns": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

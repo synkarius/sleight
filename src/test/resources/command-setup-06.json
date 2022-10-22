@@ -1,0 +1,39 @@
+{
+    "import06": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "40982312-70a9-4556-9b18-eaa279a71569",
+                "items": [
+                    {
+                        "id": "62cae0d1-1910-434b-98e2-36d11c91103a",
+                        "value": "yo"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "5bbe91ba-b854-49c7-853c-bafef8467563",
+                "name": "spe-5bbe91ba-b854",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "80013344-be27-4b3c-8feb-80126776b7ab",
+                        "itemType": "Selector",
+                        "itemId": "40982312-70a9-4556-9b18-eaa279a71569",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": []
+    }
+}

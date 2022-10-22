@@ -13,9 +13,8 @@ export class DelegatingVariableExtractor implements VariableExtractor {
       .map((delegate) => delegate.extractActionValues(action))
       .filter(isDefined);
     if (!extracted.length) {
-      /** It could turn out that there is a future action type which has no
-       * variables; the delegate for such an action type should return an
-       * empty array.
+      /* A delegate for an action type which has no variables
+       * should return an empty array.
        */
       const errorMessage = 'variable extractor for: ' + action.type;
       throw new MissingDelegateError(errorMessage);

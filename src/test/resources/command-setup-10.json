@@ -1,0 +1,49 @@
+{
+    "import10": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [
+            {
+                "id": "df1bf120-9371-466e-b1b6-ca3626ac0827",
+                "name": "com-df1bf120-9371",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "specId": "7d5bf292-2368-4571-a214-7899de88db12",
+                "actionIds": []
+            }
+        ],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "0e651e91-eb07-4b7d-b7e2-66ca837df6c0",
+                "items": [
+                    {
+                        "id": "0d232fc9-af2b-4998-8909-e8d9e84cca75",
+                        "value": "and"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "7d5bf292-2368-4571-a214-7899de88db12",
+                "name": "spe-7d5bf292-2368",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "181dba34-280c-4b64-96f7-2877a091ae59",
+                        "itemType": "Selector",
+                        "itemId": "0e651e91-eb07-4b7d-b7e2-66ca837df6c0",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": []
+    }
+}

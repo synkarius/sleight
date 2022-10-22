@@ -261,28 +261,6 @@ describe('spec component tests', () => {
     expect(groupedCheckbox).not.toBeDisabled();
   });
 
-  it.skip('should invalidate an already taken name', async () => {
-    act(() => {
-      store.dispatch(saveSpec(castJsonForTest(spec01)));
-      specIdsForCleanup.push(spec01.id);
-      store.dispatch(saveSelector(castJsonForTest(selector01)));
-    });
-    doRender();
-
-    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.SP_NAME],
-    });
-    await user.click(nameField);
-    await user.type(nameField, SPEC_WITH_SELECTOR_NAME);
-
-    const errorText = screen.getByText('a spec already exists with this name');
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-
-    expect(nameField).toHaveClass('is-invalid');
-    expect(errorText).toBeInTheDocument();
-    expect(saveButton).toBeDisabled();
-  });
-
   it('should invalidate an already taken role key', async () => {
     act(() => {
       store.dispatch(saveSpec(castJsonForTest(spec01)));

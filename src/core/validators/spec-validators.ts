@@ -15,20 +15,12 @@ import { Spec } from '../../data/model/spec/spec-domain';
 import { SpecDTO } from '../../data/model/spec/spec-dto';
 import { SpecItemType } from '../../data/model/spec/spec-item-type';
 import {
-  createNameTakenValidator,
   createRoleKeyTakenValidator,
   createValidator,
 } from '../../validation/validator-factories';
 import { mapSpecToPreview } from '../../ui/model/spec/spec-preview';
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
-
-const nameTakenValidator = createNameTakenValidator<SpecDTO, Spec>(
-  Field.SP_NAME,
-  (data) => data.specs,
-  'a spec already exists with this name',
-  ValidationErrorCode.SP_NAME_TAKEN
-);
 
 const roleKeyTakenValidator = createRoleKeyTakenValidator<SpecDTO, Spec>(
   Field.SP_ROLE_KEY,
@@ -194,7 +186,6 @@ const basicSpecUniquenessValidator: FieldValidator<Spec> = {
 };
 
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
-  // nameTakenValidator,
   roleKeyTakenValidator,
   atLeastOneSpecItem,
   specSelectorItemsCantBeEmpty,

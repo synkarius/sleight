@@ -1,0 +1,74 @@
+{
+    "import08": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [
+            {
+                "id": "b6b6aacf-fad4-4c5a-b2dc-2d2a28849baa",
+                "name": "com-b6b6aacf-fad4",
+                "roleKey": "rk1",
+                "enabled": true,
+                "locked": false,
+                "specId": "402818cd-f6f6-4ffe-83c5-864eddf77123",
+                "actionIds": []
+            }
+        ],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "1fd8c6a3-dff6-4db6-ba9e-77577dcbb34d",
+                "items": [
+                    {
+                        "id": "c20e2a3d-8cf9-4443-ac51-c1f6e169ee20",
+                        "value": "ey"
+                    }
+                ]
+            },
+            {
+                "id": "847dd8e7-a6f5-472f-8b79-c148b3596975",
+                "items": [
+                    {
+                        "id": "9313a85b-8127-4153-9b56-096f19cd5c31",
+                        "value": "eyyyyy"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "402818cd-f6f6-4ffe-83c5-864eddf77123",
+                "name": "spe-402818cd-f6f6",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "c407825c-bdea-4c22-90ab-f1a071f87903",
+                        "itemType": "Selector",
+                        "itemId": "1fd8c6a3-dff6-4db6-ba9e-77577dcbb34d",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            },
+            {
+                "id": "0444b7b9-68c1-476a-83c8-c571ca096030",
+                "name": "spe-0444b7b9-68c1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "b4472aad-f822-477a-b649-d7e119ed1945",
+                        "itemType": "Selector",
+                        "itemId": "847dd8e7-a6f5-472f-8b79-c148b3596975",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": []
+    }
+}

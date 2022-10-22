@@ -11,18 +11,10 @@ import {
 } from '../../validation/validation-result';
 import { ValidateMode } from '../../validation/ValidationComponent';
 import {
-  createNameTakenValidator,
   createRoleKeyTakenValidator,
   createValidator,
 } from '../../validation/validator-factories';
 import { Context } from '../../data/model/context/context';
-
-const nameTakenValidator = createNameTakenValidator<Context, Context>(
-  Field.CTX_NAME,
-  (data) => data.contexts,
-  'a context already exists with this name',
-  ValidationErrorCode.CTX_NAME_TAKEN
-);
 
 const roleKeyTakenValidator = createRoleKeyTakenValidator<Context, Context>(
   Field.CTX_ROLE_KEY,
@@ -63,7 +55,6 @@ const deletionValidator: FieldValidator<Context> = {
 };
 
 export const getContextValidators: () => FieldValidator<Context>[] = () => [
-  // nameTakenValidator,
   roleKeyTakenValidator,
   contextMatcherValidator,
   deletionValidator,

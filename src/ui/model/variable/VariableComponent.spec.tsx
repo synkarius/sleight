@@ -89,25 +89,6 @@ describe('variable component tests', () => {
     expect(saveButton).toBeDisabled();
   });
 
-  it.skip('should invalidate an already taken name', async () => {
-    doRender();
-
-    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.VAR_NAME],
-    });
-    await user.click(nameField);
-    await user.type(nameField, VARIABLE_1_NAME);
-
-    const errorText = screen.getByText(
-      'a variable already exists with this name'
-    );
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-
-    expect(nameField).toHaveClass('is-invalid');
-    expect(errorText).toBeInTheDocument();
-    expect(saveButton).toBeDisabled();
-  });
-
   it('should invalidate an already taken role key', async () => {
     doRender();
 

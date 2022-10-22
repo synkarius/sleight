@@ -1,0 +1,65 @@
+{
+    "import04": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "91d52037-d51e-4cc3-b774-4028e56ec852",
+                "name": "pause-act-91d52037-d51e",
+                "type": "Pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "centiseconds": {
+                    "id": "aaface98-2d2c-4f92-977d-30d14854d099",
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "5af68ffc-00b8-4877-9e5c-aa8d063146ba"
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "f03b7102-55d1-43e0-955e-3e468821cc45",
+                "items": [
+                    {
+                        "id": "c7d4d01f-2caa-4890-8705-5b2585d2daeb",
+                        "value": "stop"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "80f4e0c9-d02d-48a6-b090-d8629b047f3a",
+                "name": "spe-80f4e0c9-d02d",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "e6f63a9e-6ef9-475b-8cfb-ed012d16b989",
+                        "itemType": "Selector",
+                        "itemId": "f03b7102-55d1-43e0-955e-3e468821cc45",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "5af68ffc-00b8-4877-9e5c-aa8d063146ba",
+                "type": "Range",
+                "name": "range-var-5af68ffc-00b8",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 1,
+                "endInclusive": 9
+            }
+        ]
+    }
+}

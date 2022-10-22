@@ -12,7 +12,6 @@ import {
 } from '../../validation/validation-result';
 import { ValidateMode } from '../../validation/ValidationComponent';
 import {
-  createNameTakenValidator,
   createRoleKeyTakenValidator,
   createValidator,
 } from '../../validation/validator-factories';
@@ -25,13 +24,6 @@ import {
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
-
-const nameTakenValidator = createNameTakenValidator<VariableDTO, Variable>(
-  Field.VAR_NAME,
-  (data) => data.variables,
-  'a variable already exists with this name',
-  ValidationErrorCode.VAR_NAME_TAKEN
-);
 
 const roleKeyTakenValidator = createRoleKeyTakenValidator<
   VariableDTO,
@@ -183,7 +175,6 @@ const deletionValidator: FieldValidator<Variable> = {
 };
 
 export const getVariableValidators: () => FieldValidator<Variable>[] = () => [
-  // nameTakenValidator,
   roleKeyTakenValidator,
   rangeMaxIsGreaterThanOrEqualsRangeMin,
   atLeastOneChoiceItem,

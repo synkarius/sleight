@@ -1,0 +1,53 @@
+{
+    "import02": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "b381f18d-c60c-4eef-a4f9-6c6c6ca8aee5",
+                "name": "pause-act-b381f18d-c60c",
+                "type": "Pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "centiseconds": {
+                    "id": "14049cb3-f622-4e2e-a0ce-becd96580f33",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 8
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [],
+        "specs": [
+            {
+                "id": "62d5abfb-0eff-472f-a8c8-630dcc5560bf",
+                "name": "spe-62d5abfb-0eff",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "4e06bd24-3eac-4166-99fa-9a330cf0e16c",
+                        "itemType": "Variable",
+                        "itemId": "fa3a0c3e-3481-4b6a-a3ec-851e04f9fe83",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "fa3a0c3e-3481-4b6a-a3ec-851e04f9fe83",
+                "type": "Text",
+                "name": "text-var-fa3a0c3e-3481",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false
+            }
+        ]
+    }
+}

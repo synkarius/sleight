@@ -77,23 +77,6 @@ describe('context component tests', () => {
     expect(input).not.toHaveClass('is-invalid');
   });
 
-  it.skip('should invalidate an already taken name', async () => {
-    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_NAME],
-    });
-    await user.click(nameField);
-    await user.type(nameField, CONTEXT_NAME);
-
-    const errorText = screen.getByText(
-      'a context already exists with this name'
-    );
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-
-    expect(nameField).toHaveClass('is-invalid');
-    expect(errorText).toBeInTheDocument();
-    expect(saveButton).toBeDisabled();
-  });
-
   it('should invalidate an already taken role key', async () => {
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
       name: Field[Field.CTX_ROLE_KEY],

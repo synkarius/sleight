@@ -203,25 +203,6 @@ describe('action component tests', () => {
     expect(saveButton).not.toBeDisabled();
   });
 
-  it.skip('should invalidate an already taken name', async () => {
-    doRender();
-
-    const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.AC_NAME],
-    });
-    await user.click(nameField);
-    await user.type(nameField, ACTION_NAME_1);
-
-    const errorText = screen.getByText(
-      'an action already exists with this name'
-    );
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-
-    expect(nameField).toHaveClass('is-invalid');
-    expect(errorText).toBeInTheDocument();
-    expect(saveButton).toBeDisabled();
-  });
-
   it('should invalidate an already taken role key', async () => {
     doRender();
 

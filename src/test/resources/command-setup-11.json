@@ -1,0 +1,60 @@
+{
+    "import11": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [
+            {
+                "id": "6f21595d-d8c7-4bf9-8875-06f35a13c583",
+                "name": "rq",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "contextId": "2dd794b1-3453-42c5-9b70-92afb5ed7a4f",
+                "specId": "54341e1f-cfdc-47c7-a97f-b4e3bf7b589f",
+                "actionIds": []
+            }
+        ],
+        "contexts": [
+            {
+                "id": "2dd794b1-3453-42c5-9b70-92afb5ed7a4f",
+                "name": "Some Game Context",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "type": "Executable Name",
+                "matcher": "game.exe"
+            }
+        ],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "4f596c44-d544-4f11-aed7-ee5f351afda7",
+                "items": [
+                    {
+                        "id": "4049e47b-f981-40d6-8edb-7ef5649d3da8",
+                        "value": "rage quit"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "54341e1f-cfdc-47c7-a97f-b4e3bf7b589f",
+                "name": "spe-54341e1f-cfdc",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "d3a3a5e0-409b-47ad-973c-58ba600d80f5",
+                        "itemType": "Selector",
+                        "itemId": "4f596c44-d544-4f11-aed7-ee5f351afda7",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": []
+    }
+}

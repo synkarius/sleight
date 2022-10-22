@@ -10,18 +10,8 @@ import {
   validResult,
 } from '../../validation/validation-result';
 import { ValidateMode } from '../../validation/ValidationComponent';
-import {
-  createNameTakenValidator,
-  createRoleKeyTakenValidator,
-} from '../../validation/validator-factories';
+import { createRoleKeyTakenValidator } from '../../validation/validator-factories';
 import { Action } from '../../data/model/action/action';
-
-const nameTakenValidator = createNameTakenValidator<Action, Action>(
-  Field.AC_NAME,
-  (data) => data.actions,
-  'an action already exists with this name',
-  ValidationErrorCode.AC_NAME_TAKEN
-);
 
 const roleKeyTakenValidator = createRoleKeyTakenValidator<Action, Action>(
   Field.AC_ROLE_KEY,
@@ -54,7 +44,6 @@ const deletionValidator: FieldValidator<Action> = {
 };
 
 export const getActionValidators: () => FieldValidator<Action>[] = () => [
-  // nameTakenValidator,
   roleKeyTakenValidator,
   deletionValidator,
 ];

@@ -1,0 +1,55 @@
+{
+    "import07": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [],
+        "specs": [
+            {
+                "id": "70731488-66f6-4f5c-a8a7-3ec4a5c2a004",
+                "name": "spe-70731488-66f6",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "f61d0cb3-375e-4756-a805-732142664d1f",
+                        "itemType": "Variable",
+                        "itemId": "0725859e-6c92-40ae-b2ef-67da6a0817cd",
+                        "optional": false,
+                        "grouped": false
+                    },
+                    {
+                        "id": "68abd087-0eb9-40df-b437-25dd544b901a",
+                        "itemType": "Variable",
+                        "itemId": "95ae025f-facf-49c9-8439-c1c0a069ed79",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "0725859e-6c92-40ae-b2ef-67da6a0817cd",
+                "type": "Text",
+                "name": "text-var-0725859e-6c92",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false
+            },
+            {
+                "id": "95ae025f-facf-49c9-8439-c1c0a069ed79",
+                "type": "Range",
+                "name": "range-var-95ae025f-facf",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9
+            }
+        ]
+    }
+}
