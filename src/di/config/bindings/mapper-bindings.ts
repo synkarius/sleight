@@ -7,10 +7,15 @@ import { EnterTextActionValueDomainMapperDelegate } from '../../../core/mappers/
 import { VariableEnumActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-enum-action-value-domain-mapper-delegate';
 import { VariableNumericActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-numeric-action-value-domain-mapper-delegate';
 import { VariableTextActionValueDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/action-value-mapper/variable-text-action-value-domain-mapper-delegate';
+import { BringAppActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/bring-app-action-domain-mapper-delegate';
 import { CallFunctionActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/call-function-action-domain-mapper-delegate';
+import { MimicActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/mimic-action-domain-mapper-delegate';
+import { MouseActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/mouse-action-domain-mapper-delegate';
 import { PauseActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/pause-action-domain-mapper-delegate';
 import { SendKeyActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/send-key-action-domain-mapper-delegate';
 import { SendKeyModifiersDomainMapper } from '../../../core/mappers/action-mapper-delegates/send-key-modifiers-domain-mapper';
+import { SendTextActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/send-text-action-domain-mapper-delegate';
+import { WaitForWindowActionDomainMapperDelegate } from '../../../core/mappers/action-mapper-delegates/wait-for-window-action-domain-mapper-delegate';
 import {
   DefaultChoiceItemDomainMapper,
   DefaultChoiceVariableDomainMapper,
@@ -115,6 +120,11 @@ const bindActionMapperDelegates = (container: Container): void => {
     .toInstance(SendKeyModifiersDomainMapper)
     .inSingletonScope();
   container
+    .bind(Tokens.BringAppActionDomainMapperDelegate)
+    .toInstance(BringAppActionDomainMapperDelegate)
+    .inSingletonScope();
+  injected(BringAppActionDomainMapperDelegate, Tokens.DomainMapper_ActionValue);
+  container
     .bind(Tokens.CallFunctionActionDomainMapperDelegate)
     .toInstance(CallFunctionActionDomainMapperDelegate)
     .inSingletonScope();
@@ -122,6 +132,16 @@ const bindActionMapperDelegates = (container: Container): void => {
     CallFunctionActionDomainMapperDelegate,
     Tokens.DomainMapper_ActionValue
   );
+  container
+    .bind(Tokens.MimicActionDomainMapperDelegate)
+    .toInstance(MimicActionDomainMapperDelegate)
+    .inSingletonScope();
+  injected(MimicActionDomainMapperDelegate, Tokens.DomainMapper_ActionValue);
+  container
+    .bind(Tokens.MouseActionDomainMapperDelegate)
+    .toInstance(MouseActionDomainMapperDelegate)
+    .inSingletonScope();
+  injected(MouseActionDomainMapperDelegate, Tokens.DomainMapper_ActionValue);
   container
     .bind(Tokens.PauseActionDomainMapperDelegate)
     .toInstance(PauseActionDomainMapperDelegate)
@@ -137,14 +157,32 @@ const bindActionMapperDelegates = (container: Container): void => {
     Tokens.DomainMapper_SendKeyModifiers
   );
   container
+    .bind(Tokens.SendTextActionDomainMapperDelegate)
+    .toInstance(SendTextActionDomainMapperDelegate)
+    .inSingletonScope();
+  injected(SendTextActionDomainMapperDelegate, Tokens.DomainMapper_ActionValue);
+  container
+    .bind(Tokens.WaitForWindowActionDomainMapperDelegate)
+    .toInstance(WaitForWindowActionDomainMapperDelegate)
+    .inSingletonScope();
+  injected(
+    WaitForWindowActionDomainMapperDelegate,
+    Tokens.DomainMapper_ActionValue
+  );
+  container
     .bind(Tokens.ActionDomainMapperDelegateArray)
     .toInstance(ActionDomainMapperDelegateArray)
     .inSingletonScope();
   injected(
     ActionDomainMapperDelegateArray,
+    Tokens.BringAppActionDomainMapperDelegate,
     Tokens.CallFunctionActionDomainMapperDelegate,
+    Tokens.MimicActionDomainMapperDelegate,
+    Tokens.MouseActionDomainMapperDelegate,
     Tokens.PauseActionDomainMapperDelegate,
-    Tokens.SendKeyActionDomainMapperDelegate
+    Tokens.SendKeyActionDomainMapperDelegate,
+    Tokens.SendTextActionDomainMapperDelegate,
+    Tokens.WaitForWindowActionDomainMapperDelegate
   );
 };
 

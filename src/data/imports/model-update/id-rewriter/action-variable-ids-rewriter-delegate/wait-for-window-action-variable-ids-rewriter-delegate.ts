@@ -16,4 +16,5 @@ export const getWaitForWindowActionVariableIdsRewriterDelegate =
         };
       }
     },
+    isApplicable: isWaitForWindowAction,
   });

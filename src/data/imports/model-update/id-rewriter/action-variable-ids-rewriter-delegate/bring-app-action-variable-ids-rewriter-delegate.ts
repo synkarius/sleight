@@ -16,4 +16,5 @@ export const getBringAppActionVariableIdsRewriterDelegate =
         };
       }
     },
+    isApplicable: isBringAppAction,
   });

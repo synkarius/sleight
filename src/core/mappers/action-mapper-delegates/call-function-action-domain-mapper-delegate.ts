@@ -1,11 +1,11 @@
 import { Action } from '../../../data/model/action/action';
 import { ActionType } from '../../../data/model/action/action-types';
 import {
-  ActionValue,
   isEnumActionValue,
   isNumberActionValue,
   isTextActionValue,
 } from '../../../data/model/action/action-value';
+import { CallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { MissingGuardError } from '../../../error/missing-guard-error';
 import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
 import { ActionDomainMapperDelegate } from './action-domain-mapper-delegate';
@@ -19,7 +19,7 @@ export class CallFunctionActionDomainMapperDelegate
     super();
   }
 
-  mapToDomain(dto: Action) {
+  mapToDomain(dto: Action): CallFunctionAction | undefined {
     if (dto.type === ActionType.Enum.CALL_FUNCTION) {
       return {
         ...this.mapToDomainBase(dto),
@@ -29,7 +29,7 @@ export class CallFunctionActionDomainMapperDelegate
           if (isTextActionValue(param)) {
             return this.actionValueMapper.mapToTextDomain(param);
           } else if (isNumberActionValue(param)) {
-            return this.actionValueMapper.mapToNumericDomain(param);
+            return this.actionValueMapper.mapToNumberDomain(param);
           } else if (isEnumActionValue(param)) {
             return this.actionValueMapper.mapToEnumDomain(param);
           } else {
@@ -42,7 +42,7 @@ export class CallFunctionActionDomainMapperDelegate
     }
   }
 
-  mapFromDomain(domain: Action) {
+  mapFromDomain(domain: Action): CallFunctionAction | undefined {
     if (domain.type === ActionType.Enum.CALL_FUNCTION) {
       return {
         ...this.mapFromDomainBase(domain),
@@ -52,7 +52,7 @@ export class CallFunctionActionDomainMapperDelegate
           if (isTextActionValue(param)) {
             return this.actionValueMapper.mapFromTextDomain(param);
           } else if (isNumberActionValue(param)) {
-            return this.actionValueMapper.mapFromNumericDomain(param);
+            return this.actionValueMapper.mapFromNumberDomain(param);
           } else if (isEnumActionValue(param)) {
             return this.actionValueMapper.mapFromEnumDomain(param);
           } else {

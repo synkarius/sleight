@@ -8,6 +8,7 @@ export type ActionVariableIdsRewriterDelegate = {
     newId: string,
     action: Action
   ) => Action | undefined;
+  isApplicable: (action: Action) => boolean;
 };
 
 export const maybeRewriteVariableId = <T extends ActionValue>(

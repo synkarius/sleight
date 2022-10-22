@@ -128,12 +128,25 @@ export namespace Tokens {
     'Validators_Variable'
   );
   // mapper dependencies
+  export const BringAppActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('BringAppActionDomainMapperDelegate');
   export const CallFunctionActionDomainMapperDelegate =
     token<ActionDomainMapperDelegate>('CallFunctionActionDomainMapperDelegate');
+  export const MimicActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('MimicActionDomainMapperDelegate');
+  export const MouseActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('MouseActionDomainMapperDelegate');
   export const PauseActionDomainMapperDelegate =
     token<ActionDomainMapperDelegate>('PauseActionDomainMapperDelegate');
   export const SendKeyActionDomainMapperDelegate =
     token<ActionDomainMapperDelegate>('SendKeyActionDomainMapperDelegate');
+  export const SendTextActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>('SendTextActionDomainMapperDelegate');
+  export const WaitForWindowActionDomainMapperDelegate =
+    token<ActionDomainMapperDelegate>(
+      'WaitForWindowActionDomainMapperDelegate'
+    );
+
   export const ActionDomainMapperDelegateArray =
     token<ActionDomainMapperDelegateArray>('ActionDomainMapperDelegateArray');
   export const VariableMapperDelegate_Text = token<

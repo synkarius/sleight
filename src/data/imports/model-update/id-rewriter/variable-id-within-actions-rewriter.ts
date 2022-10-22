@@ -1,4 +1,5 @@
 import { isDefined } from '../../../../core/common/common-functions';
+import { MissingDelegateError } from '../../../../error/missing-delegate-error';
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { VariableDTO } from '../../../model/variable/variable-dto';
 import { reduceIded } from '../reduce-ided';
@@ -19,11 +20,16 @@ export class VariableIdWithinActionsRewriter
 
     const actions = Object.values(data.actions)
       .map((action) => {
-        const actionWithVariableIdsRewritten = this.delegates
-          .map((delegate) => delegate.rewriteId(oldId, newId, action))
+        const delegate = this.delegates
+          .filter((delegate) => delegate.isApplicable(action))
           .find(isDefined);
-        if (actionWithVariableIdsRewritten) {
-          return actionWithVariableIdsRewritten;
+        if (!delegate) {
+          throw new MissingDelegateError('VariableIdWithinActionsRewriter');
+        }
+
+        const rewritten = delegate.rewriteId(oldId, newId, action);
+        if (rewritten) {
+          return rewritten;
         }
         return action;
       })

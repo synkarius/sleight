@@ -1,6 +1,9 @@
 import { Action } from '../../../data/model/action/action';
 import { ActionType } from '../../../data/model/action/action-types';
-import { Modifiers } from '../../../data/model/action/send-key/send-key';
+import {
+  Modifiers,
+  SendKeyAction,
+} from '../../../data/model/action/send-key/send-key';
 import { SendKeyMode } from '../../../data/model/action/send-key/send-key-modes';
 import { DomainMapper } from '../mapper';
 import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
@@ -18,21 +21,21 @@ export class SendKeyActionDomainMapperDelegate
     super();
   }
 
-  mapToDomain(dto: Action) {
+  mapToDomain(dto: Action): SendKeyAction | undefined {
     if (dto.type === ActionType.Enum.SEND_KEY) {
       const sendKey = {
         ...this.mapToDomainBase(dto),
         type: dto.type,
         modifiers: this.modifiersMapper.mapToDomain(dto.modifiers),
         keyToSend: this.actionValueMapper.mapFromEnumDomain(dto.keyToSend),
-        outerPause: this.actionValueMapper.mapToNumericDomain(dto.outerPause),
+        outerPause: this.actionValueMapper.mapToNumberDomain(dto.outerPause),
       };
       if (dto.sendKeyMode === SendKeyMode.Enum.PRESS) {
         return {
           ...sendKey,
           sendKeyMode: dto.sendKeyMode,
-          innerPause: this.actionValueMapper.mapToNumericDomain(dto.innerPause),
-          repeat: this.actionValueMapper.mapToNumericDomain(dto.repeat),
+          innerPause: this.actionValueMapper.mapToNumberDomain(dto.innerPause),
+          repeat: this.actionValueMapper.mapToNumberDomain(dto.repeat),
         };
       } else {
         return {
@@ -44,14 +47,14 @@ export class SendKeyActionDomainMapperDelegate
     }
   }
 
-  mapFromDomain(domain: Action) {
+  mapFromDomain(domain: Action): SendKeyAction | undefined {
     if (domain.type === ActionType.Enum.SEND_KEY) {
       const sendKey = {
         ...this.mapFromDomainBase(domain),
         type: domain.type,
         modifiers: this.modifiersMapper.mapFromDomain(domain.modifiers),
         keyToSend: this.actionValueMapper.mapFromEnumDomain(domain.keyToSend),
-        outerPause: this.actionValueMapper.mapFromNumericDomain(
+        outerPause: this.actionValueMapper.mapFromNumberDomain(
           domain.outerPause
         ),
       };
@@ -59,10 +62,10 @@ export class SendKeyActionDomainMapperDelegate
         return {
           ...sendKey,
           sendKeyMode: domain.sendKeyMode,
-          innerPause: this.actionValueMapper.mapFromNumericDomain(
+          innerPause: this.actionValueMapper.mapFromNumberDomain(
             domain.innerPause
           ),
-          repeat: this.actionValueMapper.mapFromNumericDomain(domain.repeat),
+          repeat: this.actionValueMapper.mapFromNumberDomain(domain.repeat),
         };
       } else {
         return {

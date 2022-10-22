@@ -45,4 +45,5 @@ export const getMouseActionVariableIdsRewriterDelegate =
         }
       }
     },
+    isApplicable: isMouseAction,
   });

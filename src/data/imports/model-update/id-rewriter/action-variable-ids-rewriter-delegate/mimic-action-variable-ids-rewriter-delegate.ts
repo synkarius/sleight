@@ -14,4 +14,5 @@ export const getMimicActionVariableIdsRewriterDelegate =
         };
       }
     },
+    isApplicable: isMimicAction,
   });

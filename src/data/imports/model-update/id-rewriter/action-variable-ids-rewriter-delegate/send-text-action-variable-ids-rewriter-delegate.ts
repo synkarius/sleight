@@ -14,4 +14,5 @@ export const getSendTextActionVariableIdsRewriterDelegate =
         };
       }
     },
+    isApplicable: isSendTextAction,
   });
