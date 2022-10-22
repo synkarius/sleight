@@ -7,7 +7,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getMouseHoldReleaseVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isMouseAction(action) && isHoldReleaseMouseAction(action)) {
         return [
           {

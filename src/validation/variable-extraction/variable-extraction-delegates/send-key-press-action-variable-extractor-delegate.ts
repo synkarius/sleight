@@ -7,7 +7,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getSendKeyPressVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isSendKeyAction(action) && isSendKeyPressAction(action)) {
         return [
           {

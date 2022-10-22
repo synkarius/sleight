@@ -4,7 +4,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getCallFunctionVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isCallFunctionAction(action)) {
         return action.parameters.map((actionValue) => ({
           ...actionValue,

@@ -4,7 +4,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getSendTextVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isSendTextAction(action)) {
         return [
           {

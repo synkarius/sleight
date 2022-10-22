@@ -7,7 +7,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getMouseClickVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isMouseAction(action) && isClickMouseAction(action)) {
         return [
           {

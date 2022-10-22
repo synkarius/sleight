@@ -10,7 +10,7 @@ export class DelegatingVariableExtractor implements VariableExtractor {
 
   extractVariables(action: Action): ExtractedVariable[] {
     const extracted = this.delegates
-      .map((delegate) => delegate.extractVariables(action))
+      .map((delegate) => delegate.extractActionValues(action))
       .filter(isDefined);
     if (!extracted.length) {
       /** It could turn out that there is a future action type which has no

@@ -2,5 +2,5 @@ import { Action } from '../../data/model/action/action';
 import { ExtractedActionValue } from './variable-extractor';
 
 export type VariableExtractorDelegate = {
-  extractVariables: (action: Action) => ExtractedActionValue[] | undefined;
+  extractActionValues: (action: Action) => ExtractedActionValue[] | undefined;
 };

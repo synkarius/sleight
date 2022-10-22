@@ -1,4 +1,8 @@
 import { ActionType } from '../../data/model/action/action-types';
+import {
+  ActionValue,
+  createTextValue,
+} from '../../data/model/action/action-value';
 import { createBringAppAction } from '../../data/model/action/bring-app/bring-app';
 import { createCallFunctionAction } from '../../data/model/action/call-function/call-function';
 import { createMimicAction } from '../../data/model/action/mimic/mimic';
@@ -14,6 +18,7 @@ import {
 } from '../../data/model/action/send-key/send-key';
 import { createSendTextAction } from '../../data/model/action/send-text/send-text';
 import { createWaitForWindowAction } from '../../data/model/action/wait-for-window/wait-for-window';
+import { createTextVariable } from '../../data/model/variable/variable';
 import { ExhaustivenessFailureError } from '../../error/exhaustiveness-failure-error';
 
 /*
@@ -27,7 +32,12 @@ export const getTestActionsForAllActionTypes = () => {
         case ActionType.Enum.BRING_APP:
           return [createBringAppAction()];
         case ActionType.Enum.CALL_FUNCTION:
-          return [createCallFunctionAction()];
+          return [
+            {
+              ...createCallFunctionAction(),
+              parameters: [createTextValue()],
+            },
+          ];
         case ActionType.Enum.MIMIC:
           return [createMimicAction()];
         case ActionType.Enum.MOUSE:

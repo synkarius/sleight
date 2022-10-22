@@ -4,7 +4,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getPauseVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isPauseAction(action)) {
         return [
           {

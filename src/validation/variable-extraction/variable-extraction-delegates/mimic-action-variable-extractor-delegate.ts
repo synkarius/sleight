@@ -4,7 +4,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getMimicVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isMimicAction(action)) {
         return [
           {

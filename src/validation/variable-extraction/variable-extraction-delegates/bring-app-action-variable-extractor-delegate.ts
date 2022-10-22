@@ -4,7 +4,7 @@ import { VariableExtractorDelegate } from '../variable-extractor-delegate';
 
 export const getBringAppVariableExtractorDelegate =
   (): VariableExtractorDelegate => ({
-    extractVariables: (action) => {
+    extractActionValues: (action) => {
       if (isBringAppAction(action)) {
         return [
           {
