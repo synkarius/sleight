@@ -30,7 +30,7 @@ interface NumericActionFieldGroup
   readonly max?: number;
 }
 
-export const isNumericActionFieldGroup = (
+export const isNumberActionFieldGroup = (
   group: ActionValueFieldGroup
 ): group is NumericActionFieldGroup => group.type === VariableType.Enum.NUMBER;
 

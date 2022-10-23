@@ -3,7 +3,6 @@ import { ActionValueType } from '../../../../data/model/action/action-value-type
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import { UNSELECTED_ENUM } from '../../../common/consts';
 import {
   BringAppAction,
   createBringAppAction,
@@ -28,6 +27,7 @@ describe('bring app action reducer: action.appTitle', () => {
         type: ActionValueChangeIdentifierType.FIELD,
         field: Field.AC_BRING_TITLE_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
+        newDefaultValue: '',
       },
     });
 
@@ -38,7 +38,7 @@ describe('bring app action reducer: action.appTitle', () => {
         id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.ENUM,
-        value: UNSELECTED_ENUM,
+        value: '',
       },
     });
   });

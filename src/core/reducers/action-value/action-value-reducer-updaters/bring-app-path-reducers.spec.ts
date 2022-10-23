@@ -3,15 +3,15 @@ import { ActionValueType } from '../../../../data/model/action/action-value-type
 import { ActionReducerActionType } from '../../../../ui/model/action/action-editing-context';
 import { Field } from '../../../../validation/validation-field';
 import { VariableType } from '../../../../data/model/variable/variable-types';
-import { UNSELECTED_ENUM } from '../../../common/consts';
 import {
   BringAppAction,
   createBringAppAction,
 } from '../../../../data/model/action/bring-app/bring-app';
 import {
   ActionValueChangeIdentifierType,
-  createFieldedActionValueChangeType,
+  createAVCTypeChangePayload,
 } from '../../../../ui/model/action/action-editing-context-support';
+import { bringAppPathGroup } from '../../../../ui/model/action/bring-app/bring-app-action-value-field-group';
 
 describe('bring app action reducer: action.appPath', () => {
   it('should handle change action.appPath.actionValueType', () => {
@@ -27,9 +27,9 @@ describe('bring app action reducer: action.appPath', () => {
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
-      payload: createFieldedActionValueChangeType(
-        Field.AC_BRING_PATH_RADIO,
-        ActionValueType.Enum.ENTER_VALUE
+      payload: createAVCTypeChangePayload(
+        ActionValueType.Enum.ENTER_VALUE,
+        bringAppPathGroup
       ),
     });
 
@@ -40,7 +40,7 @@ describe('bring app action reducer: action.appPath', () => {
         id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.ENUM,
-        value: UNSELECTED_ENUM,
+        value: '',
       },
     });
   });

@@ -24,16 +24,15 @@ import { processErrorResults } from '../../../validation/validation-result-proce
 import {
   ActionValueFieldGroup,
   isEnumActionFieldGroup,
-  isNumericActionFieldGroup,
+  isNumberActionFieldGroup,
 } from './action-value-type-name-group';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { ExhaustivenessFailureError } from '../../../error/exhaustiveness-failure-error';
 import { isDefined } from '../../../core/common/common-functions';
 import {
+  createAVCTypeChangePayload,
   createFieldedActionValueChange,
-  createFieldedActionValueChangeType,
   createIdedActionValueChange,
-  createIdedActionValueChangeType,
 } from './action-editing-context-support';
 
 type AVCProps = {
@@ -88,12 +87,9 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
    */
   const typeChangedHandler = (type: string) => {
     const actionValueType = type as ActionValueType.Type;
-    const payload = isDefined(props.fields.id)
-      ? createIdedActionValueChangeType(props.fields.id, actionValueType)
-      : createFieldedActionValueChangeType(props.fields.radio, actionValueType);
     editingContext.localDispatch({
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
-      payload,
+      payload: createAVCTypeChangePayload(actionValueType, props.fields),
     });
     validationContext.touch(props.fields.radio);
   };
@@ -185,7 +181,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
         )}
       {isEnterValueActionValue(props.actionValue) &&
         isEnterNumberActionValue(props.actionValue) &&
-        isNumericActionFieldGroup(props.fields) && (
+        isNumberActionFieldGroup(props.fields) && (
           <FormControl
             type="number"
             value={props.actionValue.value}

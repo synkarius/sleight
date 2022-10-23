@@ -1,5 +1,8 @@
+import { isDefined } from '../../../core/common/common-functions';
 import { ActionValueType } from '../../../data/model/action/action-value-type';
+import { VariableType } from '../../../data/model/variable/variable-types';
 import { Field } from '../../../validation/validation-field';
+import { ActionValueFieldGroup } from './action-value-type-name-group';
 
 export enum ActionValueChangeIdentifierType {
   ID,
@@ -12,6 +15,9 @@ interface Identified {
 }
 interface Valued {
   value: string;
+}
+interface OptionalDefaultValued {
+  newDefaultValue?: string;
 }
 interface ActionValueTyped {
   actionValueType: ActionValueType.Type;
@@ -48,27 +54,40 @@ export const createIdedActionValueChange = (
 };
 interface FieldedActionValueChangeType
   extends FieldIdentified,
-    ActionValueTyped {}
-export const createFieldedActionValueChangeType = (
-  field: Field,
-  actionValueType: ActionValueType.Type
-): FieldedActionValueChangeType => {
-  return {
-    type: ActionValueChangeIdentifierType.FIELD,
-    field,
+    ActionValueTyped,
+    OptionalDefaultValued {}
+interface IdedActionValueChangeType
+  extends IdIdentified,
+    ActionValueTyped,
+    OptionalDefaultValued {}
+
+export const createAVCTypeChangePayload = (
+  actionValueType: ActionValueType.Type,
+  group: ActionValueFieldGroup
+): FieldedActionValueChangeType | IdedActionValueChangeType => {
+  const base = {
     actionValueType,
+    newDefaultValue: getOptionalDefaultValue(group),
   };
+  return isDefined(group.id)
+    ? {
+        type: ActionValueChangeIdentifierType.ID,
+        id: group.id,
+        ...base,
+      }
+    : {
+        type: ActionValueChangeIdentifierType.FIELD,
+        field: group.radio,
+        ...base,
+      };
 };
-interface IdedActionValueChangeType extends IdIdentified, ActionValueTyped {}
-export const createIdedActionValueChangeType = (
-  id: string,
-  actionValueType: ActionValueType.Type
-): IdedActionValueChangeType => {
-  return {
-    type: ActionValueChangeIdentifierType.ID,
-    id,
-    actionValueType,
-  };
+
+const getOptionalDefaultValue = (
+  group: ActionValueFieldGroup
+): string | undefined => {
+  if (group.type === VariableType.Enum.ENUM && !group.enumValues.length) {
+    return '';
+  }
 };
 
 export const isIdIdentifiedActionValuePayload = (

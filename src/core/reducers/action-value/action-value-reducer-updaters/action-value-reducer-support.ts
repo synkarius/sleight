@@ -75,7 +75,7 @@ export const changeEnumActionValueType = (
         id: state.id,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.ENUM,
-        value: UNSELECTED_ENUM,
+        value: action.payload.newDefaultValue ?? UNSELECTED_ENUM,
       };
     case ActionValueType.Enum.USE_VARIABLE:
       return {
