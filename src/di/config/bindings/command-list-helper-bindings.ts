@@ -1,14 +1,14 @@
 import { Container, injected } from 'brandi';
-import { DefaultCommandGridHelper } from '../../../core/command-grid/command-grid-helper';
+import { DefaultCommandListHelper } from '../../../core/command-list/command-list-helper';
 import { Tokens } from '../brandi-tokens';
 
-export const bindCommandGridHelper = (container: Container): void => {
+export const bindCommandCommandListHelper = (container: Container): void => {
   container
-    .bind(Tokens.CommandGridHelper)
-    .toInstance(DefaultCommandGridHelper)
+    .bind(Tokens.CommandListHelper)
+    .toInstance(DefaultCommandListHelper)
     .inSingletonScope();
   injected(
-    DefaultCommandGridHelper,
+    DefaultCommandListHelper,
     Tokens.DomainMapper_Action,
     Tokens.DomainMapper_Command,
     Tokens.DomainMapper_Context,

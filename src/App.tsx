@@ -9,7 +9,7 @@ import { WizardViewComponent } from './ui/other-components/views/WizardViewCompo
 import { ResourcesEditorViewComponent } from './ui/other-components/views/ResourcesEditorViewComponent';
 import { CommandListViewComponent } from './ui/other-components/views/CommandListViewComponent';
 import {
-  COMMAND_GRID_PATH,
+  COMMAND_LIST_PATH,
   ELEMENT_EDITOR_PATH,
   RESOURCE_EDITOR_PATH,
   WIZARD_PATH,
@@ -32,7 +32,7 @@ const App: React.FC<{}> = () => {
           views get added and the wizard is default */}
           <Route path="/*" element={<EditorViewComponent />} />
           <Route
-            path={getPath(COMMAND_GRID_PATH)}
+            path={getPath(COMMAND_LIST_PATH)}
             element={<CommandListViewComponent />}
           />
           <Route

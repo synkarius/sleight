@@ -12,7 +12,7 @@ import { VariableDomainMapper } from '../mappers/variable-domain-mapper';
 
 export const GLOBAL_CONTEXT = 'global';
 
-export type GridItem = {
+export type CommandListItem = {
   command: Command;
   spec: Spec;
   context?: Context;
@@ -20,18 +20,18 @@ export type GridItem = {
   variables: Variable[];
 };
 
-export type GridFilterCriteria = {
+export type CommandListFilterCriteria = {
   contextSearch: string;
 };
 
-export type CommandGridHelper = {
-  mapDataToGridItems: (
+export type CommandListHelper = {
+  mapDataToListItems: (
     data: Readonly<SleightDataInternalFormat>,
-    filterCriteria: GridFilterCriteria
-  ) => GridItem[];
+    filterCriteria: CommandListFilterCriteria
+  ) => CommandListItem[];
 };
 
-export class DefaultCommandGridHelper implements CommandGridHelper {
+export class DefaultCommandListHelper implements CommandListHelper {
   constructor(
     private actionMapper: DomainMapper<Action, Action>,
     private commandMapper: DomainMapper<Command, Command>,
@@ -41,20 +41,20 @@ export class DefaultCommandGridHelper implements CommandGridHelper {
     private variableExtractor: VariableExtractor
   ) {}
 
-  mapDataToGridItems(
+  mapDataToListItems(
     data: Readonly<SleightDataInternalFormat>,
-    filterCriteria: GridFilterCriteria
-  ): GridItem[] {
+    filterCriteria: CommandListFilterCriteria
+  ): CommandListItem[] {
     return Object.values(data.commands)
       .sort((a, b) => this.sortCommands(a, b))
-      .map((command) => this.mapCommandToGridItem(command, data))
+      .map((command) => this.mapCommandToListItem(command, data))
       .filter((item) => this.filterForSearch(item, filterCriteria));
   }
 
-  private mapCommandToGridItem(
+  private mapCommandToListItem(
     command: Command,
     data: Readonly<SleightDataInternalFormat>
-  ): GridItem {
+  ): CommandListItem {
     const actions = command.actionIds
       .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
       .map((action) => this.actionMapper.mapToDomain(action));
@@ -87,8 +87,8 @@ export class DefaultCommandGridHelper implements CommandGridHelper {
   }
 
   private filterForSearch(
-    item: GridItem,
-    filterCriteria: GridFilterCriteria
+    item: CommandListItem,
+    filterCriteria: CommandListFilterCriteria
   ): boolean {
     const contextSearch = filterCriteria.contextSearch;
     const global =

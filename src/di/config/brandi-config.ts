@@ -17,13 +17,13 @@ import { bindSleightDataIdsRewriter } from './bindings/sleight-data-ids-rewriter
 import { bindRoleKeyedDataUpdater } from './bindings/rolekeyed-data-updater-bindings';
 import { bindElementPrinters } from './bindings/element-printer-bindings';
 import { bindActionValueUpdater } from './bindings/action-value-updater-bindings';
-import { bindCommandGridHelper } from './bindings/command-grid-helper-bindings';
+import { bindCommandCommandListHelper } from './bindings/command-list-helper-bindings';
 
 export const container = new Container();
 [
   bindActionValueUpdater,
   bindCleaners,
-  bindCommandGridHelper,
+  bindCommandCommandListHelper,
   bindDataMerger,
   bindDefaultNamers,
   bindDeserializer,

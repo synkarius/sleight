@@ -20,12 +20,13 @@ import { setSpecs } from '../../../core/reducers/spec-reducers';
 import { setVariables } from '../../../core/reducers/variable-reducers';
 import { useNavigate } from 'react-router-dom';
 import {
-  COMMAND_GRID_PATH,
+  COMMAND_LIST_PATH,
   ELEMENT_EDITOR_PATH,
   RESOURCE_EDITOR_PATH,
   WIZARD_PATH,
 } from '../../../core/common/consts';
 import { setFns } from '../../../core/reducers/fn-reducers';
+import { Stars } from 'react-bootstrap-icons';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
@@ -110,22 +111,22 @@ export const Navigation: React.FC<{}> = () => {
         onChange={importFileChangeHandler}
       />
       <Container>
-        <Navbar.Brand href="#home">🧙‍♂️ Sleight</Navbar.Brand>
+        <Navbar.Brand>
+          <Stars /> Sleight
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavDropdown title="File" id="file-dropdown">
               <NavDropdown.Item onClick={newElementSet}>
-                New Element Set
+                New Collection
               </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item disabled>Open Element Set</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={importFileClickHandler}>
-                Import Element Set
+                Import Collection
               </NavDropdown.Item>
               <NavDropdown.Item onClick={exportJson}>
-                Export Element Set
+                Export Collection
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item disabled>Export Caster</NavDropdown.Item>
@@ -139,8 +140,8 @@ export const Navigation: React.FC<{}> = () => {
               <NavDropdown.Item disabled>Preferences</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="View" id="view-dropdown">
-              <NavDropdown.Item onClick={() => navigate(COMMAND_GRID_PATH)}>
-                Command Grid
+              <NavDropdown.Item onClick={() => navigate(COMMAND_LIST_PATH)}>
+                Command List
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate(ELEMENT_EDITOR_PATH)}>
                 Element Editor

@@ -11,7 +11,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
-import { OpenGridItem } from '../../../core/command-grid/open-grid-item';
+import { OpenCommandListItem } from '../../../core/command-list/open-list-item';
 import { ElementType } from '../../../data/model/element-types';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { InjectionContext } from '../../../di/injector-context';
@@ -24,7 +24,7 @@ import { PanelComponent } from '../PanelComponent';
 
 export const CommandListViewComponent: React.FC<{}> = () => {
   const [contextSearch, setContextSearch] = useState('');
-  const [openItem, setOpenItem] = useState<OpenGridItem | undefined>();
+  const [openItem, setOpenItem] = useState<OpenCommandListItem | undefined>();
   const searchFormId = useId();
   const container = useContext(InjectionContext);
   const data = useAllData();
@@ -32,9 +32,9 @@ export const CommandListViewComponent: React.FC<{}> = () => {
   const contextSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
     setContextSearch(event.target.value);
   const closeItem = () => setOpenItem(undefined);
-  const helper = container.get(Tokens.CommandGridHelper);
+  const helper = container.get(Tokens.CommandListHelper);
 
-  const items = helper.mapDataToGridItems(data, { contextSearch });
+  const items = helper.mapDataToListItems(data, { contextSearch });
 
   return (
     <>
