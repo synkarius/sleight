@@ -1,4 +1,5 @@
 import React from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { Keyboard, Mouse, Pencil } from 'react-bootstrap-icons';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Spell } from '../../../data/wizard/spell';
@@ -43,6 +44,12 @@ export const WizardViewComponent: React.FC<{}> = (props) => {
                 description={'click mouse'}
                 onClick={goToClick}
               />
+              <Row className="mt-5">
+                <Col sm="12">
+                  ... or explore the existing commands via the command list and
+                  editor screen (TODO link these)
+                </Col>
+              </Row>
             </div>
           }
         />
