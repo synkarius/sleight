@@ -14,3 +14,8 @@ export const getEditorEditPath = (
   const idParam = id ?? `:${etLower}Id`;
   return `${etLower}s/edit/${idParam}`;
 };
+
+export const getSimplePath = (token: string): string => `${token}/*`;
+
+export const getTokensPath = (tokens: string[]): string =>
+  getSimplePath(tokens.join('/'));
