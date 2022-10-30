@@ -38,7 +38,7 @@ import { token } from 'brandi';
 import { FormatMapper } from '../../data/data-format-mapper';
 import { Deserializer } from '../../data/imports/deserializer';
 import { SpecItemDomainMapper } from '../../core/mappers/spec-item-domain-mapper';
-import { ImportsValidator } from '../../data/imports/imports-validator';
+import { TotalDataCompositeValidator } from '../../data/composite-validators/total/total-data-composite-validator';
 import { VariableExtractor } from '../../validation/variable-extraction/variable-extractor';
 import { IdedAndActionTyped } from '../../core/default-namers/action-default-namer';
 import { DefaultNamer } from '../../core/default-namers/default-namer';
@@ -76,7 +76,7 @@ import { DragonflySendTextPrinter } from '../../data/exports/dragonfly/element-p
 import { DragonflyWaitForWindowPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-wait-for-window-action-printer-delegate';
 import { ActionValueUpdaterDelegate } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater-delegate';
 import { ActionValueUpdater } from '../../core/reducers/action-value/action-value-reducer-updaters/action-value-updater';
-import { Fn } from '../../data/model/fn/fn';
+import { Fn, FnParameter } from '../../data/model/fn/fn';
 import {
   EnterEnumActionValue,
   EnterNumberActionValue,
@@ -88,6 +88,10 @@ import {
 import { MultiMethodActionValueMapper } from '../../core/mappers/action-mapper-delegates/action-value-mapper/delegating-action-value-domain-mapper';
 import { Modifiers } from '../../data/model/action/send-key/send-key';
 import { CommandListHelper } from '../../core/command-list/command-list-helper';
+import { SleightDataMerger } from '../../data/imports/data-merger';
+import { KeyPressSpell } from '../../data/wizard/spell';
+import { SingleItemCompositeValidator } from '../../data/composite-validators/single-item/single-item-composite-validator';
+import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -112,7 +116,9 @@ export namespace Tokens {
   export const RoleKeyedDataUpdater = token<RoleKeyedDataUpdater>(
     'RoleKeyedDataUpdater'
   );
-  export const DataMerger = token<ImportDataMerger>('DataMerger');
+  export const ImportDataMerger = token<ImportDataMerger>('ImportDataMerger');
+  export const SleightDataMerger =
+    token<SleightDataMerger>('SleightDataMerger');
   export const JsonExporter = token<Exporter>('JsonExporter');
   export const DragonflyExporter = token<Exporter>('DragonflyExporter');
   export const Validators_Action =
@@ -127,6 +133,24 @@ export namespace Tokens {
   export const Validators_Variable = token<FieldValidator<Variable>[]>(
     'Validators_Variable'
   );
+  export const ActionCompositeValidator = token<
+    SingleItemCompositeValidator<Action>
+  >('ActionCompositeValidator');
+  export const CommandCompositeValidator = token<
+    SingleItemCompositeValidator<Command>
+  >('CommandCompositeValidator');
+  export const ContextCompositeValidator = token<
+    SingleItemCompositeValidator<Context>
+  >('ContextCompositeValidator');
+  export const FnCompositeValidator = token<SingleItemCompositeValidator<Fn>>(
+    'FnCompositeValidator'
+  );
+  export const SpecCompositeValidator = token<
+    SingleItemCompositeValidator<Spec>
+  >('SpecCompositeValidator');
+  export const VariableCompositeValidator = token<
+    SingleItemCompositeValidator<Variable>
+  >('VariableCompositeValidator');
   // mapper dependencies
   export const BringAppActionDomainMapperDelegate =
     token<ActionDomainMapperDelegate>('BringAppActionDomainMapperDelegate');
@@ -176,6 +200,10 @@ export namespace Tokens {
   export const DomainMapper_Context = token<DomainMapper<Context, Context>>(
     'DomainMapper_Context'
   );
+  export const DomainMapper_FnParameter = token<
+    DomainMapper<FnParameter, FnParameter>
+  >('DomainMapper_FnParameter');
+  export const DomainMapper_Fn = token<DomainMapper<Fn, Fn>>('DomainMapper_Fn');
   export const DomainMapper_Selector = token<
     DomainMapper<Selector, SelectorDTO>
   >('DomainMapper_Selector');
@@ -208,7 +236,9 @@ export namespace Tokens {
     DomainMapper<Modifiers, Modifiers>
   >('DomainMapper_SendKeyModifiers');
   //
-  export const ImportsValidator = token<ImportsValidator>('ImportsValidator');
+  export const TotalDataCompositeValidator = token<TotalDataCompositeValidator>(
+    'TotalDataCompositeValidator'
+  );
   export const VariableExtractorDelegates = token<VariableExtractorDelegate[]>(
     'VariableExtractorDelegates'
   );
@@ -358,4 +388,17 @@ export namespace Tokens {
   >('ActionValueUpdaterDelegate');
   export const CommandListHelper =
     token<CommandListHelper>('CommandListHelper');
+  //
+  export const KeyPressSpellMapper = token<SpellMapper<KeyPressSpell>>(
+    'KeyPressSpellMapper'
+  );
+  export const KeyPressSpellSpecValidator = token<
+    FieldValidator<KeyPressSpell>
+  >('KeyPressSpellSpecValidator');
+  export const KeyPressSpellActionValidator = token<
+    FieldValidator<KeyPressSpell>
+  >('KeyPressSpellActionValidator');
+  export const KeyPressSpellCommandValidator = token<
+    FieldValidator<KeyPressSpell>
+  >('KeyPressSpellCommandValidator');
 }

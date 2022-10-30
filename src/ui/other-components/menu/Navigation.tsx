@@ -9,7 +9,6 @@ import { simpleSaveFile } from '../../../data/exports/simple-save-file';
 import { DeserializationResultType } from '../../../data/imports/deserialization-result';
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
-import { ImportValidationResultType } from '../../../data/imports/imports-validator';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { useAppDispatch } from '../../../app/hooks';
 import { setActions } from '../../../core/reducers/action-reducers';
@@ -27,6 +26,7 @@ import {
 } from '../../../core/common/consts';
 import { setFns } from '../../../core/reducers/fn-reducers';
 import { Stars } from 'react-bootstrap-icons';
+import { CompositeValidationResultType } from '../../../data/composite-validators/composite-validation-result';
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
@@ -67,9 +67,9 @@ export const Navigation: React.FC<{}> = () => {
     const fileContents = await file?.text();
     if (fileContents) {
       const deserializer = container.get(Tokens.Deserializer);
-      const dataMerger = container.get(Tokens.DataMerger);
+      const dataMerger = container.get(Tokens.ImportDataMerger);
       const cleaner = container.get(Tokens.ImportsCleaner);
-      const validator = container.get(Tokens.ImportsValidator);
+      const validator = container.get(Tokens.TotalDataCompositeValidator);
 
       //
       const deserializationResult = deserializer.deserialize(fileContents);
@@ -77,8 +77,8 @@ export const Navigation: React.FC<{}> = () => {
         // TODO: version adapters
         const cleaned = cleaner.cleanData(deserializationResult.data);
         const merged = dataMerger.merge(allData, cleaned);
-        const validationResult = validator.validateImportedData(merged);
-        if (validationResult.status === ImportValidationResultType.VALID) {
+        const validationResult = validator.validateSleightData(merged);
+        if (validationResult.status === CompositeValidationResultType.VALID) {
           reduxDispatch(setActions(merged.actions));
           reduxDispatch(setCommands(merged.commands));
           reduxDispatch(setContexts(merged.contexts));

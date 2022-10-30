@@ -22,6 +22,8 @@ import {
 } from '../../../core/mappers/choice-variable-domain-mapper';
 import { DefaultCommandDomainMapper } from '../../../core/mappers/command-domain-mapper';
 import { DefaultContextDomainMapper } from '../../../core/mappers/context-domain-mapper';
+import { DefaultFnMapper } from '../../../core/mappers/fn-mapper';
+import { DefaultFnParameterMapper } from '../../../core/mappers/fn-parameter-mapper';
 import { DefaultRangeVariableDomainMapper } from '../../../core/mappers/range-variable-domain-mapper';
 import { DefaultSelectorDomainMapper } from '../../../core/mappers/selector-domain-mapper';
 import { DefaultSelectorItemDomainMapper } from '../../../core/mappers/selector-item-domain-mapper';
@@ -56,6 +58,17 @@ export const bindMappers = (container: Container): void => {
     .bind(Tokens.DomainMapper_Context)
     .toInstance(DefaultContextDomainMapper)
     .inSingletonScope();
+  // fn param mapper
+  container
+    .bind(Tokens.DomainMapper_FnParameter)
+    .toInstance(DefaultFnParameterMapper)
+    .inSingletonScope();
+  // fn domain mapper
+  container
+    .bind(Tokens.DomainMapper_Fn)
+    .toInstance(DefaultFnMapper)
+    .inSingletonScope();
+  injected(DefaultFnMapper, Tokens.DomainMapper_FnParameter);
   // selector item domain mapper
   container
     .bind(Tokens.SelectorItemDomainMapper)

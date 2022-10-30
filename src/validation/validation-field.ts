@@ -163,5 +163,7 @@ export enum Field {
   VAR_DELETE_MODAL_DELETE,
   VAR_DELETE_MODAL_CANCEL,
   // wizards:
+  WIZ_SK_CONTEXT,
+  WIZ_SK_KEY,
   WIZ_SK_SPEC,
 }

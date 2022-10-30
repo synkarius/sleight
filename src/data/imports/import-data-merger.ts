@@ -1,4 +1,5 @@
 import { SleightDataInternalFormat } from '../data-formats';
+import { SleightDataMerger } from './data-merger';
 import { SleightDataEvaluator } from './model-update/evaluators/sleight-data-evaluator';
 import { SleightDataIdsRewriter } from './model-update/id-rewriter/sleight-data-ids-rewriter';
 import { RoleKeyedDataUpdater } from './model-update/rolekeyed-data-updater';
@@ -15,7 +16,8 @@ export class CopyingImportDataMerger implements ImportDataMerger {
   constructor(
     private sleightDataEvaluator: SleightDataEvaluator,
     private sleightDataIdsRewriter: SleightDataIdsRewriter,
-    private rolekeyedDataUpdater: RoleKeyedDataUpdater
+    private rolekeyedDataUpdater: RoleKeyedDataUpdater,
+    private sleightDataMerger: SleightDataMerger
   ) {}
 
   merge(
@@ -39,38 +41,9 @@ export class CopyingImportDataMerger implements ImportDataMerger {
 
     // the result here should be base with updated overlaid and idsRewritten added
     // -- spread base over rewritten (which SHOULD just be additive), then updated over base
-    return {
-      actions: {
-        ...base.actions,
-        ...updated.actions,
-        ...idsRewrittenData.actions,
-      },
-      commands: {
-        ...base.commands,
-        ...updated.commands,
-        ...idsRewrittenData.commands,
-      },
-      contexts: {
-        ...base.contexts,
-        ...updated.contexts,
-        ...idsRewrittenData.contexts,
-      },
-      fns: { ...base.fns, ...updated.fns, ...idsRewrittenData.fns },
-      selectors: {
-        ...base.selectors,
-        ...updated.selectors,
-        ...idsRewrittenData.selectors,
-      },
-      specs: {
-        ...base.specs,
-        ...updated.specs,
-        ...idsRewrittenData.specs,
-      },
-      variables: {
-        ...base.variables,
-        ...updated.variables,
-        ...idsRewrittenData.variables,
-      },
-    };
+    return this.sleightDataMerger.merge(
+      this.sleightDataMerger.merge(base, updated),
+      idsRewrittenData
+    );
   }
 }

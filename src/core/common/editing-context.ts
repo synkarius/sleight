@@ -1,11 +1,11 @@
 import React from 'react';
 import { DeleteModalConfig } from '../../ui/other-components/DeleteModalComponent';
 
-interface EditingData<P> {
+export type EditingData<P> = {
   // P is a payload
   localDispatch: React.Dispatch<P>;
   deleteModalConfig: DeleteModalConfig;
-}
+};
 
 /**
  * Ignoring the requirement to add a default context because

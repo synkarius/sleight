@@ -22,7 +22,7 @@ import { getVariableValidators } from '../../../core/validators/variable-validat
 import { Tokens } from '../brandi-tokens';
 import { getFnValidators } from '../../../core/validators/fn-validators';
 
-export const bindValidators = (container: Container): void => {
+export const bindFieldValidators = (container: Container): void => {
   // action validators
   container
     .bind(Tokens.Validators_Action)

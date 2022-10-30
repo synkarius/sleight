@@ -17,7 +17,7 @@ interface AbstractValidator<T> {
   ) => ValidationResult;
 }
 
-interface SingleFieldValidator<T> extends AbstractValidator<T> {
+export interface SingleFieldValidator<T> extends AbstractValidator<T> {
   readonly validatorType: typeof ValidatorType.FIELD;
   readonly field: Field;
   readonly exclusiveValidationMode?: ValidateMode;
