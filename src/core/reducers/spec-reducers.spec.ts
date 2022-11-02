@@ -64,7 +64,7 @@ describe('spec reducer', () => {
     const expected: Record<string, SpecDTO> = {};
     expected[obj.id] = createTestSpecRedux({
       id: obj.id,
-      name: specDefaultNamer.getDefaultName(obj),
+      name: specDefaultNamer.getName(obj),
       specItemId: obj.items[0].id,
       selectorId: obj.items[0].itemId,
     });

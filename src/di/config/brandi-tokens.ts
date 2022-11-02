@@ -40,11 +40,11 @@ import { Deserializer } from '../../data/imports/deserializer';
 import { SpecItemDomainMapper } from '../../core/mappers/spec-item-domain-mapper';
 import { TotalDataCompositeValidator } from '../../data/composite-validators/total/total-data-composite-validator';
 import { VariableExtractor } from '../../validation/variable-extraction/variable-extractor';
-import { IdedAndActionTyped } from '../../core/default-namers/action-default-namer';
-import { DefaultNamer } from '../../core/default-namers/default-namer';
+import { IdedAndActionTyped } from '../../core/namers/action-default-namer';
+import { Namer } from '../../core/namers/namer';
 import { Ided } from '../../data/model/domain';
-import { IdedAndContextTyped } from '../../core/default-namers/context-default-namer';
-import { IdedAndVariableTyped } from '../../core/default-namers/variable-default-namer';
+import { IdedAndContextTyped } from '../../core/namers/context-default-namer';
+import { IdedAndVariableTyped } from '../../core/namers/variable-default-namer';
 import { Cleaner } from '../../core/cleaners/cleaner';
 import { ImportsCleaner } from '../../data/imports/imports-cleaner';
 import { IdRewriter } from '../../data/imports/model-update/id-rewriter/id-rewriter';
@@ -89,7 +89,7 @@ import { MultiMethodActionValueMapper } from '../../core/mappers/action-mapper-d
 import { Modifiers } from '../../data/model/action/send-key/send-key';
 import { CommandListHelper } from '../../core/command-list/command-list-helper';
 import { SleightDataMerger } from '../../data/imports/data-merger';
-import { KeyPressSpell } from '../../data/wizard/spell';
+import { ClickSpell, KeyPressSpell, TextSpell } from '../../data/wizard/spell';
 import { SingleItemCompositeValidator } from '../../data/composite-validators/single-item/single-item-composite-validator';
 import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
 
@@ -244,21 +244,25 @@ export namespace Tokens {
   );
   export const VariableExtractor =
     token<VariableExtractor>('VariableExtractor');
-  // default namers
-  export const DefaultNamer_Action = token<DefaultNamer<IdedAndActionTyped>>(
+  // namers
+  export const DefaultNamer_Action = token<Namer<IdedAndActionTyped>>(
     'DefaultNamer_Action'
   );
-  export const DefaultNamer_Command = token<DefaultNamer<Ided>>(
+  export const DefaultNamer_Command = token<Namer<Ided>>(
     'DefaultNamer_Command'
   );
-  export const DefaultNamer_Context = token<DefaultNamer<IdedAndContextTyped>>(
+  export const DefaultNamer_Context = token<Namer<IdedAndContextTyped>>(
     'DefaultNamer_Context'
   );
-  export const DefaultNamer_Spec =
-    token<DefaultNamer<Ided>>('DefaultNamer_Spec');
-  export const DefaultNamer_Variable = token<
-    DefaultNamer<IdedAndVariableTyped>
-  >('DefaultNamer_Variable');
+  export const DefaultNamer_Spec = token<Namer<Ided>>('DefaultNamer_Spec');
+  export const DefaultNamer_Variable = token<Namer<IdedAndVariableTyped>>(
+    'DefaultNamer_Variable'
+  );
+  export const WizardNamer_Action = token<Namer<Action>>('WizardNamer_Action');
+  export const WizardNamer_Command = token<Namer<Command>>(
+    'WizardNamer_Command'
+  );
+  export const WizardNamer_Spec = token<Namer<Spec>>('WizardNamer_Spec');
   // cleaners
   export const Cleaner_Action = token<Cleaner<Action>>('Cleaner_Action');
   export const Cleaner_Command = token<Cleaner<Command>>('Cleaner_Command');
@@ -392,6 +396,10 @@ export namespace Tokens {
   export const KeyPressSpellMapper = token<SpellMapper<KeyPressSpell>>(
     'KeyPressSpellMapper'
   );
+  export const TextSpellMapper =
+    token<SpellMapper<TextSpell>>('TextSpellMapper');
+  export const ClickSpellMapper =
+    token<SpellMapper<ClickSpell>>('ClickSpellMapper');
   export const KeyPressSpellSpecValidator = token<
     FieldValidator<KeyPressSpell>
   >('KeyPressSpellSpecValidator');
@@ -401,4 +409,22 @@ export namespace Tokens {
   export const KeyPressSpellCommandValidator = token<
     FieldValidator<KeyPressSpell>
   >('KeyPressSpellCommandValidator');
+  export const TextSpellSpecValidator = token<FieldValidator<TextSpell>>(
+    'TextSpellSpecValidator'
+  );
+  export const TextSpellActionValidator = token<FieldValidator<TextSpell>>(
+    'TextSpellActionValidator'
+  );
+  export const TextSpellCommandValidator = token<FieldValidator<TextSpell>>(
+    'TextSpellCommandValidator'
+  );
+  export const ClickSpellSpecValidator = token<FieldValidator<ClickSpell>>(
+    'ClickSpellSpecValidator'
+  );
+  export const ClickSpellActionValidator = token<FieldValidator<ClickSpell>>(
+    'ClickSpellActionValidator'
+  );
+  export const ClickSpellCommandValidator = token<FieldValidator<ClickSpell>>(
+    'ClickSpellCommandValidator'
+  );
 }

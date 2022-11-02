@@ -34,7 +34,7 @@ describe('context reducer', () => {
     expected[obj.id] = {
       roleKey: '',
       id: obj.id,
-      name: contextDefaultNamer.getDefaultName(obj),
+      name: contextDefaultNamer.getName(obj),
       enabled: true,
       locked: false,
       type: ContextType.Enum.EXECUTABLE_NAME,

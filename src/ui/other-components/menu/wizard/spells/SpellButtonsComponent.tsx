@@ -3,8 +3,8 @@ import { Button } from 'react-bootstrap';
 
 export const SpellButtonsComponent: React.FC<{
   cancel: () => void;
-  back?: () => void;
-  next: () => void;
+  finalize: () => void;
+  finalizeDisabled: boolean;
 }> = (props) => {
   return (
     <>
@@ -16,18 +16,13 @@ export const SpellButtonsComponent: React.FC<{
       >
         Cancel
       </Button>
-      {props.back && (
-        <Button
-          variant="outline-primary"
-          className="me-3"
-          size="lg"
-          onClick={props.back}
-        >
-          Back
-        </Button>
-      )}
-      <Button className="me-3" size="lg" onClick={props.next}>
-        Next
+      <Button
+        className="me-3"
+        size="lg"
+        onClick={props.finalize}
+        disabled={props.finalizeDisabled}
+      >
+        Finalize
       </Button>
     </>
   );

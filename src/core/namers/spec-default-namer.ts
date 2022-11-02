@@ -1,9 +1,9 @@
 import { Ided } from '../../data/model/domain';
-import { DefaultNamer } from './default-namer';
+import { Namer } from './namer';
 import { ElementType } from '../../data/model/element-types';
 
-export class DefaultSpecNamer implements DefaultNamer<Ided> {
-  getDefaultName(spec: Ided): string {
+export class DefaultSpecNamer implements Namer<Ided> {
+  getName(spec: Ided): string {
     return (
       ElementType.Enum.SPEC.toLowerCase().slice(0, 3) +
       '-' +

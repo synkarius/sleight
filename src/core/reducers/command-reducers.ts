@@ -26,7 +26,7 @@ const addDefaults = (command: Command): Command => {
   const commandDefaultNamer = container.get(Tokens.DefaultNamer_Command);
   return {
     ...command,
-    name: command.name.trim() || commandDefaultNamer.getDefaultName(command),
+    name: command.name.trim() || commandDefaultNamer.getName(command),
   };
 };
 

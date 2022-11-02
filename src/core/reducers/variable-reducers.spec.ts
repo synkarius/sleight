@@ -75,7 +75,7 @@ describe('variable reducer', () => {
     const expected: Record<string, VariableDTO> = {};
     expected[obj.id] = {
       ...obj,
-      name: variableDefaultNamer.getDefaultName(obj),
+      name: variableDefaultNamer.getName(obj),
     };
 
     expect(actual.saved).toEqual(expected);

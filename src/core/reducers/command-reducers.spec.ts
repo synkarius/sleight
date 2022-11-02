@@ -34,7 +34,7 @@ describe('command reducer', () => {
     const expected: Record<string, Command> = {};
     expected[obj.id] = {
       ...obj,
-      name: commandDefaultNamer.getDefaultName(obj),
+      name: commandDefaultNamer.getName(obj),
     };
 
     expect(actual.saved).toEqual(expected);

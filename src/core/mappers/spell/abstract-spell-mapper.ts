@@ -17,7 +17,7 @@ import {
 } from '../../../data/model/spec/spec-domain';
 import { Spell } from '../../../data/wizard/spell';
 import { isIdSelected } from '../../common/common-functions';
-import { Maybe, none, some } from '../../common/maybe';
+import { Namer } from '../../namers/namer';
 import { DomainMapper } from '../mapper';
 import { SpecDomainMapper } from '../spec-domain-mapper';
 import { SpellData } from './spell-data';
@@ -30,48 +30,51 @@ export abstract class AbstractSpellMapper<S extends Spell>
     private actionMapper: DomainMapper<Action, Action>,
     private commandMapper: DomainMapper<Command, Command>,
     private specMapper: SpecDomainMapper,
-    private selectorMapper: DomainMapper<Selector, SelectorDTO>
+    private selectorMapper: DomainMapper<Selector, SelectorDTO>,
+    private commandNamer: Namer<Command>,
+    private specNamer: Namer<Spec>
   ) {}
-  abstract mapSpell(spell: S): Maybe<SpellData>;
+  abstract mapSpell(spell: S): SpellData;
 
   mapSpellParts(
     contextId: string,
     selectorText: string,
     action: Action
-  ): Maybe<SpellData> {
-    if (selectorText.length) {
-      // spec
-      const selectorSpecItem =
-        this.createSelectorSpecItemWithValue(selectorText);
-      const selector = selectorSpecItem.selector;
-      const spec: Spec = {
-        ...createSpec(),
-        items: [selectorSpecItem],
-      };
+  ): SpellData {
+    // spec
+    const selectorSpecItem = this.createSelectorSpecItemWithValue(selectorText);
+    const selector = selectorSpecItem.selector;
+    const prenamedSpec: Spec = {
+      ...createSpec(),
+      items: [selectorSpecItem],
+    };
+    const spec: Spec = {
+      ...prenamedSpec,
+      name: this.specNamer.getName(prenamedSpec),
+    };
 
-      // command
-      const command: Command = {
-        ...createCommand(),
-        contextId: isIdSelected(contextId) ? contextId : undefined,
-        specId: spec.id,
-        actionIds: [action.id],
-      };
+    // command
+    const prenamedCommand: Command = createCommand();
+    const command: Command = {
+      ...prenamedCommand,
+      name: this.commandNamer.getName(prenamedCommand),
+      contextId: isIdSelected(contextId) ? contextId : undefined,
+      specId: spec.id,
+      actionIds: [action.id],
+    };
 
-      // data
-      const data: SleightDataInternalFormat = {
-        ...createSleightDataInternalFormat(),
-        actions: { [action.id]: this.actionMapper.mapFromDomain(action) },
-        commands: { [command.id]: this.commandMapper.mapFromDomain(command) },
-        specs: { [spec.id]: this.specMapper.mapFromDomain(spec) },
-        selectors: {
-          [selector.id]: this.selectorMapper.mapFromDomain(selector),
-        },
-      };
+    // data
+    const data: SleightDataInternalFormat = {
+      ...createSleightDataInternalFormat(),
+      actions: { [action.id]: this.actionMapper.mapFromDomain(action) },
+      commands: { [command.id]: this.commandMapper.mapFromDomain(command) },
+      specs: { [spec.id]: this.specMapper.mapFromDomain(spec) },
+      selectors: {
+        [selector.id]: this.selectorMapper.mapFromDomain(selector),
+      },
+    };
 
-      return some({ command, spec, action, data });
-    }
-
-    return none();
+    return { command, spec, action, data };
   }
 
   private createSelectorSpecItemWithValue(value: string): SelectorSpecItem {

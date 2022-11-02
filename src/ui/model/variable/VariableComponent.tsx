@@ -129,7 +129,7 @@ export const VariableComponent: React.FC<{
           onBlur={() => validationContext.touch(Field.VAR_NAME)}
           isInvalid={!!nameError}
           value={props.variable.name}
-          placeholder={variableDefaultNamer.getDefaultName(props.variable)}
+          placeholder={variableDefaultNamer.getName(props.variable)}
         />
         <FormText className="text-muted">name of variable</FormText>
       </FormGroupRowComponent>

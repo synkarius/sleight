@@ -1,5 +1,4 @@
 import { SleightDataMerger } from '../../../data/imports/data-merger';
-import { TotalDataCompositeValidator } from '../../../data/composite-validators/total/total-data-composite-validator';
 import { KeyPressSpell } from '../../../data/wizard/spell';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';

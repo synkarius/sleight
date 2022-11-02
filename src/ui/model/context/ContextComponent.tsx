@@ -105,7 +105,7 @@ export const ContextComponent: React.FC<{
           onBlur={() => validationContext.touch(Field.CTX_NAME)}
           isInvalid={!!nameError}
           value={props.context.name}
-          placeholder={contextDefaultNamer.getDefaultName(props.context)}
+          placeholder={contextDefaultNamer.getName(props.context)}
         />
         <FormText className="text-muted">name of context</FormText>
       </FormGroupRowComponent>

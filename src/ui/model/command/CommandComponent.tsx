@@ -97,7 +97,7 @@ export const CommandComponent: React.FC<{
           onBlur={() => validationContext.touch(Field.CMD_NAME)}
           isInvalid={!!nameError}
           value={props.command.name}
-          placeholder={commandDefaultNamer.getDefaultName(props.command)}
+          placeholder={commandDefaultNamer.getName(props.command)}
         />
         <FormText className="text-muted">name of command</FormText>
       </FormGroupRowComponent>

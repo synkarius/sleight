@@ -112,7 +112,7 @@ export const ActionComponent: React.FC<{
           onBlur={() => validationContext.touch(AC_NAME)}
           isInvalid={!!errorResults([AC_NAME])}
           value={props.action.name}
-          placeholder={actionDefaultNamer.getDefaultName(props.action)}
+          placeholder={actionDefaultNamer.getName(props.action)}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent

@@ -40,7 +40,7 @@ const addDefaults = (spec: SpecDTO): SpecDTO => {
   const specDefaultNamer = container.get(Tokens.DefaultNamer_Spec);
   return {
     ...spec,
-    name: spec.name.trim() || specDefaultNamer.getDefaultName(spec),
+    name: spec.name.trim() || specDefaultNamer.getName(spec),
   };
 };
 

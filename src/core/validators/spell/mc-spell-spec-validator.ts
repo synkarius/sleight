@@ -1,30 +1,30 @@
 import { SleightDataMerger } from '../../../data/imports/data-merger';
-import { KeyPressSpell } from '../../../data/wizard/spell';
+import { ClickSpell } from '../../../data/wizard/spell';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
 import { SpellMapper } from '../../mappers/spell/spell-mapper';
 import { AbstractSpellValidator } from './abstract-spell-validator';
-import { SpellData } from '../../mappers/spell/spell-data';
-import { SleightDataInternalFormat } from '../../../data/data-formats';
-import { CompositeValidationResult } from '../../../data/composite-validators/composite-validation-result';
+import { Spec } from '../../../data/model/spec/spec-domain';
 import { SingleItemCompositeValidator } from '../../../data/composite-validators/single-item/single-item-composite-validator';
-import { Command } from '../../../data/model/command/command';
+import { CompositeValidationResult } from '../../../data/composite-validators/composite-validation-result';
+import { SleightDataInternalFormat } from '../../../data/data-formats';
+import { SpellData } from '../../mappers/spell/spell-data';
 
-export class KeyPressSpellCommandValidator extends AbstractSpellValidator<
-  KeyPressSpell,
-  Command
+export class ClickSpellSpecValidator extends AbstractSpellValidator<
+  ClickSpell,
+  Spec
 > {
   constructor(
-    spellMapper: SpellMapper<KeyPressSpell>,
+    spellMapper: SpellMapper<ClickSpell>,
     sleightDataMerger: SleightDataMerger,
-    commandValidator: SingleItemCompositeValidator<Command>
+    specValidator: SingleItemCompositeValidator<Spec>
   ) {
     super(
       spellMapper,
       sleightDataMerger,
-      commandValidator,
-      Field.WIZ_SK_CONTEXT,
-      ValidationErrorCode.WIZ_CTX_INVALID
+      specValidator,
+      Field.WIZ_MC_SPEC,
+      ValidationErrorCode.WIZ_SP_INVALID
     );
   }
 
@@ -32,6 +32,6 @@ export class KeyPressSpellCommandValidator extends AbstractSpellValidator<
     spellData: SpellData,
     merged: SleightDataInternalFormat
   ): CompositeValidationResult {
-    return this.sicValidator.validateSingle(spellData.command, merged);
+    return this.sicValidator.validateSingle(spellData.spec, merged);
   }
 }

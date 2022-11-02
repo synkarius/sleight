@@ -41,7 +41,7 @@ describe('action reducer', () => {
     const expectedSaved: Record<string, Action> = {};
     expectedSaved[obj.id] = {
       ...obj,
-      name: actionDefaultNamer.getDefaultName(obj),
+      name: actionDefaultNamer.getName(obj),
     };
     const actual = actionReduxReducer(preReducerState, saveAction(obj));
 

@@ -1,12 +1,12 @@
 import { Ided, Typed } from '../../data/model/domain';
-import { DefaultNamer } from './default-namer';
+import { Namer } from './namer';
 import { ElementType } from '../../data/model/element-types';
 import { ActionType } from '../../data/model/action/action-types';
 
 export type IdedAndActionTyped = Ided & Typed<ActionType.Type>;
 
-export class DefaultActionNamer implements DefaultNamer<IdedAndActionTyped> {
-  getDefaultName(action: IdedAndActionTyped): string {
+export class DefaultActionNamer implements Namer<IdedAndActionTyped> {
+  getName(action: IdedAndActionTyped): string {
     return (
       action.type.toLowerCase().replaceAll(' ', '-') +
       '-' +

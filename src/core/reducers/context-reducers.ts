@@ -22,7 +22,7 @@ const addDefaults = (context: Context): Context => {
   const contextDefaultNamer = container.get(Tokens.DefaultNamer_Context);
   return {
     ...context,
-    name: context.name.trim() || contextDefaultNamer.getDefaultName(context),
+    name: context.name.trim() || contextDefaultNamer.getName(context),
   };
 };
 

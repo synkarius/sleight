@@ -55,24 +55,26 @@ export abstract class AbstractSpellValidator<
     spell: S,
     data: Readonly<SleightDataInternalFormat>
   ): ValidationResult {
-    const maybeSpellData = this.spellMapper.mapSpell(spell);
+    const spellData = this.spellMapper.mapSpell(spell);
+    const copyData = structuredClone(data);
+    const merged = this.sdMerger.merge(spellData.data, copyData);
 
-    if (isSome(maybeSpellData)) {
-      const spellData = maybeSpellData.value;
-      const copyData = structuredClone(data);
-      const merged = this.sdMerger.merge(spellData.data, copyData);
+    const result = this.getSICValidationResult(spellData, merged);
 
-      const result = this.getSICValidationResult(spellData, merged);
-
-      if (isInvalidCompositeValidationResult(result)) {
+    if (isInvalidCompositeValidationResult(result)) {
+      if (!result.invalidated.length) {
         return {
-          type: ValidationResultType.BASIC,
+          type: ValidationResultType.VALIDATION_FAILED,
           field: this.field,
-          code: this.errorCode,
-          // TODO: fix possibly invalid array access - shouldn't be empty but still
-          message: result.invalidated[0].message,
+          message: 'invalidated array is empty',
         };
       }
+      return {
+        type: ValidationResultType.BASIC,
+        field: this.field,
+        code: this.errorCode,
+        message: result.invalidated[0].message,
+      };
     }
     return validResult(this.field);
   }

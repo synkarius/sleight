@@ -58,7 +58,7 @@ const addDefaults = (action: Action): Action => {
   const actionDefaultNamer = container.get(Tokens.DefaultNamer_Action);
   return {
     ...action,
-    name: action.name.trim() || actionDefaultNamer.getDefaultName(action),
+    name: action.name.trim() || actionDefaultNamer.getName(action),
   };
 };
 

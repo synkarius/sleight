@@ -1,30 +1,30 @@
 import { SleightDataMerger } from '../../../data/imports/data-merger';
-import { KeyPressSpell } from '../../../data/wizard/spell';
+import { TextSpell } from '../../../data/wizard/spell';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
 import { SpellMapper } from '../../mappers/spell/spell-mapper';
 import { AbstractSpellValidator } from './abstract-spell-validator';
+import { Action } from '../../../data/model/action/action';
+import { SingleItemCompositeValidator } from '../../../data/composite-validators/single-item/single-item-composite-validator';
 import { SpellData } from '../../mappers/spell/spell-data';
 import { SleightDataInternalFormat } from '../../../data/data-formats';
 import { CompositeValidationResult } from '../../../data/composite-validators/composite-validation-result';
-import { SingleItemCompositeValidator } from '../../../data/composite-validators/single-item/single-item-composite-validator';
-import { Command } from '../../../data/model/command/command';
 
-export class KeyPressSpellCommandValidator extends AbstractSpellValidator<
-  KeyPressSpell,
-  Command
+export class TextSpellActionValidator extends AbstractSpellValidator<
+  TextSpell,
+  Action
 > {
   constructor(
-    spellMapper: SpellMapper<KeyPressSpell>,
+    spellMapper: SpellMapper<TextSpell>,
     sleightDataMerger: SleightDataMerger,
-    commandValidator: SingleItemCompositeValidator<Command>
+    actionValidator: SingleItemCompositeValidator<Action>
   ) {
     super(
       spellMapper,
       sleightDataMerger,
-      commandValidator,
-      Field.WIZ_SK_CONTEXT,
-      ValidationErrorCode.WIZ_CTX_INVALID
+      actionValidator,
+      Field.WIZ_ST_TEXT,
+      ValidationErrorCode.WIZ_AC_INVALID
     );
   }
 
@@ -32,6 +32,6 @@ export class KeyPressSpellCommandValidator extends AbstractSpellValidator<
     spellData: SpellData,
     merged: SleightDataInternalFormat
   ): CompositeValidationResult {
-    return this.sicValidator.validateSingle(spellData.command, merged);
+    return this.sicValidator.validateSingle(spellData.action, merged);
   }
 }

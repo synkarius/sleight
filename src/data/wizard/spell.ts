@@ -1,3 +1,5 @@
+import { MouseKey } from '../model/action/mouse/mouse-key';
+import { Key } from '../model/action/send-key/key';
 import { SpellType } from './spell-types';
 
 interface AbstractSpell {
@@ -8,7 +10,7 @@ interface AbstractSpell {
 
 export interface KeyPressSpell extends AbstractSpell {
   type: typeof SpellType.Enum.KEY_PRESS;
-  key: string;
+  key: Key.Type;
 }
 
 export interface TextSpell extends AbstractSpell {
@@ -16,7 +18,7 @@ export interface TextSpell extends AbstractSpell {
 }
 
 export interface ClickSpell extends AbstractSpell {
-  button: string;
+  button: MouseKey.Type;
 }
 
 export type Spell = KeyPressSpell | TextSpell | ClickSpell;

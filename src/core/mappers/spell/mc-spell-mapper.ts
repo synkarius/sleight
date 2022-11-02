@@ -1,21 +1,21 @@
 import { Action } from '../../../data/model/action/action';
 import { createEnumValue } from '../../../data/model/action/action-value';
 import {
-  createSendKeyPressAction,
-  SendKeyPressAction,
-} from '../../../data/model/action/send-key/send-key';
+  ClickMouseAction,
+  createMouseClickAction,
+} from '../../../data/model/action/mouse/mouse';
 import { Command } from '../../../data/model/command/command';
 import { Selector } from '../../../data/model/selector/selector-domain';
 import { SelectorDTO } from '../../../data/model/selector/selector-dto';
 import { Spec } from '../../../data/model/spec/spec-domain';
-import { KeyPressSpell } from '../../../data/wizard/spell';
+import { ClickSpell } from '../../../data/wizard/spell';
 import { Namer } from '../../namers/namer';
 import { DomainMapper } from '../mapper';
 import { SpecDomainMapper } from '../spec-domain-mapper';
 import { AbstractSpellMapper } from './abstract-spell-mapper';
 import { SpellData } from './spell-data';
 
-export class KeyPressSpellMapper extends AbstractSpellMapper<KeyPressSpell> {
+export class ClickSpellMapper extends AbstractSpellMapper<ClickSpell> {
   constructor(
     actionMapper: DomainMapper<Action, Action>,
     commandMapper: DomainMapper<Command, Command>,
@@ -35,12 +35,12 @@ export class KeyPressSpellMapper extends AbstractSpellMapper<KeyPressSpell> {
     );
   }
 
-  mapSpell(spell: KeyPressSpell): SpellData {
-    const skp = createSendKeyPressAction();
-    const action: SendKeyPressAction = {
-      ...skp,
-      name: this.actionNamer.getName(skp),
-      keyToSend: { ...createEnumValue(), value: spell.key },
+  mapSpell(spell: ClickSpell): SpellData {
+    const mc = createMouseClickAction();
+    const action: ClickMouseAction = {
+      ...mc,
+      name: this.actionNamer.getName(mc),
+      mouseButton: { ...createEnumValue(), value: spell.button },
     };
 
     return this.mapSpellParts(spell.contextId, spell.selector, action);

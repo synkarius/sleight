@@ -2,7 +2,7 @@ import { Container } from 'brandi';
 import { bindImportProcessEvaluators } from './bindings/import-process-evaluator-bindings';
 import { bindFieldValidators } from './bindings/field-validator-bindings';
 import { bindMappers } from './bindings/mapper-bindings';
-import { bindDefaultNamers } from './bindings/default-namer-bindings';
+import { bindNamers } from './bindings/namer-bindings';
 import { bindCleaners } from './bindings/cleaner-bindings';
 import { bindIdRewriters } from './bindings/id-rewriter-bindings';
 import { bindVariableExtractor } from './bindings/variable-extractor-bindings';
@@ -27,7 +27,6 @@ export const container = new Container();
   bindCommandCommandListHelper,
   bindCompositeValidators,
   bindDataMerger,
-  bindDefaultNamers,
   bindDeserializer,
   bindFieldValidators,
   bindImportProcessEvaluators,
@@ -37,6 +36,7 @@ export const container = new Container();
   bindIdRewriters,
   bindImportsCleaner,
   bindMappers,
+  bindNamers,
   bindRoleKeyedDataUpdater,
   bindSleightDataEvaluator,
   bindSleightDataIdsRewriter,

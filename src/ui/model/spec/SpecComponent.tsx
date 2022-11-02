@@ -112,7 +112,7 @@ export const SpecComponent: React.FC<{ spec: Spec; closeFn: () => void }> = (
           onBlur={() => validationContext.touch(Field.SP_NAME)}
           isInvalid={!!nameError}
           value={props.spec.name}
-          placeholder={specDefaultNamer.getDefaultName(props.spec)}
+          placeholder={specDefaultNamer.getName(props.spec)}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent

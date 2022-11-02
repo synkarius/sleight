@@ -43,7 +43,7 @@ const addDefaults = (variable: VariableDTO): VariableDTO => {
   const variableDefaultNamer = container.get(Tokens.DefaultNamer_Variable);
   return {
     ...variable,
-    name: variable.name.trim() || variableDefaultNamer.getDefaultName(variable),
+    name: variable.name.trim() || variableDefaultNamer.getName(variable),
   };
 };
 

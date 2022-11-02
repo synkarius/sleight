@@ -1,5 +1,5 @@
 import { SleightDataMerger } from '../../../data/imports/data-merger';
-import { KeyPressSpell } from '../../../data/wizard/spell';
+import { TextSpell } from '../../../data/wizard/spell';
 import { ValidationErrorCode } from '../../../validation/validation-error-code';
 import { Field } from '../../../validation/validation-field';
 import { SpellMapper } from '../../mappers/spell/spell-mapper';
@@ -10,12 +10,12 @@ import { CompositeValidationResult } from '../../../data/composite-validators/co
 import { SingleItemCompositeValidator } from '../../../data/composite-validators/single-item/single-item-composite-validator';
 import { Command } from '../../../data/model/command/command';
 
-export class KeyPressSpellCommandValidator extends AbstractSpellValidator<
-  KeyPressSpell,
+export class TextSpellCommandValidator extends AbstractSpellValidator<
+  TextSpell,
   Command
 > {
   constructor(
-    spellMapper: SpellMapper<KeyPressSpell>,
+    spellMapper: SpellMapper<TextSpell>,
     sleightDataMerger: SleightDataMerger,
     commandValidator: SingleItemCompositeValidator<Command>
   ) {
@@ -23,7 +23,7 @@ export class KeyPressSpellCommandValidator extends AbstractSpellValidator<
       spellMapper,
       sleightDataMerger,
       commandValidator,
-      Field.WIZ_SK_CONTEXT,
+      Field.WIZ_ST_CONTEXT,
       ValidationErrorCode.WIZ_CTX_INVALID
     );
   }
