@@ -6,6 +6,7 @@ import { import02 } from '../../../../../test/resources/import-call-function-02.
 import { castJsonForTest } from '../../../../../test/utils/import-test-json-util';
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
 import { CallFunctionAction } from '../../../../model/action/call-function/call-function';
+import { some } from '../../../../../core/common/maybe';
 
 describe('dragonfly CallFunction printer tests', () => {
   const printer = container.get(Tokens.DragonflyCallFunctionPrinter);
@@ -20,7 +21,7 @@ describe('dragonfly CallFunction printer tests', () => {
 
     const expected = 'Function(t1="some value", n1=-20)';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('should print variables correctly', () => {
@@ -34,6 +35,6 @@ describe('dragonfly CallFunction printer tests', () => {
     const n1Var = fmt('variable_390edf4c-f732-489e-a38d-7680700385f7');
     const expected = `Function(t1="%(${t1Var})s", n1="%(${n1Var})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

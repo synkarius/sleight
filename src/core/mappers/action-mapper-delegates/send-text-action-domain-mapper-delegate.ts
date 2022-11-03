@@ -1,6 +1,7 @@
 import { Action } from '../../../data/model/action/action';
 import { ActionType } from '../../../data/model/action/action-types';
 import { SendTextAction } from '../../../data/model/action/send-text/send-text';
+import { Maybe, none, some } from '../../common/maybe';
 import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
 import { ActionDomainMapperDelegate } from './action-domain-mapper-delegate';
 import { MultiMethodActionValueMapper } from './action-value-mapper/delegating-action-value-domain-mapper';
@@ -13,23 +14,25 @@ export class SendTextActionDomainMapperDelegate
     super();
   }
 
-  mapToDomain(dto: Action): SendTextAction | undefined {
+  mapToDomain(dto: Action): Maybe<SendTextAction> {
     if (dto.type === ActionType.Enum.SEND_TEXT) {
-      return {
+      return some({
         ...this.mapToDomainBase(dto),
         type: dto.type,
         text: this.actionValueMapper.mapToTextDomain(dto.text),
-      };
+      });
     }
+    return none();
   }
 
-  mapFromDomain(domain: Action): SendTextAction | undefined {
+  mapFromDomain(domain: Action): Maybe<SendTextAction> {
     if (domain.type === ActionType.Enum.SEND_TEXT) {
-      return {
+      return some({
         ...this.mapFromDomainBase(domain),
         type: domain.type,
         text: this.actionValueMapper.mapFromTextDomain(domain.text),
-      };
+      });
     }
+    return none();
   }
 }

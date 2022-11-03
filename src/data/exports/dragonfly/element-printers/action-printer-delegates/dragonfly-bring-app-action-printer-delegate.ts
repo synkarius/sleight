@@ -1,4 +1,5 @@
 import { isEmpty, quote } from '../../../../../core/common/common-functions';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isBringAppAction } from '../../../../model/action/bring-app/bring-app';
@@ -17,10 +18,7 @@ export class DragonflyBringAppPrinter
     private actionValueResolver: DragonflyActionValueResolver,
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isBringAppAction(action)) {
       const args: string[] = [];
       //
@@ -53,7 +51,8 @@ export class DragonflyBringAppPrinter
         );
       }
       //
-      return ['BringApp(', args.join(', '), ')'].join('');
+      return some(['BringApp(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 }

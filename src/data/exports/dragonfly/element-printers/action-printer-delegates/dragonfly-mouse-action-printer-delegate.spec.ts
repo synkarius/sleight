@@ -1,4 +1,5 @@
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import01 } from '../../../../../test/resources/import-mouse-01.json';
@@ -27,7 +28,7 @@ describe('dragonfly Mouse printer tests', () => {
 
     const expected = 'Mouse("<1, 2>")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('move: should print variables correctly', () => {
@@ -40,7 +41,7 @@ describe('dragonfly Mouse printer tests', () => {
     const yVar = fmt('variable_2ddf1139-714d-4a9a-ba5b-8ab3880ef828');
     const expected = `Mouse("<%(${xVar})d, %(${yVar})d>")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('mouse click: should print entered values correctly', () => {
@@ -51,7 +52,7 @@ describe('dragonfly Mouse printer tests', () => {
 
     const expected = 'Mouse("middle:3/1")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('mouse click: should print variables correctly', () => {
@@ -65,7 +66,7 @@ describe('dragonfly Mouse printer tests', () => {
     const pauseVar = fmt('variable_3817aca2-a3eb-458d-8060-e0f0939b0863');
     const expected = `Mouse("%(${btnVar})s:%(${repeatVar})d/%(${pauseVar})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('mouse hold/release: should print entered values correctly', () => {
@@ -76,7 +77,7 @@ describe('dragonfly Mouse printer tests', () => {
 
     const expected = 'Mouse("stepdown:down/3")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('mouse hold/release: should print variables correctly', () => {
@@ -90,6 +91,6 @@ describe('dragonfly Mouse printer tests', () => {
     const dirVar = fmt('variable_869e23f3-325a-4f2e-bf77-23deb6df89f7');
     const expected = `Mouse("%(${btnVar})s:%(${dirVar})s/%(${pauseVar})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

@@ -7,6 +7,7 @@ import {
 } from '../../../data/model/action/action-value';
 import { CallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { MissingGuardError } from '../../../error/missing-guard-error';
+import { Maybe, none, some } from '../../common/maybe';
 import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
 import { ActionDomainMapperDelegate } from './action-domain-mapper-delegate';
 import { MultiMethodActionValueMapper } from './action-value-mapper/delegating-action-value-domain-mapper';
@@ -19,9 +20,9 @@ export class CallFunctionActionDomainMapperDelegate
     super();
   }
 
-  mapToDomain(dto: Action): CallFunctionAction | undefined {
+  mapToDomain(dto: Action): Maybe<CallFunctionAction> {
     if (dto.type === ActionType.Enum.CALL_FUNCTION) {
-      return {
+      return some({
         ...this.mapToDomainBase(dto),
         type: dto.type,
         functionId: dto.functionId,
@@ -38,13 +39,14 @@ export class CallFunctionActionDomainMapperDelegate
             );
           }
         }),
-      };
+      });
     }
+    return none();
   }
 
-  mapFromDomain(domain: Action): CallFunctionAction | undefined {
+  mapFromDomain(domain: Action): Maybe<CallFunctionAction> {
     if (domain.type === ActionType.Enum.CALL_FUNCTION) {
-      return {
+      return some({
         ...this.mapFromDomainBase(domain),
         type: domain.type,
         functionId: domain.functionId,
@@ -61,7 +63,8 @@ export class CallFunctionActionDomainMapperDelegate
             );
           }
         }),
-      };
+      });
     }
+    return none();
   }
 }

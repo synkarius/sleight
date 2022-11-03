@@ -1,4 +1,5 @@
 import { quote } from '../../../../../core/common/common-functions';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isWaitForWindowAction } from '../../../../model/action/wait-for-window/wait-for-window';
@@ -18,10 +19,7 @@ export class DragonflyWaitForWindowPrinter
     private actionValueResolver: DragonflyActionValueResolver,
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isWaitForWindowAction(action)) {
       const args: string[] = [];
       //
@@ -58,7 +56,8 @@ export class DragonflyWaitForWindowPrinter
         );
       }
       //
-      return ['WaitWindow(', args.join(', '), ')'].join('');
+      return some(['WaitWindow(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 }

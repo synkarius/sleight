@@ -1,4 +1,5 @@
-import { isEmpty, quote } from '../../../../../core/common/common-functions';
+import { quote } from '../../../../../core/common/common-functions';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isPauseAction } from '../../../../model/action/pause/pause';
@@ -17,10 +18,7 @@ export class DragonflyPausePrinter implements DragonflyActionPrinterDelegate {
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isPauseAction(action)) {
       const args: string[] = [];
       //
@@ -39,7 +37,8 @@ export class DragonflyPausePrinter implements DragonflyActionPrinterDelegate {
       }
 
       //
-      return ['Pause(', args.join(', '), ')'].join('');
+      return some(['Pause(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 }

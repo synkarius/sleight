@@ -24,6 +24,7 @@ import {
 import { VariableDTO } from '../../data/model/variable/variable-dto';
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
+import { isSome } from '../common/maybe';
 
 const roleKeyTakenValidator = createRoleKeyTakenValidator<
   VariableDTO,
@@ -120,7 +121,10 @@ const usedVariableTypesValidator: FieldValidator<Variable> = {
     const extractor = container.get(Tokens.VariableExtractor);
 
     const preChangedVariable = MapUtil.get(data.variables, variable.id);
-    if (preChangedVariable && preChangedVariable.type !== variable.type) {
+    if (
+      isSome(preChangedVariable) &&
+      preChangedVariable.value.type !== variable.type
+    ) {
       const variableIdsInActions = Object.values(data.actions)
         .flatMap((action) => extractor.extractVariables(action))
         .filter((vav) => vav.variableId);

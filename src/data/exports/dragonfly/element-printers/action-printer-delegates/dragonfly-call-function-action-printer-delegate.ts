@@ -1,5 +1,6 @@
 import { quote } from '../../../../../core/common/common-functions';
 import { MapUtil } from '../../../../../core/common/map-util';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { NotImplementedError } from '../../../../../error/not-implemented-error';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
@@ -23,10 +24,7 @@ export class DragonflyCallFunctionPrinter
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isCallFunctionAction(action)) {
       const fn = MapUtil.getOrThrow(data.fns, action.functionId);
       if (fn.type !== FnType.Enum.PYTHON) {
@@ -48,7 +46,8 @@ export class DragonflyCallFunctionPrinter
           args.push(paramName + (dontQuote ? arg : quote(arg)));
         }
       }
-      return ['Function(', args.join(', '), ')'].join('');
+      return some(['Function(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 }

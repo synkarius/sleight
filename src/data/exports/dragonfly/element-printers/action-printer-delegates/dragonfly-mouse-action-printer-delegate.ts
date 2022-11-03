@@ -20,6 +20,7 @@ import {
 import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
 import { DragonflyActionValueResolverResultType } from '../action-value/dragonfly-action-value-resolver-result';
 import { MouseMovementType } from '../../../../model/action/mouse/mouse-movement-type';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 
 export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
   constructor(
@@ -27,10 +28,7 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isMouseAction(action)) {
       const args: string[] = [];
 
@@ -49,8 +47,9 @@ export class DragonflyMousePrinter implements DragonflyActionPrinterDelegate {
           throw new ExhaustivenessFailureError(mouseActionType);
       }
 
-      return ['Mouse(', args.join(', '), ')'].join('');
+      return some(['Mouse(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 
   private getClickArgs(

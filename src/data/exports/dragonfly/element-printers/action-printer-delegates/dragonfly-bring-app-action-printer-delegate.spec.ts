@@ -5,6 +5,7 @@ import { import02 } from '../../../../../test/resources/import-02.json';
 import { import03 } from '../../../../../test/resources/import-03.json';
 import { castJsonForTest } from '../../../../../test/utils/import-test-json-util';
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 
 describe('dragonfly BringApp printer tests', () => {
   const printer = container.get(Tokens.DragonflyBringAppPrinter);
@@ -20,7 +21,7 @@ describe('dragonfly BringApp printer tests', () => {
     const expected =
       'BringApp("/some-path", title="Some Title", cwd="/start-dir")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('should print variables correctly', () => {
@@ -35,6 +36,6 @@ describe('dragonfly BringApp printer tests', () => {
     const startVar = fmt('variable_e470eead-18a6-4049-af33-af6f9d04c959');
     const expected = `BringApp("%(${pathVar})s", title="%(${titleVar})s", cwd="%(${startVar})s")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

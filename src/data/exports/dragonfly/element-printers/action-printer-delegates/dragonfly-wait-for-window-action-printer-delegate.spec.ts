@@ -1,4 +1,5 @@
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import06 } from '../../../../../test/resources/import-06.json';
@@ -20,7 +21,7 @@ describe('dragonfly WaitForWindow printer tests', () => {
     const expected =
       'WaitWindow(executable="chrome.exe", title="Gmail", timeout=5)';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('should print variables correctly', () => {
@@ -35,6 +36,6 @@ describe('dragonfly WaitForWindow printer tests', () => {
     const timeVar = fmt('variable_02162aaf-c78b-469f-912c-1335d671e75e');
     const expected = `WaitWindow(executable="%(${exeVar})s", title="%(${titleVar})s", timeout="%(${timeVar})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

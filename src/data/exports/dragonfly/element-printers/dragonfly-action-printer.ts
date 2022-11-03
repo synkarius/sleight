@@ -1,4 +1,6 @@
 import { isDefined } from '../../../../core/common/common-functions';
+import { findFirst } from '../../../../core/common/lazy';
+import { isSome } from '../../../../core/common/maybe';
 import { DragonflyActionPrinterDelegateArray } from '../../../../di/di-collection-types';
 import { MissingDelegateError } from '../../../../error/missing-delegate-error';
 import { SleightDataInternalFormat } from '../../../data-formats';
@@ -11,11 +13,11 @@ export class DelegatingDragonflyActionPrinter
   constructor(private delegates: DragonflyActionPrinterDelegateArray) {}
 
   printElement(action: Action, data: SleightDataInternalFormat): string {
-    const printed = this.delegates
-      .map((delegate) => delegate.printAction(action, data))
-      .find(isDefined);
-    if (printed) {
-      return printed;
+    const printed = findFirst(this.delegates, (delegate) =>
+      delegate.printAction(action, data)
+    );
+    if (isSome(printed)) {
+      return printed.value;
     }
     throw new MissingDelegateError('DragonflyActionPrinter');
   }

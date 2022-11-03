@@ -1,4 +1,5 @@
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import04 } from '../../../../../test/resources/import-04.json';
@@ -19,7 +20,7 @@ describe('dragonfly Mimic printer tests', () => {
 
     const expected = 'Mimic("these", "three", "words")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('should print variables correctly', () => {
@@ -31,6 +32,6 @@ describe('dragonfly Mimic printer tests', () => {
     const textVar = fmt('variable_9bfe9ee5-ee03-46ef-a202-1f4e08a4a699');
     const expected = `Mimic("%(${textVar})s")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

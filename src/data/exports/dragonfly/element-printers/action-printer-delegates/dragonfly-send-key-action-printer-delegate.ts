@@ -1,4 +1,5 @@
 import { quote } from '../../../../../core/common/common-functions';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
 import { ExportError } from '../../../../../error/export-error';
 import { SleightDataInternalFormat } from '../../../../data-formats';
@@ -27,10 +28,7 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isSendKeyAction(action)) {
       const args: string[] = [];
       const sendKeyMode = action.sendKeyMode;
@@ -44,8 +42,9 @@ export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
         default:
           throw new ExhaustivenessFailureError(sendKeyMode);
       }
-      return ['Key(', args.join(', '), ')'].join('');
+      return some(['Key(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 
   private getKeyPressArgs(

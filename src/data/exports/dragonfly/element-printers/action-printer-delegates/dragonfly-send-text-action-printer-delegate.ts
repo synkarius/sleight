@@ -1,4 +1,5 @@
 import { quote } from '../../../../../core/common/common-functions';
+import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
 import { isSendTextAction } from '../../../../model/action/send-text/send-text';
@@ -18,17 +19,15 @@ export class DragonflySendTextPrinter
     private elementTokenPrinter: ElementTokenPrinter
   ) {}
 
-  printAction(
-    action: Action,
-    data: SleightDataInternalFormat
-  ): string | undefined {
+  printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isSendTextAction(action)) {
       const args: string[] = [];
       const textResult = this.actionValueResolver.resolve(action.text, data);
       if (!resultIsEmpty(textResult)) {
         args.push(quote(resultToArg(textResult)(this.elementTokenPrinter)));
       }
-      return ['Text(', args.join(', '), ')'].join('');
+      return some(['Text(', args.join(', '), ')'].join(''));
     }
+    return none();
   }
 }

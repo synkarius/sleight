@@ -5,6 +5,7 @@ import {
   SendKeyAction,
 } from '../../../data/model/action/send-key/send-key';
 import { SendKeyMode } from '../../../data/model/action/send-key/send-key-modes';
+import { Maybe, none, some } from '../../common/maybe';
 import { DomainMapper } from '../mapper';
 import { AbstractActionDomainMapperDelegate } from './abstract-action-domain-mapper-delegate';
 import { ActionDomainMapperDelegate } from './action-domain-mapper-delegate';
@@ -21,7 +22,7 @@ export class SendKeyActionDomainMapperDelegate
     super();
   }
 
-  mapToDomain(dto: Action): SendKeyAction | undefined {
+  mapToDomain(dto: Action): Maybe<SendKeyAction> {
     if (dto.type === ActionType.Enum.SEND_KEY) {
       const sendKey = {
         ...this.mapToDomainBase(dto),
@@ -31,23 +32,24 @@ export class SendKeyActionDomainMapperDelegate
         outerPause: this.actionValueMapper.mapToNumberDomain(dto.outerPause),
       };
       if (dto.sendKeyMode === SendKeyMode.Enum.PRESS) {
-        return {
+        return some({
           ...sendKey,
           sendKeyMode: dto.sendKeyMode,
           innerPause: this.actionValueMapper.mapToNumberDomain(dto.innerPause),
           repeat: this.actionValueMapper.mapToNumberDomain(dto.repeat),
-        };
+        });
       } else {
-        return {
+        return some({
           ...sendKey,
           sendKeyMode: dto.sendKeyMode,
           direction: this.actionValueMapper.mapToEnumDomain(dto.direction),
-        };
+        });
       }
     }
+    return none();
   }
 
-  mapFromDomain(domain: Action): SendKeyAction | undefined {
+  mapFromDomain(domain: Action): Maybe<SendKeyAction> {
     if (domain.type === ActionType.Enum.SEND_KEY) {
       const sendKey = {
         ...this.mapFromDomainBase(domain),
@@ -59,21 +61,22 @@ export class SendKeyActionDomainMapperDelegate
         ),
       };
       if (domain.sendKeyMode === SendKeyMode.Enum.PRESS) {
-        return {
+        return some({
           ...sendKey,
           sendKeyMode: domain.sendKeyMode,
           innerPause: this.actionValueMapper.mapFromNumberDomain(
             domain.innerPause
           ),
           repeat: this.actionValueMapper.mapFromNumberDomain(domain.repeat),
-        };
+        });
       } else {
-        return {
+        return some({
           ...sendKey,
           sendKeyMode: domain.sendKeyMode,
           direction: this.actionValueMapper.mapFromEnumDomain(domain.direction),
-        };
+        });
       }
     }
+    return none();
   }
 }

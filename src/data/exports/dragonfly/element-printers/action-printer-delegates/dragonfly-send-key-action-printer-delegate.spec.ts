@@ -1,4 +1,5 @@
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import01 } from '../../../../../test/resources/import-send-key-01.json';
@@ -24,7 +25,7 @@ describe('dragonfly SendKey printer tests', () => {
 
     const expected = 'Key("ca-mike/3:4/1")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('key press: should print variables correctly', () => {
@@ -39,7 +40,7 @@ describe('dragonfly SendKey printer tests', () => {
     const outVar = fmt('variable_e72d4bc7-6ef8-42e4-ac18-2e2795256ea1');
     const expected = `Key("sw-%(${keyVar})s/%(${inVar})d:%(${reVar})d/%(${outVar})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('key hold/release: should print entered values correctly', () => {
@@ -52,7 +53,7 @@ describe('dragonfly SendKey printer tests', () => {
 
     const expected = 'Key("kilo:up/14")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('key hold/release: should print variables correctly', () => {
@@ -68,6 +69,6 @@ describe('dragonfly SendKey printer tests', () => {
     const outVar = fmt('variable_b61db350-b08f-460c-a65f-9f2e3cdc3370');
     const expected = `Key("as-%(${keyVar})s:%(${dirVar})s/%(${outVar})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

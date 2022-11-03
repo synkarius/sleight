@@ -1,4 +1,5 @@
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import08 } from '../../../../../test/resources/import-08.json';
@@ -19,7 +20,7 @@ describe('dragonfly SendText printer tests', () => {
 
     const expected = 'Text("some text")';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('should print variables correctly', () => {
@@ -31,6 +32,6 @@ describe('dragonfly SendText printer tests', () => {
     const textVar = fmt('variable_d8c6f89e-59be-4adc-b4d0-66a03e09e8be');
     const expected = `Text("%(${textVar})s")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });

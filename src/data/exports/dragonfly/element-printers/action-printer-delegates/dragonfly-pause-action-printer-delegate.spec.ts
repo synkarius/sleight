@@ -1,4 +1,5 @@
 import { replaceNonAlphaNumeric } from '../../../../../core/common/common-functions';
+import { some } from '../../../../../core/common/maybe';
 import { container } from '../../../../../di/config/brandi-config';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { import01 } from '../../../../../test/resources/import-pause-action-01.json';
@@ -19,7 +20,7 @@ describe('dragonfly Pause printer tests', () => {
 
     const expected = 'Pause(1)';
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 
   it('should print variables correctly', () => {
@@ -31,6 +32,6 @@ describe('dragonfly Pause printer tests', () => {
     const textVar = fmt('variable_ed48430e-ed5f-44b3-a304-1d733b622549');
     const expected = `Pause("%(${textVar})d")`;
     const actual = printer.printAction(action, data);
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(some(expected));
   });
 });
