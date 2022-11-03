@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ELEMENT_EDITOR_PATH } from '../../../../core/common/consts';
 import { ElementType } from '../../../../data/model/element-types';
-import { ActionParentComponent } from '../../../model/action/ActionParentComponent';
-import { CommandParentComponent } from '../../../model/command/CommandParentComponent';
-import { ContextParentComponent } from '../../../model/context/ContextParentComponent';
-import { SpecParentComponent } from '../../../model/spec/SpecParentComponent';
-import { VariableParentComponent } from '../../../model/variable/VariableParentComponent';
+import { ActionComponent } from '../../../model/action/ActionComponent';
+import { CommandComponent } from '../../../model/command/CommandComponent';
+import { ContextComponent } from '../../../model/context/ContextComponent';
+import { SpecParentComponent } from '../../../model/spec/SpecComponent';
+import { VariableParentComponent } from '../../../model/variable/VariableComponent';
 import {
   getEditorCreatePath,
   getEditorEditPath,
@@ -21,7 +21,7 @@ export const EditorComponent: React.FC<{}> = () => {
       <Route
         path={getEditorCreatePath(ElementType.Enum.ACTION)}
         element={
-          <ActionParentComponent
+          <ActionComponent
             key={undefined}
             actionId={undefined}
             closeFn={closeFn}
@@ -35,7 +35,7 @@ export const EditorComponent: React.FC<{}> = () => {
             paramsFn={(params) => {
               const actionId = params['actionId'];
               return (
-                <ActionParentComponent
+                <ActionComponent
                   key={actionId}
                   actionId={actionId}
                   closeFn={closeFn}
@@ -48,7 +48,7 @@ export const EditorComponent: React.FC<{}> = () => {
       <Route
         path={getEditorCreatePath(ElementType.Enum.COMMAND)}
         element={
-          <CommandParentComponent
+          <CommandComponent
             key={undefined}
             commandId={undefined}
             closeFn={closeFn}
@@ -62,7 +62,7 @@ export const EditorComponent: React.FC<{}> = () => {
             paramsFn={(params) => {
               const commandId = params['commandId'];
               return (
-                <CommandParentComponent
+                <CommandComponent
                   key={commandId}
                   commandId={commandId}
                   closeFn={closeFn}
@@ -75,7 +75,7 @@ export const EditorComponent: React.FC<{}> = () => {
       <Route
         path={getEditorCreatePath(ElementType.Enum.CONTEXT)}
         element={
-          <ContextParentComponent
+          <ContextComponent
             key={undefined}
             contextId={undefined}
             closeFn={closeFn}
@@ -89,7 +89,7 @@ export const EditorComponent: React.FC<{}> = () => {
             paramsFn={(params) => {
               const contextId = params['contextId'];
               return (
-                <ContextParentComponent
+                <ContextComponent
                   key={contextId}
                   contextId={contextId}
                   closeFn={closeFn}

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
-import { ActionParentComponent } from '../ActionParentComponent';
+import { ActionComponent } from '../ActionComponent';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Field } from '../../../../validation/validation-field';
 import { ActionType } from '../../../../data/model/action/action-types';
@@ -54,7 +54,7 @@ beforeEach(async () => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ActionParentComponent />
+        <ActionComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

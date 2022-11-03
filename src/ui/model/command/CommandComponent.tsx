@@ -1,14 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 import { Button, Col, FormControl, FormText } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ValidationContext } from '../../../validation/validation-context';
-import { Field } from '../../../validation/validation-field';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { VerticalMoveableComponent } from '../../other-components/VerticalMoveableComponent';
 import { ActionDropdownComponent } from '../action/ActionDropdownComponent';
 import { SpecDropdownComponent } from '../spec/SpecDropdownComponent';
-import { Command } from '../../../data/model/command/command';
 import {
   CommandEditingContext,
   CommandReducerActionType,
@@ -16,17 +13,76 @@ import {
 import { saveCommand } from '../../../core/reducers/command-reducers';
 import { ContextDropdownComponent } from '../context/ContextDropdownComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
-import { InjectionContext } from '../../../di/injector-context';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { InjectionContext } from '../../../di/injector-context';
+import { ValidationComponent } from '../../../validation/ValidationComponent';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
+import { Command, createCommand } from '../../../data/model/command/command';
+import {
+  commandReactReducer,
+  deleteCommand,
+} from '../../../core/reducers/command-reducers';
+import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { doNothing } from '../../../core/common/common-functions';
 
 const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
 const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
 
+const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
+  return (commandId?: string) => {
+    if (commandId && savedMap[commandId]) {
+      return { ...savedMap[commandId] };
+    }
+    return createCommand();
+  };
+};
+
 export const CommandComponent: React.FC<{
+  commandId?: string;
+  closeFn?: () => void;
+}> = (props) => {
+  const savedMap = useAppSelector((state) => state.command.saved);
+  const [editing, localDispatch] = useReducer(
+    commandReactReducer,
+    props.commandId,
+    init(savedMap)
+  );
+  const reduxDispatch = useAppDispatch();
+  const container = useContext(InjectionContext);
+  const [show, setShow] = useState(false);
+
+  const closeFn = props.closeFn ?? doNothing;
+  const handleDelete = () => {
+    reduxDispatch(deleteCommand(editing.id));
+    closeFn();
+  };
+  const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Command);
+
+  return (
+    <ValidationComponent<Command> validators={validators} editing={editing}>
+      <CommandEditingContext.Provider
+        value={{ localDispatch, deleteModalConfig }}
+      >
+        <CommandChildComponent command={editing} closeFn={closeFn} />
+        <DeleteModalComponent
+          deletingName={editing.name}
+          config={deleteModalConfig}
+          deleteFn={handleDelete}
+          deleteField={Field.CMD_DELETE_MODAL_DELETE}
+          cancelField={Field.CMD_DELETE_MODAL_CANCEL}
+        />
+      </CommandEditingContext.Provider>
+    </ValidationComponent>
+  );
+};
+
+const CommandChildComponent: React.FC<{
   command: Command;
   closeFn: () => void;
 }> = (props) => {

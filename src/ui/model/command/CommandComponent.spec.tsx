@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
 import { saveSpec } from '../../../core/reducers/spec-reducers';
-import { CommandParentComponent } from './CommandParentComponent';
+import { CommandComponent } from './CommandComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { saveAction } from '../../../core/reducers/action-reducers';
@@ -38,7 +38,7 @@ beforeEach(async () => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <CommandParentComponent />
+        <CommandComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

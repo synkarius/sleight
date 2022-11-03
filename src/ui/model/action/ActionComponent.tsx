@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 import { Button, FormControl, FormSelect } from 'react-bootstrap';
-import { useAppDispatch } from '../../../app/hooks';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { ActionType } from '../../../data/model/action/action-types';
 import { saveAction } from '../../../core/reducers/action-reducers';
@@ -12,14 +11,11 @@ import {
   ActionEditingContext,
   ActionReducerActionType,
 } from './action-editing-context';
-import { Field } from '../../../validation/validation-field';
-import { Action } from '../../../data/model/action/action';
 import { isMouseAction } from '../../../data/model/action/mouse/mouse';
 import { MouseComponent } from './mouse/MouseComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { isPauseAction } from '../../../data/model/action/pause/pause';
 import { PauseComponent } from './pause/PauseComponent';
-import { InjectionContext } from '../../../di/injector-context';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
 import { ElementType } from '../../../data/model/element-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
@@ -33,12 +29,78 @@ import { isBringAppAction } from '../../../data/model/action/bring-app/bring-app
 import { BringAppComponent } from './bring-app/BringAppComponent';
 import { isCallFunctionAction } from '../../../data/model/action/call-function/call-function';
 import { CallFunctionComponent } from './call-function/CallFunctionComponent';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { InjectionContext } from '../../../di/injector-context';
+import { ValidationComponent } from '../../../validation/ValidationComponent';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
+import { Action } from '../../../data/model/action/action';
+import {
+  actionReactReducer,
+  deleteAction,
+} from '../../../core/reducers/action-reducers';
+import { createSendKeyPressAction } from '../../../data/model/action/send-key/send-key';
+import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { doNothing } from '../../../core/common/common-functions';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
 
+const init = (
+  savedMap: Record<string, Action>
+): ((returnActionId?: string) => Action) => {
+  return (actionId?: string) => {
+    if (actionId && savedMap[actionId]) {
+      return { ...savedMap[actionId] };
+    }
+    return createSendKeyPressAction();
+  };
+};
+
 export const ActionComponent: React.FC<{
+  actionId?: string;
+  closeFn?: () => void;
+}> = (props) => {
+  const reduxDispatch = useAppDispatch();
+  const savedMap = useAppSelector((state) => state.action.saved);
+  const [editing, localDispatch] = useReducer(
+    actionReactReducer,
+    props.actionId,
+    init(savedMap)
+  );
+  const container = useContext(InjectionContext);
+  const [show, setShow] = useState(false);
+
+  const closeFn = props.closeFn ?? doNothing;
+  const handleDelete = () => {
+    reduxDispatch(deleteAction(editing.id));
+    closeFn();
+  };
+  const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Action);
+
+  return (
+    <ValidationComponent<Action> validators={validators} editing={editing}>
+      <ActionEditingContext.Provider
+        value={{ localDispatch, deleteModalConfig }}
+      >
+        <ActionChildComponent action={editing} closeFn={closeFn} />
+        <DeleteModalComponent
+          /** editing.name is fine here because the modal won't show unless
+           * the element is saved, and the element can't be saved without a name
+           */
+          deletingName={editing.name}
+          config={deleteModalConfig}
+          deleteFn={handleDelete}
+          deleteField={Field.AC_DELETE_MODAL_DELETE}
+          cancelField={Field.AC_DELETE_MODAL_CANCEL}
+        />
+      </ActionEditingContext.Provider>
+    </ValidationComponent>
+  );
+};
+
+const ActionChildComponent: React.FC<{
   action: Action;
   closeFn: () => void;
 }> = (props) => {

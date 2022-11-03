@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { ContextParentComponent } from './ContextParentComponent';
+import { ContextComponent } from './ContextComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { createContext } from '../../../data/model/context/context';
@@ -31,7 +31,7 @@ beforeEach(async () => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ContextParentComponent />
+        <ContextComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

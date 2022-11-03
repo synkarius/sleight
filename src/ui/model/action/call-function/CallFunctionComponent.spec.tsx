@@ -6,7 +6,7 @@ import { store } from '../../../../app/store';
 import { InjectionContext } from '../../../../di/injector-context';
 import { Field } from '../../../../validation/validation-field';
 import { ActionType } from '../../../../data/model/action/action-types';
-import { ActionParentComponent } from '../ActionParentComponent';
+import { ActionComponent } from '../ActionComponent';
 import { container } from '../../../../di/config/brandi-config';
 import { BrowserRouter } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
@@ -34,7 +34,7 @@ beforeEach(async () => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ActionParentComponent />
+        <ActionComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

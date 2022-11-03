@@ -5,7 +5,7 @@ import { Field } from '../../../validation/validation-field';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
 import { ActionType } from '../../../data/model/action/action-types';
-import { ActionParentComponent } from './ActionParentComponent';
+import { ActionComponent } from './ActionComponent';
 import { InjectionContext } from '../../../di/injector-context';
 import { saveAction } from '../../../core/reducers/action-reducers';
 import {
@@ -154,7 +154,7 @@ const doRender = (actionId?: string) => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ActionParentComponent actionId={actionId} />
+        <ActionComponent actionId={actionId} />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

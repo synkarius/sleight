@@ -15,11 +15,11 @@ import { OpenCommandListItem } from '../../../core/command-list/open-list-item';
 import { ElementType } from '../../../data/model/element-types';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { InjectionContext } from '../../../di/injector-context';
-import { ActionParentComponent } from '../../model/action/ActionParentComponent';
-import { CommandParentComponent } from '../../model/command/CommandParentComponent';
-import { ContextParentComponent } from '../../model/context/ContextParentComponent';
-import { SpecParentComponent } from '../../model/spec/SpecParentComponent';
-import { VariableParentComponent } from '../../model/variable/VariableParentComponent';
+import { ActionComponent } from '../../model/action/ActionComponent';
+import { CommandComponent } from '../../model/command/CommandComponent';
+import { ContextComponent } from '../../model/context/ContextComponent';
+import { SpecParentComponent } from '../../model/spec/SpecComponent';
+import { VariableParentComponent } from '../../model/variable/VariableComponent';
 import { PanelComponent } from '../PanelComponent';
 
 export const CommandListViewComponent: React.FC<{}> = () => {
@@ -160,7 +160,7 @@ export const CommandListViewComponent: React.FC<{}> = () => {
                   openItem.type === ElementType.Enum.ACTION &&
                   openItem.commandId === item.command.id &&
                   item.command.actionIds.includes(openItem.actionId) && (
-                    <ActionParentComponent
+                    <ActionComponent
                       actionId={openItem.actionId}
                       closeFn={closeItem}
                     />
@@ -168,7 +168,7 @@ export const CommandListViewComponent: React.FC<{}> = () => {
                 {openItem &&
                   openItem.type === ElementType.Enum.COMMAND &&
                   openItem.commandId === item.command.id && (
-                    <CommandParentComponent
+                    <CommandComponent
                       commandId={openItem.commandId}
                       closeFn={closeItem}
                     />
@@ -177,7 +177,7 @@ export const CommandListViewComponent: React.FC<{}> = () => {
                   openItem.type === ElementType.Enum.CONTEXT &&
                   openItem.commandId === item.command.id &&
                   openItem.contextId === item.context?.id && (
-                    <ContextParentComponent
+                    <ContextComponent
                       contextId={openItem.contextId}
                       closeFn={closeItem}
                     />

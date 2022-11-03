@@ -14,7 +14,7 @@ import {
   createTextVariable,
 } from '../../../../data/model/variable/variable';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
-import { ActionParentComponent } from '../ActionParentComponent';
+import { ActionComponent } from '../ActionComponent';
 import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-modes';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
@@ -49,7 +49,7 @@ beforeEach(async () => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ActionParentComponent />
+        <ActionComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

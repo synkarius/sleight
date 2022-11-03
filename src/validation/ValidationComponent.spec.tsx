@@ -3,7 +3,7 @@ import { store } from '../app/store';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { Provider } from 'react-redux';
 import { InjectionContext } from '../di/injector-context';
-import { ContextParentComponent } from '../ui/model/context/ContextParentComponent';
+import { ContextComponent } from '../ui/model/context/ContextComponent';
 import userEvent from '@testing-library/user-event';
 import { Field } from './validation-field';
 import { FieldValidator, ValidatorType } from './field-validator';
@@ -36,7 +36,7 @@ beforeAll(() => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ContextParentComponent />
+        <ContextComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

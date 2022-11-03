@@ -6,7 +6,7 @@ import { store } from '../../../app/store';
 import { BrowserRouter } from 'react-router-dom';
 import { InjectionContext } from '../../../di/injector-context';
 import { NotImplementedError } from '../../../error/not-implemented-error';
-import { FnParentComponent } from './FnParentComponent';
+import { FnComponent } from './FnComponent';
 import { container } from '../../../di/config/brandi-config';
 import { Field } from '../../../validation/validation-field';
 import { act } from 'react-dom/test-utils';
@@ -598,7 +598,7 @@ const doRender = (fnId?: string) => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <FnParentComponent fnId={fnId} />
+        <FnComponent fnId={fnId} />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

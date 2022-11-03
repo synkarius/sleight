@@ -16,7 +16,7 @@ import {
 } from '../../../../data/model/variable/variable';
 import { saveVariable } from '../../../../core/reducers/variable-reducers';
 import { ActionType } from '../../../../data/model/action/action-types';
-import { ActionParentComponent } from '../ActionParentComponent';
+import { ActionComponent } from '../ActionComponent';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
@@ -55,7 +55,7 @@ beforeEach(async () => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <ActionParentComponent />
+        <ActionComponent />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

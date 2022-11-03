@@ -1,15 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
-import { useAppDispatch } from '../../../app/hooks';
 import { useSaved } from '../../../app/custom-hooks/use-saved-hook';
-import { InjectionContext } from '../../../di/injector-context';
 import { ValidationContext } from '../../../validation/validation-context';
-import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { PanelComponent } from '../../other-components/PanelComponent';
 import { ElementType } from '../../../data/model/element-types';
-import { Context } from '../../../data/model/context/context';
 import {
   ContextEditingContext,
   ContextReducerActionType,
@@ -17,11 +13,71 @@ import {
 import { saveContext } from '../../../core/reducers/context-reducers';
 import { ContextType } from '../../../data/model/context/context-types';
 import { ExportImportOptionsComponent } from '../../other-components/ExportImportOptionsComponent';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { ValidationComponent } from '../../../validation/ValidationComponent';
+import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
+import { Context, createContext } from '../../../data/model/context/context';
+import {
+  contextReactReducer,
+  deleteContext,
+} from '../../../core/reducers/context-reducers';
+import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
+import { doNothing } from '../../../core/common/common-functions';
+import { InjectionContext } from '../../../di/injector-context';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
+const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
+  return (contextId?: string) => {
+    if (contextId && savedMap[contextId]) {
+      return { ...savedMap[contextId] };
+    }
+    return createContext();
+  };
+};
+
 export const ContextComponent: React.FC<{
+  contextId?: string;
+  closeFn?: () => void;
+}> = (props) => {
+  const reduxDispatch = useAppDispatch();
+  const savedMap = useAppSelector((state) => state.context.saved);
+  const [editing, localDispatch] = useReducer(
+    contextReactReducer,
+    props.contextId,
+    init(savedMap)
+  );
+  const container = useContext(InjectionContext);
+  const [show, setShow] = useState(false);
+
+  const closeFn = props.closeFn ?? doNothing;
+  const handleDelete = () => {
+    reduxDispatch(deleteContext(editing.id));
+    closeFn();
+  };
+  const deleteModalConfig = { show, setShow };
+  const validators = container.get(Tokens.Validators_Context);
+
+  return (
+    <ValidationComponent<Context> validators={validators} editing={editing}>
+      <ContextEditingContext.Provider
+        value={{ localDispatch, deleteModalConfig }}
+      >
+        <ContextChildComponent context={editing} closeFn={closeFn} />
+        <DeleteModalComponent
+          deletingName={editing.name}
+          config={deleteModalConfig}
+          deleteFn={handleDelete}
+          deleteField={Field.CTX_DELETE_MODAL_DELETE}
+          cancelField={Field.CTX_DELETE_MODAL_CANCEL}
+        />
+      </ContextEditingContext.Provider>
+    </ValidationComponent>
+  );
+};
+
+const ContextChildComponent: React.FC<{
   context: Context;
   closeFn: () => void;
 }> = (props) => {

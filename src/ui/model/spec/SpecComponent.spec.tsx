@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { SpecParentComponent } from './SpecParentComponent';
+import { SpecParentComponent } from './SpecComponent';
 import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { InjectionContext } from '../../../di/injector-context';

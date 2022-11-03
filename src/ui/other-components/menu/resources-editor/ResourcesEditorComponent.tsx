@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ResourceType } from '../../../../data/model/resource-types';
-import { FnParentComponent } from '../../../model/fn/FnParentComponent';
+import { FnComponent } from '../../../model/fn/FnComponent';
 import {
   getEditorCreatePath,
   getEditorEditPath,
@@ -14,7 +14,7 @@ export const ResourcesEditorComponent: React.FC<{}> = (props) => {
       <Routes>
         <Route
           path={getEditorCreatePath(ResourceType.Enum.FN)}
-          element={<FnParentComponent fnId={undefined} key={undefined} />}
+          element={<FnComponent fnId={undefined} key={undefined} />}
         />
         <Route
           path={getEditorEditPath(ResourceType.Enum.FN)}
@@ -22,7 +22,7 @@ export const ResourcesEditorComponent: React.FC<{}> = (props) => {
             <RouterV6WorkaroundComponent
               paramsFn={(params) => {
                 const fnId = params['functionId'];
-                return <FnParentComponent fnId={fnId} key={fnId} />;
+                return <FnComponent fnId={fnId} key={fnId} />;
               }}
             />
           }
