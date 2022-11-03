@@ -36,6 +36,8 @@ export const Navigation: React.FC<{}> = () => {
   const importInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
+  const logger = container.get(Tokens.Logger);
+
   const newElementSet = () => {
     reduxDispatch(setActions({}));
     reduxDispatch(setCommands({}));
@@ -63,22 +65,29 @@ export const Navigation: React.FC<{}> = () => {
   ) => {
     e.stopPropagation();
     e.preventDefault();
+    logger.info('import - reading file');
     const file = e.target.files?.item(0);
     const fileContents = await file?.text();
     if (fileContents) {
+      logger.info('import - file read');
       const deserializer = container.get(Tokens.Deserializer);
       const dataMerger = container.get(Tokens.ImportDataMerger);
       const cleaner = container.get(Tokens.ImportsCleaner);
       const validator = container.get(Tokens.TotalDataCompositeValidator);
 
       //
+      logger.info('import - deserializing json file');
       const deserializationResult = deserializer.deserialize(fileContents);
       if (deserializationResult.type === DeserializationResultType.VALID) {
+        logger.info('import - deserialization successful');
         // TODO: version adapters
         const cleaned = cleaner.cleanData(deserializationResult.data);
+        logger.info('import - cleaning successful');
         const merged = dataMerger.merge(allData, cleaned);
+        logger.info('import - merge successful');
         const validationResult = validator.validateSleightData(merged);
         if (validationResult.status === CompositeValidationResultType.VALID) {
+          logger.info('import - validation result: valid');
           reduxDispatch(setActions(merged.actions));
           reduxDispatch(setCommands(merged.commands));
           reduxDispatch(setContexts(merged.contexts));
@@ -86,19 +95,21 @@ export const Navigation: React.FC<{}> = () => {
           reduxDispatch(setSelectors(merged.selectors));
           reduxDispatch(setSpecs(merged.specs));
           reduxDispatch(setVariables(merged.variables));
+          logger.info('import - saved');
           return;
         } else {
-          // TODO: better logging
-          validationResult.invalidated.forEach((invalid) =>
-            console.log(`id: ${invalid.id} ; reason: ${invalid.message}`)
-          );
+          logger.warn('import - validation result: invalid');
+          validationResult.invalidated
+            .map(
+              (invalid) =>
+                `import - id: ${invalid.id} ; reason: ${invalid.message}`
+            )
+            .forEach((msg) => logger.warn(msg));
         }
       } else {
-        // TODO: better logging
-        console.log('deserialization failure');
+        // TODO: error toast "Import Failed - See Logs"
+        logger.error('import - deserialization failure');
       }
-      // TODO: error toast "Import Failed - See Logs" and log results
-      console.log('Import failed');
     }
   };
   return (

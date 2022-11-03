@@ -19,6 +19,7 @@ import { bindElementPrinters } from './bindings/element-printer-bindings';
 import { bindActionValueUpdater } from './bindings/action-value-updater-bindings';
 import { bindCommandCommandListHelper } from './bindings/command-list-helper-bindings';
 import { bindSpellValidators } from './bindings/spell-validator-bindings';
+import { bindLogger } from './bindings/logger-bindings';
 
 export const container = new Container();
 [
@@ -35,6 +36,7 @@ export const container = new Container();
   bindFormatMapper,
   bindIdRewriters,
   bindImportsCleaner,
+  bindLogger,
   bindMappers,
   bindNamers,
   bindRoleKeyedDataUpdater,

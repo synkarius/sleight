@@ -92,6 +92,7 @@ import { SleightDataMerger } from '../../data/imports/data-merger';
 import { ClickSpell, KeyPressSpell, TextSpell } from '../../data/wizard/spell';
 import { SingleItemCompositeValidator } from '../../data/composite-validators/single-item/single-item-composite-validator';
 import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
+import { Logger } from '../../core/common/basic-logger';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -427,4 +428,5 @@ export namespace Tokens {
   export const ClickSpellCommandValidator = token<FieldValidator<ClickSpell>>(
     'ClickSpellCommandValidator'
   );
+  export const Logger = token<Logger>('Logger');
 }
