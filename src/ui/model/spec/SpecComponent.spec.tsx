@@ -31,7 +31,6 @@ let specIdsForCleanup: string[];
 
 // spec adequacy:
 const SPEC_WITH_SELECTOR_ID = 'spec-with-selector-id-1';
-const SPEC_WITH_SELECTOR_NAME = 'spec-with-selector-name-1';
 const SPEC_WITH_VARIABLE_ID = 'spec-with-variable-id-2';
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-3';

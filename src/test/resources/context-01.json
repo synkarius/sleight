@@ -1,0 +1,11 @@
+{
+    "context01": {
+        "id": "975ae909-4cc0-4e6c-a2af-979e233cf260",
+        "name": "chrome-context",
+        "roleKey": "",
+        "enabled": true,
+        "locked": false,
+        "type": "Executable Name",
+        "matcher": "chrome"
+    }
+}
