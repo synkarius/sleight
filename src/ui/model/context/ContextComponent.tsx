@@ -149,7 +149,7 @@ const ContextChildComponent: React.FC<{
       : 'window title to match';
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const nameError = errorResults([Field.CTX_NAME]);
+  const nameError = errorResults(Field.CTX_NAME);
 
   return (
     <PanelComponent header="Create/Edit Context">
@@ -173,14 +173,14 @@ const ContextChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of context"
-        errorMessage={errorResults([CTX_ROLE_KEY])}
+        errorMessage={errorResults(CTX_ROLE_KEY)}
       >
         <FormControl
           aria-label={Field[CTX_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(CTX_ROLE_KEY)}
-          isInvalid={!!errorResults([CTX_ROLE_KEY])}
+          isInvalid={!!errorResults(CTX_ROLE_KEY)}
           value={props.context.roleKey}
         />
       </FormGroupRowComponent>
@@ -203,14 +203,14 @@ const ContextChildComponent: React.FC<{
         labelText="Matcher"
         descriptionText={matcherHelpText}
         required={true}
-        errorMessage={errorResults([matcherField])}
+        errorMessage={errorResults(matcherField)}
       >
         <FormControl
           type="text"
           onChange={matcherChangedHandler}
           onBlur={(_e) => validationContext.touch(matcherField)}
           value={props.context.matcher}
-          isInvalid={!!errorResults([matcherField])}
+          isInvalid={!!errorResults(matcherField)}
           role="textbox"
           aria-label={Field[matcherField]}
         />

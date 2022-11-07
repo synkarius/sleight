@@ -60,7 +60,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const noChoiceItemsErrorMessage = errorResults([addItemButton]);
+  const noChoiceItemsErrorMessage = errorResults(addItemButton);
 
   return (
     <>
@@ -101,11 +101,11 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
               onChange={defaultEnabledChangedHandler}
               onBlur={() => validationContext.touch(Field.VAR_USE_DEFAULT)}
               checked={props.choice.defaultValue !== undefined}
-              isInvalid={!!errorResults([Field.VAR_USE_DEFAULT])}
+              isInvalid={!!errorResults(Field.VAR_USE_DEFAULT)}
             />
           </Col>
           <ErrorTextComponent
-            errorMessage={errorResults([Field.VAR_USE_DEFAULT])}
+            errorMessage={errorResults(Field.VAR_USE_DEFAULT)}
           />
         </Row>
         {props.choice.defaultValue !== undefined && (

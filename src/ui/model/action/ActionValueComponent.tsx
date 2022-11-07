@@ -173,7 +173,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             value={props.actionValue.value}
             onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={!!errorResults([props.fields.value])}
+            isInvalid={!!errorResults(props.fields.value)}
             name={enteredValueFieldName}
             role="textbox"
             aria-label={enteredValueFieldName}
@@ -189,7 +189,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             max={props.fields.max}
             onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={!!errorResults([props.fields.value])}
+            isInvalid={!!errorResults(props.fields.value)}
             name={enteredValueFieldName}
             role="input"
             aria-label={enteredValueFieldName}
@@ -204,7 +204,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             aria-label={Field[props.fields.value]}
             onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={!!errorResults([props.fields.value])}
+            isInvalid={!!errorResults(props.fields.value)}
             role="list"
           >
             <option value={UNSELECTED_ENUM} role="listitem"></option>
@@ -225,7 +225,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
             value={props.actionValue.value}
             onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
-            isInvalid={!!errorResults([props.fields.value])}
+            isInvalid={!!errorResults(props.fields.value)}
             name={enteredValueFieldName}
             role="textbox"
             aria-label={enteredValueFieldName}
@@ -237,7 +237,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
           selectedVariableId={props.actionValue.variableId}
           onChange={(e) => variableIdChangedHandler(e.target.value)}
           onBlur={(_e) => touchVariable()}
-          isInvalid={!!errorResults([props.fields.variable], idForError)}
+          isInvalid={!!errorResults(props.fields.variable, idForError)}
           variableTypeFilter={[props.actionValue.variableType]}
         />
       )}

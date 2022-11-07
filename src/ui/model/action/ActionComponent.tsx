@@ -168,14 +168,14 @@ const ActionChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Name"
         descriptionText="name of action"
-        errorMessage={errorResults([AC_NAME])}
+        errorMessage={errorResults(AC_NAME)}
       >
         <FormControl
           aria-label={Field[AC_NAME]}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(AC_NAME)}
-          isInvalid={!!errorResults([AC_NAME])}
+          isInvalid={!!errorResults(AC_NAME)}
           value={props.action.name}
           placeholder={actionDefaultNamer.getName(props.action)}
         />
@@ -183,14 +183,14 @@ const ActionChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of action"
-        errorMessage={errorResults([AC_ROLE_KEY])}
+        errorMessage={errorResults(AC_ROLE_KEY)}
       >
         <FormControl
           aria-label={Field[AC_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(AC_ROLE_KEY)}
-          isInvalid={!!errorResults([AC_ROLE_KEY])}
+          isInvalid={!!errorResults(AC_ROLE_KEY)}
           value={props.action.roleKey}
         />
       </FormGroupRowComponent>

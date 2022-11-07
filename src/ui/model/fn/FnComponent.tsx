@@ -153,42 +153,42 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
       <FormGroupRowComponent
         labelText="Name"
         descriptionText="name of function"
-        errorMessage={errorResults([Field.FN_NAME])}
+        errorMessage={errorResults(Field.FN_NAME)}
       >
         <FormControl
           aria-label={Field[Field.FN_NAME]}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_NAME)}
-          isInvalid={!!errorResults([Field.FN_NAME])}
+          isInvalid={!!errorResults(Field.FN_NAME)}
           value={props.fn.name}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of function"
-        errorMessage={errorResults([Field.FN_ROLE_KEY])}
+        errorMessage={errorResults(Field.FN_ROLE_KEY)}
       >
         <FormControl
           aria-label={Field[Field.FN_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_ROLE_KEY)}
-          isInvalid={!!errorResults([Field.FN_ROLE_KEY])}
+          isInvalid={!!errorResults(Field.FN_ROLE_KEY)}
           value={props.fn.roleKey}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Type"
         descriptionText="kind of function"
-        errorMessage={errorResults([Field.FN_TYPE])}
+        errorMessage={errorResults(Field.FN_TYPE)}
       >
         <FormSelect
           aria-label={Field[Field.FN_TYPE]}
           role="list"
           onChange={typeChangedHandler}
           value={props.fn.type}
-          isInvalid={!!errorResults([Field.FN_TYPE])}
+          isInvalid={!!errorResults(Field.FN_TYPE)}
         >
           {FnType.values().map((ft) => (
             <option key={ft} value={ft} role="listitem">
@@ -202,14 +202,14 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
           <FormGroupRowComponent
             labelText="Import Path"
             descriptionText="import path of function"
-            errorMessage={errorResults([Field.FN_IMPORT_PATH])}
+            errorMessage={errorResults(Field.FN_IMPORT_PATH)}
           >
             <FormControl
               aria-label={Field[Field.FN_IMPORT_PATH]}
               type="text"
               onChange={importPathChangedHandler}
               onBlur={() => validationContext.touch(Field.FN_IMPORT_PATH)}
-              isInvalid={!!errorResults([Field.FN_IMPORT_PATH])}
+              isInvalid={!!errorResults(Field.FN_IMPORT_PATH)}
               value={props.fn.importTokens.join('.')}
             />
           </FormGroupRowComponent>

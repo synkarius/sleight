@@ -94,7 +94,7 @@ export const CallFunctionComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Function"
         descriptionText="function to call"
-        errorMessage={errorResults([Field.AC_CALL_FUNC_FN])}
+        errorMessage={errorResults(Field.AC_CALL_FUNC_FN)}
       >
         <FnDropdownComponent
           field={Field.AC_CALL_FUNC_FN}
@@ -103,7 +103,7 @@ export const CallFunctionComponent: React.FC<{
           onBlur={() => {
             validationContext.touch(Field.AC_CALL_FUNC_FN);
           }}
-          isInvalid={!!errorResults([Field.AC_CALL_FUNC_FN])}
+          isInvalid={!!errorResults(Field.AC_CALL_FUNC_FN)}
         />
       </FormGroupRowComponent>
       {fn &&
@@ -112,7 +112,7 @@ export const CallFunctionComponent: React.FC<{
             labelText={'Custom Parameter'}
             key={param.name + index}
             errorMessage={errorResults(
-              [Field.AC_CALL_FUNC_PARAMETER_VAR],
+              Field.AC_CALL_FUNC_PARAMETER_VAR,
               param.id
             )}
           >
@@ -124,7 +124,7 @@ export const CallFunctionComponent: React.FC<{
             />
             <ErrorTextComponent
               errorMessage={errorResults(
-                [Field.AC_CALL_FUNC_PARAMETER_VAR],
+                Field.AC_CALL_FUNC_PARAMETER_VAR,
                 param.id
               )}
             />

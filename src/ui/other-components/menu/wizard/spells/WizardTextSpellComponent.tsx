@@ -110,7 +110,7 @@ const WizardTextSpellChildComponent: React.FC<{
               />
               <FormGroupRowComponent
                 labelText="Text Selection"
-                errorMessage={errorResults([Field.WIZ_ST_TEXT])}
+                errorMessage={errorResults(Field.WIZ_ST_TEXT)}
               >
                 <FormControl
                   type="text"
@@ -120,7 +120,7 @@ const WizardTextSpellChildComponent: React.FC<{
                     validationContext.touch(Field.WIZ_ST_TEXT);
                   }}
                   onBlur={() => validationContext.touch(Field.WIZ_ST_TEXT)}
-                  isInvalid={!!errorResults([Field.WIZ_ST_TEXT])}
+                  isInvalid={!!errorResults(Field.WIZ_ST_TEXT)}
                   role="textbox"
                   aria-label={Field[Field.WIZ_ST_TEXT]}
                 />

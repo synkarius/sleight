@@ -187,7 +187,7 @@ const VariableChildComponent: React.FC<{
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const nameError = errorResults([Field.VAR_NAME]);
+  const nameError = errorResults(Field.VAR_NAME);
 
   return (
     <PanelComponent header="Create/Edit Variable">
@@ -211,21 +211,21 @@ const VariableChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of variable"
-        errorMessage={errorResults([VAR_ROLE_KEY])}
+        errorMessage={errorResults(VAR_ROLE_KEY)}
       >
         <FormControl
           aria-label={Field[VAR_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(VAR_ROLE_KEY)}
-          isInvalid={!!errorResults([VAR_ROLE_KEY])}
+          isInvalid={!!errorResults(VAR_ROLE_KEY)}
           value={props.variable.roleKey}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Type"
         descriptionText="kind of variable"
-        errorMessage={errorResults([Field.VAR_TYPE_SELECT])}
+        errorMessage={errorResults(Field.VAR_TYPE_SELECT)}
       >
         <FormSelect
           aria-label={Field[Field.VAR_TYPE_SELECT]}
@@ -233,7 +233,7 @@ const VariableChildComponent: React.FC<{
           onBlur={() => validationContext.touch(Field.VAR_TYPE_SELECT)}
           value={props.variable.type}
           role={LIST}
-          isInvalid={!!errorResults([Field.VAR_TYPE_SELECT])}
+          isInvalid={!!errorResults(Field.VAR_TYPE_SELECT)}
         >
           {VariableType.values().map((vt) => (
             <option key={vt} value={vt} role={LIST_ITEM}>

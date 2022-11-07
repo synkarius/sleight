@@ -483,7 +483,7 @@ describe('spec component tests', () => {
     // start with optional spec + default var
     doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
 
-    const optionalSwitch = screen.getByLabelText('Optional');
+    const optionalSwitch = screen.getAllByLabelText('Optional')[0];
     // change to non-optional spec
     await user.click(optionalSwitch);
 
@@ -563,6 +563,27 @@ describe('spec component tests', () => {
 
     expect(errorText).toBeInTheDocument();
     expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate spec with zero non-optional spec items', async () => {
+    doRender();
+
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const optionalSwitch = screen.getByLabelText('Optional');
+    // change to non-optional spec
+    await user.click(optionalSwitch);
+
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    const errorSpan = screen.getByText(
+      'at least one spec item must be non-optional'
+    );
+
+    expect(saveButton).toBeDisabled();
+    expect(errorSpan).toBeInTheDocument();
+    expect(optionalSwitch).toHaveClass('is-invalid');
   });
 });
 

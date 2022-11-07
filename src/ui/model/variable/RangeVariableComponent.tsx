@@ -60,7 +60,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   const rangeMax = Field.VAR_RANGE_MAX;
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const rangeIsInvalidErrorMessage = errorResults([rangeMax]);
+  const rangeIsInvalidErrorMessage = errorResults(rangeMax);
 
   return (
     <>
@@ -101,11 +101,11 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
               onChange={defaultEnabledChangedHandler}
               onBlur={() => validationContext.touch(Field.VAR_USE_DEFAULT)}
               checked={props.range.defaultValue !== undefined}
-              isInvalid={!!errorResults([Field.VAR_USE_DEFAULT])}
+              isInvalid={!!errorResults(Field.VAR_USE_DEFAULT)}
             />
           </Col>
           <ErrorTextComponent
-            errorMessage={errorResults([Field.VAR_USE_DEFAULT])}
+            errorMessage={errorResults(Field.VAR_USE_DEFAULT)}
           />
         </Row>
         {props.range.defaultValue !== undefined && (

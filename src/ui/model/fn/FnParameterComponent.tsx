@@ -39,7 +39,7 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
   const paramNameErrorResult = errorResults(
-    [Field.FN_PARAMETER_NAME],
+    Field.FN_PARAMETER_NAME,
     props.param.id
   );
 
@@ -62,7 +62,7 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
       <FormGroupRowComponent
         labelText="Parameter Type"
         descriptionText="type of parameter"
-        errorMessage={errorResults([Field.FN_PARAMETER_TYPE], props.param.id)}
+        errorMessage={errorResults(Field.FN_PARAMETER_TYPE, props.param.id)}
       >
         <FormSelect
           aria-label={Field[Field.FN_PARAMETER_TYPE]}
@@ -70,7 +70,7 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
           onBlur={() => validationContext.touch(Field.FN_PARAMETER_TYPE)}
           value={props.param.type}
           role={LIST}
-          isInvalid={!!errorResults([Field.FN_PARAMETER_TYPE], props.param.id)}
+          isInvalid={!!errorResults(Field.FN_PARAMETER_TYPE, props.param.id)}
         >
           {VariableType.values().map((vt) => (
             <option key={vt} value={vt} role={LIST_ITEM}>

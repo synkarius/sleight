@@ -167,8 +167,8 @@ const SpecChildComponent: React.FC<{
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const noSpecItemsErrorMessage = errorResults([Field.SP_ADD_ITEM_BUTTON]);
-  const nameError = errorResults([Field.SP_NAME]);
+  const noSpecItemsErrorMessage = errorResults(Field.SP_ADD_ITEM_BUTTON);
+  const nameError = errorResults(Field.SP_NAME);
 
   return (
     <PanelComponent header="Create/Edit Spec">
@@ -195,14 +195,14 @@ const SpecChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of spec"
-        errorMessage={errorResults([SP_ROLE_KEY])}
+        errorMessage={errorResults(SP_ROLE_KEY)}
       >
         <FormControl
           aria-label={Field[SP_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(SP_ROLE_KEY)}
-          isInvalid={!!errorResults([SP_ROLE_KEY])}
+          isInvalid={!!errorResults(SP_ROLE_KEY)}
           value={props.spec.roleKey}
         />
       </FormGroupRowComponent>
@@ -234,7 +234,7 @@ const SpecChildComponent: React.FC<{
         </Col>
       </div>
       <ErrorTextComponent
-        errorMessage={errorResults([Field.SP_SAVE])}
+        errorMessage={errorResults(Field.SP_SAVE)}
         row={true}
       />
       <Col sm="12" className="mb-1">

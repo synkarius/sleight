@@ -37,6 +37,14 @@ const atLeastOneSpecItem: FieldValidator<Spec> = createValidator(
   'at least one spec item must be added'
 );
 
+const atLeastOneNonOptionalSpecItem: FieldValidator<Spec> = createValidator(
+  Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL,
+  (spec) => spec.items.length > 0,
+  (spec) => spec.items.filter((specItem) => !specItem.optional).length > 0,
+  ValidationErrorCode.SP_GTE1_NON_OPTIONAL_SPEC_ITEM,
+  'at least one spec item must be non-optional'
+);
+
 const findInvalidSelectorIds = (spec: Spec): string[] => {
   const selectorItems = spec.items.flatMap((specItem) =>
     specItem.itemType === SpecItemType.Enum.SELECTOR
@@ -188,6 +196,7 @@ const basicSpecUniquenessValidator: FieldValidator<Spec> = {
 export const getSpecValidators: () => FieldValidator<Spec>[] = () => [
   roleKeyTakenValidator,
   atLeastOneSpecItem,
+  atLeastOneNonOptionalSpecItem,
   specSelectorItemsCantBeEmpty,
   specVariableMustBeSelected,
   specSelectorMustBeAlphaSpace,

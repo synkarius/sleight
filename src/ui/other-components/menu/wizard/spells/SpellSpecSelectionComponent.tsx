@@ -18,7 +18,7 @@ export const SpellSpecSelectionComponent: React.FC<{
   return (
     <FormGroupRowComponent
       labelText="Spec Selection"
-      errorMessage={errorResults([props.field])}
+      errorMessage={errorResults(props.field)}
     >
       <FormControl
         aria-label={Field[props.field]}
@@ -28,7 +28,7 @@ export const SpellSpecSelectionComponent: React.FC<{
           validationContext.touch(props.field);
         }}
         onBlur={() => validationContext.touch(props.field)}
-        isInvalid={!!errorResults([props.field])}
+        isInvalid={!!errorResults(props.field)}
         value={props.selector}
       />
       <FormText className="text-muted">

@@ -137,8 +137,8 @@ const CommandChildComponent: React.FC<{
   };
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const nameError = errorResults([Field.CMD_NAME]);
-  const onSaveErrorMessage = errorResults([Field.CMD_SAVE]);
+  const nameError = errorResults(Field.CMD_NAME);
+  const onSaveErrorMessage = errorResults(Field.CMD_SAVE);
 
   return (
     <PanelComponent header="Create/Edit Command">
@@ -162,20 +162,20 @@ const CommandChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of command"
-        errorMessage={errorResults([Field.CMD_ROLE_KEY])}
+        errorMessage={errorResults(Field.CMD_ROLE_KEY)}
       >
         <FormControl
           aria-label={Field[Field.CMD_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(Field.CMD_ROLE_KEY)}
-          isInvalid={!!errorResults([Field.CMD_ROLE_KEY])}
+          isInvalid={!!errorResults(Field.CMD_ROLE_KEY)}
           value={props.command.roleKey}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Context"
-        errorMessage={errorResults([Field.CMD_CONTEXT])}
+        errorMessage={errorResults(Field.CMD_CONTEXT)}
       >
         <ContextDropdownComponent
           field={Field.CMD_CONTEXT}
@@ -193,7 +193,7 @@ const CommandChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Spec"
         required={true}
-        errorMessage={errorResults([Field.CMD_SPEC_SELECT])}
+        errorMessage={errorResults(Field.CMD_SPEC_SELECT)}
       >
         <SpecDropdownComponent
           field={Field.CMD_SPEC_SELECT}
@@ -206,7 +206,7 @@ const CommandChildComponent: React.FC<{
             validationContext.touch(Field.CMD_SPEC_SELECT);
           }}
           onBlur={(_e) => validationContext.touch(Field.CMD_SPEC_SELECT)}
-          isInvalid={!!errorResults([Field.CMD_SPEC_SELECT])}
+          isInvalid={!!errorResults(Field.CMD_SPEC_SELECT)}
         />
       </FormGroupRowComponent>
       <div>
@@ -252,10 +252,10 @@ const CommandChildComponent: React.FC<{
               validationContext.touch(Field.CMD_ACTION_SELECT);
             }}
             onBlur={() => validationContext.touch(Field.CMD_ACTION_SELECT)}
-            isInvalid={!!errorResults([Field.CMD_ACTION_SELECT], actionId)}
+            isInvalid={!!errorResults(Field.CMD_ACTION_SELECT, actionId)}
           />
           <ErrorTextComponent
-            errorMessage={errorResults([Field.CMD_ACTION_SELECT], actionId)}
+            errorMessage={errorResults(Field.CMD_ACTION_SELECT, actionId)}
           />
         </VerticalMoveableComponent>
       ))}

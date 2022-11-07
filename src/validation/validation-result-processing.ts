@@ -3,7 +3,10 @@ import { ErrorOrFailureValidationResult } from './validation-context';
 import { Field } from './validation-field';
 import { ValidationResultType } from './validation-result';
 
-type GetErrorMessageFn = (fields: Field[], id?: string) => string | undefined;
+type GetErrorMessageFn = (
+  fields: Field | Field[],
+  id?: string
+) => string | undefined;
 
 /**
  * Convenience method to get the singular error message for one or more fields.
@@ -23,8 +26,10 @@ export const processErrorResults = (
       errorMap.set(field, errorResult);
     }
   }
-  return (fields: Field[], id?: string) => {
-    return fields
+  return (fields: Field | Field[], id?: string) => {
+    const arr: Field[] = [];
+    return arr
+      .concat(fields)
       .map((field) => errorMap.get(field))
       .filter(isDefined)
       .filter((errorResult) => {

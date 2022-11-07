@@ -131,14 +131,16 @@ export const SpecItemComponent: React.FC<{
 
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const variableError = errorResults(
-    [Field.SP_ITEM_VARIABLE],
+  const variableError = errorResults(Field.SP_ITEM_VARIABLE, props.specItem.id);
+  const zeroNonOptionalSpecItemsError = errorResults(
+    Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL
+  );
+  const crossSliceOptionalityError = errorResults(
+    Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL,
     props.specItem.id
   );
-  const optionalityError = errorResults(
-    [Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL],
-    props.specItem.id
-  );
+  const toggleOptionalError =
+    zeroNonOptionalSpecItemsError ?? crossSliceOptionalityError;
 
   return (
     <VerticalMoveableComponent
@@ -208,7 +210,7 @@ export const SpecItemComponent: React.FC<{
           onBlur={() =>
             validationContext.touch(Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL)
           }
-          isInvalid={!!optionalityError}
+          isInvalid={!!toggleOptionalError}
         />
         <FormCheck
           type="switch"
@@ -223,7 +225,7 @@ export const SpecItemComponent: React.FC<{
           }
           disabled={!props.specItem.optional}
         />
-        <ErrorTextComponent errorMessage={optionalityError} />
+        <ErrorTextComponent errorMessage={toggleOptionalError} />
       </FormGroupRowComponent>
     </VerticalMoveableComponent>
   );

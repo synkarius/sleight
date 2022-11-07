@@ -36,7 +36,7 @@ export const TextVariableComponent: React.FC<{ text: TextVariable }> = (
   };
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const useDefaultError = errorResults([Field.VAR_USE_DEFAULT]);
+  const useDefaultError = errorResults(Field.VAR_USE_DEFAULT);
 
   return (
     <>

@@ -111,7 +111,7 @@ const WizardKeyPressSpellChildComponent: React.FC<{
               />
               <FormGroupRowComponent
                 labelText="Key Selection"
-                errorMessage={errorResults([Field.WIZ_SK_KEY])}
+                errorMessage={errorResults(Field.WIZ_SK_KEY)}
               >
                 <Form.Select
                   aria-label={Field[Field.WIZ_SK_KEY]}

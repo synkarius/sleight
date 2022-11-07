@@ -111,7 +111,7 @@ const WizardClickSpellChildComponent: React.FC<{
               />
               <FormGroupRowComponent
                 labelText="Mouse Button Selection"
-                errorMessage={errorResults([Field.WIZ_MC_BTN])}
+                errorMessage={errorResults(Field.WIZ_MC_BTN)}
               >
                 <Form.Select
                   aria-label={Field[Field.WIZ_MC_BTN]}

@@ -19,7 +19,7 @@ export const SpellContextSelectionComponent: React.FC<{
   return (
     <FormGroupRowComponent
       labelText="Context Selection"
-      errorMessage={errorResults([props.field])}
+      errorMessage={errorResults(props.field)}
     >
       <ContextDropdownComponent
         field={props.field}
