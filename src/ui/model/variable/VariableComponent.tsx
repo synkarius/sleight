@@ -40,6 +40,7 @@ import {
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
+import { MapUtil } from '../../../core/common/map-util';
 
 type VariableInitFunction = (specId?: string) => Variable;
 
@@ -51,7 +52,7 @@ const getVariableInitFunction = (
   return (variableId?: string) => {
     if (variableId && savedVariableMap[variableId]) {
       return variableDomainMapper.mapToDomain(
-        savedVariableMap[variableId],
+        { ...MapUtil.getOrThrow(savedVariableMap, variableId) },
         savedSelectorMap
       );
     }
@@ -59,7 +60,7 @@ const getVariableInitFunction = (
   };
 };
 
-export const VariableParentComponent: React.FC<{
+export const VariableComponent: React.FC<{
   variableId?: string;
   closeFn?: () => void;
 }> = (props) => {

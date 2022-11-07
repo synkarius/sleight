@@ -27,7 +27,7 @@ export const createValidator = <T>(
       } else {
         return {
           type: ValidationResultType.BASIC,
-          field: field,
+          errorHighlightField: field,
           code: code,
           message: message,
         };
@@ -58,7 +58,7 @@ export const createNameTakenValidator = <
       } else {
         return {
           type: ValidationResultType.BASIC,
-          field,
+          errorHighlightField: field,
           code,
           message,
         };
@@ -90,7 +90,7 @@ export const createRoleKeyTakenValidator = <
       } else {
         return {
           type: ValidationResultType.BASIC,
-          field,
+          errorHighlightField: field,
           code,
           message,
         };

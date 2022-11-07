@@ -28,11 +28,16 @@ import { InjectionContext } from '../../../di/injector-context';
 import { Field } from '../../../validation/validation-field';
 import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
+import { MapUtil } from '../../../core/common/map-util';
+import { DomainMapper } from '../../../core/mappers/mapper';
 
-const init = (savedMap: Record<string, Fn>): ((f?: string) => Fn) => {
+const init = (
+  savedMap: Record<string, Fn>,
+  mapper: DomainMapper<Fn, Fn>
+): ((f?: string) => Fn) => {
   return (fnId?: string) => {
     if (fnId && savedMap[fnId]) {
-      return { ...savedMap[fnId] };
+      return mapper.mapToDomain({ ...MapUtil.getOrThrow(savedMap, fnId) });
     }
     return createPythonFn();
   };
@@ -42,12 +47,12 @@ export const FnComponent: React.FC<{ fnId?: string }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
   const savedMap = useAppSelector((state) => state.fn.saved);
+  const container = useContext(InjectionContext);
   const [editing, localDispatch] = useReducer(
     fnReactReducer,
     props.fnId,
-    init(savedMap)
+    init(savedMap, container.get(Tokens.DomainMapper_Fn))
   );
-  const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const handleDelete = () => {

@@ -29,14 +29,16 @@ import {
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
+import { MapUtil } from '../../../core/common/map-util';
+import { DomainMapper } from '../../../core/mappers/mapper';
 
-const CMD_ROLE_KEY = Field.CMD_ROLE_KEY;
-const CMD_SPEC_SELECT = Field.CMD_SPEC_SELECT;
-
-const init = (savedMap: Record<string, Command>): ((c?: string) => Command) => {
+const init = (
+  savedMap: Record<string, Command>,
+  mapper: DomainMapper<Command, Command>
+): ((c?: string) => Command) => {
   return (commandId?: string) => {
     if (commandId && savedMap[commandId]) {
-      return { ...savedMap[commandId] };
+      return mapper.mapToDomain({ ...MapUtil.getOrThrow(savedMap, commandId) });
     }
     return createCommand();
   };
@@ -47,13 +49,13 @@ export const CommandComponent: React.FC<{
   closeFn?: () => void;
 }> = (props) => {
   const savedMap = useAppSelector((state) => state.command.saved);
+  const container = useContext(InjectionContext);
   const [editing, localDispatch] = useReducer(
     commandReactReducer,
     props.commandId,
-    init(savedMap)
+    init(savedMap, container.get(Tokens.DomainMapper_Command))
   );
   const reduxDispatch = useAppDispatch();
-  const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const closeFn = props.closeFn ?? doNothing;
@@ -160,18 +162,21 @@ const CommandChildComponent: React.FC<{
       <FormGroupRowComponent
         labelText="Role Key"
         descriptionText="role of command"
-        errorMessage={errorResults([CMD_ROLE_KEY])}
+        errorMessage={errorResults([Field.CMD_ROLE_KEY])}
       >
         <FormControl
-          aria-label={Field[CMD_ROLE_KEY]}
+          aria-label={Field[Field.CMD_ROLE_KEY]}
           type="text"
           onChange={roleKeyChangedHandler}
-          onBlur={() => validationContext.touch(CMD_ROLE_KEY)}
-          isInvalid={!!errorResults([CMD_ROLE_KEY])}
+          onBlur={() => validationContext.touch(Field.CMD_ROLE_KEY)}
+          isInvalid={!!errorResults([Field.CMD_ROLE_KEY])}
           value={props.command.roleKey}
         />
       </FormGroupRowComponent>
-      <FormGroupRowComponent labelText="Context">
+      <FormGroupRowComponent
+        labelText="Context"
+        errorMessage={errorResults([Field.CMD_CONTEXT])}
+      >
         <ContextDropdownComponent
           field={Field.CMD_CONTEXT}
           contextId={props.command.contextId}
@@ -180,26 +185,28 @@ const CommandChildComponent: React.FC<{
               type: CommandReducerActionType.CHANGE_CONTEXT,
               payload: e.target.value,
             });
+            validationContext.touch(Field.CMD_CONTEXT);
           }}
+          onBlur={() => validationContext.touch(Field.CMD_CONTEXT)}
         />
       </FormGroupRowComponent>
       <FormGroupRowComponent
         labelText="Spec"
         required={true}
-        errorMessage={errorResults([CMD_SPEC_SELECT])}
+        errorMessage={errorResults([Field.CMD_SPEC_SELECT])}
       >
         <SpecDropdownComponent
-          field={CMD_SPEC_SELECT}
+          field={Field.CMD_SPEC_SELECT}
           specId={props.command.specId}
           onChange={(e) => {
             editingContext.localDispatch({
               type: CommandReducerActionType.CHANGE_SPEC_VARIABLE_ID,
               payload: e.target.value,
             });
-            validationContext.touch(CMD_SPEC_SELECT);
+            validationContext.touch(Field.CMD_SPEC_SELECT);
           }}
-          onBlur={(_e) => validationContext.touch(CMD_SPEC_SELECT)}
-          isInvalid={!!errorResults([CMD_SPEC_SELECT])}
+          onBlur={(_e) => validationContext.touch(Field.CMD_SPEC_SELECT)}
+          isInvalid={!!errorResults([Field.CMD_SPEC_SELECT])}
         />
       </FormGroupRowComponent>
       <div>

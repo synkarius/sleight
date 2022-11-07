@@ -16,9 +16,9 @@ export const processErrorResults = (
   const errorMap = new Map<Field, ErrorOrFailureValidationResult>();
   for (const errorResult of errorResults) {
     const fields =
-      errorResult.type === ValidationResultType.MULTI_FIELD
+      errorResult.type === ValidationResultType.FIELDS_AND_IDS
         ? errorResult.errorHighlightFields
-        : [errorResult.field];
+        : [errorResult.errorHighlightField];
     for (const field of fields) {
       errorMap.set(field, errorResult);
     }
@@ -29,13 +29,10 @@ export const processErrorResults = (
       .filter(isDefined)
       .filter((errorResult) => {
         // if the error result type has ids, also match on id
-        return (
-          !(
-            errorResult.type === ValidationResultType.ID_LIST ||
-            errorResult.type === ValidationResultType.MULTI_FIELD
-          ) ||
-          (id && errorResult.ids.includes(id))
-        );
+        const errorResultTypeHasIds =
+          errorResult.type === ValidationResultType.ID_LIST ||
+          errorResult.type === ValidationResultType.FIELDS_AND_IDS;
+        return !errorResultTypeHasIds || (id && errorResult.ids.includes(id));
       })
       .map((errorResult) => errorResult.message)
       .find(alwaysTrue);

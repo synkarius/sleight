@@ -36,6 +36,7 @@ import { DeleteModalComponent } from '../../other-components/DeleteModalComponen
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
+import { MapUtil } from '../../../core/common/map-util';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
@@ -49,7 +50,7 @@ const getSpecInitFunction = (
   return (specId?: string) => {
     if (specId && savedSpecMap[specId]) {
       return specDomainMapper.mapToDomain(
-        savedSpecMap[specId],
+        { ...MapUtil.getOrThrow(savedSpecMap, specId) },
         savedSelectorMap
       );
     }
@@ -57,7 +58,7 @@ const getSpecInitFunction = (
   };
 };
 
-export const SpecParentComponent: React.FC<{
+export const SpecComponent: React.FC<{
   specId?: string;
   closeFn?: () => void;
 }> = (props) => {

@@ -65,13 +65,13 @@ export abstract class AbstractSpellValidator<
       if (!result.invalidated.length) {
         return {
           type: ValidationResultType.VALIDATION_FAILED,
-          field: this.field,
+          errorHighlightField: this.field,
           message: 'invalidated array is empty',
         };
       }
       return {
         type: ValidationResultType.BASIC,
-        field: this.field,
+        errorHighlightField: this.field,
         code: this.errorCode,
         message: result.invalidated[0].message,
       };

@@ -99,11 +99,16 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
         case ElementType.Enum.ACTION:
           return {
             /*
-             * On the action editor screen, we highlight cases where there are
-             * variables used which aren't in the spec.
+             * On the action editor screen, we highlight variable-typed action values
+             * whose variables aren't in the spec.
+             *
+             * - In all cases except CallFunctionAction, just the fields would be adequate
+             *   because there are not multiple action values with the same field.
+             * - In the case of CallFunctionAction, just the ids would be adequate
+             *   because there is only one relevant field.
              */
             errorHighlightFields: noncoveredVariables.map((v) => v.field),
-            type: ValidationResultType.MULTI_FIELD,
+            type: ValidationResultType.FIELDS_AND_IDS,
             code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
             message:
               `this action is used in the command "${command.name}" which, due to` +
@@ -117,8 +122,8 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
              * On the command editor screen, we highlight actions which have
              * variables not covered by the spec.
              */
-            errorHighlightFields: [Field.CMD_ACTION_SELECT],
-            type: ValidationResultType.MULTI_FIELD,
+            errorHighlightField: Field.CMD_ACTION_SELECT,
+            type: ValidationResultType.ID_LIST,
             code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
             message:
               `this command's spec ("${spec.name}") does not provide variables adequate` +
@@ -132,7 +137,7 @@ const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
              * On the spec editor screen, there's no way to highlight _which_ spec item is
              * missing
              */
-            field: Field.SP_SAVE,
+            errorHighlightField: Field.SP_SAVE,
             type: ValidationResultType.BASIC,
             code: ValidationErrorCode.CMD_INADEQUATE_VAR_COVERAGE,
             message:

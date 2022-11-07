@@ -1,0 +1,69 @@
+{
+    "import12": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [
+            {
+                "id": "3c1b6468-7ebf-4682-aa31-76d74cae0dfe",
+                "name": "com1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "specId": "932f4b25-646c-4f32-9238-8588ae84b501",
+                "actionIds": []
+            },
+            {
+                "id": "6c544f74-c107-4e2f-b7e6-38acfeaa1245",
+                "name": "com2",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "contextId": "b7f4d15c-397c-4566-9f65-9a68d57c062c",
+                "specId": "932f4b25-646c-4f32-9238-8588ae84b501",
+                "actionIds": []
+            }
+        ],
+        "contexts": [
+            {
+                "id": "b7f4d15c-397c-4566-9f65-9a68d57c062c",
+                "name": "ff-context",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "type": "Executable Name",
+                "matcher": "firefox"
+            }
+        ],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "2ac4304f-16f6-476f-a56e-aa2851b59337",
+                "items": [
+                    {
+                        "id": "ffe8022d-6e84-4ad8-bd71-83ad8519efef",
+                        "value": "hi"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "932f4b25-646c-4f32-9238-8588ae84b501",
+                "name": "spec1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "a22cf323-17fa-4b90-8828-c50e79b34147",
+                        "itemType": "Selector",
+                        "itemId": "2ac4304f-16f6-476f-a56e-aa2851b59337",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": []
+    }
+}

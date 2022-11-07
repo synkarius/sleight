@@ -5,8 +5,8 @@ import { ElementType } from '../../../../data/model/element-types';
 import { ActionComponent } from '../../../model/action/ActionComponent';
 import { CommandComponent } from '../../../model/command/CommandComponent';
 import { ContextComponent } from '../../../model/context/ContextComponent';
-import { SpecParentComponent } from '../../../model/spec/SpecComponent';
-import { VariableParentComponent } from '../../../model/variable/VariableComponent';
+import { SpecComponent } from '../../../model/spec/SpecComponent';
+import { VariableComponent } from '../../../model/variable/VariableComponent';
 import {
   getEditorCreatePath,
   getEditorEditPath,
@@ -102,11 +102,7 @@ export const EditorComponent: React.FC<{}> = () => {
       <Route
         path={getEditorCreatePath(ElementType.Enum.SPEC)}
         element={
-          <SpecParentComponent
-            key={undefined}
-            specId={undefined}
-            closeFn={closeFn}
-          />
+          <SpecComponent key={undefined} specId={undefined} closeFn={closeFn} />
         }
       />
       <Route
@@ -116,11 +112,7 @@ export const EditorComponent: React.FC<{}> = () => {
             paramsFn={(params) => {
               const specId = params['specId'];
               return (
-                <SpecParentComponent
-                  key={specId}
-                  specId={specId}
-                  closeFn={closeFn}
-                />
+                <SpecComponent key={specId} specId={specId} closeFn={closeFn} />
               );
             }}
           />
@@ -129,7 +121,7 @@ export const EditorComponent: React.FC<{}> = () => {
       <Route
         path={getEditorCreatePath(ElementType.Enum.VARIABLE)}
         element={
-          <VariableParentComponent
+          <VariableComponent
             key={undefined}
             variableId={undefined}
             closeFn={closeFn}
@@ -143,7 +135,7 @@ export const EditorComponent: React.FC<{}> = () => {
             paramsFn={(params) => {
               const variableId = params['variableId'];
               return (
-                <VariableParentComponent
+                <VariableComponent
                   key={variableId}
                   variableId={variableId}
                   closeFn={closeFn}

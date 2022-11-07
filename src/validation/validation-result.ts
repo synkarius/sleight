@@ -2,11 +2,16 @@ import { ValidationErrorCode } from './validation-error-code';
 import { Field } from './validation-field';
 
 export enum ValidationResultType {
+  /** An error was thrown during validation. */
   VALIDATION_FAILED,
+  /** Everything validated. */
   VALID,
+  /** A single field invalidated. */
   BASIC,
+  /** Multiple ided form fields under the same Field are invalidated. */
   ID_LIST,
-  MULTI_FIELD,
+  /** Only used for the spec adequacy cross-slice validator. */
+  FIELDS_AND_IDS,
 }
 
 interface AbstractValidationResult {
@@ -34,14 +39,14 @@ export const validResult = (field: Field): ValidValidationResult => ({
 const errorResultTypes = [
   ValidationResultType.BASIC,
   ValidationResultType.ID_LIST,
-  ValidationResultType.MULTI_FIELD,
+  ValidationResultType.FIELDS_AND_IDS,
 ];
 
 interface AbstractInvalidValidationResult extends AbstractValidationResult {
   readonly type:
     | typeof ValidationResultType.BASIC
     | typeof ValidationResultType.ID_LIST
-    | typeof ValidationResultType.MULTI_FIELD;
+    | typeof ValidationResultType.FIELDS_AND_IDS;
   readonly code: ValidationErrorCode;
   readonly message: string;
 }
@@ -51,22 +56,27 @@ interface AbstractInvalidValidationResult extends AbstractValidationResult {
  */
 interface BasicValidationResult extends AbstractInvalidValidationResult {
   readonly type: typeof ValidationResultType.BASIC;
-  readonly field: Field;
+  readonly errorHighlightField: Field;
 }
 
 /**
  * Includes a list of ids which are responsible for an invalid result.
- * If the result is valid, the list should be empty.
+ * The list should never be empty if this result type is returned.
  */
 export interface IdListValidationResult
   extends AbstractInvalidValidationResult {
   readonly type: typeof ValidationResultType.ID_LIST;
-  readonly field: Field;
+  readonly errorHighlightField: Field;
   readonly ids: string[];
 }
 
-interface MultiFieldValidationResult extends AbstractInvalidValidationResult {
-  readonly type: typeof ValidationResultType.MULTI_FIELD;
+/**
+ * As of time of writing, is only used for the
+ * spec adequacy cross-slice validator. Requires both fields and ids
+ * because of CallFunctionAction.
+ */
+interface FieldsAndIdsValidationResult extends AbstractInvalidValidationResult {
+  readonly type: typeof ValidationResultType.FIELDS_AND_IDS;
   readonly errorHighlightFields: Field[];
   readonly ids: string[];
 }
@@ -78,7 +88,7 @@ interface MultiFieldValidationResult extends AbstractInvalidValidationResult {
  */
 export type FailedValidationResult = {
   readonly type: typeof ValidationResultType.VALIDATION_FAILED;
-  readonly field: Field;
+  readonly errorHighlightField: Field;
   readonly message: string;
 };
 
@@ -90,7 +100,7 @@ export const isValidationFailedValidationResult = (
 export type ErrorValidationResult =
   | BasicValidationResult
   | IdListValidationResult
-  | MultiFieldValidationResult;
+  | FieldsAndIdsValidationResult;
 
 export const isErrorValidationResult = (
   result: ValidationResult

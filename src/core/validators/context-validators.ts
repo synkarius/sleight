@@ -45,7 +45,7 @@ const deletionValidator: FieldValidator<Context> = {
       ? validResult(Field.CTX_DELETE)
       : {
           type: ValidationResultType.BASIC,
-          field: Field.CTX_DELETE,
+          errorHighlightField: Field.CTX_DELETE,
           code: ValidationErrorCode.CTX_USED_AND_DELETE_ATTEMPTED,
           message:
             'cannot delete: this context is used in command(s):' +

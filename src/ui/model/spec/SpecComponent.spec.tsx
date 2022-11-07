@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { SpecParentComponent } from './SpecComponent';
+import { SpecComponent } from './SpecComponent';
 import { SpecItemType } from '../../../data/model/spec/spec-item-type';
 import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { InjectionContext } from '../../../di/injector-context';
@@ -77,7 +77,7 @@ const doRender = (specId?: string) => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <SpecParentComponent specId={specId} />
+        <SpecComponent specId={specId} />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

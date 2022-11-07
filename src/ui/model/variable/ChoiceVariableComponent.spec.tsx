@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { VariableParentComponent } from './VariableComponent';
+import { VariableComponent } from './VariableComponent';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { InjectionContext } from '../../../di/injector-context';
 import { TEXT_BOX } from '../../../core/common/accessibility-roles';
@@ -333,7 +333,7 @@ const doRender = (variableId?: string) => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <VariableParentComponent variableId={variableId} />
+        <VariableComponent variableId={variableId} />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }

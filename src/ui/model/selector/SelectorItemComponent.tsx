@@ -37,7 +37,7 @@ export const SelectorItemComponent: React.FC<{
       const errorResult = errorResults[i];
       if (
         errorResult.type === ValidationResultType.ID_LIST &&
-        errorResult.field === props.field
+        errorResult.errorHighlightField === props.field
       ) {
         result.push(errorResult);
       }

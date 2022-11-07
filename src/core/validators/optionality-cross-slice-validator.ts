@@ -66,7 +66,7 @@ const specOptionalityValidatorFn: ValidatorFn<Spec> = (specs, data, config) => {
           new Set(invalid.map((i) => i.variableName))
         ).join('", "');
         return {
-          field: Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL,
+          errorHighlightField: Field.SP_TOGGLE_SPEC_ITEM_OPTIONAL,
           type: ValidationResultType.ID_LIST,
           code: ValidationErrorCode.SP_OPTIONALITY,
           message:
@@ -80,7 +80,7 @@ const specOptionalityValidatorFn: ValidatorFn<Spec> = (specs, data, config) => {
           new Set(invalid.map((i) => i.specName))
         ).join('", "');
         return {
-          field: Field.VAR_USE_DEFAULT,
+          errorHighlightField: Field.VAR_USE_DEFAULT,
           type: ValidationResultType.BASIC,
           code: ValidationErrorCode.SP_OPTIONALITY,
           message:

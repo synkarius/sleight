@@ -37,7 +37,7 @@ const fnParamVariableSelectedValidator: FieldValidator<Action> = {
       ? validResult(Field.AC_CALL_FUNC_PARAMETER_VAR)
       : {
           type: ValidationResultType.ID_LIST,
-          field: Field.AC_CALL_FUNC_PARAMETER_VAR,
+          errorHighlightField: Field.AC_CALL_FUNC_PARAMETER_VAR,
           code: ValidationErrorCode.AC_FN_VAR_NOT_SELECTED,
           message: 'variable parameters must be selected',
           ids: invalidActionValueIds,

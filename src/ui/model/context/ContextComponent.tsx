@@ -25,13 +25,18 @@ import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
 import { InjectionContext } from '../../../di/injector-context';
+import { MapUtil } from '../../../core/common/map-util';
+import { DomainMapper } from '../../../core/mappers/mapper';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
-const init = (savedMap: Record<string, Context>): ((c?: string) => Context) => {
+const init = (
+  savedMap: Record<string, Context>,
+  mapper: DomainMapper<Context, Context>
+): ((c?: string) => Context) => {
   return (contextId?: string) => {
     if (contextId && savedMap[contextId]) {
-      return { ...savedMap[contextId] };
+      return mapper.mapToDomain({ ...MapUtil.getOrThrow(savedMap, contextId) });
     }
     return createContext();
   };
@@ -43,12 +48,12 @@ export const ContextComponent: React.FC<{
 }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const savedMap = useAppSelector((state) => state.context.saved);
+  const container = useContext(InjectionContext);
   const [editing, localDispatch] = useReducer(
     contextReactReducer,
     props.contextId,
-    init(savedMap)
+    init(savedMap, container.get(Tokens.DomainMapper_Context))
   );
-  const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const closeFn = props.closeFn ?? doNothing;

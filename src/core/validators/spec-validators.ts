@@ -60,7 +60,7 @@ const specSelectorItemsCantBeEmpty: FieldValidator<Spec> = {
       ? validResult(specItemSelectorFields)
       : {
           type: ValidationResultType.ID_LIST,
-          field: specItemSelectorFields,
+          errorHighlightField: specItemSelectorFields,
           code: ValidationErrorCode.SP_EMPTY_SELECTOR,
           message: 'selectors may not be empty',
           ids: invalidIds,
@@ -90,7 +90,7 @@ const specVariableMustBeSelected: FieldValidator<Spec> = {
       ? validResult(specItemVariableFields)
       : {
           type: ValidationResultType.ID_LIST,
-          field: specItemVariableFields,
+          errorHighlightField: specItemVariableFields,
           code: ValidationErrorCode.SP_VAR_NOT_SELECTED,
           message: 'variable must be selected',
           ids: invalidIds,
@@ -121,7 +121,7 @@ const specSelectorMustBeAlphaSpace: FieldValidator<Spec> = {
       ? validResult(specItemSelectorFields)
       : {
           type: ValidationResultType.ID_LIST,
-          field: specItemSelectorFields,
+          errorHighlightField: specItemSelectorFields,
           code: ValidationErrorCode.SP_VAR_NON_ALPHASPACE_SELECTOR,
           message: 'selectors must only be alphabetic or spaces',
           ids: invalidIds,
@@ -143,7 +143,7 @@ const deletionValidator: FieldValidator<Spec> = {
       ? validResult(Field.SP_DELETE)
       : {
           type: ValidationResultType.BASIC,
-          field: Field.SP_DELETE,
+          errorHighlightField: Field.SP_DELETE,
           code: ValidationErrorCode.SP_USED_AND_DELETE_ATTEMPTED,
           message:
             'cannot delete: this spec is used in command(s):' +
@@ -173,7 +173,7 @@ const basicSpecUniquenessValidator: FieldValidator<Spec> = {
       if (existingSpecPreview.preview === editingSpecPreview) {
         return {
           type: ValidationResultType.BASIC,
-          field: Field.SP_SAVE,
+          errorHighlightField: Field.SP_SAVE,
           code: ValidationErrorCode.SP_UNIQUENESS,
           message:
             'specs must be unique; this spec is duplicated by:' +

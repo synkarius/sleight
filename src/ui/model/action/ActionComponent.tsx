@@ -42,16 +42,19 @@ import { createSendKeyPressAction } from '../../../data/model/action/send-key/se
 import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
+import { MapUtil } from '../../../core/common/map-util';
+import { DomainMapper } from '../../../core/mappers/mapper';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
 
 const init = (
-  savedMap: Record<string, Action>
+  savedMap: Record<string, Action>,
+  mapper: DomainMapper<Action, Action>
 ): ((returnActionId?: string) => Action) => {
   return (actionId?: string) => {
     if (actionId && savedMap[actionId]) {
-      return { ...savedMap[actionId] };
+      return mapper.mapToDomain({ ...MapUtil.getOrThrow(savedMap, actionId) });
     }
     return createSendKeyPressAction();
   };
@@ -63,12 +66,12 @@ export const ActionComponent: React.FC<{
 }> = (props) => {
   const reduxDispatch = useAppDispatch();
   const savedMap = useAppSelector((state) => state.action.saved);
+  const container = useContext(InjectionContext);
   const [editing, localDispatch] = useReducer(
     actionReactReducer,
     props.actionId,
-    init(savedMap)
+    init(savedMap, container.get(Tokens.DomainMapper_Action))
   );
-  const container = useContext(InjectionContext);
   const [show, setShow] = useState(false);
 
   const closeFn = props.closeFn ?? doNothing;

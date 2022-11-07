@@ -87,7 +87,7 @@ const tryValidate = <T,>(
         : validator.field;
     return {
       type: ValidationResultType.VALIDATION_FAILED,
-      field,
+      errorHighlightField: field,
       message: `validation failed for ${Field[field]}`,
     };
   }

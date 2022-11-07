@@ -34,7 +34,7 @@ const deletionValidator: FieldValidator<Action> = {
       ? validResult(Field.AC_DELETE)
       : {
           type: ValidationResultType.BASIC,
-          field: Field.AC_DELETE,
+          errorHighlightField: Field.AC_DELETE,
           code: ValidationErrorCode.AC_USED_AND_DELETE_ATTEMPTED,
           message:
             'cannot delete: this action is used in command(s):' +

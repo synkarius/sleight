@@ -93,7 +93,7 @@ const parameterNameNotEmptyValidator: FieldValidator<Fn> = {
       ? validResult(Field.FN_PARAMETER_NAME)
       : {
           type: ValidationResultType.ID_LIST,
-          field: Field.FN_PARAMETER_NAME,
+          errorHighlightField: Field.FN_PARAMETER_NAME,
           code: ValidationErrorCode.FN_PARAM_NAME_EMPTY,
           message: 'parameter names may not be empty',
           ids: invalidParameterIds,
@@ -113,7 +113,7 @@ const parameterNameNotStartsWithNumberValidator: FieldValidator<Fn> = {
       ? validResult(Field.FN_PARAMETER_NAME)
       : {
           type: ValidationResultType.ID_LIST,
-          field: Field.FN_PARAMETER_NAME,
+          errorHighlightField: Field.FN_PARAMETER_NAME,
           code: ValidationErrorCode.FN_PARAM_STARTS_NUM,
           message: 'parameter names may not start with a number',
           ids: invalidParameterIds,
@@ -133,7 +133,7 @@ const pythonParameterCharactersValidator: FieldValidator<Fn> = {
       ? validResult(Field.FN_PARAMETER_NAME)
       : {
           type: ValidationResultType.ID_LIST,
-          field: Field.FN_PARAMETER_NAME,
+          errorHighlightField: Field.FN_PARAMETER_NAME,
           code: ValidationErrorCode.FN_PARAM_STARTS_NUM,
           message:
             'parameter names may only use alphanumeric characters and the underscore character',
@@ -164,7 +164,7 @@ const fnUsedFnTypeChangedValidator: FieldValidator<Fn> = {
       if (typeChanged) {
         return {
           type: ValidationResultType.BASIC,
-          field: Field.FN_PARAMETER_NAME,
+          errorHighlightField: Field.FN_PARAMETER_NAME,
           code: ValidationErrorCode.FN_USED_FN_TYPE_CHANGED,
           message:
             'cannot change function type since function is already used' +
@@ -194,7 +194,7 @@ const getNumParamsChangedValidator = (
         if (numParamsChanged) {
           return {
             type: ValidationResultType.BASIC,
-            field,
+            errorHighlightField: field,
             code: ValidationErrorCode.FN_USED_CHANGED_NUM_PARAMS,
             message:
               'cannot change number of parameters since function is already used' +
@@ -245,7 +245,7 @@ const fnUsedParamTypeChangedValidator: FieldValidator<Fn> = {
       ? validResult(Field.FN_PARAMETER_TYPE)
       : {
           type: ValidationResultType.ID_LIST,
-          field: Field.FN_PARAMETER_TYPE,
+          errorHighlightField: Field.FN_PARAMETER_TYPE,
           code: ValidationErrorCode.FN_USED_CHANGED_PARAM_TYPE,
           message:
             'cannot change parameter type since function is already used' +
@@ -268,7 +268,7 @@ const deletionValidator: FieldValidator<Fn> = {
       ? validResult(Field.FN_DELETE)
       : {
           type: ValidationResultType.BASIC,
-          field: Field.FN_DELETE,
+          errorHighlightField: Field.FN_DELETE,
           code: ValidationErrorCode.FN_USED_AND_DELETE_ATTEMPTED,
           message:
             'cannot delete: this function is used in call function action(s):' +

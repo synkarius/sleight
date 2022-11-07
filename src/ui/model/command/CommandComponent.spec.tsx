@@ -25,6 +25,7 @@ import { import08 } from '../../../test/resources/command-setup-08.json';
 import { import09 } from '../../../test/resources/command-setup-09.json';
 import { import10 } from '../../../test/resources/command-setup-10.json';
 import { import11 } from '../../../test/resources/command-setup-11.json';
+import { import12 } from '../../../test/resources/command-setup-12.json';
 import { saveCommand } from '../../../core/reducers/command-reducers';
 import { saveContext } from '../../../core/reducers/context-reducers';
 
@@ -34,19 +35,20 @@ beforeAll(() => {
   user = userEvent.setup();
 });
 
-beforeEach(async () => {
+const doRender = (commandId?: string): void => {
   render(
     <Provider store={store}>
       <InjectionContext.Provider value={container}>
-        <CommandComponent />
+        <CommandComponent commandId={commandId} />
       </InjectionContext.Provider>
     </Provider>,
     { wrapper: BrowserRouter }
   );
-});
+};
 
 describe('command component tests', () => {
   it('should have a placeholder name', () => {
+    doRender();
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
       name: Field[Field.CMD_NAME],
     });
@@ -58,6 +60,7 @@ describe('command component tests', () => {
   });
 
   it('should not save if validation errors', async () => {
+    doRender();
     const saveButton = screen.getByText<HTMLButtonElement>('Save');
     await user.click(saveButton);
 
@@ -65,6 +68,7 @@ describe('command component tests', () => {
   });
 
   it('should invalidate unselected spec', async () => {
+    doRender();
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
       name: Field[Field.CMD_SPEC_SELECT],
     });
@@ -80,6 +84,7 @@ describe('command component tests', () => {
   it('should validate selected spec', async () => {
     const data = import06;
     loadTestData(data);
+    doRender();
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
@@ -96,6 +101,7 @@ describe('command component tests', () => {
 
   it('selected context should stick', async () => {
     loadTestData(import09);
+    doRender();
     const contextName = Object.values(import09.contexts)[0].name;
     const contextId = Object.values(import09.contexts)[0].id;
 
@@ -110,6 +116,7 @@ describe('command component tests', () => {
 
   it('should invalidate an already taken role key', async () => {
     loadTestData(import08);
+    doRender();
 
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
       name: Field[Field.CMD_ROLE_KEY],
@@ -130,6 +137,7 @@ describe('command component tests', () => {
   it('should validate on save if spec has no variables and actions are empty', async () => {
     const data = import05;
     loadTestData(data);
+    doRender();
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
@@ -150,6 +158,7 @@ describe('command component tests', () => {
   it('should validate on save if spec has unused variables and actions are empty', async () => {
     const data = import07;
     loadTestData(data);
+    doRender();
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
@@ -175,6 +184,7 @@ describe('command component tests', () => {
   it('should invalidate on save if spec var coverage of actions is inadequate', async () => {
     const data = import04;
     loadTestData(data);
+    doRender();
     const actionName = Object.values(data.actions)[0].name;
     const specName = Object.values(data.specs)[0].name;
 
@@ -207,6 +217,7 @@ describe('command component tests', () => {
   it('should validate on save if spec var coverage of actions is adequate', async () => {
     const data = import03;
     loadTestData(data);
+    doRender();
     const actionName = Object.values(data.actions)[0].name;
     const specName = Object.values(data.specs)[0].name;
 
@@ -239,6 +250,7 @@ describe('command component tests', () => {
   it('should validate on save if spec has unused variables and actions require no variables', async () => {
     const data = import02;
     loadTestData(data);
+    doRender();
     const actionName = Object.values(data.actions)[0].name;
     const specName = Object.values(data.specs)[0].name;
 
@@ -271,6 +283,7 @@ describe('command component tests', () => {
   it('should validate on save if spec and action both have no vars', async () => {
     const data = import01;
     loadTestData(data);
+    doRender();
     const actionName = Object.values(data.actions)[0].name;
     const specName = Object.values(data.specs)[0].name;
 
@@ -296,6 +309,7 @@ describe('command component tests', () => {
   });
 
   it('should update enabled', async () => {
+    doRender();
     const enabledSwitch = screen.getByLabelText('Enabled');
     expect(enabledSwitch).toBeChecked();
     await user.click(enabledSwitch);
@@ -304,6 +318,7 @@ describe('command component tests', () => {
   });
 
   it('should update locked', async () => {
+    doRender();
     const lockedSwitch = screen.getByLabelText('Locked');
     expect(lockedSwitch).not.toBeChecked();
     await user.click(lockedSwitch);
@@ -311,9 +326,10 @@ describe('command component tests', () => {
     expect(lockedSwitch).toBeChecked();
   });
 
-  it('should invalidate if spec is used in another command', async () => {
+  it("should invalidate if new command's spec is used in another command", async () => {
     const data = import10;
     loadTestData(data);
+    doRender();
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
@@ -323,10 +339,9 @@ describe('command component tests', () => {
     await user.selectOptions(specSelect, [specName]);
 
     const saveButton = screen.getByText('Save');
-    const errorText = screen.getByText(
-      /commands must have unique specs per context, but this spec is used in command ".+"/
-    );
+    const errorText = screen.getByText(getNonUniqueSpecRegex());
 
+    expect(specSelect).toHaveClass('is-invalid');
     expect(saveButton).toBeDisabled();
     expect(errorText).toBeInTheDocument();
   });
@@ -334,6 +349,7 @@ describe('command component tests', () => {
   it('should validate if spec is used in another command with a different context', async () => {
     const data = import11;
     loadTestData(data);
+    doRender();
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
@@ -350,10 +366,64 @@ describe('command component tests', () => {
     expect(saveButton).not.toBeDisabled();
     expect(errorText).not.toBeInTheDocument();
   });
+
+  it('should invalidate changing context from global to app such that there will be spec/context pair dupe', async () => {
+    const data = import12;
+    const contextName = Object.values(data.contexts)[0].name;
+    const commandId = Object.values(data.commands)[0].id;
+    loadTestData(data);
+    doRender(commandId);
+
+    const contextSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_CONTEXT],
+    });
+    await user.selectOptions(contextSelect, [contextName]);
+    await user.tab();
+
+    const specSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_SPEC_SELECT],
+    });
+    const saveButton = screen.getByText('Save');
+    const errorText = screen.getByText(getNonUniqueSpecRegex());
+
+    expect(saveButton).toBeDisabled();
+    expect(errorText).toBeInTheDocument();
+    expect(specSelect).toHaveClass('is-invalid');
+  });
+
+  it('should invalidate changing context from app to global such that there will be spec/context pair dupe', async () => {
+    const data = import12;
+    const commandId = Object.values(data.commands)[1].id;
+    loadTestData(data);
+    doRender(commandId);
+
+    const contextSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_CONTEXT],
+    });
+    const globalContextSelectOption = screen.getAllByRole<HTMLOptionElement>(
+      'listitem',
+      { name: '' }
+    )[0];
+    await user.selectOptions(contextSelect, globalContextSelectOption);
+    await user.tab();
+
+    const specSelect = screen.getByRole<HTMLSelectElement>('list', {
+      name: Field[Field.CMD_SPEC_SELECT],
+    });
+    const saveButton = screen.getByText('Save');
+    const errorText = screen.getByText(getNonUniqueSpecRegex());
+
+    expect(saveButton).toBeDisabled();
+    expect(errorText).toBeInTheDocument();
+    expect(specSelect).toHaveClass('is-invalid');
+  });
 });
 
 const getInadequateSpecsRegex = () =>
   /this command's spec \(.*\) does not provide variables adequate/;
+
+const getNonUniqueSpecRegex = () =>
+  /commands must have unique specs per context, but this spec is used in command ".+"/;
 
 const loadTestData = (json: unknown) => {
   const formatMapper = container.get(Tokens.FormatMapper);

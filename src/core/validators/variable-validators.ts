@@ -75,7 +75,7 @@ const choiceSelectorItemsCantBeEmpty: FieldValidator<Variable> = {
       ? validResult(choiceItemSelectorFields)
       : {
           type: ValidationResultType.ID_LIST,
-          field: choiceItemSelectorFields,
+          errorHighlightField: choiceItemSelectorFields,
           code: ValidationErrorCode.VAR_EMPTY_SELECTOR,
           message: 'selectors may not be empty',
           ids: invalidIds,
@@ -104,7 +104,7 @@ const choiceSelectorItemsCantBeNonAlphaOrSpaces: FieldValidator<Variable> = {
       ? validResult(choiceItemSelectorFields)
       : {
           type: ValidationResultType.ID_LIST,
-          field: choiceItemSelectorFields,
+          errorHighlightField: choiceItemSelectorFields,
           code: ValidationErrorCode.VAR_NON_ALPHASPACE_SELECTOR,
           message: 'selectors must only be alphabetic or spaces',
           ids: invalidIds,
@@ -138,7 +138,7 @@ const usedVariableTypesValidator: FieldValidator<Variable> = {
           .map((action) => action.name)
           .join('", "');
         return {
-          field: VAR_TYPE_SELECT,
+          errorHighlightField: VAR_TYPE_SELECT,
           type: ValidationResultType.BASIC,
           code: ValidationErrorCode.VAR_USED_BUT_TYPE_CHANGED,
           message:
@@ -169,7 +169,7 @@ const deletionValidator: FieldValidator<Variable> = {
       ? validResult(Field.VAR_DELETE)
       : {
           type: ValidationResultType.BASIC,
-          field: Field.VAR_DELETE,
+          errorHighlightField: Field.VAR_DELETE,
           code: ValidationErrorCode.VAR_USED_AND_DELETE_ATTEMPTED,
           message:
             'cannot delete: this variable is used in action(s):' +

@@ -19,12 +19,14 @@ interface AbstractValidator<T> {
 
 export interface SingleFieldValidator<T> extends AbstractValidator<T> {
   readonly validatorType: typeof ValidatorType.FIELD;
+  /** Field which triggers validation on "touched". */
   readonly field: Field;
   readonly exclusiveValidationMode?: ValidateMode;
 }
 
 interface FieldsValidator<T> extends AbstractValidator<T> {
   readonly validatorType: typeof ValidatorType.FIELDS;
+  /** Fields which trigger validation on "touched". */
   readonly fields: Field[];
 }
 

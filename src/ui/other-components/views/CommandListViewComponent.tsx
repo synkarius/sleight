@@ -18,8 +18,8 @@ import { InjectionContext } from '../../../di/injector-context';
 import { ActionComponent } from '../../model/action/ActionComponent';
 import { CommandComponent } from '../../model/command/CommandComponent';
 import { ContextComponent } from '../../model/context/ContextComponent';
-import { SpecParentComponent } from '../../model/spec/SpecComponent';
-import { VariableParentComponent } from '../../model/variable/VariableComponent';
+import { SpecComponent } from '../../model/spec/SpecComponent';
+import { VariableComponent } from '../../model/variable/VariableComponent';
 import { PanelComponent } from '../PanelComponent';
 
 export const CommandListViewComponent: React.FC<{}> = () => {
@@ -186,7 +186,7 @@ export const CommandListViewComponent: React.FC<{}> = () => {
                   openItem.type === ElementType.Enum.SPEC &&
                   openItem.commandId === item.command.id &&
                   openItem.specId === item.spec.id && (
-                    <SpecParentComponent
+                    <SpecComponent
                       specId={openItem.specId}
                       closeFn={closeItem}
                     />
@@ -197,7 +197,7 @@ export const CommandListViewComponent: React.FC<{}> = () => {
                   item.variables
                     .map((v) => v.id)
                     .includes(openItem.variableId) && (
-                    <VariableParentComponent
+                    <VariableComponent
                       variableId={openItem.variableId}
                       closeFn={closeItem}
                     />
