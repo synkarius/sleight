@@ -93,6 +93,7 @@ import { ClickSpell, KeyPressSpell, TextSpell } from '../../data/wizard/spell';
 import { SingleItemCompositeValidator } from '../../data/composite-validators/single-item/single-item-composite-validator';
 import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
 import { Logger } from '../../core/common/basic-logger';
+import { DragonflyRuleMapper } from '../../data/exports/dragonfly/dragonfly-rule-mapper';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -429,4 +430,7 @@ export namespace Tokens {
     'ClickSpellCommandValidator'
   );
   export const Logger = token<Logger>('Logger');
+  export const DragonflyRuleMapper = token<DragonflyRuleMapper>(
+    'DragonflyRuleMapper'
+  );
 }

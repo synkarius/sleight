@@ -1,5 +1,3 @@
-const elemNameSuffix = '{{#replaceNonAlphanum}}{{id}}{{/replaceNonAlphanum}}';
-
 export const dragonflyCompactTemplate = `from dragonfly import Dictation
 from dragonfly import ShortIntegerRef
 from dragonfly import Choice
@@ -18,10 +16,16 @@ from dragonfly import WaitWindow
 from dragonfly import MappingRule
 from dragonfly import Grammar
 
-
-no_context_grammar = Grammar("no_context_grammar")
-no_context_rule = MappingRule(
-    name="no_context_rule",
+{{#rules}}
+{{#context}}
+{{contextName}}_context = {{#printContext}}{{id}}{{/printContext}}
+{{contextName}}_grammar = Grammar("{{contextName}}_grammar", context={{contextName}}_context)
+{{/context}}
+{{^context}}
+{{contextName}}_grammar = Grammar("{{contextName}}_grammar")
+{{/context}}
+{{contextName}}_rule = MappingRule(
+    name="{{contextName}}_rule",
     mapping={
         {{#commands}}
         {{#printCommand}}{{id}}{{/printCommand}}
@@ -36,18 +40,17 @@ no_context_rule = MappingRule(
         # TODO: defaults printer
     }
 )
+{{/rules}}
 
-no_context_grammar.add_rule(no_context_rule)
-no_context_grammar.load()
-
-# TODO: split up grammars/rules by context
-{{#contexts}}
-context_${elemNameSuffix} = {{#printContext}}{{id}}{{/printContext}}
-context_${elemNameSuffix}_grammar = Grammar("context_${elemNameSuffix}", context=context_${elemNameSuffix})
-{{/contexts}}
+{{#rules}}
+{{contextName}}_grammar.add_rule({{contextName}}_rule)
+{{contextName}}_grammar.load()
+{{/rules}}
 
 def unload():
-    global no_context_grammar
-    if no_context_grammar: no_context_grammar.unload()
-    no_context_grammar = None
+    {{#rules}}
+    global {{contextName}}_grammar
+    if {{contextName}}_grammar: {{contextName}}_grammar.unload()
+    {{contextName}}_grammar = None
+    {{/rules}}
 `;
