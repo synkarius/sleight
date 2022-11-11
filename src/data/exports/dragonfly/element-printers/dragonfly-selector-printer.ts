@@ -1,12 +1,9 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { SelectorDTO } from '../../../model/selector/selector-dto';
-import { ElementPrinter } from './element-printer';
+import { Printer } from '../../printer';
 
-export class DragonflySelectorPrinter implements ElementPrinter<SelectorDTO> {
-  printElement(
-    selector: SelectorDTO,
-    _data: SleightDataInternalFormat
-  ): string {
+export class DragonflySelectorPrinter implements Printer<SelectorDTO> {
+  printItem(selector: SelectorDTO, _data: SleightDataInternalFormat): string {
     return selector.items
       .map((item) => item.value)
       .join(' | ')

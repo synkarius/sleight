@@ -21,7 +21,7 @@ export const HoldReleaseMouseComponent: React.FC<{
       <ActionValueComponent
         actionValue={props.holdReleaseMouseAction.pause}
         labelText="Pause"
-        descriptionText="how long to pause after clicking"
+        descriptionText="how long to pause after hold/release, in seconds"
         fields={mPauseGroup}
       />
       <ActionValueComponent

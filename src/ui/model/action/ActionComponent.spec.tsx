@@ -129,7 +129,7 @@ beforeEach(async () => {
     id: ACTION_WITH_VARS,
     name: ACTION_NAME_1,
     roleKey: ROLE_KEY,
-    centiseconds: {
+    seconds: {
       id: '123',
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
       variableType: VariableType.Enum.NUMBER,
@@ -140,7 +140,7 @@ beforeEach(async () => {
   const action2: PauseAction = {
     ...createPauseAction(),
     id: ACTION_NO_VARS,
-    centiseconds: {
+    seconds: {
       id: '234',
       actionValueType: ActionValueType.Enum.ENTER_VALUE,
       enteredValueType: VariableType.Enum.NUMBER,
@@ -258,7 +258,7 @@ describe('action component tests', () => {
     const variableRadio = screen.getByLabelText('Use (Range) Variable');
     await user.click(variableRadio);
     const variableSelect = screen.getByRole(LIST, {
-      name: Field[Field.AC_CENTISECONDS_VAR],
+      name: Field[Field.AC_SECONDS_VAR],
     });
     await user.selectOptions(variableSelect, VARIABLE_NAME_1);
     const saveButton = screen.getByRole('button', {

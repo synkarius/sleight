@@ -21,7 +21,7 @@ export const ClickMouseComponent: React.FC<{
       <ActionValueComponent
         actionValue={props.clickMouseAction.pause}
         labelText="Pause"
-        descriptionText="how long to pause after clicking"
+        descriptionText="how long to pause after clicking, in seconds"
         fields={mPauseGroup}
       />
       <ActionValueComponent

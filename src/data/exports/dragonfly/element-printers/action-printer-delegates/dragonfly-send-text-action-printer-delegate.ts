@@ -5,26 +5,22 @@ import { Action } from '../../../../model/action/action';
 import { isSendTextAction } from '../../../../model/action/send-text/send-text';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
-import {
-  resultIsEmpty,
-  resultToArg,
-} from '../action-value/dragonfly-action-value-resolver-result';
-import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
+import { AbstractDragonflyActionPrinterDelegate } from './abstract-action-printer-delegate';
 
-export class DragonflySendTextPrinter
-  implements DragonflyActionPrinterDelegate
-{
+export class DragonflySendTextPrinter extends AbstractDragonflyActionPrinterDelegate {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementTokenPrinter: ElementTokenPrinter
-  ) {}
+    elementTokenPrinter: ElementTokenPrinter
+  ) {
+    super(elementTokenPrinter);
+  }
 
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isSendTextAction(action)) {
       const args: string[] = [];
       const textResult = this.actionValueResolver.resolve(action.text, data);
-      if (!resultIsEmpty(textResult)) {
-        args.push(quote(resultToArg(textResult)(this.elementTokenPrinter)));
+      if (!this.resultIsEmpty(textResult)) {
+        args.push(quote(this.resultToArg(textResult)));
       }
       return some(['Text(', args.join(', '), ')'].join(''));
     }

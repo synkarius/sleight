@@ -26,7 +26,8 @@ describe('dragonfly Mouse printer tests', () => {
     );
     const action: MoveMouseAction = castJsonForTest(import01.actions[0]);
 
-    const expected = 'Mouse("<1, 2>")';
+    const expected =
+      'Function(execute_mouse, movement_type="Relative Pixels", x=1, y=2)';
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -39,7 +40,7 @@ describe('dragonfly Mouse printer tests', () => {
 
     const xVar = fmt('variable_c6c21ba3-ff22-47b3-bdf6-7e6e9e742885');
     const yVar = fmt('variable_2ddf1139-714d-4a9a-ba5b-8ab3880ef828');
-    const expected = `Mouse("<%(${xVar})d, %(${yVar})d>")`;
+    const expected = `Function(execute_mouse, dict(${xVar}="x", ${yVar}="y"), movement_type="Relative Pixels")`;
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -50,7 +51,8 @@ describe('dragonfly Mouse printer tests', () => {
     );
     const action: ClickMouseAction = castJsonForTest(import03.actions[0]);
 
-    const expected = 'Mouse("middle:3/1")';
+    const expected =
+      'Function(execute_mouse, button="middle", repeat=3, pause=1)';
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -64,7 +66,7 @@ describe('dragonfly Mouse printer tests', () => {
     const btnVar = fmt('variable_d38dc993-fb9f-4319-8403-ca72a82cfeb9');
     const repeatVar = fmt('variable_01f08aeb-3f70-4b91-ae34-f80c140a31ba');
     const pauseVar = fmt('variable_3817aca2-a3eb-458d-8060-e0f0939b0863');
-    const expected = `Mouse("%(${btnVar})s:%(${repeatVar})d/%(${pauseVar})d")`;
+    const expected = `Function(execute_mouse, dict(${btnVar}="button", ${repeatVar}="repeat", ${pauseVar}="pause"))`;
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -75,7 +77,8 @@ describe('dragonfly Mouse printer tests', () => {
     );
     const action: HoldReleaseMouseAction = castJsonForTest(import05.actions[0]);
 
-    const expected = 'Mouse("stepdown:down/3")';
+    const expected =
+      'Function(execute_mouse, button="stepdown", direction="down", pause=3)';
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -89,7 +92,7 @@ describe('dragonfly Mouse printer tests', () => {
     const btnVar = fmt('variable_f3b4643c-ccbb-4cf1-9b48-d80e3ad24a10');
     const pauseVar = fmt('variable_7bc04596-ad0d-4527-a862-1e18bf88910a');
     const dirVar = fmt('variable_869e23f3-325a-4f2e-bf77-23deb6df89f7');
-    const expected = `Mouse("%(${btnVar})s:%(${dirVar})s/%(${pauseVar})d")`;
+    const expected = `Function(execute_mouse, dict(${btnVar}="button", ${dirVar}="direction", ${pauseVar}="pause"))`;
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });

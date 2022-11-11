@@ -5,15 +5,15 @@ import { SelectorDTO } from '../../../model/selector/selector-dto';
 import { VariableDTO } from '../../../model/variable/variable-dto';
 import { VariableType } from '../../../model/variable/variable-types';
 import { ElementTokenPrinter } from '../../element-token-printer';
-import { ElementPrinter } from './element-printer';
+import { Printer } from '../../printer';
 
-export class DragonflyVariablePrinter implements ElementPrinter<VariableDTO> {
+export class DragonflyVariablePrinter implements Printer<VariableDTO> {
   constructor(
     private elementTokenPrinter: ElementTokenPrinter,
-    private selectorPrinter: ElementPrinter<SelectorDTO>
+    private selectorPrinter: Printer<SelectorDTO>
   ) {}
 
-  printElement(variable: VariableDTO, data: SleightDataInternalFormat): string {
+  printItem(variable: VariableDTO, data: SleightDataInternalFormat): string {
     const name = this.elementTokenPrinter.printElementToken(
       variable.id,
       ElementType.Enum.VARIABLE
@@ -33,7 +33,7 @@ export class DragonflyVariablePrinter implements ElementPrinter<VariableDTO> {
                 data.selectors,
                 item.selectorId
               );
-              const printedSelector = this.selectorPrinter.printElement(
+              const printedSelector = this.selectorPrinter.printItem(
                 selector,
                 data
               );

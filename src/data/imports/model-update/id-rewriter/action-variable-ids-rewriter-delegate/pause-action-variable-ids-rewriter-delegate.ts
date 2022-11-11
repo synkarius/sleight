@@ -10,11 +10,7 @@ export const getPauseActionVariableIdsRewriterDelegate =
       if (isPauseAction(action)) {
         return {
           ...action,
-          centiseconds: maybeRewriteVariableId(
-            action.centiseconds,
-            oldId,
-            newId
-          ),
+          seconds: maybeRewriteVariableId(action.seconds, oldId, newId),
         };
       }
     },

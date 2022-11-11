@@ -23,7 +23,8 @@ describe('dragonfly SendKey printer tests', () => {
     );
     const action: SendKeyPressAction = castJsonForTest(import01.actions[0]);
 
-    const expected = 'Key("ca-mike/3:4/1")';
+    const expected =
+      'Function(execute_key, key="mike", mods="ca", outer_pause=1, repeat=4, inner_pause=3)';
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -38,7 +39,7 @@ describe('dragonfly SendKey printer tests', () => {
     const inVar = fmt('variable_48158209-b7bc-4401-a99e-ed9eb291cc8c');
     const reVar = fmt('variable_0cffbe4c-203b-4b8e-ad2d-5f2aaefa83d4');
     const outVar = fmt('variable_e72d4bc7-6ef8-42e4-ac18-2e2795256ea1');
-    const expected = `Key("sw-%(${keyVar})s/%(${inVar})d:%(${reVar})d/%(${outVar})d")`;
+    const expected = `Function(execute_key, dict(${keyVar}="key", ${outVar}="outer_pause", ${reVar}="repeat", ${inVar}="inner_pause"), mods="sw")`;
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -51,7 +52,8 @@ describe('dragonfly SendKey printer tests', () => {
       import03.actions[0]
     );
 
-    const expected = 'Key("kilo:up/14")';
+    const expected =
+      'Function(execute_key, key="kilo", mods="no-mods", outer_pause=14, direction="up")';
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -67,7 +69,7 @@ describe('dragonfly SendKey printer tests', () => {
     const keyVar = fmt('variable_c527fae3-fb30-4f85-b8a2-f8cd39adcaeb');
     const dirVar = fmt('variable_5585a4cd-d671-4d65-8057-0015b0ed10a3');
     const outVar = fmt('variable_b61db350-b08f-460c-a65f-9f2e3cdc3370');
-    const expected = `Key("as-%(${keyVar})s:%(${dirVar})s/%(${outVar})d")`;
+    const expected = `Function(execute_key, dict(${keyVar}="key", ${outVar}="outer_pause", ${dirVar}="direction"), mods="as")`;
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });

@@ -1,28 +1,36 @@
 import { quote } from '../../../../../core/common/common-functions';
 import { MapUtil } from '../../../../../core/common/map-util';
-import { Maybe, none, some } from '../../../../../core/common/maybe';
+import {
+  isNone,
+  isSome,
+  maybe,
+  Maybe,
+  none,
+  some,
+} from '../../../../../core/common/maybe';
+import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
+import { ExportError } from '../../../../../error/export-error';
 import { NotImplementedError } from '../../../../../error/not-implemented-error';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
+import { ActionValue } from '../../../../model/action/action-value';
+import { ActionValueType } from '../../../../model/action/action-value-type';
 import { isCallFunctionAction } from '../../../../model/action/call-function/call-function';
+import { Fn, FnParameter } from '../../../../model/fn/fn';
 import { FnType } from '../../../../model/fn/fn-types';
 import { VariableType } from '../../../../model/variable/variable-types';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
-import {
-  DragonflyActionValueResolverResultType,
-  resultIsEmpty,
-  resultToArg,
-} from '../action-value/dragonfly-action-value-resolver-result';
-import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
+import { AbstractDragonflyActionPrinterDelegate } from './abstract-action-printer-delegate';
+import { AbstractDragonflyActionAsFunctionPrinterDelegate } from './abstract-dragonfly-action-as-function-printer-delegate';
 
-export class DragonflyCallFunctionPrinter
-  implements DragonflyActionPrinterDelegate
-{
+export class DragonflyCallFunctionPrinter extends AbstractDragonflyActionAsFunctionPrinterDelegate {
   constructor(
-    private actionValueResolver: DragonflyActionValueResolver,
-    private elementTokenPrinter: ElementTokenPrinter
-  ) {}
+    actionValueResolver: DragonflyActionValueResolver,
+    elementTokenPrinter: ElementTokenPrinter
+  ) {
+    super(actionValueResolver, elementTokenPrinter);
+  }
 
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isCallFunctionAction(action)) {
@@ -31,22 +39,9 @@ export class DragonflyCallFunctionPrinter
         throw new NotImplementedError('fnType: ' + fn.type);
       }
 
-      const args: string[] = [];
-      for (let i = 0; i < action.parameters.length; i++) {
-        const fnParam = fn.parameters[i];
-        const avParam = action.parameters[i];
+      const wrapped = action.parameters.map((p) => this.wrapActionValue(p));
 
-        const result = this.actionValueResolver.resolve(avParam, data);
-        if (!resultIsEmpty(result)) {
-          const paramName = `${fnParam.name}=`;
-          const arg = resultToArg(result)(this.elementTokenPrinter);
-          const dontQuote =
-            fnParam.type === VariableType.Enum.NUMBER &&
-            result.type !== DragonflyActionValueResolverResultType.USE_VARIABLE;
-          args.push(paramName + (dontQuote ? arg : quote(arg)));
-        }
-      }
-      return some(['Function(', args.join(', '), ')'].join(''));
+      return some(this.printActionAsFunction(wrapped, fn, data));
     }
     return none();
   }

@@ -2,18 +2,21 @@ import { replaceNonAlphaNumeric } from '../../../core/common/common-functions';
 import { MapUtil } from '../../../core/common/map-util';
 import { VariableExtractor } from '../../../validation/variable-extraction/variable-extractor';
 import { SleightDataInternalFormat } from '../../data-formats';
+import { Command } from '../../model/command/command';
 import { OptionalId } from '../../model/domain';
-import { DragonflyRule } from './dragonfly-rule';
+import { DragonflyModel } from './model/dragonfly-model';
+import { DragonflyRule } from './model/dragonfly-rule';
 
-export type DragonflyRuleMapper = {
-  mapDataToDragonflyRules(data: SleightDataInternalFormat): DragonflyRule[];
+export type DragonflyModelMapper = {
+  mapDataToDragonflyModel(data: SleightDataInternalFormat): DragonflyModel;
 };
 
-export class DefaultDragonflyRuleMapper implements DragonflyRuleMapper {
+export class DefaultDragonflyModelMapper implements DragonflyModelMapper {
   constructor(private variableExtractor: VariableExtractor) {}
 
-  mapDataToDragonflyRules(data: SleightDataInternalFormat): DragonflyRule[] {
+  mapDataToDragonflyModel(data: SleightDataInternalFormat): DragonflyModel {
     const result = new Map<string, DragonflyRule>();
+    let noopCommandsExist = false;
 
     const commandDTOs = Object.values(data.commands);
     for (const commandDTO of commandDTOs) {
@@ -25,16 +28,37 @@ export class DefaultDragonflyRuleMapper implements DragonflyRuleMapper {
       // add command
       rule.commands.push(commandDTO);
       // add variables
+      const variableDTOs = this.getVariablesFromCommand(commandDTO, data);
+      variableDTOs.forEach((variableDTO) => rule.extras.push(variableDTO));
+      // add defaults
+      variableDTOs
+        .filter((variableDTO) => !!variableDTO.defaultValue)
+        .forEach((variableDTO) => rule.defaults.push(variableDTO));
+      // determine whether there are commands with no action
+      noopCommandsExist = noopCommandsExist || !variableDTOs.length;
+    }
+
+    return {
+      rules: Array.from(result.values()),
+      metadata: { noopCommandsExist },
+    };
+  }
+
+  private getVariablesFromCommand(
+    commandDTO: Command,
+    data: SleightDataInternalFormat
+  ) {
+    const variableIds = new Set(
       commandDTO.actionIds
         .map((actionId) => MapUtil.getOrThrow(data.actions, actionId))
         .flatMap((actionDTO) =>
           this.variableExtractor.extractVariables(actionDTO)
         )
-        .map((ev) => MapUtil.getOrThrow(data.variables, ev.variableId))
-        .forEach((variableDTO) => rule.variables.push(variableDTO));
-    }
-
-    return Array.from(result.values());
+        .map((ev) => ev.variableId)
+    );
+    return Array.from(variableIds).map((variableId) =>
+      MapUtil.getOrThrow(data.variables, variableId)
+    );
   }
 
   private createNewDragonflyRule(
@@ -50,7 +74,8 @@ export class DefaultDragonflyRuleMapper implements DragonflyRuleMapper {
         : this.getKeyDefault(),
       context,
       commands: [],
-      variables: [],
+      extras: [],
+      defaults: [],
     };
   }
 

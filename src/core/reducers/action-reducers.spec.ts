@@ -134,7 +134,7 @@ describe('action reducer', () => {
       type: ActionType.Enum.PAUSE,
       enabled: true,
       locked: false,
-      centiseconds: { ...createNumberValue(), id: expect.any(String) },
+      seconds: { ...createNumberValue(), id: expect.any(String) },
     };
 
     expect(actual).not.toBe(obj);

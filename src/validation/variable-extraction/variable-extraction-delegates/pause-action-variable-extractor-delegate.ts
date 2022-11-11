@@ -8,8 +8,8 @@ export const getPauseVariableExtractorDelegate =
       if (isPauseAction(action)) {
         return [
           {
-            ...action.centiseconds,
-            field: Field.AC_CENTISECONDS_VAR,
+            ...action.seconds,
+            field: Field.AC_SECONDS_VAR,
           },
         ];
       }

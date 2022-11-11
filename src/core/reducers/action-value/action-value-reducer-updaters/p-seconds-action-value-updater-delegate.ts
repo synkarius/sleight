@@ -6,15 +6,15 @@ import {
 } from './action-value-reducer-support';
 import { ActionValueUpdaterDelegate } from './action-value-updater-delegate';
 
-export const getPCentisecondsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
+export const getPSecondsActionValueUpdaterDelegate: () => ActionValueUpdaterDelegate =
   () => (state, action) => {
     if (isPauseAction(state)) {
       return {
         ...state,
-        centiseconds:
+        seconds:
           action.type === ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE
-            ? changeNumberActionValueType(state.centiseconds, action)
-            : changeActionValueValue(state.centiseconds, action),
+            ? changeNumberActionValueType(state.seconds, action)
+            : changeActionValueValue(state.seconds, action),
       };
     }
   };

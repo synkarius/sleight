@@ -5,31 +5,27 @@ import { Action } from '../../../../model/action/action';
 import { isMimicAction } from '../../../../model/action/mimic/mimic';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
-import {
-  DragonflyActionValueResolverResultType,
-  resultIsEmpty,
-  resultToDFStrInterp,
-} from '../action-value/dragonfly-action-value-resolver-result';
-import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
+import { DragonflyActionValueResolverResultType } from '../action-value/dragonfly-action-value-resolver-result';
+import { AbstractDragonflyActionPrinterDelegate } from './abstract-action-printer-delegate';
 
-export class DragonflyMimicPrinter implements DragonflyActionPrinterDelegate {
+export class DragonflyMimicPrinter extends AbstractDragonflyActionPrinterDelegate {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementTokenPrinter: ElementTokenPrinter
-  ) {}
+    elementTokenPrinter: ElementTokenPrinter
+  ) {
+    super(elementTokenPrinter);
+  }
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isMimicAction(action)) {
       const args: string[] = [];
       //
       const wordsResult = this.actionValueResolver.resolve(action.words, data);
-      if (!resultIsEmpty(wordsResult)) {
+      if (!this.resultIsEmpty(wordsResult)) {
         if (
           wordsResult.type ===
           DragonflyActionValueResolverResultType.USE_VARIABLE
         ) {
-          args.push(
-            quote(resultToDFStrInterp(wordsResult)(this.elementTokenPrinter))
-          );
+          args.push(quote(this.resultToDFStrInterp(wordsResult)));
         } else {
           wordsResult.value
             .split(' ')

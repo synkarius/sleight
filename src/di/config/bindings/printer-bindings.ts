@@ -12,6 +12,8 @@ import { DefaultDragonflyActionValueResolver } from '../../../data/exports/drago
 import { DelegatingDragonflyActionPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-action-printer';
 import { DragonflyCommandPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-command-printer';
 import { DragonflyContextPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-context-printer';
+import { DragonflyDefaultsPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-defaults-printer';
+import { DragonflyFnImportPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-fn-import-printer';
 import { DragonflySelectorPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-selector-printer';
 import { DragonflySpecPrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-spec-printer';
 import { DragonflyVariablePrinter } from '../../../data/exports/dragonfly/element-printers/dragonfly-variable-printer';
@@ -19,7 +21,7 @@ import { DefaultElementTokenPrinter } from '../../../data/exports/element-token-
 import { DragonflyActionPrinterDelegateArray } from '../../di-collection-types';
 import { Tokens } from '../brandi-tokens';
 
-export const bindElementPrinters = (container: Container): void => {
+export const bindPrinters = (container: Container): void => {
   /*
    * DRAGONFLY
    */
@@ -34,9 +36,9 @@ export const bindElementPrinters = (container: Container): void => {
     .inSingletonScope();
   // action printer delegates
   bindActionPrinterDelegates(container);
-  // element printers
+  // printers
   container
-    .bind(Tokens.DragonElementPrinter_Action)
+    .bind(Tokens.DragonflyPrinter_Action)
     .toInstance(DelegatingDragonflyActionPrinter)
     .inSingletonScope();
   injected(
@@ -44,51 +46,62 @@ export const bindElementPrinters = (container: Container): void => {
     Tokens.DragonflyActionPrinterDelegateArray
   );
   container
-    .bind(Tokens.DragonElementPrinter_Command)
+    .bind(Tokens.DragonflyPrinter_Command)
     .toInstance(DragonflyCommandPrinter)
     .inSingletonScope();
   injected(
     DragonflyCommandPrinter,
-    Tokens.DragonElementPrinter_Spec,
-    Tokens.DragonElementPrinter_Action
+    Tokens.DragonflyPrinter_Spec,
+    Tokens.DragonflyPrinter_Action
   );
   container
-    .bind(Tokens.DragonElementPrinter_Context)
+    .bind(Tokens.DragonflyPrinter_Context)
     .toInstance(DragonflyContextPrinter)
     .inSingletonScope();
   container
-    .bind(Tokens.DragonElementPrinter_Selector)
+    .bind(Tokens.DragonflyPrinter_Fn_Import)
+    .toInstance(DragonflyFnImportPrinter)
+    .inSingletonScope();
+  container
+    .bind(Tokens.DragonflyPrinter_Selector)
     .toInstance(DragonflySelectorPrinter)
     .inSingletonScope();
   container
-    .bind(Tokens.DragonElementPrinter_Spec)
+    .bind(Tokens.DragonflyPrinter_Spec)
     .toInstance(DragonflySpecPrinter)
     .inSingletonScope();
   injected(
     DragonflySpecPrinter,
     Tokens.ElementTokenPrinter,
-    Tokens.DragonElementPrinter_Selector
+    Tokens.DragonflyPrinter_Selector
   );
   container
-    .bind(Tokens.DragonElementPrinter_Variable)
+    .bind(Tokens.DragonflyPrinter_Variable)
     .toInstance(DragonflyVariablePrinter)
     .inSingletonScope();
   injected(
     DragonflyVariablePrinter,
     Tokens.ElementTokenPrinter,
-    Tokens.DragonElementPrinter_Selector
+    Tokens.DragonflyPrinter_Selector
   );
+  container
+    .bind(Tokens.DragonflyPrinter_Variable_Defaults)
+    .toInstance(DragonflyDefaultsPrinter)
+    .inSingletonScope();
+  injected(DragonflyDefaultsPrinter, Tokens.ElementTokenPrinter);
   container
     .bind(Tokens.DragonflyMustacheFnsFactory)
     .toInstance(DefaultDragonflyMustacheFnsFactory)
     .inSingletonScope();
   injected(
     DefaultDragonflyMustacheFnsFactory,
-    Tokens.DragonElementPrinter_Action,
-    Tokens.DragonElementPrinter_Command,
-    Tokens.DragonElementPrinter_Context,
-    Tokens.DragonElementPrinter_Spec,
-    Tokens.DragonElementPrinter_Variable
+    Tokens.DragonflyPrinter_Action,
+    Tokens.DragonflyPrinter_Command,
+    Tokens.DragonflyPrinter_Context,
+    Tokens.DragonflyPrinter_Fn_Import,
+    Tokens.DragonflyPrinter_Spec,
+    Tokens.DragonflyPrinter_Variable,
+    Tokens.DragonflyPrinter_Variable_Defaults
   );
 };
 

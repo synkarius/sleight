@@ -14,7 +14,7 @@ export const SendKeyPressComponent: React.FC<{
       <ActionValueComponent
         actionValue={props.sendKeyPressAction.innerPause}
         labelText="Inner Pause"
-        descriptionText="time to pause between repetitions of keystroke, in centiseconds"
+        descriptionText="time to pause between repetitions of keystroke, in seconds"
         fields={skInnerPauseGroup}
       />
       <ActionValueComponent

@@ -18,7 +18,7 @@ describe('dragonfly Pause printer tests', () => {
     );
     const action: PauseAction = castJsonForTest(import01.actions[0]);
 
-    const expected = 'Pause(1)';
+    const expected = 'Function(execute_pause, seconds=1)';
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });
@@ -30,7 +30,7 @@ describe('dragonfly Pause printer tests', () => {
     const action: PauseAction = castJsonForTest(import02.actions[0]);
 
     const textVar = fmt('variable_ed48430e-ed5f-44b3-a304-1d733b622549');
-    const expected = `Pause("%(${textVar})d")`;
+    const expected = `Function(execute_pause, dict(${textVar}="seconds"))`;
     const actual = printer.printAction(action, data);
     expect(actual).toEqual(some(expected));
   });

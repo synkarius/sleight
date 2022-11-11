@@ -5,20 +5,16 @@ import { Action } from '../../../../model/action/action';
 import { isWaitForWindowAction } from '../../../../model/action/wait-for-window/wait-for-window';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
-import {
-  DragonflyActionValueResolverResultType,
-  resultIsEmpty,
-  resultToArg,
-} from '../action-value/dragonfly-action-value-resolver-result';
-import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
+import { DragonflyActionValueResolverResultType } from '../action-value/dragonfly-action-value-resolver-result';
+import { AbstractDragonflyActionPrinterDelegate } from './abstract-action-printer-delegate';
 
-export class DragonflyWaitForWindowPrinter
-  implements DragonflyActionPrinterDelegate
-{
+export class DragonflyWaitForWindowPrinter extends AbstractDragonflyActionPrinterDelegate {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    private elementTokenPrinter: ElementTokenPrinter
-  ) {}
+    elementTokenPrinter: ElementTokenPrinter
+  ) {
+    super(elementTokenPrinter);
+  }
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isWaitForWindowAction(action)) {
       const args: string[] = [];
@@ -27,26 +23,21 @@ export class DragonflyWaitForWindowPrinter
         action.executable,
         data
       );
-      if (!resultIsEmpty(executableResult)) {
-        args.push(
-          'executable=' +
-            quote(resultToArg(executableResult)(this.elementTokenPrinter))
-        );
+      if (!this.resultIsEmpty(executableResult)) {
+        args.push('executable=' + quote(this.resultToArg(executableResult)));
       }
       //
       const titleResult = this.actionValueResolver.resolve(action.title, data);
-      if (!resultIsEmpty(titleResult)) {
-        args.push(
-          'title=' + quote(resultToArg(titleResult)(this.elementTokenPrinter))
-        );
+      if (!this.resultIsEmpty(titleResult)) {
+        args.push('title=' + quote(this.resultToArg(titleResult)));
       }
       //
       const waitSecondsResult = this.actionValueResolver.resolve(
         action.waitSeconds,
         data
       );
-      if (!resultIsEmpty(waitSecondsResult)) {
-        const arg = resultToArg(waitSecondsResult)(this.elementTokenPrinter);
+      if (!this.resultIsEmpty(waitSecondsResult)) {
+        const arg = this.resultToArg(waitSecondsResult);
         args.push(
           'timeout=' +
             (waitSecondsResult.type ===

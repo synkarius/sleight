@@ -1,10 +1,10 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { Context } from '../../../model/context/context';
 import { ContextType } from '../../../model/context/context-types';
-import { ElementPrinter } from './element-printer';
+import { Printer } from '../../printer';
 
-export class DragonflyContextPrinter implements ElementPrinter<Context> {
-  printElement(context: Context, _data: SleightDataInternalFormat): string {
+export class DragonflyContextPrinter implements Printer<Context> {
+  printItem(context: Context, _data: SleightDataInternalFormat): string {
     const matched =
       context.type === ContextType.Enum.EXECUTABLE_NAME
         ? 'executable'

@@ -6,7 +6,7 @@
         "enabled": true,
         "locked": false,
         "type": "Pause",
-        "centiseconds": {
+        "seconds": {
             "id": "10002",
             "actionValueType": "Enter Value",
             "enteredValueType": "Range",

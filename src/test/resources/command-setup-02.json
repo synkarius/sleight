@@ -9,7 +9,7 @@
                 "roleKey": "",
                 "enabled": true,
                 "locked": false,
-                "centiseconds": {
+                "seconds": {
                     "id": "14049cb3-f622-4e2e-a0ce-becd96580f33",
                     "actionValueType": "Enter Value",
                     "enteredValueType": "Range",

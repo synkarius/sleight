@@ -1,165 +1,156 @@
-import { quote } from '../../../../../core/common/common-functions';
 import { Maybe, none, some } from '../../../../../core/common/maybe';
 import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
 import { ExportError } from '../../../../../error/export-error';
 import { SleightDataInternalFormat } from '../../../../data-formats';
 import { Action } from '../../../../model/action/action';
+import { isVariableActionValue } from '../../../../model/action/action-value';
 import {
   isSendKeyAction,
+  isSendKeyHoldReleaseAction,
+  isSendKeyPressAction,
   SendKeyAction,
   SendKeyHoldReleaseAction,
-  SendKeyPressAction,
 } from '../../../../model/action/send-key/send-key';
 import { SendKeyMode } from '../../../../model/action/send-key/send-key-modes';
+import { PythonFn, PythonFnParameter } from '../../../../model/fn/fn';
+import { FnType } from '../../../../model/fn/fn-types';
+import { VariableType } from '../../../../model/variable/variable-types';
 import { ElementTokenPrinter } from '../../../element-token-printer';
+import { PrintableValue, PrintableValueType } from '../../../printable-value';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
-import {
-  DragonflyActionValueResolverResult,
-  DragonflyActionValueResolverResultType,
-  resultIsEmpty,
-  resultToArg,
-  resultToDFStrInterp,
-} from '../action-value/dragonfly-action-value-resolver-result';
-import { DragonflyActionPrinterDelegate } from './action-printer-delegate';
+import { AbstractDragonflyActionAsFunctionPrinterDelegate } from './abstract-dragonfly-action-as-function-printer-delegate';
 
-export class DragonflySendKeyPrinter implements DragonflyActionPrinterDelegate {
+export class DragonflySendKeyPrinter extends AbstractDragonflyActionAsFunctionPrinterDelegate {
   constructor(
-    private actionValueResolver: DragonflyActionValueResolver,
-    private elementTokenPrinter: ElementTokenPrinter
-  ) {}
+    actionValueResolver: DragonflyActionValueResolver,
+    elementTokenPrinter: ElementTokenPrinter
+  ) {
+    super(actionValueResolver, elementTokenPrinter);
+  }
 
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
     if (isSendKeyAction(action)) {
-      const args: string[] = [];
-      const sendKeyMode = action.sendKeyMode;
-      switch (sendKeyMode) {
-        case SendKeyMode.Enum.PRESS:
-          args.push(this.getKeyPressArgs(action, data));
-          break;
-        case SendKeyMode.Enum.HOLD_RELEASE:
-          args.push(this.getKeyHoldReleaseArgs(action, data));
-          break;
-        default:
-          throw new ExhaustivenessFailureError(sendKeyMode);
-      }
-      return some(['Key(', args.join(', '), ')'].join(''));
+      const avParams = this.getPrintableValues(action);
+      const fnParams = this.getFnParameters(action);
+      const executeKey: PythonFn = {
+        id: '',
+        name: 'execute_key',
+        roleKey: '',
+        type: FnType.Enum.PYTHON,
+        enabled: true,
+        locked: true,
+        importTokens: [],
+        parameters: fnParams,
+      };
+      return some(this.printActionAsFunction(avParams, executeKey, data));
     }
     return none();
   }
 
-  private getKeyPressArgs(
-    action: SendKeyPressAction,
-    data: SleightDataInternalFormat
-  ): string {
-    const args: string[] = [];
-    args.push(this.getModifiers(action));
-    //
-    const keyToSendResult = this.actionValueResolver.resolve(
-      action.keyToSend,
-      data
-    );
-    args.push(this.enumKeyResultToArg(keyToSendResult));
-    //
-    const innerPauseResult = this.actionValueResolver.resolve(
-      action.innerPause,
-      data
-    );
-    if (!resultIsEmpty(innerPauseResult)) {
-      const arg = resultToArg(innerPauseResult)(this.elementTokenPrinter);
-      args.push('/' + arg);
+  private getPrintableValues(sendKeyAction: SendKeyAction): PrintableValue[] {
+    const sendKeyMode = sendKeyAction.sendKeyMode;
+    switch (sendKeyMode) {
+      case SendKeyMode.Enum.PRESS:
+        return [
+          this.extractKeyToSend(sendKeyAction),
+          this.getModifiers(sendKeyAction),
+          this.wrapActionValue(sendKeyAction.outerPause),
+          this.wrapActionValue(sendKeyAction.repeat),
+          this.wrapActionValue(sendKeyAction.innerPause),
+        ];
+      case SendKeyMode.Enum.HOLD_RELEASE:
+        return [
+          this.extractKeyToSend(sendKeyAction),
+          this.getModifiers(sendKeyAction),
+          this.wrapActionValue(sendKeyAction.outerPause),
+          this.extractDirection(sendKeyAction),
+        ];
+      default:
+        throw new ExhaustivenessFailureError(sendKeyMode);
     }
-    //
-    const repeatResult = this.actionValueResolver.resolve(action.repeat, data);
-    if (!resultIsEmpty(repeatResult)) {
-      const arg = resultToArg(repeatResult)(this.elementTokenPrinter);
-      args.push(':' + arg);
-    }
-    //
-    const outerPauseResult = this.actionValueResolver.resolve(
-      action.outerPause,
-      data
-    );
-    if (!resultIsEmpty(outerPauseResult)) {
-      const arg = resultToArg(outerPauseResult)(this.elementTokenPrinter);
-      args.push('/' + arg);
-    }
-    return quote(args.join(''));
   }
 
-  private getKeyHoldReleaseArgs(
-    action: SendKeyHoldReleaseAction,
-    data: SleightDataInternalFormat
-  ): string {
-    const args: string[] = [];
-    args.push(this.getModifiers(action));
-    //
-    const keyToSendResult = this.actionValueResolver.resolve(
-      action.keyToSend,
-      data
-    );
-    args.push(this.enumKeyResultToArg(keyToSendResult));
-    //
-    const directionResult = this.actionValueResolver.resolve(
-      action.direction,
-      data
-    );
-    args.push(':' + this.enumDirectionResultToArg(directionResult));
-    //
-    const outerPauseResult = this.actionValueResolver.resolve(
-      action.outerPause,
-      data
-    );
-    if (!resultIsEmpty(outerPauseResult)) {
-      const arg = resultToArg(outerPauseResult)(this.elementTokenPrinter);
-      args.push('/' + arg);
+  private extractKeyToSend(sendKeyAction: SendKeyAction): PrintableValue {
+    if (isVariableActionValue(sendKeyAction.keyToSend)) {
+      return this.wrapActionValue(sendKeyAction.keyToSend);
     }
-    return quote(args.join(''));
+    const matchPattern = sendKeyAction.keyToSend.value.match(/^.*\((.+)\)$/);
+    if (matchPattern) {
+      return {
+        type: PrintableValueType.CALCULATED_STRING_VALUE,
+        value: matchPattern[1],
+      };
+    }
+    throw new ExportError(
+      'unhandled keyboard key: ' + sendKeyAction.keyToSend.value
+    );
   }
 
-  private getModifiers(action: SendKeyAction): string {
-    const args: string[] = [
-      { character: 'c', enabled: action.modifiers.control },
-      { character: 'a', enabled: action.modifiers.alt },
-      { character: 's', enabled: action.modifiers.shift },
-      { character: 'w', enabled: action.modifiers.windows },
-    ]
-      .filter((key) => key.enabled)
-      .map((key) => key.character);
-    if (args.length) {
-      args.push('-');
+  private extractDirection(
+    sendKeyHoldReleaseAction: SendKeyHoldReleaseAction
+  ): PrintableValue {
+    if (isVariableActionValue(sendKeyHoldReleaseAction.direction)) {
+      return this.wrapActionValue(sendKeyHoldReleaseAction.direction);
     }
-    return args.join('');
+    return {
+      type: PrintableValueType.CALCULATED_STRING_VALUE,
+      value: sendKeyHoldReleaseAction.direction.value
+        .toLowerCase()
+        .replaceAll(' ', ''),
+    };
   }
 
-  private enumKeyResultToArg(
-    result: DragonflyActionValueResolverResult
-  ): string {
-    const arg =
-      result.type === DragonflyActionValueResolverResultType.USE_VARIABLE
-        ? resultToDFStrInterp(result)(this.elementTokenPrinter)
-        : this.extractKeyFromEnumValueWithRegex(result.value);
-    return arg;
+  /** This is kind of a hack. Do better after v0.1.0. */
+  private getModifiers(sendKeyAction: SendKeyAction): PrintableValue {
+    const modifiers: string =
+      [
+        sendKeyAction.modifiers.control ? 'c' : '',
+        sendKeyAction.modifiers.alt ? 'a' : '',
+        sendKeyAction.modifiers.shift ? 's' : '',
+        sendKeyAction.modifiers.windows ? 'w' : '',
+      ].join('') || 'no-mods';
+    return {
+      type: PrintableValueType.CALCULATED_STRING_VALUE,
+      value: modifiers,
+    };
   }
 
-  private enumDirectionResultToArg = (
-    result: DragonflyActionValueResolverResult
-  ): string => {
-    const arg =
-      result.type === DragonflyActionValueResolverResultType.USE_VARIABLE
-        ? resultToDFStrInterp(result)(this.elementTokenPrinter)
-        : result.value.toLowerCase().replaceAll(' ', '');
-    return arg;
-  };
-
-  private extractKeyFromEnumValueWithRegex(value: string): string {
-    const matchPattern1 = value.match(/^.*\((.+)\)$/);
-    if (matchPattern1) {
-      return matchPattern1[1];
+  private getFnParameters(action: SendKeyAction): PythonFnParameter[] {
+    const parameters = [
+      {
+        id: '',
+        name: 'key',
+        type: VariableType.Enum.ENUM,
+      },
+      {
+        id: '',
+        name: 'mods',
+        type: VariableType.Enum.TEXT,
+      },
+      {
+        id: '',
+        name: 'outer_pause',
+        type: VariableType.Enum.NUMBER,
+      },
+    ];
+    if (isSendKeyPressAction(action)) {
+      parameters.push({
+        id: '',
+        name: 'repeat',
+        type: VariableType.Enum.NUMBER,
+      });
+      parameters.push({
+        id: '',
+        name: 'inner_pause',
+        type: VariableType.Enum.NUMBER,
+      });
+    } else if (isSendKeyHoldReleaseAction(action)) {
+      parameters.push({
+        id: '',
+        name: 'direction',
+        type: VariableType.Enum.ENUM,
+      });
     }
-    // const matchPattern2 = value.match(/^\((.+)\)$/);
-    // if (matchPattern2) {
-    //   return matchPattern2[1];
-    // }
-    throw new ExportError('unhandled keyboard key: ' + value);
+    return parameters;
   }
 }

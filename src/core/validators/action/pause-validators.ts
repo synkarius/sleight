@@ -11,25 +11,22 @@ import { isPauseAction } from '../../../data/model/action/pause/pause';
 
 /*
  * =================================================
- *                   CENTISECONDS
+ *                     SECONDS
  * =================================================
  */
 
-const CENTISECONDS = 'centiseconds';
-const centisecondsValidators: ActionValueValidators = {
+const SECONDS = 'seconds';
+const secondsValidators: ActionValueValidators = {
   variable: createValidator(
-    Field.AC_CENTISECONDS_VAR,
-    (action) =>
-      isPauseAction(action) && isVariableActionValue(action.centiseconds),
+    Field.AC_SECONDS_VAR,
+    (action) => isPauseAction(action) && isVariableActionValue(action.seconds),
     (action) =>
       isPauseAction(action) &&
-      isVariableActionValue(action.centiseconds) &&
-      isIdSelected(action.centiseconds.variableId),
+      isVariableActionValue(action.seconds) &&
+      isIdSelected(action.seconds.variableId),
     ValidationErrorCode.AC_AV_VAR_NOT_SELECTED,
-    createNonSelectedVariableError(CENTISECONDS)
+    createNonSelectedVariableError(SECONDS)
   ),
 };
 
-export const getPauseValidators = () => [
-  ...Object.values(centisecondsValidators),
-];
+export const getPauseValidators = () => [...Object.values(secondsValidators)];

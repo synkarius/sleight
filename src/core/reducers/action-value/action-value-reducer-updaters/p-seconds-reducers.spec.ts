@@ -9,11 +9,11 @@ import {
 import { VariableType } from '../../../../data/model/variable/variable-types';
 import { ActionValueChangeIdentifierType } from '../../../../ui/model/action/action-editing-context-support';
 
-describe('pause action reducer: action.centiseconds', () => {
-  it('should handle change action.centiseconds.actionValueType', () => {
+describe('pause action reducer: action.seconds', () => {
+  it('should handle change action.seconds.actionValueType', () => {
     const obj: PauseAction = {
       ...createPauseAction(),
-      centiseconds: {
+      seconds: {
         id: '123',
         actionValueType: ActionValueType.Enum.USE_VARIABLE,
         variableType: VariableType.Enum.NUMBER,
@@ -25,7 +25,7 @@ describe('pause action reducer: action.centiseconds', () => {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_CENTISECONDS_RADIO,
+        field: Field.AC_SECONDS_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
@@ -33,7 +33,7 @@ describe('pause action reducer: action.centiseconds', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      centiseconds: {
+      seconds: {
         id: '123',
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
         enteredValueType: VariableType.Enum.NUMBER,
@@ -42,14 +42,14 @@ describe('pause action reducer: action.centiseconds', () => {
     });
   });
 
-  it('should handle change action.centiseconds.value', () => {
+  it('should handle change action.seconds.value', () => {
     const obj = createPauseAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
         type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_CENTISECONDS_VALUE,
+        field: Field.AC_SECONDS_VALUE,
         value: '34',
       },
     });
@@ -57,21 +57,21 @@ describe('pause action reducer: action.centiseconds', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      centiseconds: {
-        ...obj.centiseconds,
+      seconds: {
+        ...obj.seconds,
         value: 34,
       },
     });
   });
 
-  it('should handle change action.centiseconds.variableId', () => {
+  it('should handle change action.seconds.variableId', () => {
     const obj = createPauseAction();
 
     const actual = actionReactReducer(obj, {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
         type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_CENTISECONDS_VAR,
+        field: Field.AC_SECONDS_VAR,
         value: 'asdf',
       },
     });
@@ -79,8 +79,8 @@ describe('pause action reducer: action.centiseconds', () => {
     expect(actual).not.toBe(obj);
     expect(actual).toEqual({
       ...obj,
-      centiseconds: {
-        ...obj.centiseconds,
+      seconds: {
+        ...obj.seconds,
         variableId: 'asdf',
       },
     });

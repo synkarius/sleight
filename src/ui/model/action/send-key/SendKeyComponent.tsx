@@ -110,7 +110,7 @@ export const SendKeyComponent: React.FC<{
         <ActionValueComponent
           actionValue={props.sendKeyAction.outerPause}
           labelText="Outer Pause"
-          descriptionText="time to pause after keystroke, in centiseconds"
+          descriptionText="time to pause after keystroke, in seconds"
           fields={skOuterPauseGroup}
         />
         {isSendKeyPressAction(props.sendKeyAction) && (

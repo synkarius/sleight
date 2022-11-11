@@ -6,11 +6,11 @@ import { createSleightDataInternalFormat } from '../../../../data-formats';
 
 describe('action printer delegation tests', () => {
   it('all actions should be covered by action printer delegates', () => {
-    const actionPrinter = container.get(Tokens.DragonElementPrinter_Action);
+    const actionPrinter = container.get(Tokens.DragonflyPrinter_Action);
     const data = createSleightDataInternalFormat();
     getTestActionsForAllActionTypes().map((action) => {
       try {
-        actionPrinter.printElement(action, data);
+        actionPrinter.printItem(action, data);
       } catch (e: unknown) {
         if (e instanceof MissingDelegateError) {
           throw e;

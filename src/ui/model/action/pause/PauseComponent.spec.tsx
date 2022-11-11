@@ -67,34 +67,24 @@ beforeEach(async () => {
 });
 
 describe('pause action component tests', () => {
-  it('should invalidate non-selected centiseconds variable', async () => {
-    await selectActionValueType(
-      user,
-      Field.AC_CENTISECONDS_RADIO,
-      VARIABLE_RADIO
-    );
+  it('should invalidate non-selected seconds variable', async () => {
+    await selectActionValueType(user, Field.AC_SECONDS_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_CENTISECONDS_VAR],
+      name: Field[Field.AC_SECONDS_VAR],
     });
     await user.click(select);
     await user.tab();
 
-    const errorText = screen.getByText(
-      'centiseconds : variable must be selected'
-    );
+    const errorText = screen.getByText('seconds : variable must be selected');
 
     expect(errorText).toBeInTheDocument();
     expect(select).toHaveClass('is-invalid');
   });
 
-  it('should validate selected centiseconds variable', async () => {
-    await selectActionValueType(
-      user,
-      Field.AC_CENTISECONDS_RADIO,
-      VARIABLE_RADIO
-    );
+  it('should validate selected seconds variable', async () => {
+    await selectActionValueType(user, Field.AC_SECONDS_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_CENTISECONDS_VAR],
+      name: Field[Field.AC_SECONDS_VAR],
     });
     await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
 

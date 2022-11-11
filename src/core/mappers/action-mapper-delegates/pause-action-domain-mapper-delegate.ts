@@ -19,9 +19,7 @@ export class PauseActionDomainMapperDelegate
       return some({
         ...this.mapToDomainBase(dto),
         type: dto.type,
-        centiseconds: this.actionValueMapper.mapToNumberDomain(
-          dto.centiseconds
-        ),
+        seconds: this.actionValueMapper.mapToNumberDomain(dto.seconds),
       });
     }
     return none();
@@ -32,9 +30,7 @@ export class PauseActionDomainMapperDelegate
       return some({
         ...this.mapFromDomainBase(domain),
         type: domain.type,
-        centiseconds: this.actionValueMapper.mapFromNumberDomain(
-          domain.centiseconds
-        ),
+        seconds: this.actionValueMapper.mapFromNumberDomain(domain.seconds),
       });
     }
     return none();

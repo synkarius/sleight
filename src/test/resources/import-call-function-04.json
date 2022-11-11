@@ -1,0 +1,119 @@
+{
+    "import04": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "a797a6db-9068-455a-99bf-9e2d0275abb7",
+                "name": "call-function-act-a797a6db-9068",
+                "type": "Call Function",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "functionId": "1e1d6d92-6ac7-469e-8a97-5d064e360f05",
+                "parameters": [
+                    {
+                        "id": "0b2168e0-5ca6-4e45-8b26-c9cebd6c55c2",
+                        "actionValueType": "Enter Value",
+                        "enteredValueType": "Text",
+                        "value": "123 Some Rd"
+                    },
+                    {
+                        "id": "5c54f400-198b-48c7-84a8-8a3c009540c8",
+                        "actionValueType": "Use Variable",
+                        "variableType": "Range",
+                        "variableId": "e4251575-04c8-41f4-a449-635a6fe490ac"
+                    }
+                ]
+            }
+        ],
+        "commands": [
+            {
+                "id": "41cfa770-2625-4e69-8602-f9707dc3939a",
+                "name": "deliver",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "specId": "8adbec93-a385-4213-bb0c-1723ef385d0d",
+                "actionIds": [
+                    "a797a6db-9068-455a-99bf-9e2d0275abb7"
+                ]
+            }
+        ],
+        "contexts": [],
+        "fns": [
+            {
+                "id": "1e1d6d92-6ac7-469e-8a97-5d064e360f05",
+                "type": "Python",
+                "name": "deliver_groceries",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "importTokens": [
+                    "amazing",
+                    "fresh"
+                ],
+                "parameters": [
+                    {
+                        "id": "dcac4f33-dca9-4a02-9046-1e3c4a31958f",
+                        "type": "Text",
+                        "name": "delivery_address"
+                    },
+                    {
+                        "id": "161afc1c-fa1a-4d81-ab33-f4d1f930ed8e",
+                        "type": "Range",
+                        "name": "retries"
+                    }
+                ]
+            }
+        ],
+        "selectors": [
+            {
+                "id": "81a0f563-dab4-4967-91c0-e1a75b77c9d4",
+                "items": [
+                    {
+                        "id": "eb6f7a4f-5ac8-4a0c-acf1-8e95b03a6a89",
+                        "value": "deliver with retries"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "8adbec93-a385-4213-bb0c-1723ef385d0d",
+                "name": "spe-8adbec93-a385",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "7aa41f1a-7571-4272-86ca-b1bad555638a",
+                        "itemType": "Selector",
+                        "itemId": "81a0f563-dab4-4967-91c0-e1a75b77c9d4",
+                        "optional": false,
+                        "grouped": false
+                    },
+                    {
+                        "id": "a02f1ae3-c8b9-46a8-8705-5bc988464152",
+                        "itemType": "Variable",
+                        "itemId": "e4251575-04c8-41f4-a449-635a6fe490ac",
+                        "optional": true,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "e4251575-04c8-41f4-a449-635a6fe490ac",
+                "type": "Range",
+                "name": "retries-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9,
+                "defaultValue": 2
+            }
+        ]
+    }
+}

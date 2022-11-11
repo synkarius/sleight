@@ -62,7 +62,7 @@ import { SleightDataIdsRewriter } from '../../data/imports/model-update/id-rewri
 import { SleightDataEvaluator } from '../../data/imports/model-update/evaluators/sleight-data-evaluator';
 import { RoleKeyedDataUpdater } from '../../data/imports/model-update/rolekeyed-data-updater';
 import { ActionVariableIdsRewriterDelegate } from '../../data/imports/model-update/id-rewriter/action-variable-ids-rewriter-delegate/action-variable-ids-rewriter-delegate';
-import { ElementPrinter } from '../../data/exports/dragonfly/element-printers/element-printer';
+import { Printer } from '../../data/exports/printer';
 import { ElementTokenPrinter } from '../../data/exports/element-token-printer';
 import { DragonflyMustacheFnsFactory } from '../../data/exports/dragonfly/dragonfly-mustache-helper-fns';
 import { DragonflyBringAppPrinter } from '../../data/exports/dragonfly/element-printers/action-printer-delegates/dragonfly-bring-app-action-printer-delegate';
@@ -93,7 +93,7 @@ import { ClickSpell, KeyPressSpell, TextSpell } from '../../data/wizard/spell';
 import { SingleItemCompositeValidator } from '../../data/composite-validators/single-item/single-item-composite-validator';
 import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
 import { Logger } from '../../core/common/basic-logger';
-import { DragonflyRuleMapper } from '../../data/exports/dragonfly/dragonfly-rule-mapper';
+import { DragonflyModelMapper } from '../../data/exports/dragonfly/dragonfly-model-mapper';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -338,24 +338,30 @@ export namespace Tokens {
   export const ElementTokenPrinter = token<ElementTokenPrinter>(
     'ElementTokenPrinter'
   );
-  export const DragonElementPrinter_Action = token<ElementPrinter<Action>>(
-    'DragonElementPrinter_Action'
+  export const DragonflyPrinter_Action = token<Printer<Action>>(
+    'DragonflyPrinter_Action'
   );
-  export const DragonElementPrinter_Command = token<ElementPrinter<Command>>(
-    'DragonElementPrinter_Command'
+  export const DragonflyPrinter_Command = token<Printer<Command>>(
+    'DragonflyPrinter_Command'
   );
-  export const DragonElementPrinter_Context = token<ElementPrinter<Context>>(
-    'DragonElementPrinter_Context'
+  export const DragonflyPrinter_Context = token<Printer<Context>>(
+    'DragonflyPrinter_Context'
   );
-  export const DragonElementPrinter_Selector = token<
-    ElementPrinter<SelectorDTO>
-  >('DragonElementPrinter_Selector');
-  export const DragonElementPrinter_Spec = token<ElementPrinter<SpecDTO>>(
-    'DragonElementPrinter_Spec'
+  export const DragonflyPrinter_Fn_Import = token<Printer<Fn>>(
+    'DragonflyPrinter_Fn_Import'
   );
-  export const DragonElementPrinter_Variable = token<
-    ElementPrinter<VariableDTO>
-  >('DragonElementPrinter_Variable');
+  export const DragonflyPrinter_Selector = token<Printer<SelectorDTO>>(
+    'DragonflyPrinter_Selector'
+  );
+  export const DragonflyPrinter_Spec = token<Printer<SpecDTO>>(
+    'DragonflyPrinter_Spec'
+  );
+  export const DragonflyPrinter_Variable = token<Printer<VariableDTO>>(
+    'DragonflyPrinter_Variable'
+  );
+  export const DragonflyPrinter_Variable_Defaults = token<Printer<VariableDTO>>(
+    'DragonflyPrinter_Variable_Defaults'
+  );
   export const DragonflyMustacheFnsFactory = token<DragonflyMustacheFnsFactory>(
     'DragonflyMustacheFnsFactory'
   );
@@ -430,7 +436,7 @@ export namespace Tokens {
     'ClickSpellCommandValidator'
   );
   export const Logger = token<Logger>('Logger');
-  export const DragonflyRuleMapper = token<DragonflyRuleMapper>(
-    'DragonflyRuleMapper'
+  export const DragonflyModelMapper = token<DragonflyModelMapper>(
+    'DragonflyModelMapper'
   );
 }

@@ -9,7 +9,7 @@
                 "roleKey": "",
                 "enabled": true,
                 "locked": false,
-                "centiseconds": {
+                "seconds": {
                     "id": "10004",
                     "actionValueType": "Use Variable",
                     "variableType": "Range",

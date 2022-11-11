@@ -2,7 +2,7 @@ import { Container, injected } from 'brandi';
 import { getMcMouseButtonActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/mcmhr-mouse-button-action-value-updater-delegate';
 import { getMcMhrPauseActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/mcmhr-pause-action-value-updater-delegate';
 import { getMcRepeatActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/mc-repeat-action-value-updater-delegate';
-import { getPCentisecondsActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/p-centiseconds-action-value-updater-delegate';
+import { getPSecondsActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/p-seconds-action-value-updater-delegate';
 import { getSkDirectionActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/sk-direction-action-value-updater-delegate';
 import { getSkInnerPauseActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/sk-inner-pause-action-value-updater-delegate';
 import { getSkKeyToSendActionValueUpdaterDelegate } from '../../../core/reducers/action-value/action-value-reducer-updaters/sk-key-to-send-action-value-updater-delegate';
@@ -41,7 +41,7 @@ export const bindActionValueUpdater = (container: Container): void => {
     getMcRepeatActionValueUpdaterDelegate(),
     getMhrDirectionActionValueUpdaterDelegate(),
     // pause
-    getPCentisecondsActionValueUpdaterDelegate(),
+    getPSecondsActionValueUpdaterDelegate(),
     // send-key
     getSkKeyToSendActionValueUpdaterDelegate(),
     getSkOuterPauseActionValueUpdaterDelegate(),

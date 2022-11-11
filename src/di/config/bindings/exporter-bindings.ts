@@ -1,6 +1,6 @@
 import { Container, injected } from 'brandi';
 import { DragonflyExporter } from '../../../data/exports/dragonfly/dragonfly-exporter';
-import { DefaultDragonflyRuleMapper } from '../../../data/exports/dragonfly/dragonfly-rule-mapper';
+import { DefaultDragonflyModelMapper } from '../../../data/exports/dragonfly/dragonfly-model-mapper';
 import { JsonExporter } from '../../../data/exports/json-exporter';
 import { Tokens } from '../brandi-tokens';
 
@@ -20,12 +20,12 @@ export const bindExporters = (container: Container): void => {
     DragonflyExporter,
     Tokens.FormatMapper,
     Tokens.DragonflyMustacheFnsFactory,
-    Tokens.DragonflyRuleMapper
+    Tokens.DragonflyModelMapper
   );
   // dragonfly rule mapper
   container
-    .bind(Tokens.DragonflyRuleMapper)
-    .toInstance(DefaultDragonflyRuleMapper)
+    .bind(Tokens.DragonflyModelMapper)
+    .toInstance(DefaultDragonflyModelMapper)
     .inSingletonScope();
-  injected(DefaultDragonflyRuleMapper, Tokens.VariableExtractor);
+  injected(DefaultDragonflyModelMapper, Tokens.VariableExtractor);
 };

@@ -30,7 +30,7 @@ describe('variable id rewriter tests', () => {
       actions: {
         [action1.id]: {
           ...action1,
-          centiseconds: { ...action1.centiseconds, variableId: newId },
+          seconds: { ...action1.seconds, variableId: newId },
         },
         [action3.id]: action3,
       },

@@ -5,14 +5,12 @@ import { DragonflyActionPrinterDelegateArray } from '../../../../di/di-collectio
 import { MissingDelegateError } from '../../../../error/missing-delegate-error';
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { Action } from '../../../model/action/action';
-import { ElementPrinter } from './element-printer';
+import { Printer } from '../../printer';
 
-export class DelegatingDragonflyActionPrinter
-  implements ElementPrinter<Action>
-{
+export class DelegatingDragonflyActionPrinter implements Printer<Action> {
   constructor(private delegates: DragonflyActionPrinterDelegateArray) {}
 
-  printElement(action: Action, data: SleightDataInternalFormat): string {
+  printItem(action: Action, data: SleightDataInternalFormat): string {
     const printed = findFirst(this.delegates, (delegate) =>
       delegate.printAction(action, data)
     );

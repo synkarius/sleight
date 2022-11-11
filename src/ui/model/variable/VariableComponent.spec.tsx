@@ -51,7 +51,7 @@ beforeAll(() => {
   store.dispatch(saveVariable(variable2DTO));
   const action: PauseAction = {
     ...createPauseAction(),
-    centiseconds: {
+    seconds: {
       id: '123',
       variableType: VariableType.Enum.NUMBER,
       actionValueType: ActionValueType.Enum.USE_VARIABLE,
