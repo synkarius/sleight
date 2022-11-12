@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   COMMAND_LIST_PATH,
   ELEMENT_EDITOR_PATH,
+  PREFERENCES_PATH,
   RESOURCE_EDITOR_PATH,
   WIZARD_PATH,
 } from '../../../core/common/consts';
@@ -148,7 +149,9 @@ export const Navigation: React.FC<{}> = () => {
               <NavDropdown.Item disabled>Export Vocola 2</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Edit" id="edit-dropdown">
-              <NavDropdown.Item disabled>Preferences</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate(PREFERENCES_PATH)}>
+                Preferences
+              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="View" id="view-dropdown">
               <NavDropdown.Item onClick={() => navigate(COMMAND_LIST_PATH)}>

@@ -9,5 +9,6 @@ export const USE_DEFAULT = 'Use Default';
 export const EMPTY_PATH = '/';
 export const COMMAND_LIST_PATH = '/commands';
 export const ELEMENT_EDITOR_PATH = '/elements';
+export const PREFERENCES_PATH = '/preferences';
 export const RESOURCE_EDITOR_PATH = '/resources';
 export const WIZARD_PATH = '/wizard';

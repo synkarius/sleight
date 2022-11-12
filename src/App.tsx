@@ -11,9 +11,11 @@ import { CommandListViewComponent } from './ui/other-components/views/CommandLis
 import {
   COMMAND_LIST_PATH,
   ELEMENT_EDITOR_PATH,
+  PREFERENCES_PATH,
   RESOURCE_EDITOR_PATH,
   WIZARD_PATH,
 } from './core/common/consts';
+import { PreferencesComponent } from './ui/other-components/menu/preferences/PreferencesComponent';
 
 const App: React.FC<{}> = () => {
   const getPath = (path: string): string => {
@@ -35,6 +37,10 @@ const App: React.FC<{}> = () => {
           <Route
             path={getPath(ELEMENT_EDITOR_PATH)}
             element={<EditorViewComponent />}
+          />
+          <Route
+            path={getPath(PREFERENCES_PATH)}
+            element={<PreferencesComponent />}
           />
           <Route
             path={getPath(RESOURCE_EDITOR_PATH)}

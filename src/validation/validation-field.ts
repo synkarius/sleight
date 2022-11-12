@@ -134,6 +134,9 @@ export enum Field {
   FN_DELETE,
   FN_DELETE_MODAL_DELETE,
   FN_DELETE_MODAL_CANCEL,
+  // preferences:
+  PREFS_NEGATIVIZER,
+  PREFS_THEME,
   // spec:
   SP_NAME,
   SP_ROLE_KEY,

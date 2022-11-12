@@ -6,6 +6,7 @@ import { variableReduxReducer } from '../core/reducers/variable-reducers';
 import { selectorReduxReducer } from '../core/reducers/selector-reducers';
 import { specReduxReducer } from '../core/reducers/spec-reducers';
 import { fnReduxReducer } from '../core/reducers/fn-reducers';
+import { preferencesReduxReducer } from '../core/reducers/preferences-reducers';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     command: commandReduxReducer,
     context: contextReduxReducer,
     fn: fnReduxReducer,
+    preferences: preferencesReduxReducer,
     selector: selectorReduxReducer,
     spec: specReduxReducer,
     variable: variableReduxReducer,
