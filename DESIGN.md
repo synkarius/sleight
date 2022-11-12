@@ -16,11 +16,7 @@ Redux is a tool which handles global state, which is to say, state that needs to
 
 Keeping the state for Sleight's elements local during editing has the benefit that intermediate or invalid state is never saved. This makes it easier to reason about what's in Redux for operations like validation and export.
 
-That said, some of the elements (choice variables and specs specifically) are cross- React slice _and_ need to be editable on the fly rather than via changing screens. This means that the data model for their editing screens will be slightly different than it will be for Redux. Hence, mappers are used to translate between the two data models.
-
-### Role Keys
-
-The concept of a role key is that it is a stand-in for a piece of the data model. For example, a role-keyed spec on a command will be filled in at export-time.
+That said, some of the elements (choice variables and specs specifically) are cross- React slice _and_ need to be editable on the fly rather than by switching screens. This means that the data model for their editing screens will be slightly different than it will be for Redux. Hence, mappers are used to translate between the two data models.
 
 #### Sleight Data Sharing
 

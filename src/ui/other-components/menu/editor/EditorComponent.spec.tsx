@@ -34,6 +34,7 @@ beforeEach(async () => {
       <App />
     </Provider>
   );
+  await clickToGoToElementEditor();
 });
 
 const clickToCreateNew = async (type: ElementType.Type): Promise<void> => {
@@ -162,3 +163,10 @@ describe('editor mode focus tests', () => {
     expect(cancelButton).not.toBeInTheDocument();
   });
 });
+
+const clickToGoToElementEditor = async () => {
+  const menuView = screen.getByText('View');
+  await user.click(menuView);
+  const menuResourceEditor = screen.getByText('Element Editor');
+  await user.click(menuResourceEditor);
+};

@@ -59,7 +59,7 @@ export const WizardViewComponent: React.FC<{}> = () => {
             <Row className="mt-5">
               <Col sm="12">
                 ... or explore the existing commands via the command list and
-                editor screen (TODO link these)
+                editor screen
               </Col>
             </Row>
           </div>

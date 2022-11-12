@@ -54,7 +54,7 @@ beforeAll(() => {
   user = userEvent.setup();
 });
 
-beforeEach(() => {
+beforeEach(async () => {
   /*
    * Some of this test data is not actually in a saveable state,
    * but it doesn't matter since that's not what's being tested here.
@@ -105,14 +105,14 @@ beforeEach(() => {
     name: VARIABLE_NAME_1,
   };
   store.dispatch(saveVariable(variable));
-});
 
-beforeEach(async () => {
+  //
   render(
     <Provider store={store}>
       <App />
     </Provider>
   );
+  await clickToGoToElementEditor();
 });
 
 const SAVE = 'Save';
@@ -853,4 +853,11 @@ const queryElementSelectButton = (
     name: savedName,
   });
   return sidebarSavedItem;
+};
+
+const clickToGoToElementEditor = async () => {
+  const menuView = screen.getByText('View');
+  await user.click(menuView);
+  const menuResourceEditor = screen.getByText('Element Editor');
+  await user.click(menuResourceEditor);
 };
