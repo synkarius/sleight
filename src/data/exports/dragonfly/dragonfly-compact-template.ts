@@ -21,7 +21,7 @@ from dragonfly import Grammar
 {{/fns}}
 
 def convert_to_centiseconds(seconds):
-    return seconds * 100
+    return abs(seconds * 100)
 
 def convert_to_decimal_percentage(value):
     return value/100.0
