@@ -1,5 +1,5 @@
 import { Exporter } from '../exporter';
-import { dragonflyCompactTemplate } from './dragonfly-compact-template';
+import { dragonflyTemplate } from './templates/dragonfly-compact-template';
 import Mustache from 'mustache';
 import { utilViewFunctions } from '../util-mustache-fns';
 
@@ -17,7 +17,7 @@ export class DragonflyExporter implements Exporter {
 
   export(data: SleightDataInternalFormat): string[] {
     const model = this.dragonflyModelMapper.mapDataToDragonflyModel(data);
-    const render = Mustache.render(dragonflyCompactTemplate, {
+    const render = Mustache.render(dragonflyTemplate, {
       rules: model.rules,
       noopCommandsExist: model.metadata.noopCommandsExist,
       ...this.formatMapper.internalFormatToArrays(data),
