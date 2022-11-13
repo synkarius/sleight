@@ -22,6 +22,7 @@ import {
   isVariableActionValue,
   VariableEnumActionValue,
 } from '../../../../model/action/action-value';
+import { MouseMovementType } from '../../../../model/action/mouse/mouse-movement-type';
 
 /**
  * Dragonfly mouse action export notes:
@@ -52,7 +53,7 @@ export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrin
       const fnParams = this.getFnParameters(action);
       const executeMouse: PythonFn = {
         id: '',
-        name: 'execute_mouse',
+        name: this.getFnName(action),
         roleKey: '',
         type: FnType.Enum.PYTHON,
         enabled: true,
@@ -65,15 +66,35 @@ export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrin
     return none();
   }
 
+  private getFnName(mouseAction: MouseAction): string {
+    const mouseActionType = mouseAction.mouseActionType;
+    switch (mouseActionType) {
+      case MouseActionType.Enum.MOVE:
+        const mouseMovementType = mouseAction.mouseMovementType;
+        switch (mouseMovementType) {
+          case MouseMovementType.Enum.ABSOLUTE_PIXELS:
+            return 'execute_mouse_move_abs_px';
+          case MouseMovementType.Enum.RELATIVE_PIXELS:
+            return 'execute_mouse_move_rel_px';
+          case MouseMovementType.Enum.WINDOW_PERCENTAGE:
+            return 'execute_mouse_move_win_pct';
+          default:
+            throw new ExhaustivenessFailureError(mouseMovementType);
+        }
+      case MouseActionType.Enum.CLICK:
+        return 'execute_mouse_click';
+      case MouseActionType.Enum.HOLD_RELEASE:
+        return 'execute_mouse_hold_release';
+      default:
+        throw new ExhaustivenessFailureError(mouseActionType);
+    }
+  }
+
   private getPrintableValues(mouseAction: MouseAction): PrintableValue[] {
     const mouseActionType = mouseAction.mouseActionType;
     switch (mouseActionType) {
       case MouseActionType.Enum.MOVE:
         return [
-          {
-            type: PrintableValueType.CALCULATED_STRING_VALUE,
-            value: mouseAction.mouseMovementType,
-          },
           this.wrapActionValue(mouseAction.x),
           this.wrapActionValue(mouseAction.y),
         ];
@@ -97,11 +118,6 @@ export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrin
   private getFnParameters(action: MouseAction): PythonFnParameter[] {
     if (isMoveMouseAction(action)) {
       return [
-        {
-          id: '',
-          name: 'movement_type',
-          type: VariableType.Enum.ENUM,
-        },
         {
           id: '',
           name: 'x',
@@ -161,7 +177,7 @@ export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrin
       return this.wrapActionValue(actionValue);
     }
     return {
-      type: PrintableValueType.CALCULATED_STRING_VALUE,
+      type: PrintableValueType.STRING_VALUE,
       value: actionValue.value.toLowerCase().replaceAll(' ', ''),
     };
   }

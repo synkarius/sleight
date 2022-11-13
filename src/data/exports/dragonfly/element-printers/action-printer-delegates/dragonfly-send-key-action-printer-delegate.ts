@@ -77,7 +77,7 @@ export class DragonflySendKeyPrinter extends AbstractDragonflyActionAsFunctionPr
     const matchPattern = sendKeyAction.keyToSend.value.match(/^.*\((.+)\)$/);
     if (matchPattern) {
       return {
-        type: PrintableValueType.CALCULATED_STRING_VALUE,
+        type: PrintableValueType.STRING_VALUE,
         value: matchPattern[1],
       };
     }
@@ -93,7 +93,7 @@ export class DragonflySendKeyPrinter extends AbstractDragonflyActionAsFunctionPr
       return this.wrapActionValue(sendKeyHoldReleaseAction.direction);
     }
     return {
-      type: PrintableValueType.CALCULATED_STRING_VALUE,
+      type: PrintableValueType.STRING_VALUE,
       value: sendKeyHoldReleaseAction.direction.value
         .toLowerCase()
         .replaceAll(' ', ''),
@@ -110,7 +110,7 @@ export class DragonflySendKeyPrinter extends AbstractDragonflyActionAsFunctionPr
         sendKeyAction.modifiers.windows ? 'w' : '',
       ].join('') || 'no-mods';
     return {
-      type: PrintableValueType.CALCULATED_STRING_VALUE,
+      type: PrintableValueType.STRING_VALUE,
       value: modifiers,
     };
   }

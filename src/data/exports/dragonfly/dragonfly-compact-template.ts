@@ -26,6 +26,10 @@ def convert_to_centiseconds(seconds):
 def convert_to_decimal_percentage(value):
     return value/100.0
 
+def sign(v, nv):
+    n = 1 if nv is None or nv == "+" else -1
+    return v * n
+
 def do_nothing():
     pass
 
@@ -48,26 +52,23 @@ def execute_key(key, mods, outer_pause, inner_pause=None, repeat=None, direction
         + "/" + str(convert_to_centiseconds(outer_pause))
     Key(arg).execute()
 
-def execute_mouse(movementType=None, x=None, y=None,
-        button=None, repeat=None, pause=None,
-        direction=None):
-    if movementType is not None:
-        # mouse move
-        if movementType == "Absolute Pixels":
-            chars = ("[", "]")
-        elif movementType == "Relative Pixels":
-            chars = ("<", ">")
-        else:
-            x = convert_to_decimal_percentage(x)
-            y = convert_to_decimal_percentage(y)
-            chars = ("(", ")")
-        arg = chars[0] + str(x) + ", " + str(y) + chars[1]
-    elif repeat is not None:
-        # mouse click
-        arg = button + ":" + str(repeat) + "/" + str(convert_to_centiseconds(pause))
-    else:
-        # mouse hold/release
-        arg = button + ":" + direction + "/" + str(convert_to_centiseconds(pause))
+def execute_mouse_move_abs_px(x, y, nx=None, ny=None):
+    Mouse("[" + str(sign(x, nx)) + ", " + str(sign(y, ny)) + "]").execute()
+    
+def execute_mouse_move_rel_px(x, y, nx=None, ny=None):
+    Mouse("<" + str(sign(x, nx)) + ", " + str(sign(y, ny)) + ">").execute()
+    
+def execute_mouse_move_win_pct(x, y, nx=None, ny=None):
+    x_pct = convert_to_decimal_percentage(sign(x, nx))
+    y_pct = convert_to_decimal_percentage(sign(y, ny))
+    Mouse("<" + str(x_pct) + ", " + str(y_pct) + ">").execute()
+    
+def execute_mouse_click(button, repeat, pause):
+    arg = button + ":" + str(repeat) + "/" + str(convert_to_centiseconds(pause))
+    Mouse(arg).execute()
+    
+def execute_mouse_hold_release(button, direction, pause):
+    arg = button + ":" + direction + "/" + str(convert_to_centiseconds(pause))
     Mouse(arg).execute()
 
 {{#rules}}

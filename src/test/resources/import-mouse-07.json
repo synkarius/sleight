@@ -1,0 +1,35 @@
+{
+    "import07": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "d9f682da-49ce-4ccc-82c9-ebc56665760b",
+                "name": "mouse-act-d9f682da-49ce",
+                "type": "Mouse",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "mouseActionType": "Move",
+                "mouseMovementType": "Absolute Pixels",
+                "x": {
+                    "id": "10021",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 1
+                },
+                "y": {
+                    "id": "10022",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 2
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [],
+        "specs": [],
+        "variables": []
+    }
+}

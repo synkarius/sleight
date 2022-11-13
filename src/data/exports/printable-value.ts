@@ -2,7 +2,7 @@ import { ActionValue } from '../model/action/action-value';
 
 export const enum PrintableValueType {
   ACTION_VALUE,
-  CALCULATED_STRING_VALUE,
+  STRING_VALUE,
 }
 
 type PrintableActionValue = {
@@ -15,14 +15,14 @@ export const isPrintableActionValue = (
 ): pv is PrintableActionValue => pv.type === PrintableValueType.ACTION_VALUE;
 
 type PrintableCalculatedStringValue = {
-  type: PrintableValueType.CALCULATED_STRING_VALUE;
+  type: PrintableValueType.STRING_VALUE;
   value: string;
 };
 
 export const isPrintableCalculatedStringValue = (
   pv: PrintableValue
 ): pv is PrintableCalculatedStringValue =>
-  pv.type === PrintableValueType.CALCULATED_STRING_VALUE;
+  pv.type === PrintableValueType.STRING_VALUE;
 
 export type PrintableValue =
   | PrintableActionValue
