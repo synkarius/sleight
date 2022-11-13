@@ -23,7 +23,7 @@ import { alwaysTrue, isEmpty, quote } from '../common/common-functions';
 import { MapUtil } from '../common/map-util';
 
 const getStartsNumericRegex = () => /^[0-9]/;
-const getAlphaNumAndUnderScoreOnlyRegex = () => /^[A-z0-9_]*$/;
+const getAlphaNumAndUnderScoreOnlyRegex = () => /^[a-z0-9_]*$/i;
 
 const nameNonEmptyValidator: FieldValidator<Fn> = createValidator(
   Field.FN_NAME,
@@ -59,7 +59,7 @@ const pythonFnNameCharactersValidator: FieldValidator<Fn> = createValidator(
 const pythonImportPathCharactersValidator: FieldValidator<Fn> = createValidator(
   Field.FN_IMPORT_PATH,
   isPythonFn,
-  (fn) => isPythonFn(fn) && !fn.importTokens.join('.').match(/[^A-z0-9.]/),
+  (fn) => isPythonFn(fn) && !fn.importTokens.join('.').match(/[^a-z0-9.]/i),
   ValidationErrorCode.FN_INVALID_IMPORT_PATH,
   'import path may only include alphanumeric chars and dots'
 );

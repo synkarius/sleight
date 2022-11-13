@@ -1,5 +1,5 @@
 import { Exporter } from '../exporter';
-import { dragonflyTemplate } from './templates/dragonfly-compact-template';
+import { dragonflyTemplate } from './templates/dragonfly-template';
 import Mustache from 'mustache';
 import { utilViewFunctions } from '../util-mustache-fns';
 
