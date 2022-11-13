@@ -3,6 +3,7 @@ import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
 import { UNSELECTED_ID } from '../../../core/common/consts';
+import { fieldName } from '../../../validation/field-name';
 
 type SpecDropdownComponentProps = {
   readonly specId?: string;
@@ -20,7 +21,7 @@ export const SpecDropdownComponent: React.FC<SpecDropdownComponentProps> = (
   return (
     <FormSelect
       value={props.specId ?? UNSELECTED_ID}
-      aria-label={Field[props.field]}
+      aria-label={fieldName(props.field)}
       role="list"
       onChange={props.onChange}
       onBlur={props.onBlur}

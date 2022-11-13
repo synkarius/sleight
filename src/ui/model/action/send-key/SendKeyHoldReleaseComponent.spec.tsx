@@ -19,6 +19,7 @@ import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-mod
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const VARIABLE_NAME = 'asdf-range-var';
 const VARIABLE_RADIO = 1;
@@ -55,7 +56,7 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const sendKeyModeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_SEND_KEY_MODE],
+    name: fieldName(Field.AC_SEND_KEY_MODE),
   });
   await user.selectOptions(sendKeyModeSelect, SendKeyMode.Enum.HOLD_RELEASE);
 });
@@ -66,7 +67,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -75,7 +76,7 @@ const selectActionValueType = async (
 describe('sendKeyHoldRelease action component tests', () => {
   it('should invalidate empty direction value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VALUE],
+      name: fieldName(Field.AC_SK_DIRECTION_VALUE),
     });
     await user.click(select);
 
@@ -89,7 +90,7 @@ describe('sendKeyHoldRelease action component tests', () => {
 
   it('should validate non-empty direction value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VALUE],
+      name: fieldName(Field.AC_SK_DIRECTION_VALUE),
     });
     await user.click(select);
 
@@ -106,7 +107,7 @@ describe('sendKeyHoldRelease action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VAR],
+      name: fieldName(Field.AC_SK_DIRECTION_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -124,7 +125,7 @@ describe('sendKeyHoldRelease action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_DIRECTION_VAR],
+      name: fieldName(Field.AC_SK_DIRECTION_VAR),
     });
     await user.selectOptions(select, [VARIABLE_NAME]);
 

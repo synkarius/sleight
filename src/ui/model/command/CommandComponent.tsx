@@ -31,6 +31,7 @@ import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
 import { MapUtil } from '../../../core/common/map-util';
 import { DomainMapper } from '../../../core/mappers/mapper';
+import { fieldName } from '../../../validation/field-name';
 
 const init = (
   savedMap: Record<string, Command>,
@@ -149,7 +150,7 @@ const CommandChildComponent: React.FC<{
       />
       <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
-          aria-label={Field[Field.CMD_NAME]}
+          aria-label={fieldName(Field.CMD_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.CMD_NAME)}
@@ -165,7 +166,7 @@ const CommandChildComponent: React.FC<{
         errorMessage={errorResults(Field.CMD_ROLE_KEY)}
       >
         <FormControl
-          aria-label={Field[Field.CMD_ROLE_KEY]}
+          aria-label={fieldName(Field.CMD_ROLE_KEY)}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(Field.CMD_ROLE_KEY)}
@@ -268,7 +269,7 @@ const CommandChildComponent: React.FC<{
           variant="danger"
           size="lg"
           className="me-3"
-          aria-label={Field[Field.CMD_DELETE]}
+          aria-label={fieldName(Field.CMD_DELETE)}
         >
           Delete
         </Button>

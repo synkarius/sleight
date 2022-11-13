@@ -12,6 +12,7 @@ import { alwaysTrue } from '../core/common/common-functions';
 import { Tokens } from '../di/config/brandi-tokens';
 import { container } from '../di/config/brandi-config';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from './field-name';
 
 let user: UserEvent;
 
@@ -52,12 +53,14 @@ afterAll(() => {
 describe('validation component tests', () => {
   it('should handle validator errors gracefully, rather than crashing', async () => {
     const matcherField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_MATCHER],
+      name: fieldName(Field.CTX_MATCHER),
     });
     await user.click(matcherField);
     await user.tab();
 
-    const errorText = screen.getByText('validation failed for CTX_MATCHER');
+    const errorText = screen.getByText(
+      'validation failed for field "context matcher"'
+    );
 
     expect(matcherField).toHaveClass('is-invalid');
     expect(errorText).toBeInTheDocument();

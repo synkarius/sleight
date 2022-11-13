@@ -8,6 +8,7 @@ import { KeyPressSpell } from '../../../../../data/wizard/spell';
 import { SpellType } from '../../../../../data/wizard/spell-types';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { InjectionContext } from '../../../../../di/injector-context';
+import { fieldName } from '../../../../../validation/field-name';
 import { ValidationContext } from '../../../../../validation/validation-context';
 import { Field } from '../../../../../validation/validation-field';
 import { processErrorResults } from '../../../../../validation/validation-result-processing';
@@ -114,7 +115,7 @@ const WizardKeyPressSpellChildComponent: React.FC<{
                 errorMessage={errorResults(Field.WIZ_SK_KEY)}
               >
                 <Form.Select
-                  aria-label={Field[Field.WIZ_SK_KEY]}
+                  aria-label={fieldName(Field.WIZ_SK_KEY)}
                   role="list"
                   onChange={(e) => {
                     props.dispatches.setKey(e.target.value as Key.Type);

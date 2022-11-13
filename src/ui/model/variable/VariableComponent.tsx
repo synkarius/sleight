@@ -41,6 +41,7 @@ import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
 import { MapUtil } from '../../../core/common/map-util';
+import { fieldName } from '../../../validation/field-name';
 
 type VariableInitFunction = (specId?: string) => Variable;
 
@@ -198,7 +199,7 @@ const VariableChildComponent: React.FC<{
       />
       <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
-          aria-label={Field[Field.VAR_NAME]}
+          aria-label={fieldName(Field.VAR_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.VAR_NAME)}
@@ -214,7 +215,7 @@ const VariableChildComponent: React.FC<{
         errorMessage={errorResults(VAR_ROLE_KEY)}
       >
         <FormControl
-          aria-label={Field[VAR_ROLE_KEY]}
+          aria-label={fieldName(VAR_ROLE_KEY)}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(VAR_ROLE_KEY)}
@@ -228,7 +229,7 @@ const VariableChildComponent: React.FC<{
         errorMessage={errorResults(Field.VAR_TYPE_SELECT)}
       >
         <FormSelect
-          aria-label={Field[Field.VAR_TYPE_SELECT]}
+          aria-label={fieldName(Field.VAR_TYPE_SELECT)}
           onChange={typeChangedHandler}
           onBlur={() => validationContext.touch(Field.VAR_TYPE_SELECT)}
           value={props.variable.type}
@@ -257,7 +258,7 @@ const VariableChildComponent: React.FC<{
           variant="danger"
           size="lg"
           className="me-3"
-          aria-label={Field[Field.VAR_DELETE]}
+          aria-label={fieldName(Field.VAR_DELETE)}
         >
           Delete
         </Button>

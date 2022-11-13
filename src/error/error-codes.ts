@@ -3,11 +3,13 @@ export enum ErrorCode {
 
   EXPORT = 'problem occurred during export',
 
-  MAP_KEY_MISSING = 'map key not found',
-
   MISSING_DELEGATE = 'missing delegate',
 
+  MISSING_FIELD = 'field not found',
+
   MISSING_GUARD = 'missing guard',
+
+  MISSING_MAP_KEY = 'map key not found',
 
   MODEL_UPDATE_EVALUATION_FAILURE = 'model update evaluation failed',
 

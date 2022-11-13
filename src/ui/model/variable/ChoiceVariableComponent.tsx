@@ -23,6 +23,7 @@ import {
   VariableEditingContext,
   VariableReducerActionType,
 } from './variable-editing-context';
+import { fieldName } from '../../../validation/field-name';
 
 export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
   props
@@ -72,7 +73,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
               !noChoiceItemsErrorMessage ? 'outline-primary' : 'outline-danger'
             }
             size="lg"
-            aria-label={Field[addItemButton]}
+            aria-label={fieldName(addItemButton)}
           >
             Add Choice Item
           </Button>
@@ -117,7 +118,7 @@ export const ChoiceVariableComponent: React.FC<{ choice: ChoiceVariable }> = (
               type="text"
               onChange={defaultValueChangedHandler}
               value={props.choice.defaultValue}
-              aria-label={Field[Field.VAR_CHOICE_DEFAULT_VALUE]}
+              aria-label={fieldName(Field.VAR_CHOICE_DEFAULT_VALUE)}
             />
           </FormGroupRowComponent>
         )}

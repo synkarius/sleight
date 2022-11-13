@@ -10,6 +10,7 @@ import { castJsonForTest } from '../../../../../test/utils/import-test-json-util
 import { context01 } from '../../../../../test/resources/context-01.json';
 import { TEXT_BOX } from '../../../../../core/common/accessibility-roles';
 import { MouseKey } from '../../../../../data/model/action/mouse/mouse-key';
+import { fieldName } from '../../../../../validation/field-name';
 
 const CONTEXT_1_NAME = 'chrome-context';
 
@@ -37,7 +38,7 @@ describe('click wizard tests', () => {
   it('context should be selectable', async () => {
     // select a context
     const contextSelect = screen.getByRole('list', {
-      name: Field[Field.WIZ_MC_CONTEXT],
+      name: fieldName(Field.WIZ_MC_CONTEXT),
     });
     await user.selectOptions(contextSelect, CONTEXT_1_NAME);
 
@@ -48,7 +49,7 @@ describe('click wizard tests', () => {
   it('context should be optional', async () => {
     // select a context
     const contextSelect = screen.getByRole('list', {
-      name: Field[Field.WIZ_MC_CONTEXT],
+      name: fieldName(Field.WIZ_MC_CONTEXT),
     });
     await user.click(contextSelect);
     await user.tab();
@@ -61,7 +62,7 @@ describe('click wizard tests', () => {
 
   it('invalid spec should be invalidated', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_MC_SPEC],
+      name: fieldName(Field.WIZ_MC_SPEC),
     });
     await user.type(selectorInput, '#');
 
@@ -77,7 +78,7 @@ describe('click wizard tests', () => {
 
   it('valid spec should not be invalidated', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_MC_SPEC],
+      name: fieldName(Field.WIZ_MC_SPEC),
     });
     await user.type(selectorInput, 'hi');
 
@@ -89,7 +90,7 @@ describe('click wizard tests', () => {
 
   it('button should be selectable', async () => {
     const btnSelect = screen.getByRole('list', {
-      name: Field[Field.WIZ_MC_BTN],
+      name: fieldName(Field.WIZ_MC_BTN),
     });
     await user.selectOptions(btnSelect, MouseKey.Enum.MIDDLE);
 
@@ -99,7 +100,7 @@ describe('click wizard tests', () => {
 
   it('finalize screen should list created elements', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_MC_SPEC],
+      name: fieldName(Field.WIZ_MC_SPEC),
     });
     await user.type(selectorInput, 'hi');
 
@@ -118,7 +119,7 @@ describe('click wizard tests', () => {
 
   it("finalize should create command's elements", async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_MC_SPEC],
+      name: fieldName(Field.WIZ_MC_SPEC),
     });
     await user.type(selectorInput, 'hi');
 

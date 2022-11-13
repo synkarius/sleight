@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { identity } from '../../core/common/common-functions';
+import { fieldName } from '../../validation/field-name';
 import { ValidationContext } from '../../validation/validation-context';
 import { Field } from '../../validation/validation-field';
 import { ErrorTextComponent } from './ErrorTextComponent';
@@ -53,7 +54,7 @@ export const DeleteModalComponent: React.FC<{
         <Button
           variant="secondary"
           onClick={handleCancel}
-          aria-label={Field[props.cancelField]}
+          aria-label={fieldName(props.cancelField)}
         >
           Cancel
         </Button>
@@ -61,7 +62,7 @@ export const DeleteModalComponent: React.FC<{
           variant="danger"
           onClick={handleDelete}
           disabled={!!errorMessage}
-          aria-label={Field[props.deleteField]}
+          aria-label={fieldName(props.deleteField)}
         >
           Delete
         </Button>

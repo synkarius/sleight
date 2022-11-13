@@ -18,6 +18,7 @@ import { FormGroupRowComponent } from '../../other-components/FormGroupRowCompon
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { USE_DEFAULT } from '../../../core/common/consts';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
+import { fieldName } from '../../../validation/field-name';
 
 export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
   props
@@ -71,7 +72,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
             min={0}
             onChange={minChangedHandler}
             value={props.range.beginInclusive}
-            aria-label={Field[Field.VAR_RANGE_MIN]}
+            aria-label={fieldName(Field.VAR_RANGE_MIN)}
           />
           <FormText className="text-muted">minimum value</FormText>
         </Col>
@@ -81,7 +82,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
             min={0}
             onChange={maxChangedHandler}
             value={props.range.endInclusive}
-            aria-label={Field[rangeMax]}
+            aria-label={fieldName(rangeMax)}
             onBlur={(_e) => validationContext.touch(rangeMax)}
             isInvalid={!!rangeIsInvalidErrorMessage}
           />
@@ -118,7 +119,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
               min={0}
               onChange={defaultValueChangedHandler}
               value={props.range.defaultValue}
-              aria-label={Field[Field.VAR_RANGE_DEFAULT_VALUE]}
+              aria-label={fieldName(Field.VAR_RANGE_DEFAULT_VALUE)}
             />
           </FormGroupRowComponent>
         )}

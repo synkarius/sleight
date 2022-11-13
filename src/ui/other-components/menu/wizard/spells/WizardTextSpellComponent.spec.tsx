@@ -10,6 +10,7 @@ import { castJsonForTest } from '../../../../../test/utils/import-test-json-util
 import { context01 } from '../../../../../test/resources/context-01.json';
 import { TEXT_BOX } from '../../../../../core/common/accessibility-roles';
 import { MouseKey } from '../../../../../data/model/action/mouse/mouse-key';
+import { fieldName } from '../../../../../validation/field-name';
 
 const CONTEXT_1_NAME = 'chrome-context';
 
@@ -37,7 +38,7 @@ describe('text wizard tests', () => {
   it('context should be selectable', async () => {
     // select a context
     const contextSelect = screen.getByRole('list', {
-      name: Field[Field.WIZ_ST_CONTEXT],
+      name: fieldName(Field.WIZ_ST_CONTEXT),
     });
     await user.selectOptions(contextSelect, CONTEXT_1_NAME);
 
@@ -48,7 +49,7 @@ describe('text wizard tests', () => {
   it('context should be optional', async () => {
     // select a context
     const contextSelect = screen.getByRole('list', {
-      name: Field[Field.WIZ_ST_CONTEXT],
+      name: fieldName(Field.WIZ_ST_CONTEXT),
     });
     await user.click(contextSelect);
     await user.tab();
@@ -61,7 +62,7 @@ describe('text wizard tests', () => {
 
   it('invalid spec should be invalidated', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_SPEC],
+      name: fieldName(Field.WIZ_ST_SPEC),
     });
     await user.type(selectorInput, '#');
 
@@ -77,7 +78,7 @@ describe('text wizard tests', () => {
 
   it('valid spec should not be invalidated', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_SPEC],
+      name: fieldName(Field.WIZ_ST_SPEC),
     });
     await user.type(selectorInput, 'hi');
 
@@ -89,12 +90,12 @@ describe('text wizard tests', () => {
 
   it('invalid text should be invalidated', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_SPEC],
+      name: fieldName(Field.WIZ_ST_SPEC),
     });
     await user.type(selectorInput, 'hi');
 
     const textInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_TEXT],
+      name: fieldName(Field.WIZ_ST_TEXT),
     });
     await user.click(textInput);
     await user.tab();
@@ -109,12 +110,12 @@ describe('text wizard tests', () => {
 
   it('valid text should not be invalidated', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_SPEC],
+      name: fieldName(Field.WIZ_ST_SPEC),
     });
     await user.type(selectorInput, 'hi');
 
     const textInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_TEXT],
+      name: fieldName(Field.WIZ_ST_TEXT),
     });
     await user.type(textInput, 'hola');
 
@@ -126,11 +127,11 @@ describe('text wizard tests', () => {
 
   it('finalize screen should list created elements', async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_SPEC],
+      name: fieldName(Field.WIZ_ST_SPEC),
     });
     await user.type(selectorInput, 'hi');
     const textInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_TEXT],
+      name: fieldName(Field.WIZ_ST_TEXT),
     });
     await user.type(textInput, 'hola');
 
@@ -149,11 +150,11 @@ describe('text wizard tests', () => {
 
   it("finalize should create command's elements", async () => {
     const selectorInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_SPEC],
+      name: fieldName(Field.WIZ_ST_SPEC),
     });
     await user.type(selectorInput, 'hi');
     const textInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.WIZ_ST_TEXT],
+      name: fieldName(Field.WIZ_ST_TEXT),
     });
     await user.type(textInput, 'hola');
 

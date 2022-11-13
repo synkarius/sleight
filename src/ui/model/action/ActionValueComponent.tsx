@@ -34,6 +34,7 @@ import {
   createFieldedActionValueChange,
   createIdedActionValueChange,
 } from './action-editing-context-support';
+import { fieldName } from '../../../validation/field-name';
 
 type AVCProps = {
   // value
@@ -132,7 +133,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
   /**
    * misc other form stuff
    */
-  const enteredValueFieldName = Field[props.fields.value];
+  const enteredValueFieldName = fieldName(props.fields.value);
   const isChecked = (actionValueType: string): boolean =>
     props.actionValue.actionValueType === actionValueType;
   const radioButtonData = [
@@ -150,7 +151,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
       )}
       required={props.required}
     >
-      <div role="radiogroup" aria-label={Field[props.fields.radio]}>
+      <div role="radiogroup" aria-label={fieldName(props.fields.radio)}>
         {radioButtonData.map((d) => (
           <FormCheck
             inline
@@ -201,7 +202,7 @@ export const ActionValueComponent: React.FC<AVCProps> = (props) => {
         !!props.fields.enumValues.length && (
           <FormSelect
             value={props.actionValue.value}
-            aria-label={Field[props.fields.value]}
+            aria-label={fieldName(props.fields.value)}
             onChange={(e) => enteredValueChangedHandler(e.target.value)}
             onBlur={(_e) => touchEnteredValue()}
             isInvalid={!!errorResults(props.fields.value)}

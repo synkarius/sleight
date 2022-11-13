@@ -20,6 +20,7 @@ import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-mod
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -67,7 +68,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -76,7 +77,7 @@ const selectActionValueType = async (
 describe('sendKey action component tests', () => {
   it('should invalidate empty key to send value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VALUE),
     });
     await user.click(select);
 
@@ -89,7 +90,7 @@ describe('sendKey action component tests', () => {
 
   it('should validate non-empty key to send value', async () => {
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VALUE),
     });
     await user.click(select);
 
@@ -106,7 +107,7 @@ describe('sendKey action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VAR],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -126,7 +127,7 @@ describe('sendKey action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VAR],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VAR),
     });
     await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
     await user.tab();
@@ -141,7 +142,7 @@ describe('sendKey action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_OUTER_PAUSE_VAR],
+      name: fieldName(Field.AC_SK_OUTER_PAUSE_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -161,7 +162,7 @@ describe('sendKey action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_OUTER_PAUSE_VAR],
+      name: fieldName(Field.AC_SK_OUTER_PAUSE_VAR),
     });
     await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
 
@@ -177,13 +178,13 @@ describe('sendKey action component tests', () => {
       VARIABLE_RADIO
     );
     const outerPauseSelect = screen.getByRole('list', {
-      name: Field[Field.AC_SK_OUTER_PAUSE_VAR],
+      name: fieldName(Field.AC_SK_OUTER_PAUSE_VAR),
     });
     await user.click(outerPauseSelect);
     await user.tab();
     // is invalid at this point
     const sendKeyModeSelect = screen.getByRole('list', {
-      name: Field[Field.AC_SEND_KEY_MODE],
+      name: fieldName(Field.AC_SEND_KEY_MODE),
     });
     await user.selectOptions(sendKeyModeSelect, SendKeyMode.Enum.HOLD_RELEASE);
     // should be valid again

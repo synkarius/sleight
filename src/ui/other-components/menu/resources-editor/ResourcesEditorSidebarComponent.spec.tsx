@@ -18,6 +18,7 @@ import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { act } from 'react-dom/test-utils';
 import { castJsonForTest } from '../../../../test/utils/import-test-json-util';
+import { fieldName } from '../../../../validation/field-name';
 
 const FN1_NAME = 'fn1';
 const FN2_NAME = 'fn2';
@@ -49,7 +50,7 @@ describe('resources editor sidebar tests', () => {
     await clickToCreateNew(ResourceType.Enum.FN);
     const header = screen.getByText('Create/Edit Function');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     expect(header).toBeInTheDocument();
     expect(nameField).toBeInTheDocument();
@@ -60,7 +61,7 @@ describe('resources editor sidebar tests', () => {
     await clickToSelect(ResourceType.Enum.FN, FN1_NAME);
     const header = screen.getByText('Create/Edit Function');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     expect(header).toBeInTheDocument();
     expect(nameField).toBeInTheDocument();
@@ -73,7 +74,7 @@ describe('resources editor sidebar tests', () => {
     await user.click(createButton);
     const header = screen.getByText('Create/Edit Function');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     expect(header).toBeInTheDocument();
     expect(nameField).toBeInTheDocument();
@@ -84,10 +85,10 @@ describe('resources editor sidebar tests', () => {
     await clickToCreateNew(ResourceType.Enum.FN);
     const savedName = 'fn3';
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     const importPathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
 
     // minimal info to save
@@ -108,11 +109,11 @@ describe('resources editor sidebar tests', () => {
   it('should handle delete fn w/ confirm', async () => {
     await clickToSelect(ResourceType.Enum.FN, FN1_NAME);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE],
+      name: fieldName(Field.FN_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE_MODAL_DELETE],
+      name: fieldName(Field.FN_DELETE_MODAL_DELETE),
     });
     await user.click(deleteConfirmButton);
     const header = screen.queryByText('Create/Edit Function');
@@ -127,11 +128,11 @@ describe('resources editor sidebar tests', () => {
   it('should handle delete fn w/ cancel', async () => {
     await clickToSelect(ResourceType.Enum.FN, FN1_NAME);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE],
+      name: fieldName(Field.FN_DELETE),
     });
     await user.click(deleteButton);
     const deleteCancelButton = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE_MODAL_CANCEL],
+      name: fieldName(Field.FN_DELETE_MODAL_CANCEL),
     });
     await user.click(deleteCancelButton);
     const header = screen.queryByText('Create/Edit Function');
@@ -147,11 +148,11 @@ describe('resources editor sidebar tests', () => {
     // can't delete fn if still attached to an action
     await clickToSelect(ResourceType.Enum.FN, FN2_NAME);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE],
+      name: fieldName(Field.FN_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE_MODAL_DELETE],
+      name: fieldName(Field.FN_DELETE_MODAL_DELETE),
     });
     const errorText = screen.getByText(getFnDeletionErrorRegex());
     expect(deleteConfirmButton).toBeDisabled();

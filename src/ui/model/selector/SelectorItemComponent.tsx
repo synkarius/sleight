@@ -8,6 +8,7 @@ import {
 } from '../../../validation/validation-result';
 import { SelectorItem } from '../../../data/model/selector/selector-domain';
 import { SelectorButtonType } from './selector-button-type';
+import { fieldName } from '../../../validation/field-name';
 
 export type SelectorPositionData = {
   selectorButtonType: SelectorButtonType.Type;
@@ -70,7 +71,7 @@ export const SelectorItemComponent: React.FC<{
       <FormControl
         type="text"
         role="textbox"
-        aria-label={Field[props.field]}
+        aria-label={fieldName(props.field)}
         onChange={(e) => {
           props.handlers.change(props.selectorItem.id, e.target.value);
           validationContext.touch(props.field);

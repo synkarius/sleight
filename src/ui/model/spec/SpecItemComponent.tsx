@@ -30,6 +30,7 @@ import { UNSELECTED_ID } from '../../../core/common/consts';
 import { FormGroupRowComponent } from '../../other-components/FormGroupRowComponent';
 import { processErrorResults } from '../../../validation/validation-result-processing';
 import { ErrorTextComponent } from '../../other-components/ErrorTextComponent';
+import { fieldName } from '../../../validation/field-name';
 
 export const SpecItemComponent: React.FC<{
   specItem: SpecItem;
@@ -154,7 +155,7 @@ export const SpecItemComponent: React.FC<{
           <RequiredAsteriskComponent required={!!props.required} />
         </FormLabel>
         <FormSelect
-          aria-label={Field[Field.SP_ITEM_TYPE_SELECT]}
+          aria-label={fieldName(Field.SP_ITEM_TYPE_SELECT)}
           role={LIST}
           onChange={typeChangedHandler}
           value={props.specItem.itemType}

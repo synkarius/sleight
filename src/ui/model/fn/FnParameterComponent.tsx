@@ -3,6 +3,7 @@ import { FormControl, FormSelect } from 'react-bootstrap';
 import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { FnParameter } from '../../../data/model/fn/fn';
 import { VariableType } from '../../../data/model/variable/variable-types';
+import { fieldName } from '../../../validation/field-name';
 import { ValidationContext } from '../../../validation/validation-context';
 import { Field } from '../../../validation/validation-field';
 import { processErrorResults } from '../../../validation/validation-result-processing';
@@ -51,7 +52,7 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
         errorMessage={paramNameErrorResult}
       >
         <FormControl
-          aria-label={Field[Field.FN_PARAMETER_NAME]}
+          aria-label={fieldName(Field.FN_PARAMETER_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_PARAMETER_NAME)}
@@ -65,7 +66,7 @@ export const FnParameterComponent: React.FC<{ param: FnParameter }> = (
         errorMessage={errorResults(Field.FN_PARAMETER_TYPE, props.param.id)}
       >
         <FormSelect
-          aria-label={Field[Field.FN_PARAMETER_TYPE]}
+          aria-label={fieldName(Field.FN_PARAMETER_TYPE)}
           onChange={typeChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_PARAMETER_TYPE)}
           value={props.param.type}

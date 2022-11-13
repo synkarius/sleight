@@ -21,6 +21,7 @@ import { saveAction } from '../../../core/reducers/action-reducers';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 const SAVE = 'Save';
 const VARIABLE_1_ID = 'VARIABLE_1_ID';
@@ -67,7 +68,7 @@ describe('variable component tests', () => {
     doRender();
 
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.VAR_NAME],
+      name: fieldName(Field.VAR_NAME),
     });
 
     expect(nameField).toHaveAttribute(
@@ -80,7 +81,7 @@ describe('variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
@@ -93,7 +94,7 @@ describe('variable component tests', () => {
     doRender();
 
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.VAR_ROLE_KEY],
+      name: fieldName(Field.VAR_ROLE_KEY),
     });
     await user.click(roleKeyField);
     await user.type(roleKeyField, VARIABLE_1_RK);
@@ -112,7 +113,7 @@ describe('variable component tests', () => {
     doRender(VARIABLE_1_ID);
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
 
@@ -126,7 +127,7 @@ describe('variable component tests', () => {
     doRender(VARIABLE_2_ID);
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
 

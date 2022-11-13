@@ -11,6 +11,7 @@ import {
   VariableEditingContext,
   VariableReducerActionType,
 } from './variable-editing-context';
+import { fieldName } from '../../../validation/field-name';
 
 export const TextVariableComponent: React.FC<{ text: TextVariable }> = (
   props
@@ -63,7 +64,7 @@ export const TextVariableComponent: React.FC<{ text: TextVariable }> = (
             type="text"
             onChange={defaultValueChangedHandler}
             value={props.text.defaultValue}
-            aria-label={Field[Field.VAR_TEXT_DEFAULT_VALUE]}
+            aria-label={fieldName(Field.VAR_TEXT_DEFAULT_VALUE)}
           />
         </FormGroupRowComponent>
       )}

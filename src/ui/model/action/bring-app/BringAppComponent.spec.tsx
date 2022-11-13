@@ -19,6 +19,7 @@ import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
 const VARIABLE_RADIO = 1;
@@ -54,7 +55,7 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_TYPE],
+    name: fieldName(Field.AC_TYPE),
   });
   await user.selectOptions(actionTypeSelect, ActionType.Enum.BRING_APP);
 });
@@ -65,7 +66,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -74,7 +75,7 @@ const selectActionValueType = async (
 describe('bring app action component tests', () => {
   it('should invalidate empty app path value', async () => {
     const input = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.AC_BRING_PATH_VALUE],
+      name: fieldName(Field.AC_BRING_PATH_VALUE),
     });
     await user.click(input);
     await user.tab();
@@ -87,7 +88,7 @@ describe('bring app action component tests', () => {
 
   it('should validate non-empty app path value', async () => {
     const input = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.AC_BRING_PATH_VALUE],
+      name: fieldName(Field.AC_BRING_PATH_VALUE),
     });
     await user.click(input);
     await user.type(input, 'asdf');
@@ -103,7 +104,7 @@ describe('bring app action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_BRING_PATH_VAR],
+      name: fieldName(Field.AC_BRING_PATH_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -121,7 +122,7 @@ describe('bring app action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_BRING_PATH_VAR],
+      name: fieldName(Field.AC_BRING_PATH_VAR),
     });
     await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
     await user.tab();
@@ -136,7 +137,7 @@ describe('bring app action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_BRING_TITLE_VAR],
+      name: fieldName(Field.AC_BRING_TITLE_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -154,7 +155,7 @@ describe('bring app action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_BRING_TITLE_VAR],
+      name: fieldName(Field.AC_BRING_TITLE_VAR),
     });
     await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
     await user.tab();
@@ -169,7 +170,7 @@ describe('bring app action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_BRING_START_DIR_VAR],
+      name: fieldName(Field.AC_BRING_START_DIR_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -187,7 +188,7 @@ describe('bring app action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_BRING_START_DIR_VAR],
+      name: fieldName(Field.AC_BRING_START_DIR_VAR),
     });
     await user.selectOptions(select, [CHOICE_VARIABLE_NAME]);
     await user.tab();

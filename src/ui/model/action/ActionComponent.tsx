@@ -44,6 +44,7 @@ import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
 import { MapUtil } from '../../../core/common/map-util';
 import { DomainMapper } from '../../../core/mappers/mapper';
+import { fieldName } from '../../../validation/field-name';
 
 const AC_NAME = Field.AC_NAME;
 const AC_ROLE_KEY = Field.AC_ROLE_KEY;
@@ -171,7 +172,7 @@ const ActionChildComponent: React.FC<{
         errorMessage={errorResults(AC_NAME)}
       >
         <FormControl
-          aria-label={Field[AC_NAME]}
+          aria-label={fieldName(AC_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(AC_NAME)}
@@ -186,7 +187,7 @@ const ActionChildComponent: React.FC<{
         errorMessage={errorResults(AC_ROLE_KEY)}
       >
         <FormControl
-          aria-label={Field[AC_ROLE_KEY]}
+          aria-label={fieldName(AC_ROLE_KEY)}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(AC_ROLE_KEY)}
@@ -196,7 +197,7 @@ const ActionChildComponent: React.FC<{
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type" descriptionText="type of action">
         <FormSelect
-          aria-label={Field[Field.AC_TYPE]}
+          aria-label={fieldName(Field.AC_TYPE)}
           role="list"
           onChange={typeChangedHandler}
           value={props.action.type}
@@ -240,7 +241,7 @@ const ActionChildComponent: React.FC<{
           variant="danger"
           size="lg"
           className="me-3"
-          aria-label={Field[Field.AC_DELETE]}
+          aria-label={fieldName(Field.AC_DELETE)}
         >
           Delete
         </Button>

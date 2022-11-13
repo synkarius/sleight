@@ -33,6 +33,7 @@ import { Action } from '../../../../../data/model/action/action';
 import { act } from 'react-dom/test-utils';
 import { VariableType } from '../../../../../data/model/variable/variable-types';
 import { ActionValueType } from '../../../../../data/model/action/action-value-type';
+import { fieldName } from '../../../../../validation/field-name';
 
 let user: UserEvent;
 
@@ -151,7 +152,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Action');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.AC_NAME],
+      name: fieldName(Field.AC_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -164,7 +165,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Action');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.AC_NAME],
+      name: fieldName(Field.AC_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -179,7 +180,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Action');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.AC_NAME],
+      name: fieldName(Field.AC_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -192,12 +193,12 @@ describe('side bar component tests', () => {
     // add a name for display
     const savedName = 'action-1';
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.AC_NAME],
+      name: fieldName(Field.AC_NAME),
     });
     await user.type(nameField, savedName);
     // minimal info to save
     const keyToSendField = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VALUE),
     });
     await user.selectOptions(keyToSendField, 'b (bravo)');
     // save
@@ -219,11 +220,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.ACTION, ACTION_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.AC_DELETE],
+      name: fieldName(Field.AC_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.AC_DELETE_MODAL_DELETE],
+      name: fieldName(Field.AC_DELETE_MODAL_DELETE),
     });
     await user.click(deleteConfirmButton);
 
@@ -245,11 +246,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.ACTION, ACTION_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.AC_DELETE],
+      name: fieldName(Field.AC_DELETE),
     });
     await user.click(deleteButton);
     const deleteCancelButton = screen.getByRole('button', {
-      name: Field[Field.AC_DELETE_MODAL_CANCEL],
+      name: fieldName(Field.AC_DELETE_MODAL_CANCEL),
     });
     await user.click(deleteCancelButton);
 
@@ -267,11 +268,11 @@ describe('side bar component tests', () => {
     // can't delete action if still attached to a command
     await clickToSelect(ElementType.Enum.ACTION, ACTION_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.AC_DELETE],
+      name: fieldName(Field.AC_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.AC_DELETE_MODAL_DELETE],
+      name: fieldName(Field.AC_DELETE_MODAL_DELETE),
     });
 
     const errorText = screen.getByText(
@@ -289,7 +290,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Command');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.CMD_NAME],
+      name: fieldName(Field.CMD_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -302,7 +303,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Command');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.CMD_NAME],
+      name: fieldName(Field.CMD_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -317,7 +318,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Command');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.CMD_NAME],
+      name: fieldName(Field.CMD_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -345,12 +346,12 @@ describe('side bar component tests', () => {
     // add a name for display
     const savedName = 'command-1';
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CMD_NAME],
+      name: fieldName(Field.CMD_NAME),
     });
     await user.type(nameField, savedName);
     // minimal info to save
     const specSelect = screen.getByRole('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     await user.selectOptions(specSelect, specName);
     // save
@@ -368,11 +369,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.COMMAND, COMMAND_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.CMD_DELETE],
+      name: fieldName(Field.CMD_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.CMD_DELETE_MODAL_DELETE],
+      name: fieldName(Field.CMD_DELETE_MODAL_DELETE),
     });
     await user.click(deleteConfirmButton);
 
@@ -390,11 +391,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.COMMAND, COMMAND_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.CMD_DELETE],
+      name: fieldName(Field.CMD_DELETE),
     });
     await user.click(deleteButton);
     const deleteCancelButton = screen.getByRole('button', {
-      name: Field[Field.CMD_DELETE_MODAL_CANCEL],
+      name: fieldName(Field.CMD_DELETE_MODAL_CANCEL),
     });
     await user.click(deleteCancelButton);
 
@@ -415,7 +416,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Context');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.CTX_NAME],
+      name: fieldName(Field.CTX_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -428,7 +429,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Context');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.CTX_NAME],
+      name: fieldName(Field.CTX_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -443,7 +444,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Context');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.CTX_NAME],
+      name: fieldName(Field.CTX_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -456,12 +457,12 @@ describe('side bar component tests', () => {
     // add a name for display
     const savedName = 'context-1';
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_NAME],
+      name: fieldName(Field.CTX_NAME),
     });
     await user.type(nameField, savedName);
     // minimal info to save
     const matcherField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_MATCHER],
+      name: fieldName(Field.CTX_MATCHER),
     });
     await user.type(matcherField, 'c');
     // save
@@ -483,11 +484,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.CONTEXT, CONTEXT_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.CTX_DELETE],
+      name: fieldName(Field.CTX_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.CTX_DELETE_MODAL_DELETE],
+      name: fieldName(Field.CTX_DELETE_MODAL_DELETE),
     });
     await user.click(deleteConfirmButton);
 
@@ -509,11 +510,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.CONTEXT, CONTEXT_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.CTX_DELETE],
+      name: fieldName(Field.CTX_DELETE),
     });
     await user.click(deleteButton);
     const deleteCancelButton = screen.getByRole('button', {
-      name: Field[Field.CTX_DELETE_MODAL_CANCEL],
+      name: fieldName(Field.CTX_DELETE_MODAL_CANCEL),
     });
     await user.click(deleteCancelButton);
 
@@ -531,11 +532,11 @@ describe('side bar component tests', () => {
     // can't delete context if still attached to a command
     await clickToSelect(ElementType.Enum.CONTEXT, CONTEXT_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.CTX_DELETE],
+      name: fieldName(Field.CTX_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.CTX_DELETE_MODAL_DELETE],
+      name: fieldName(Field.CTX_DELETE_MODAL_DELETE),
     });
 
     const errorText = screen.getByText(
@@ -553,7 +554,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Spec');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.SP_NAME],
+      name: fieldName(Field.SP_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -566,7 +567,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Spec');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.SP_NAME],
+      name: fieldName(Field.SP_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -581,7 +582,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Spec');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.SP_NAME],
+      name: fieldName(Field.SP_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -594,16 +595,16 @@ describe('side bar component tests', () => {
     // add a name for display
     const savedName = 'spec-1';
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.SP_NAME],
+      name: fieldName(Field.SP_NAME),
     });
     await user.type(nameField, savedName);
     // minimal info to save
     const addNewButton = screen.getByRole<HTMLButtonElement>('button', {
-      name: Field[Field.SP_ADD_ITEM_BUTTON],
+      name: fieldName(Field.SP_ADD_ITEM_BUTTON),
     });
     await user.click(addNewButton);
     const selectorItemField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.SP_ITEM_SELECTOR],
+      name: fieldName(Field.SP_ITEM_SELECTOR),
     });
     await user.type(selectorItemField, 'f');
     // save
@@ -625,11 +626,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.SPEC, SPEC_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.SP_DELETE],
+      name: fieldName(Field.SP_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.SP_DELETE_MODAL_DELETE],
+      name: fieldName(Field.SP_DELETE_MODAL_DELETE),
     });
     await user.click(deleteConfirmButton);
 
@@ -651,11 +652,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.SPEC, SPEC_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.SP_DELETE],
+      name: fieldName(Field.SP_DELETE),
     });
     await user.click(deleteButton);
     const deleteCancelButton = screen.getByRole('button', {
-      name: Field[Field.SP_DELETE_MODAL_CANCEL],
+      name: fieldName(Field.SP_DELETE_MODAL_CANCEL),
     });
     await user.click(deleteCancelButton);
 
@@ -673,11 +674,11 @@ describe('side bar component tests', () => {
     // can't delete spec if still attached to a command
     await clickToSelect(ElementType.Enum.SPEC, SPEC_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.SP_DELETE],
+      name: fieldName(Field.SP_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.SP_DELETE_MODAL_DELETE],
+      name: fieldName(Field.SP_DELETE_MODAL_DELETE),
     });
 
     const errorText = screen.getByText(getSpecDeletionErrorRegex());
@@ -693,7 +694,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Variable');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.VAR_NAME],
+      name: fieldName(Field.VAR_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -706,7 +707,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Variable');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.VAR_NAME],
+      name: fieldName(Field.VAR_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -721,7 +722,7 @@ describe('side bar component tests', () => {
 
     const header = screen.getByText('Create/Edit Variable');
     const nameField = screen.getByRole<HTMLInputElement>(TEXT_BOX, {
-      name: Field[Field.VAR_NAME],
+      name: fieldName(Field.VAR_NAME),
     });
 
     expect(header).toBeInTheDocument();
@@ -734,7 +735,7 @@ describe('side bar component tests', () => {
     // add a name for display
     const savedName = 'variable-1';
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.VAR_NAME],
+      name: fieldName(Field.VAR_NAME),
     });
     await user.type(nameField, savedName);
     // minimal info to save
@@ -757,11 +758,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.VARIABLE, VARIABLE_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.VAR_DELETE],
+      name: fieldName(Field.VAR_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.VAR_DELETE_MODAL_DELETE],
+      name: fieldName(Field.VAR_DELETE_MODAL_DELETE),
     });
     await user.click(deleteConfirmButton);
 
@@ -783,11 +784,11 @@ describe('side bar component tests', () => {
     // delete
     await clickToSelect(ElementType.Enum.VARIABLE, VARIABLE_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.VAR_DELETE],
+      name: fieldName(Field.VAR_DELETE),
     });
     await user.click(deleteButton);
     const deleteCancelButton = screen.getByRole('button', {
-      name: Field[Field.VAR_DELETE_MODAL_CANCEL],
+      name: fieldName(Field.VAR_DELETE_MODAL_CANCEL),
     });
     await user.click(deleteCancelButton);
 
@@ -805,11 +806,11 @@ describe('side bar component tests', () => {
     // can't delete variable if still attached to an action
     await clickToSelect(ElementType.Enum.VARIABLE, VARIABLE_NAME_1);
     const deleteButton = screen.getByRole('button', {
-      name: Field[Field.VAR_DELETE],
+      name: fieldName(Field.VAR_DELETE),
     });
     await user.click(deleteButton);
     const deleteConfirmButton = screen.getByRole('button', {
-      name: Field[Field.VAR_DELETE_MODAL_DELETE],
+      name: fieldName(Field.VAR_DELETE_MODAL_DELETE),
     });
 
     const errorText = screen.getByText(

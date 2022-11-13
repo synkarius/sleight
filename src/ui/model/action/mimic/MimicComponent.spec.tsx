@@ -16,6 +16,7 @@ import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const TEXT_VARIABLE_NAME = 'asdf-text-var';
 const VARIABLE_RADIO = 1;
@@ -46,7 +47,7 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_TYPE],
+    name: fieldName(Field.AC_TYPE),
   });
   await user.selectOptions(actionTypeSelect, ActionType.Enum.MIMIC);
 });
@@ -57,7 +58,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -66,7 +67,7 @@ const selectActionValueType = async (
 describe('mimic action component tests', () => {
   it('should invalidate empty words value', async () => {
     const input = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.AC_MIMIC_WORDS_VALUE],
+      name: fieldName(Field.AC_MIMIC_WORDS_VALUE),
     });
     await user.click(input);
     await user.tab();
@@ -79,7 +80,7 @@ describe('mimic action component tests', () => {
 
   it('should validate non-empty words value', async () => {
     const input = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.AC_MIMIC_WORDS_VALUE],
+      name: fieldName(Field.AC_MIMIC_WORDS_VALUE),
     });
     await user.click(input);
     await user.type(input, 'asdf');
@@ -95,7 +96,7 @@ describe('mimic action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_MIMIC_WORDS_VAR],
+      name: fieldName(Field.AC_MIMIC_WORDS_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -113,7 +114,7 @@ describe('mimic action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_MIMIC_WORDS_VAR],
+      name: fieldName(Field.AC_MIMIC_WORDS_VAR),
     });
     await user.selectOptions(select, [TEXT_VARIABLE_NAME]);
     await user.tab();

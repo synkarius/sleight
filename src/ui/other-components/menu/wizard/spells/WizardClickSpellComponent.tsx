@@ -8,6 +8,7 @@ import { ClickSpell } from '../../../../../data/wizard/spell';
 import { SpellType } from '../../../../../data/wizard/spell-types';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { InjectionContext } from '../../../../../di/injector-context';
+import { fieldName } from '../../../../../validation/field-name';
 import { ValidationContext } from '../../../../../validation/validation-context';
 import { Field } from '../../../../../validation/validation-field';
 import { processErrorResults } from '../../../../../validation/validation-result-processing';
@@ -114,7 +115,7 @@ const WizardClickSpellChildComponent: React.FC<{
                 errorMessage={errorResults(Field.WIZ_MC_BTN)}
               >
                 <Form.Select
-                  aria-label={Field[Field.WIZ_MC_BTN]}
+                  aria-label={fieldName(Field.WIZ_MC_BTN)}
                   role="list"
                   onChange={(e) => {
                     props.dispatches.setButton(e.target.value as MouseKey.Type);

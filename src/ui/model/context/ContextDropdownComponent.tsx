@@ -3,6 +3,7 @@ import { FormSelect } from 'react-bootstrap';
 import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
 import { UNSELECTED_ID } from '../../../core/common/consts';
+import { fieldName } from '../../../validation/field-name';
 
 type ContextDropdownComponentProps = {
   readonly contextId?: string;
@@ -20,7 +21,7 @@ export const ContextDropdownComponent: React.FC<
   return (
     <FormSelect
       value={props.contextId ?? UNSELECTED_ID}
-      aria-label={Field[props.field]}
+      aria-label={fieldName(props.field)}
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}

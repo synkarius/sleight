@@ -20,6 +20,7 @@ import { ActionComponent } from '../ActionComponent';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -61,7 +62,7 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_TYPE],
+    name: fieldName(Field.AC_TYPE),
   });
   await user.selectOptions(actionTypeSelect, ActionType.Enum.PAUSE);
 });
@@ -70,7 +71,7 @@ describe('pause action component tests', () => {
   it('should invalidate non-selected seconds variable', async () => {
     await selectActionValueType(user, Field.AC_SECONDS_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SECONDS_VAR],
+      name: fieldName(Field.AC_SECONDS_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -84,7 +85,7 @@ describe('pause action component tests', () => {
   it('should validate selected seconds variable', async () => {
     await selectActionValueType(user, Field.AC_SECONDS_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SECONDS_VAR],
+      name: fieldName(Field.AC_SECONDS_VAR),
     });
     await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
 
@@ -100,7 +101,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);

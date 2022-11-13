@@ -11,6 +11,7 @@ import { SpecDTO } from '../../../../data/model/spec/spec-dto';
 import { saveSpec } from '../../../../core/reducers/spec-reducers';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
+import { fieldName } from '../../../../validation/field-name';
 
 let user: UserEvent;
 
@@ -53,7 +54,7 @@ describe('editor mode focus tests', () => {
   it('action should clear on save', async () => {
     await clickToCreateNew(ElementType.Enum.ACTION);
     const keyToSendField = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VALUE),
     });
     // minimal info to save
     await user.selectOptions(keyToSendField, 'b (bravo)');
@@ -76,7 +77,7 @@ describe('editor mode focus tests', () => {
   it('command should clear on save', async () => {
     await clickToCreateNew(ElementType.Enum.COMMAND);
     const specSelect = screen.getByRole('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // minimal info to save
     await user.selectOptions(specSelect, SPEC_NAME_1);
@@ -99,7 +100,7 @@ describe('editor mode focus tests', () => {
   it('context should clear on save', async () => {
     await clickToCreateNew(ElementType.Enum.CONTEXT);
     const matcherField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_MATCHER],
+      name: fieldName(Field.CTX_MATCHER),
     });
     // minimal info to save
     await user.type(matcherField, 'c');
@@ -122,11 +123,11 @@ describe('editor mode focus tests', () => {
   it('spec should clear on save', async () => {
     await clickToCreateNew(ElementType.Enum.SPEC);
     const addNewButton = screen.getByRole<HTMLButtonElement>('button', {
-      name: Field[Field.SP_ADD_ITEM_BUTTON],
+      name: fieldName(Field.SP_ADD_ITEM_BUTTON),
     });
     await user.click(addNewButton);
     const selectorItemField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.SP_ITEM_SELECTOR],
+      name: fieldName(Field.SP_ITEM_SELECTOR),
     });
     // minimal info to save
     await user.type(selectorItemField, 'f');

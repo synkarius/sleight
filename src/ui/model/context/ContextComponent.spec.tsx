@@ -10,6 +10,7 @@ import { saveContext } from '../../../core/reducers/context-reducers';
 import { createContext } from '../../../data/model/context/context';
 import { container } from '../../../di/config/brandi-config';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 const CONTEXT_NAME = 'CONTEXT_NAME';
 const ROLE_KEY = 'ROLE_KEY';
@@ -41,7 +42,7 @@ beforeEach(async () => {
 describe('context component tests', () => {
   it('should have a placeholder name', () => {
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_NAME],
+      name: fieldName(Field.CTX_NAME),
     });
 
     expect(nameField).toHaveAttribute(
@@ -59,7 +60,7 @@ describe('context component tests', () => {
 
   it('should invalidate empty matcher', async () => {
     const input = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_MATCHER],
+      name: fieldName(Field.CTX_MATCHER),
     });
     await user.click(input);
     await user.tab();
@@ -69,7 +70,7 @@ describe('context component tests', () => {
 
   it('should validate non-empty role key', async () => {
     const input = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_MATCHER],
+      name: fieldName(Field.CTX_MATCHER),
     });
     await user.click(input);
     await user.keyboard('a');
@@ -79,7 +80,7 @@ describe('context component tests', () => {
 
   it('should invalidate an already taken role key', async () => {
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CTX_ROLE_KEY],
+      name: fieldName(Field.CTX_ROLE_KEY),
     });
     await user.click(roleKeyField);
     await user.type(roleKeyField, ROLE_KEY);

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import App from '../../../../App';
 import { store } from '../../../../app/store';
 import { Field } from '../../../../validation/validation-field';
+import { fieldName } from '../../../../validation/field-name';
 
 let user: UserEvent;
 
@@ -26,10 +27,10 @@ describe('resources editor tests', () => {
   it('fn should clear on save', async () => {
     await clickToCreateNew(ResourceType.Enum.FN);
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     const importPathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
 
     // minimal info to save

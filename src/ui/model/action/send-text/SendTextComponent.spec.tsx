@@ -16,6 +16,7 @@ import { TEXT_BOX } from '../../../../core/common/accessibility-roles';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const TEXT_VARIABLE_NAME = 'asdf-text-var';
 const VARIABLE_RADIO = 1;
@@ -46,7 +47,7 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_TYPE],
+    name: fieldName(Field.AC_TYPE),
   });
   await user.selectOptions(actionTypeSelect, ActionType.Enum.SEND_TEXT);
 });
@@ -57,7 +58,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -66,7 +67,7 @@ const selectActionValueType = async (
 describe('send text action component tests', () => {
   it('should invalidate empty text value', async () => {
     const input = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.AC_ST_TEXT_VALUE],
+      name: fieldName(Field.AC_ST_TEXT_VALUE),
     });
     await user.click(input);
     await user.tab();
@@ -79,7 +80,7 @@ describe('send text action component tests', () => {
 
   it('should validate non-empty text value', async () => {
     const input = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.AC_ST_TEXT_VALUE],
+      name: fieldName(Field.AC_ST_TEXT_VALUE),
     });
     await user.click(input);
     await user.type(input, 'asdf');
@@ -91,7 +92,7 @@ describe('send text action component tests', () => {
   it('should invalidate non-selected text variable', async () => {
     await selectActionValueType(user, Field.AC_ST_TEXT_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_ST_TEXT_VAR],
+      name: fieldName(Field.AC_ST_TEXT_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -105,7 +106,7 @@ describe('send text action component tests', () => {
   it('should validate selected text variable', async () => {
     await selectActionValueType(user, Field.AC_ST_TEXT_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_ST_TEXT_VAR],
+      name: fieldName(Field.AC_ST_TEXT_VAR),
     });
     await user.selectOptions(select, [TEXT_VARIABLE_NAME]);
     await user.tab();

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { FormControl, FormText } from 'react-bootstrap';
+import { fieldName } from '../../../../../validation/field-name';
 import { ValidationContext } from '../../../../../validation/validation-context';
 import { Field } from '../../../../../validation/validation-field';
 import { processErrorResults } from '../../../../../validation/validation-result-processing';
@@ -21,7 +22,7 @@ export const SpellSpecSelectionComponent: React.FC<{
       errorMessage={errorResults(props.field)}
     >
       <FormControl
-        aria-label={Field[props.field]}
+        aria-label={fieldName(props.field)}
         type="text"
         onChange={(e) => {
           props.setSelector(e.target.value);

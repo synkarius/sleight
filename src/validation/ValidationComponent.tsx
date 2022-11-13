@@ -15,6 +15,7 @@ import {
 import { Field } from './validation-field';
 import { ValidationResult, ValidationResultType } from './validation-result';
 import { SleightDataInternalFormat } from '../data/data-formats';
+import { fieldName } from './field-name';
 
 export enum ValidateMode {
   TOUCH,
@@ -88,7 +89,7 @@ const tryValidate = <T,>(
     return {
       type: ValidationResultType.VALIDATION_FAILED,
       errorHighlightField: field,
-      message: `validation failed for ${Field[field]}`,
+      message: `validation failed for field "${fieldName(field)}"`,
     };
   }
 };

@@ -28,6 +28,7 @@ import { import11 } from '../../../test/resources/command-setup-11.json';
 import { import12 } from '../../../test/resources/command-setup-12.json';
 import { saveCommand } from '../../../core/reducers/command-reducers';
 import { saveContext } from '../../../core/reducers/context-reducers';
+import { fieldName } from '../../../validation/field-name';
 
 let user: UserEvent;
 
@@ -50,7 +51,7 @@ describe('command component tests', () => {
   it('should have a placeholder name', () => {
     doRender();
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CMD_NAME],
+      name: fieldName(Field.CMD_NAME),
     });
 
     expect(nameField).toHaveAttribute(
@@ -70,7 +71,7 @@ describe('command component tests', () => {
   it('should invalidate unselected spec', async () => {
     doRender();
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     await user.click(specSelect);
     await user.tab();
@@ -88,7 +89,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     await user.selectOptions(specSelect, [specName]);
     await user.tab();
@@ -106,7 +107,7 @@ describe('command component tests', () => {
     const contextId = Object.values(import09.contexts)[0].id;
 
     const contextSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_CONTEXT],
+      name: fieldName(Field.CMD_CONTEXT),
     });
     await user.selectOptions(contextSelect, [contextName]);
     await user.tab();
@@ -119,7 +120,7 @@ describe('command component tests', () => {
     doRender();
 
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.CMD_ROLE_KEY],
+      name: fieldName(Field.CMD_ROLE_KEY),
     });
     await user.click(roleKeyField);
     await user.type(roleKeyField, 'rk1');
@@ -141,7 +142,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select a spec with no variables
     await user.selectOptions(specSelect, [specName]);
@@ -162,7 +163,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [specName]);
@@ -189,7 +190,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select a spec with no variables
     await user.selectOptions(specSelect, [specName]);
@@ -197,7 +198,7 @@ describe('command component tests', () => {
     await user.click(addActionButton);
     // select an action with variables
     const actionSelect = screen.getByRole('list', {
-      name: Field[Field.CMD_ACTION_SELECT],
+      name: fieldName(Field.CMD_ACTION_SELECT),
     });
     await user.selectOptions(actionSelect, actionName);
     const saveButton = screen.getByText('Save');
@@ -222,7 +223,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [specName]);
@@ -230,7 +231,7 @@ describe('command component tests', () => {
     await user.click(addActionButton);
     // select an action with variables
     const actionSelect = screen.getByRole('list', {
-      name: Field[Field.CMD_ACTION_SELECT],
+      name: fieldName(Field.CMD_ACTION_SELECT),
     });
     await user.selectOptions(actionSelect, actionName);
     const saveButton = screen.getByText('Save');
@@ -255,14 +256,14 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select a spec with variables
     await user.selectOptions(specSelect, [specName]);
     const addActionButton = screen.getByText<HTMLButtonElement>('Add Action');
     await user.click(addActionButton);
     const actionSelect = screen.getByRole('list', {
-      name: Field[Field.CMD_ACTION_SELECT],
+      name: fieldName(Field.CMD_ACTION_SELECT),
     });
     // select an action with no variables
     await user.selectOptions(actionSelect, actionName);
@@ -288,7 +289,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select a spec with no variables
     await user.selectOptions(specSelect, [specName]);
@@ -296,7 +297,7 @@ describe('command component tests', () => {
     await user.click(addActionButton);
     // select an action with variables
     const actionSelect = screen.getByRole('list', {
-      name: Field[Field.CMD_ACTION_SELECT],
+      name: fieldName(Field.CMD_ACTION_SELECT),
     });
     await user.selectOptions(actionSelect, actionName);
     const saveButton = screen.getByText('Save');
@@ -333,7 +334,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select an already-used spec
     await user.selectOptions(specSelect, [specName]);
@@ -353,7 +354,7 @@ describe('command component tests', () => {
     const specName = Object.values(data.specs)[0].name;
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     // select an already-used spec
     await user.selectOptions(specSelect, [specName]);
@@ -375,13 +376,13 @@ describe('command component tests', () => {
     doRender(commandId);
 
     const contextSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_CONTEXT],
+      name: fieldName(Field.CMD_CONTEXT),
     });
     await user.selectOptions(contextSelect, [contextName]);
     await user.tab();
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     const saveButton = screen.getByText('Save');
     const errorText = screen.getByText(getNonUniqueSpecRegex());
@@ -398,7 +399,7 @@ describe('command component tests', () => {
     doRender(commandId);
 
     const contextSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_CONTEXT],
+      name: fieldName(Field.CMD_CONTEXT),
     });
     const globalContextSelectOption = screen.getAllByRole<HTMLOptionElement>(
       'listitem',
@@ -408,7 +409,7 @@ describe('command component tests', () => {
     await user.tab();
 
     const specSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.CMD_SPEC_SELECT],
+      name: fieldName(Field.CMD_SPEC_SELECT),
     });
     const saveButton = screen.getByText('Save');
     const errorText = screen.getByText(getNonUniqueSpecRegex());

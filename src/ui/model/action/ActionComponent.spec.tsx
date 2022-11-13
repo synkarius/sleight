@@ -34,6 +34,7 @@ import { LIST } from '../../../core/common/accessibility-roles';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
 const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';
@@ -166,7 +167,7 @@ describe('action component tests', () => {
     doRender();
 
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.AC_NAME],
+      name: fieldName(Field.AC_NAME),
     });
 
     expect(nameField).toHaveAttribute(
@@ -188,13 +189,13 @@ describe('action component tests', () => {
     doRender();
 
     const select = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.AC_SK_KEY_TO_SEND_VALUE],
+      name: fieldName(Field.AC_SK_KEY_TO_SEND_VALUE),
     });
     await user.click(select);
     await user.tab();
     // is invalid at this point
     const actionTypeSelect = screen.getByRole('list', {
-      name: Field[Field.AC_TYPE],
+      name: fieldName(Field.AC_TYPE),
     });
     await user.selectOptions(actionTypeSelect, ActionType.Enum.PAUSE);
     // should be valid again
@@ -207,7 +208,7 @@ describe('action component tests', () => {
     doRender();
 
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.AC_ROLE_KEY],
+      name: fieldName(Field.AC_ROLE_KEY),
     });
     await user.click(roleKeyField);
     await user.type(roleKeyField, ROLE_KEY);
@@ -258,7 +259,7 @@ describe('action component tests', () => {
     const variableRadio = screen.getByLabelText('Use (Range) Variable');
     await user.click(variableRadio);
     const variableSelect = screen.getByRole(LIST, {
-      name: Field[Field.AC_SECONDS_VAR],
+      name: fieldName(Field.AC_SECONDS_VAR),
     });
     await user.selectOptions(variableSelect, VARIABLE_NAME_1);
     const saveButton = screen.getByRole('button', {

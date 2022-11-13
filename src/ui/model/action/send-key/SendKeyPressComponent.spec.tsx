@@ -14,6 +14,7 @@ import { ActionComponent } from '../ActionComponent';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const VARIABLE_NAME = 'asdf-range-var';
 const VARIABLE_RADIO = 1;
@@ -54,7 +55,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -68,7 +69,7 @@ describe('sendKeyPress action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_INNER_PAUSE_VAR],
+      name: fieldName(Field.AC_SK_INNER_PAUSE_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -88,7 +89,7 @@ describe('sendKeyPress action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_INNER_PAUSE_VAR],
+      name: fieldName(Field.AC_SK_INNER_PAUSE_VAR),
     });
     await user.selectOptions(select, [VARIABLE_NAME]);
 
@@ -102,7 +103,7 @@ describe('sendKeyPress action component tests', () => {
   it('should invalidate non-selected repeat variable', async () => {
     await selectActionValueType(user, Field.AC_SK_REPEAT_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_REPEAT_VAR],
+      name: fieldName(Field.AC_SK_REPEAT_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -116,7 +117,7 @@ describe('sendKeyPress action component tests', () => {
   it('should validate selected repeat variable', async () => {
     await selectActionValueType(user, Field.AC_SK_REPEAT_RADIO, VARIABLE_RADIO);
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_SK_REPEAT_VAR],
+      name: fieldName(Field.AC_SK_REPEAT_VAR),
     });
     await user.selectOptions(select, [VARIABLE_NAME]);
 

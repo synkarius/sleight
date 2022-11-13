@@ -26,6 +26,7 @@ import { variable02 } from '../../../test/resources/variable-02.json';
 import { castJsonForTest } from '../../../test/utils/import-test-json-util';
 import { container } from '../../../di/config/brandi-config';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 let specIdsForCleanup: string[];
 
@@ -89,7 +90,7 @@ describe('spec component tests', () => {
     doRender();
 
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.SP_NAME],
+      name: fieldName(Field.SP_NAME),
     });
 
     expect(nameField).toHaveAttribute(
@@ -140,7 +141,7 @@ describe('spec component tests', () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);
     const selectorInput = screen.getByRole('textbox', {
-      name: Field[Field.SP_ITEM_SELECTOR],
+      name: fieldName(Field.SP_ITEM_SELECTOR),
     });
     await user.type(selectorInput, 'z');
     await user.tab();
@@ -157,7 +158,7 @@ describe('spec component tests', () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);
     const selectorInput = screen.getByRole('textbox', {
-      name: Field[Field.SP_ITEM_SELECTOR],
+      name: fieldName(Field.SP_ITEM_SELECTOR),
     });
     await user.click(selectorInput);
     await user.tab();
@@ -171,11 +172,11 @@ describe('spec component tests', () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);
     const specTypeSelect = screen.getByRole('list', {
-      name: Field[Field.SP_ITEM_TYPE_SELECT],
+      name: fieldName(Field.SP_ITEM_TYPE_SELECT),
     });
     await user.selectOptions(specTypeSelect, SpecItemType.Enum.VARIABLE);
     const variableTypeSelect = screen.getByRole('list', {
-      name: Field[Field.SP_ITEM_VARIABLE],
+      name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     await user.selectOptions(variableTypeSelect, VARIABLE_NAME_1);
     await user.tab();
@@ -192,11 +193,11 @@ describe('spec component tests', () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);
     const specTypeSelect = screen.getByRole('list', {
-      name: Field[Field.SP_ITEM_TYPE_SELECT],
+      name: fieldName(Field.SP_ITEM_TYPE_SELECT),
     });
     await user.selectOptions(specTypeSelect, SpecItemType.Enum.VARIABLE);
     const variableTypeSelect = screen.getByRole('list', {
-      name: Field[Field.SP_ITEM_VARIABLE],
+      name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     await user.click(variableTypeSelect);
     await user.tab();
@@ -269,7 +270,7 @@ describe('spec component tests', () => {
     doRender();
 
     const roleKeyField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.SP_ROLE_KEY],
+      name: fieldName(Field.SP_ROLE_KEY),
     });
     await user.click(roleKeyField);
     await user.type(roleKeyField, ROLE_KEY);
@@ -290,7 +291,7 @@ describe('spec component tests', () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);
     const selectorInput = screen.getByRole('textbox', {
-      name: Field[Field.SP_ITEM_SELECTOR],
+      name: fieldName(Field.SP_ITEM_SELECTOR),
     });
     await user.type(selectorInput, '#');
 
@@ -345,11 +346,11 @@ describe('spec component tests', () => {
      * in command w/ vars
      */
     const specItemTypeSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.SP_ITEM_TYPE_SELECT],
+      name: fieldName(Field.SP_ITEM_TYPE_SELECT),
     });
     await user.selectOptions(specItemTypeSelect, SpecItemType.Enum.SELECTOR);
     const selectorTextBox = screen.getByRole('textbox', {
-      name: Field[Field.SP_ITEM_SELECTOR],
+      name: fieldName(Field.SP_ITEM_SELECTOR),
     });
     await user.type(selectorTextBox, 'asdf');
     const saveButton = screen.getByRole('button', {
@@ -375,11 +376,11 @@ describe('spec component tests', () => {
      * in command w/ no vars
      */
     const specItemTypeSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.SP_ITEM_TYPE_SELECT],
+      name: fieldName(Field.SP_ITEM_TYPE_SELECT),
     });
     await user.selectOptions(specItemTypeSelect, SpecItemType.Enum.VARIABLE);
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.SP_ITEM_VARIABLE],
+      name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     await user.selectOptions(variableSelect, VARIABLE_NAME_1);
     const saveButton = screen.getByRole('button', {
@@ -438,7 +439,7 @@ describe('spec component tests', () => {
     doRender(SPEC_WITH_VARIABLE_OPTIONAL_ID);
 
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.SP_ITEM_VARIABLE],
+      name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     // change to non-default var
     await user.selectOptions(variableSelect, VARIABLE_NAME_1);
@@ -461,7 +462,7 @@ describe('spec component tests', () => {
     doRender(SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID);
 
     const variableSelect = screen.getByRole<HTMLSelectElement>('list', {
-      name: Field[Field.SP_ITEM_VARIABLE],
+      name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     // change to default var
     await user.selectOptions(variableSelect, [DEFAULT_VARIABLE_NAME_2]);
@@ -547,11 +548,11 @@ describe('spec component tests', () => {
     const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
     await user.click(addNewSpecItemButton);
     const specTypeSelect = screen.getByRole('list', {
-      name: Field[Field.SP_ITEM_TYPE_SELECT],
+      name: fieldName(Field.SP_ITEM_TYPE_SELECT),
     });
     await user.selectOptions(specTypeSelect, SpecItemType.Enum.VARIABLE);
     const variableTypeSelect = screen.getByRole('list', {
-      name: Field[Field.SP_ITEM_VARIABLE],
+      name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     await user.selectOptions(variableTypeSelect, VARIABLE_NAME_1);
     const saveButton = screen.getByRole('button', {

@@ -18,6 +18,7 @@ import { castJsonForTest } from '../../../test/utils/import-test-json-util';
 import { FnType } from '../../../data/model/fn/fn-types';
 import { saveAction } from '../../../core/reducers/action-reducers';
 import { VariableType } from '../../../data/model/variable/variable-types';
+import { fieldName } from '../../../validation/field-name';
 
 const formatMapper = container.get(Tokens.FormatMapper);
 const import01fnId = '8ff8432b-25e3-4085-a6ec-e43412e3c2fd';
@@ -45,7 +46,7 @@ describe('fn component tests', () => {
   it('should invalidate blank fn name', async () => {
     doRender();
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     await user.click(nameField);
     await user.tab();
@@ -61,7 +62,7 @@ describe('fn component tests', () => {
   it('should validate non-blank fn name', async () => {
     doRender();
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     await user.type(nameField, 'asdf');
     await user.tab();
@@ -77,7 +78,7 @@ describe('fn component tests', () => {
   it('should invalidate fn name that starts with digit', async () => {
     doRender();
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     await user.type(nameField, '123a');
 
@@ -96,7 +97,7 @@ describe('fn component tests', () => {
     await setupTestData(import01);
 
     const rkField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_ROLE_KEY],
+      name: fieldName(Field.FN_ROLE_KEY),
     });
     await user.type(rkField, 'rk1');
 
@@ -115,7 +116,7 @@ describe('fn component tests', () => {
     await setupTestData(import01);
 
     const rkField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_ROLE_KEY],
+      name: fieldName(Field.FN_ROLE_KEY),
     });
     await user.type(rkField, 'rk2');
 
@@ -132,12 +133,12 @@ describe('fn component tests', () => {
   it('should invalidate blank parameter name', async () => {
     doRender();
     const addBtn = screen.getByRole('button', {
-      name: Field[Field.FN_ADD_NEW_PARAMETER],
+      name: fieldName(Field.FN_ADD_NEW_PARAMETER),
     });
     await user.click(addBtn);
 
     const paramField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_PARAMETER_NAME],
+      name: fieldName(Field.FN_PARAMETER_NAME),
     });
     await user.click(paramField);
     await user.tab();
@@ -153,12 +154,12 @@ describe('fn component tests', () => {
   it('should validate non-blank parameter name', async () => {
     doRender();
     const addBtn = screen.getByRole('button', {
-      name: Field[Field.FN_ADD_NEW_PARAMETER],
+      name: fieldName(Field.FN_ADD_NEW_PARAMETER),
     });
     await user.click(addBtn);
 
     const paramField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_PARAMETER_NAME],
+      name: fieldName(Field.FN_PARAMETER_NAME),
     });
     await user.type(paramField, 'asdf');
 
@@ -173,12 +174,12 @@ describe('fn component tests', () => {
   it('should invalidate parameter name that starts with digit', async () => {
     doRender();
     const addBtn = screen.getByRole('button', {
-      name: Field[Field.FN_ADD_NEW_PARAMETER],
+      name: fieldName(Field.FN_ADD_NEW_PARAMETER),
     });
     await user.click(addBtn);
 
     const paramField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_PARAMETER_NAME],
+      name: fieldName(Field.FN_PARAMETER_NAME),
     });
     await user.type(paramField, '3a');
 
@@ -195,12 +196,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn name with invalid characters', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     await user.type(nameField, '$lkjh');
 
@@ -217,12 +218,12 @@ describe('fn component tests', () => {
   it('should validate python fn name with valid characters', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const nameField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_NAME],
+      name: fieldName(Field.FN_NAME),
     });
     await user.type(nameField, 'akjh');
 
@@ -239,12 +240,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn path with invalid characters', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, '$lkjh');
 
@@ -261,12 +262,12 @@ describe('fn component tests', () => {
   it('should validate python fn path with valid characters', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, 'akjh');
 
@@ -283,12 +284,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn path with invalid format (starts with dot)', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, '.some.path');
 
@@ -305,12 +306,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn path with invalid format (includes double dot)', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, 'some..path');
 
@@ -327,12 +328,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn path with invalid format (ends with dot)', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, 'some.path.');
 
@@ -349,12 +350,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn path with invalid format (dot number)', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, 'some.0.path');
 
@@ -371,12 +372,12 @@ describe('fn component tests', () => {
   it('should invalidate python fn path with invalid format (starts with number)', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, '0.some.path');
 
@@ -393,12 +394,12 @@ describe('fn component tests', () => {
   it('should validate python fn path with valid format', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const pathField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_IMPORT_PATH],
+      name: fieldName(Field.FN_IMPORT_PATH),
     });
     await user.type(pathField, 'some.path');
 
@@ -415,19 +416,19 @@ describe('fn component tests', () => {
   it('should invalidate python fn parameter with invalid characters', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const addBtn = screen.getByRole('button', {
-      name: Field[Field.FN_ADD_NEW_PARAMETER],
+      name: fieldName(Field.FN_ADD_NEW_PARAMETER),
     });
     // add two; error should only appear on first
     await user.click(addBtn);
     await user.click(addBtn);
 
     const paramFields = screen.getAllByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_PARAMETER_NAME],
+      name: fieldName(Field.FN_PARAMETER_NAME),
     });
     await user.type(paramFields[0], '$a');
 
@@ -445,17 +446,17 @@ describe('fn component tests', () => {
   it('should validate python fn parameter with valid characters', async () => {
     doRender();
     const fnTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_TYPE],
+      name: fieldName(Field.FN_TYPE),
     });
     await user.selectOptions(fnTypeSelect, FnType.Enum.PYTHON);
 
     const addBtn = screen.getByRole('button', {
-      name: Field[Field.FN_ADD_NEW_PARAMETER],
+      name: fieldName(Field.FN_ADD_NEW_PARAMETER),
     });
     await user.click(addBtn);
 
     const paramField = screen.getByRole<HTMLInputElement>('textbox', {
-      name: Field[Field.FN_PARAMETER_NAME],
+      name: fieldName(Field.FN_PARAMETER_NAME),
     });
     await user.type(paramField, 'aaa');
 
@@ -484,7 +485,7 @@ describe('fn component tests', () => {
     doRender(import02fnId);
 
     const addBtn = screen.getByRole('button', {
-      name: Field[Field.FN_ADD_NEW_PARAMETER],
+      name: fieldName(Field.FN_ADD_NEW_PARAMETER),
     });
     await user.click(addBtn);
 
@@ -500,7 +501,7 @@ describe('fn component tests', () => {
     doRender(import02fnId);
 
     const deleteBtn = screen.getByRole('button', {
-      name: Field[Field.FN_DELETE_PARAMETER],
+      name: fieldName(Field.FN_DELETE_PARAMETER),
     });
     await user.click(deleteBtn);
 
@@ -516,7 +517,7 @@ describe('fn component tests', () => {
     doRender(import01fnId);
 
     const deleteBtn = screen.getAllByRole('button', {
-      name: Field[Field.FN_DELETE_PARAMETER],
+      name: fieldName(Field.FN_DELETE_PARAMETER),
     })[0];
     await user.click(deleteBtn);
 
@@ -532,7 +533,7 @@ describe('fn component tests', () => {
     doRender(import02fnId);
 
     const fnParamTypeSelect = screen.getByRole('list', {
-      name: Field[Field.FN_PARAMETER_TYPE],
+      name: fieldName(Field.FN_PARAMETER_TYPE),
     });
     await user.selectOptions(fnParamTypeSelect, VariableType.Enum.NUMBER);
     const errorText = screen.getByText(getParamTypeChangedErrorRegex());
@@ -547,7 +548,7 @@ describe('fn component tests', () => {
     doRender(import01fnId);
 
     const fnParamTypeSelect = screen.getAllByRole('list', {
-      name: Field[Field.FN_PARAMETER_TYPE],
+      name: fieldName(Field.FN_PARAMETER_TYPE),
     })[0];
     await user.selectOptions(fnParamTypeSelect, VariableType.Enum.NUMBER);
     const errorText = screen.queryByText(getParamTypeChangedErrorRegex());

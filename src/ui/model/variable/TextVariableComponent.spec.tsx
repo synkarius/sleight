@@ -18,6 +18,7 @@ import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
@@ -113,7 +114,7 @@ describe('text variable component tests', () => {
     });
     await user.click(useDefaultCheckbox);
     const defaultInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.VAR_TEXT_DEFAULT_VALUE],
+      name: fieldName(Field.VAR_TEXT_DEFAULT_VALUE),
     });
 
     expect(defaultInput).toBeVisible();
@@ -128,7 +129,7 @@ describe('text variable component tests', () => {
     await user.click(useDefaultCheckbox);
     await user.click(useDefaultCheckbox);
     const defaultInput = screen.queryByRole(TEXT_BOX, {
-      name: Field[Field.VAR_TEXT_DEFAULT_VALUE],
+      name: fieldName(Field.VAR_TEXT_DEFAULT_VALUE),
     });
 
     expect(defaultInput).not.toBeInTheDocument();

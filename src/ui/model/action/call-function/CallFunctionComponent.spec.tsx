@@ -18,6 +18,7 @@ import {
   saveVariable,
   setVariables,
 } from '../../../../core/reducers/variable-reducers';
+import { fieldName } from '../../../../validation/field-name';
 
 const TEXT_VAR_1_NAME = 'text-var-2141bbc2-1dcd';
 const FN_1_NAME = 'fn1';
@@ -40,7 +41,7 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_TYPE],
+    name: fieldName(Field.AC_TYPE),
   });
   await user.selectOptions(actionTypeSelect, ActionType.Enum.CALL_FUNCTION);
 });
@@ -53,7 +54,7 @@ afterEach(async () => {
 describe('call function action component tests', () => {
   it('should invalidate non-selected fn', async () => {
     const fnSelect = screen.getByRole('list', {
-      name: Field[Field.AC_CALL_FUNC_FN],
+      name: fieldName(Field.AC_CALL_FUNC_FN),
     });
     await user.click(fnSelect);
     await user.tab();
@@ -68,7 +69,7 @@ describe('call function action component tests', () => {
 
   it('should validate selected fn', async () => {
     const fnSelect = screen.getByRole('list', {
-      name: Field[Field.AC_CALL_FUNC_FN],
+      name: fieldName(Field.AC_CALL_FUNC_FN),
     });
     await user.selectOptions(fnSelect, FN_1_NAME);
 
@@ -83,20 +84,20 @@ describe('call function action component tests', () => {
   it('should invalidate non-selected parameter variable', async () => {
     // select a fn
     const fnSelect = screen.getByRole('list', {
-      name: Field[Field.AC_CALL_FUNC_FN],
+      name: fieldName(Field.AC_CALL_FUNC_FN),
     });
     await user.selectOptions(fnSelect, FN_1_NAME);
 
     // change the parameter to "Use Variable"
     const paramVarSelectRadio = screen.getAllByRole('radiogroup', {
-      name: Field[Field.AC_CALL_FUNC_PARAMETER_RADIO],
+      name: fieldName(Field.AC_CALL_FUNC_PARAMETER_RADIO),
     })[0];
     const options = await within(paramVarSelectRadio).getAllByRole('radio');
     await user.click(options[VARIABLE_RADIO]);
 
     // click on the variable select and then tab away
     const paramVarSelect = screen.getAllByRole('list', {
-      name: Field[Field.AC_CALL_FUNC_PARAMETER_VAR],
+      name: fieldName(Field.AC_CALL_FUNC_PARAMETER_VAR),
     })[0];
     await user.click(paramVarSelect);
     await user.tab();
@@ -112,20 +113,20 @@ describe('call function action component tests', () => {
   it('should validate selected parameter variable', async () => {
     // select a fn
     const fnSelect = screen.getByRole('list', {
-      name: Field[Field.AC_CALL_FUNC_FN],
+      name: fieldName(Field.AC_CALL_FUNC_FN),
     });
     await user.selectOptions(fnSelect, FN_1_NAME);
 
     // change the parameter to "Use Variable"
     const paramVarSelectRadio = screen.getAllByRole('radiogroup', {
-      name: Field[Field.AC_CALL_FUNC_PARAMETER_RADIO],
+      name: fieldName(Field.AC_CALL_FUNC_PARAMETER_RADIO),
     })[0];
     const options = await within(paramVarSelectRadio).getAllByRole('radio');
     await user.click(options[VARIABLE_RADIO]);
 
     // select a variable
     const paramVarSelect = screen.getAllByRole('list', {
-      name: Field[Field.AC_CALL_FUNC_PARAMETER_VAR],
+      name: fieldName(Field.AC_CALL_FUNC_PARAMETER_VAR),
     })[0];
     await user.selectOptions(paramVarSelect, TEXT_VAR_1_NAME);
 

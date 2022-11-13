@@ -12,6 +12,7 @@ import { MouseMovementType } from '../../../../data/model/action/mouse/mouse-mov
 import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
 import { ActionValueComponent } from '../ActionValueComponent';
 import { mMoveXGroup, mMoveYGroup } from './mouse-action-value-field-groups';
+import { fieldName } from '../../../../validation/field-name';
 
 enum CoordType {
   X,
@@ -58,7 +59,7 @@ export const MoveMouseComponent: React.FC<{
         descriptionText="what the x/y numbers mean"
       >
         <Form.Select
-          aria-label={Field[Field.AC_MOUSE_MOVEMENT_TYPE]}
+          aria-label={fieldName(Field.AC_MOUSE_MOVEMENT_TYPE)}
           role="list"
           onChange={typeChangedHandler}
           value={props.moveMouseAction.mouseMovementType}

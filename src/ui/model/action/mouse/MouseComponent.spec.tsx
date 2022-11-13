@@ -21,6 +21,7 @@ import { saveSelector } from '../../../../core/reducers/selector-reducers';
 import { container } from '../../../../di/config/brandi-config';
 import { Tokens } from '../../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../../validation/field-name';
 
 const RANGE_VARIABLE_NAME = 'asdf-range-var';
 const CHOICE_VARIABLE_NAME = 'asdf-choice-var';
@@ -61,11 +62,11 @@ beforeEach(async () => {
     { wrapper: BrowserRouter }
   );
   const actionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_TYPE],
+    name: fieldName(Field.AC_TYPE),
   });
   await user.selectOptions(actionTypeSelect, ActionType.Enum.MOUSE);
   const mouseActionTypeSelect = screen.getByRole('list', {
-    name: Field[Field.AC_MOUSE_ACTION_TYPE],
+    name: fieldName(Field.AC_MOUSE_ACTION_TYPE),
   });
   await user.selectOptions(mouseActionTypeSelect, MouseActionType.Enum.CLICK);
 });
@@ -76,7 +77,7 @@ const selectActionValueType = async (
   index: Radio
 ): Promise<void> => {
   const radioGroup = screen.getByRole('radiogroup', {
-    name: Field[field],
+    name: fieldName(field),
   });
   const options = await within(radioGroup).findAllByRole('radio');
   await user.click(options[index]);
@@ -90,13 +91,13 @@ describe('mouse action component tests', () => {
       VARIABLE_RADIO
     );
     const select = screen.getByRole('list', {
-      name: Field[Field.AC_MOUSE_REPEAT_VAR],
+      name: fieldName(Field.AC_MOUSE_REPEAT_VAR),
     });
     await user.click(select);
     await user.tab();
     // is invalid at this point
     const mouseActionTypeSelect = screen.getByRole('list', {
-      name: Field[Field.AC_MOUSE_ACTION_TYPE],
+      name: fieldName(Field.AC_MOUSE_ACTION_TYPE),
     });
     await user.selectOptions(mouseActionTypeSelect, MouseActionType.Enum.MOVE);
     // should be valid again

@@ -19,6 +19,7 @@ import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
@@ -110,14 +111,14 @@ describe('range variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const minInput = screen.getByRole(NUMBER_TEXT_BOX, {
-      name: Field[Field.VAR_RANGE_MIN],
+      name: fieldName(Field.VAR_RANGE_MIN),
     });
     const maxInput = screen.getByRole(NUMBER_TEXT_BOX, {
-      name: Field[Field.VAR_RANGE_MAX],
+      name: fieldName(Field.VAR_RANGE_MAX),
     });
     await user.clear(minInput);
     await user.clear(maxInput);
@@ -132,14 +133,14 @@ describe('range variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const minInput = screen.getByRole(NUMBER_TEXT_BOX, {
-      name: Field[Field.VAR_RANGE_MIN],
+      name: fieldName(Field.VAR_RANGE_MIN),
     });
     const maxInput = screen.getByRole(NUMBER_TEXT_BOX, {
-      name: Field[Field.VAR_RANGE_MAX],
+      name: fieldName(Field.VAR_RANGE_MAX),
     });
     await user.clear(minInput);
     await user.clear(maxInput);
@@ -155,7 +156,7 @@ describe('range variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
@@ -163,7 +164,7 @@ describe('range variable component tests', () => {
     });
     await user.click(useDefaultCheckbox);
     const defaultInput = screen.getByRole(NUMBER_TEXT_BOX, {
-      name: Field[Field.VAR_RANGE_DEFAULT_VALUE],
+      name: fieldName(Field.VAR_RANGE_DEFAULT_VALUE),
     });
 
     expect(defaultInput).toBeVisible();
@@ -173,7 +174,7 @@ describe('range variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.NUMBER);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
@@ -182,7 +183,7 @@ describe('range variable component tests', () => {
     await user.click(useDefaultCheckbox);
     await user.click(useDefaultCheckbox);
     const defaultInput = screen.queryByRole(NUMBER_TEXT_BOX, {
-      name: Field[Field.VAR_RANGE_DEFAULT_VALUE],
+      name: fieldName(Field.VAR_RANGE_DEFAULT_VALUE),
     });
 
     expect(defaultInput).not.toBeInTheDocument();

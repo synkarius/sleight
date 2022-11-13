@@ -17,6 +17,7 @@ import {
 } from '../../../../data/model/action/mouse/mouse';
 import { MouseActionType } from '../../../../data/model/action/mouse/mouse-action-type';
 import { MoveMouseComponent } from './MoveMouseComponent';
+import { fieldName } from '../../../../validation/field-name';
 
 export const MouseComponent: React.FC<{ mouseAction: MouseAction }> = (
   props
@@ -38,7 +39,7 @@ export const MouseComponent: React.FC<{ mouseAction: MouseAction }> = (
         descriptionText="what to do with the mouse"
       >
         <Form.Select
-          aria-label={Field[Field.AC_MOUSE_ACTION_TYPE]}
+          aria-label={fieldName(Field.AC_MOUSE_ACTION_TYPE)}
           role="list"
           onChange={typeChangedHandler}
           value={props.mouseAction.mouseActionType}

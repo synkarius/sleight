@@ -37,6 +37,7 @@ import { Field } from '../../../validation/validation-field';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { doNothing } from '../../../core/common/common-functions';
 import { MapUtil } from '../../../core/common/map-util';
+import { fieldName } from '../../../validation/field-name';
 
 const SP_ROLE_KEY = Field.SP_ROLE_KEY;
 
@@ -183,7 +184,7 @@ const SpecChildComponent: React.FC<{
         errorMessage={nameError}
       >
         <FormControl
-          aria-label={Field[Field.SP_NAME]}
+          aria-label={fieldName(Field.SP_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.SP_NAME)}
@@ -198,7 +199,7 @@ const SpecChildComponent: React.FC<{
         errorMessage={errorResults(SP_ROLE_KEY)}
       >
         <FormControl
-          aria-label={Field[SP_ROLE_KEY]}
+          aria-label={fieldName(SP_ROLE_KEY)}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(SP_ROLE_KEY)}
@@ -219,7 +220,7 @@ const SpecChildComponent: React.FC<{
       <div>
         <Col sm="12" className="mb-2">
           <Button
-            aria-label={Field[Field.SP_ADD_ITEM_BUTTON]}
+            aria-label={fieldName(Field.SP_ADD_ITEM_BUTTON)}
             variant={
               !noSpecItemsErrorMessage ? 'outline-primary' : 'outline-danger'
             }
@@ -244,7 +245,7 @@ const SpecChildComponent: React.FC<{
             variant="danger"
             size="lg"
             className="me-3"
-            aria-label={Field[Field.SP_DELETE]}
+            aria-label={fieldName(Field.SP_DELETE)}
           >
             Delete
           </Button>

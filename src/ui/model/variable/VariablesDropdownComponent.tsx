@@ -4,6 +4,7 @@ import { Field } from '../../../validation/validation-field';
 import { LIST, LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { UNSELECTED_ID } from '../../../core/common/consts';
 import { VariableType } from '../../../data/model/variable/variable-types';
+import { fieldName } from '../../../validation/field-name';
 
 type VariablesDropdownComponentProps = {
   field: Field;
@@ -22,7 +23,7 @@ export const VariablesDropdownComponent: React.FC<
   return (
     <FormSelect
       value={props.selectedVariableId ?? UNSELECTED_ID}
-      aria-label={Field[props.field]}
+      aria-label={fieldName(props.field)}
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}

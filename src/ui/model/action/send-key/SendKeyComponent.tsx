@@ -22,6 +22,7 @@ import { SendKeyMode } from '../../../../data/model/action/send-key/send-key-mod
 import { SendKeyModifiers } from '../../../../data/model/action/send-key/send-key-modifiers';
 import { SendKeyHoldReleaseComponent } from './SendKeyHoldReleaseComponent';
 import { SendKeyPressComponent } from './SendKeyPressComponent';
+import { fieldName } from '../../../../validation/field-name';
 
 export const SendKeyComponent: React.FC<{
   sendKeyAction: SendKeyAction;
@@ -54,7 +55,7 @@ export const SendKeyComponent: React.FC<{
         descriptionText="press or hold/release"
       >
         <Form.Select
-          aria-label={Field[Field.AC_SEND_KEY_MODE]}
+          aria-label={fieldName(Field.AC_SEND_KEY_MODE)}
           role="list"
           onChange={modeChangedHandler}
           value={props.sendKeyAction.sendKeyMode}

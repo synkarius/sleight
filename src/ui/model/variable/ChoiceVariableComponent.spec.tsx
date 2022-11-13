@@ -27,6 +27,7 @@ import { saveSelector } from '../../../core/reducers/selector-reducers';
 import { container } from '../../../di/config/brandi-config';
 import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
+import { fieldName } from '../../../validation/field-name';
 
 // optionality:
 const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
@@ -131,7 +132,7 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const saveButton = screen.getByRole('button', {
@@ -147,7 +148,7 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const saveButton = screen.getByRole('button', {
@@ -166,13 +167,13 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
     await user.click(addChoiceItemButton);
     const selectorInput = screen.getByRole('textbox', {
-      name: Field[Field.VAR_CHOICE_ITEM_SELECTOR],
+      name: fieldName(Field.VAR_CHOICE_ITEM_SELECTOR),
     });
     await user.type(selectorInput, 'z');
     await user.tab();
@@ -187,13 +188,13 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
     await user.click(addChoiceItemButton);
     const selectorInput = screen.getByRole('textbox', {
-      name: Field[Field.VAR_CHOICE_ITEM_SELECTOR],
+      name: fieldName(Field.VAR_CHOICE_ITEM_SELECTOR),
     });
     await user.click(selectorInput);
     await user.tab();
@@ -205,13 +206,13 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const addChoiceItemButton = screen.getByText(ADD_NEW_CHOICE_ITEM);
     await user.click(addChoiceItemButton);
     const selectorInput = screen.getByRole('textbox', {
-      name: Field[Field.VAR_CHOICE_ITEM_SELECTOR],
+      name: fieldName(Field.VAR_CHOICE_ITEM_SELECTOR),
     });
     await user.type(selectorInput, '$');
 
@@ -222,7 +223,7 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
@@ -230,7 +231,7 @@ describe('choice variable component tests', () => {
     });
     await user.click(useDefaultCheckbox);
     const defaultInput = screen.getByRole(TEXT_BOX, {
-      name: Field[Field.VAR_CHOICE_DEFAULT_VALUE],
+      name: fieldName(Field.VAR_CHOICE_DEFAULT_VALUE),
     });
 
     expect(defaultInput).toBeVisible();
@@ -240,7 +241,7 @@ describe('choice variable component tests', () => {
     doRender();
 
     const typeSelect = screen.getByRole('list', {
-      name: Field[Field.VAR_TYPE_SELECT],
+      name: fieldName(Field.VAR_TYPE_SELECT),
     });
     await user.selectOptions(typeSelect, VariableType.Enum.ENUM);
     const useDefaultCheckbox = screen.getByRole('checkbox', {
@@ -249,7 +250,7 @@ describe('choice variable component tests', () => {
     await user.click(useDefaultCheckbox);
     await user.click(useDefaultCheckbox);
     const defaultInput = screen.queryByRole(TEXT_BOX, {
-      name: Field[Field.VAR_CHOICE_DEFAULT_VALUE],
+      name: fieldName(Field.VAR_CHOICE_DEFAULT_VALUE),
     });
 
     expect(defaultInput).not.toBeInTheDocument();

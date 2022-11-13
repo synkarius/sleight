@@ -4,6 +4,7 @@ import { useAppSelector } from '../../../app/hooks';
 import { Field } from '../../../validation/validation-field';
 import { LIST_ITEM } from '../../../core/common/accessibility-roles';
 import { UNSELECTED_ID } from '../../../core/common/consts';
+import { fieldName } from '../../../validation/field-name';
 
 type FnDropdownComponentProps = {
   readonly field: Field;
@@ -21,7 +22,7 @@ export const FnDropdownComponent: React.FC<FnDropdownComponentProps> = (
   return (
     <FormSelect
       value={props.fnId ?? UNSELECTED_ID}
-      aria-label={Field[props.field]}
+      aria-label={fieldName(props.field)}
       onChange={props.onChange}
       onBlur={props.onBlur}
       isInvalid={props.isInvalid}

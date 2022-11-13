@@ -10,6 +10,7 @@ import {
 import { DEFAULT_NEGATIVIZER_SELECTOR } from '../../../../data/preferences/negativizer';
 import { Preferences } from '../../../../data/preferences/preferences';
 import { InjectionContext } from '../../../../di/injector-context';
+import { fieldName } from '../../../../validation/field-name';
 import { FieldValidator } from '../../../../validation/field-validator';
 import { ValidationContext } from '../../../../validation/validation-context';
 import { Field } from '../../../../validation/validation-field';
@@ -83,7 +84,7 @@ const PreferencesChildComponent: React.FC<{
         errorMessage={negativizerError}
       >
         <FormControl
-          aria-label={Field[Field.PREFS_NEGATIVIZER]}
+          aria-label={fieldName(Field.PREFS_NEGATIVIZER)}
           type="text"
           onChange={negativizerChangedHandler}
           onBlur={() => validationContext.touch(Field.PREFS_NEGATIVIZER)}
@@ -97,7 +98,7 @@ const PreferencesChildComponent: React.FC<{
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Theme">
         <FormSelect
-          aria-label={Field[Field.PREFS_THEME]}
+          aria-label={fieldName(Field.PREFS_THEME)}
           role="list"
           value={'default'}
         >

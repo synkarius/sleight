@@ -27,6 +27,7 @@ import { doNothing } from '../../../core/common/common-functions';
 import { InjectionContext } from '../../../di/injector-context';
 import { MapUtil } from '../../../core/common/map-util';
 import { DomainMapper } from '../../../core/mappers/mapper';
+import { fieldName } from '../../../validation/field-name';
 
 const CTX_ROLE_KEY = Field.CTX_ROLE_KEY;
 
@@ -160,7 +161,7 @@ const ContextChildComponent: React.FC<{
       />
       <FormGroupRowComponent labelText="Name" errorMessage={nameError}>
         <FormControl
-          aria-label={Field[Field.CTX_NAME]}
+          aria-label={fieldName(Field.CTX_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.CTX_NAME)}
@@ -176,7 +177,7 @@ const ContextChildComponent: React.FC<{
         errorMessage={errorResults(CTX_ROLE_KEY)}
       >
         <FormControl
-          aria-label={Field[CTX_ROLE_KEY]}
+          aria-label={fieldName(CTX_ROLE_KEY)}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(CTX_ROLE_KEY)}
@@ -186,7 +187,7 @@ const ContextChildComponent: React.FC<{
       </FormGroupRowComponent>
       <FormGroupRowComponent labelText="Type">
         <FormSelect
-          aria-label={Field[Field.CTX_TYPE]}
+          aria-label={fieldName(Field.CTX_TYPE)}
           role="list"
           onChange={typeChangedHandler}
           value={props.context.type}
@@ -212,7 +213,7 @@ const ContextChildComponent: React.FC<{
           value={props.context.matcher}
           isInvalid={!!errorResults(matcherField)}
           role="textbox"
-          aria-label={Field[matcherField]}
+          aria-label={fieldName(matcherField)}
         />
       </FormGroupRowComponent>
       {isSaved && (
@@ -221,7 +222,7 @@ const ContextChildComponent: React.FC<{
           variant="danger"
           size="lg"
           className="me-3"
-          aria-label={Field[Field.CTX_DELETE]}
+          aria-label={fieldName(Field.CTX_DELETE)}
         >
           Delete
         </Button>

@@ -30,6 +30,7 @@ import { ValidationComponent } from '../../../validation/ValidationComponent';
 import { DeleteModalComponent } from '../../other-components/DeleteModalComponent';
 import { MapUtil } from '../../../core/common/map-util';
 import { DomainMapper } from '../../../core/mappers/mapper';
+import { fieldName } from '../../../validation/field-name';
 
 const init = (
   savedMap: Record<string, Fn>,
@@ -156,7 +157,7 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
         errorMessage={errorResults(Field.FN_NAME)}
       >
         <FormControl
-          aria-label={Field[Field.FN_NAME]}
+          aria-label={fieldName(Field.FN_NAME)}
           type="text"
           onChange={nameChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_NAME)}
@@ -170,7 +171,7 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
         errorMessage={errorResults(Field.FN_ROLE_KEY)}
       >
         <FormControl
-          aria-label={Field[Field.FN_ROLE_KEY]}
+          aria-label={fieldName(Field.FN_ROLE_KEY)}
           type="text"
           onChange={roleKeyChangedHandler}
           onBlur={() => validationContext.touch(Field.FN_ROLE_KEY)}
@@ -184,7 +185,7 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
         errorMessage={errorResults(Field.FN_TYPE)}
       >
         <FormSelect
-          aria-label={Field[Field.FN_TYPE]}
+          aria-label={fieldName(Field.FN_TYPE)}
           role="list"
           onChange={typeChangedHandler}
           value={props.fn.type}
@@ -205,7 +206,7 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
             errorMessage={errorResults(Field.FN_IMPORT_PATH)}
           >
             <FormControl
-              aria-label={Field[Field.FN_IMPORT_PATH]}
+              aria-label={fieldName(Field.FN_IMPORT_PATH)}
               type="text"
               onChange={importPathChangedHandler}
               onBlur={() => validationContext.touch(Field.FN_IMPORT_PATH)}
@@ -216,7 +217,7 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
           <FormGroupRowComponent labelText="Parameters">
             <Col sm="12" className="mb-2">
               <Button
-                aria-label={Field[Field.FN_ADD_NEW_PARAMETER]}
+                aria-label={fieldName(Field.FN_ADD_NEW_PARAMETER)}
                 variant="outline-primary"
                 onClick={addFnParamHandler}
                 size="lg"
@@ -263,7 +264,7 @@ const FnChildComponent: React.FC<{ fn: Fn }> = (props) => {
           variant="danger"
           size="lg"
           className="me-3"
-          aria-label={Field[Field.FN_DELETE]}
+          aria-label={fieldName(Field.FN_DELETE)}
         >
           Delete
         </Button>

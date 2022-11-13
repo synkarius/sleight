@@ -7,6 +7,7 @@ import { TextSpell } from '../../../../../data/wizard/spell';
 import { SpellType } from '../../../../../data/wizard/spell-types';
 import { Tokens } from '../../../../../di/config/brandi-tokens';
 import { InjectionContext } from '../../../../../di/injector-context';
+import { fieldName } from '../../../../../validation/field-name';
 import { ValidationContext } from '../../../../../validation/validation-context';
 import { Field } from '../../../../../validation/validation-field';
 import { processErrorResults } from '../../../../../validation/validation-result-processing';
@@ -122,7 +123,7 @@ const WizardTextSpellChildComponent: React.FC<{
                   onBlur={() => validationContext.touch(Field.WIZ_ST_TEXT)}
                   isInvalid={!!errorResults(Field.WIZ_ST_TEXT)}
                   role="textbox"
-                  aria-label={Field[Field.WIZ_ST_TEXT]}
+                  aria-label={fieldName(Field.WIZ_ST_TEXT)}
                 />
                 <FormText className="text-muted">
                   what text should this command send?
