@@ -94,6 +94,7 @@ import { SingleItemCompositeValidator } from '../../data/composite-validators/si
 import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
 import { Logger } from '../../core/common/basic-logger';
 import { DragonflyModelMapper } from '../../data/exports/dragonfly/dragonfly-model-mapper';
+import { Preferences } from '../../data/preferences/preferences';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -130,6 +131,9 @@ export namespace Tokens {
   export const Validators_Context =
     token<FieldValidator<Context>[]>('Validators_Context');
   export const Validators_Fn = token<FieldValidator<Fn>[]>('Validators_Fn');
+  export const Validators_Preferences = token<FieldValidator<Preferences>[]>(
+    'Validators_Preferences'
+  );
   export const Validators_Spec =
     token<FieldValidator<Spec>[]>('Validators_Spec');
   export const Validators_Variable = token<FieldValidator<Variable>[]>(

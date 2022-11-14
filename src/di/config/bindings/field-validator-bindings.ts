@@ -21,6 +21,7 @@ import { getSpecValidators } from '../../../core/validators/spec-validators';
 import { getVariableValidators } from '../../../core/validators/variable-validators';
 import { Tokens } from '../brandi-tokens';
 import { getFnValidators } from '../../../core/validators/fn-validators';
+import { getPreferencesValidators } from '../../../core/validators/preferences-validators';
 
 export const bindFieldValidators = (container: Container): void => {
   // action validators
@@ -54,6 +55,10 @@ export const bindFieldValidators = (container: Container): void => {
     ]);
   // fn validators
   container.bind(Tokens.Validators_Fn).toConstant([...getFnValidators()]);
+  // preferences validators
+  container
+    .bind(Tokens.Validators_Preferences)
+    .toConstant([...getPreferencesValidators()]);
   // spec validators
   container
     .bind(Tokens.Validators_Spec)

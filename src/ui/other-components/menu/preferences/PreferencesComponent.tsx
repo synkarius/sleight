@@ -2,6 +2,7 @@ import React, { useContext, useReducer } from 'react';
 import { Button, FormControl, FormSelect, FormText } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { doNothing } from '../../../../core/common/common-functions';
 import { WIZARD_PATH } from '../../../../core/common/consts';
 import {
   preferencesReactReducer,
@@ -9,6 +10,7 @@ import {
 } from '../../../../core/reducers/preferences-reducers';
 import { DEFAULT_NEGATIVIZER_SELECTOR } from '../../../../data/preferences/negativizer';
 import { Preferences } from '../../../../data/preferences/preferences';
+import { Tokens } from '../../../../di/config/brandi-tokens';
 import { InjectionContext } from '../../../../di/injector-context';
 import { fieldName } from '../../../../validation/field-name';
 import { FieldValidator } from '../../../../validation/field-validator';
@@ -33,8 +35,9 @@ export const PreferencesComponent: React.FC<{}> = () => {
     savedPreferences
   );
 
-  // TODO: preferences validators (negativizer not blank, negativizer alphaspace only)
-  const validators: FieldValidator<Preferences>[] = [];
+  const validators: FieldValidator<Preferences>[] = container.get(
+    Tokens.Validators_Preferences
+  );
 
   return (
     <ValidationComponent<Preferences> validators={validators} editing={editing}>
@@ -101,6 +104,7 @@ const PreferencesChildComponent: React.FC<{
           aria-label={fieldName(Field.PREFS_THEME)}
           role="list"
           value={'default'}
+          onChange={doNothing}
         >
           <option value={'default'} role="listitem">
             Default Theme
