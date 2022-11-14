@@ -24,7 +24,7 @@ export class DragonflyExporter implements Exporter {
       negativizer: prefs.negativizer.selector,
       ...this.formatMapper.internalFormatToArrays(data),
       ...utilViewFunctions,
-      ...this.viewFnsFactory.getDragonflyMustacheFns(data),
+      ...this.viewFnsFactory.getDragonflyMustacheFns(data, prefs),
     });
     return [render];
   }

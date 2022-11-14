@@ -3,13 +3,18 @@ import { SleightDataInternalFormat } from '../../../data-formats';
 import { ElementType } from '../../../model/element-types';
 import { VariableDTO } from '../../../model/variable/variable-dto';
 import { VariableType } from '../../../model/variable/variable-types';
+import { Preferences } from '../../../preferences/preferences';
 import { ElementTokenPrinter } from '../../element-token-printer';
 import { Printer } from '../../printer';
 
 export class DragonflyDefaultsPrinter implements Printer<VariableDTO> {
   constructor(private elementTokenPrinter: ElementTokenPrinter) {}
 
-  printItem(variable: VariableDTO, _data: SleightDataInternalFormat): string {
+  printItem(
+    variable: VariableDTO,
+    _data: SleightDataInternalFormat,
+    _prefs: Preferences
+  ): string {
     const name = this.elementTokenPrinter.printElementToken(
       variable.id,
       ElementType.Enum.VARIABLE

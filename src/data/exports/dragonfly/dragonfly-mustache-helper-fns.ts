@@ -8,6 +8,7 @@ import { Context } from '../../model/context/context';
 import { SpecDTO } from '../../model/spec/spec-dto';
 import { VariableDTO } from '../../model/variable/variable-dto';
 import { Fn } from '../../model/fn/fn';
+import { Preferences } from '../../preferences/preferences';
 
 export type DragonflyMustacheFns = {
   printAction: () => MustacheFn;
@@ -21,7 +22,8 @@ export type DragonflyMustacheFns = {
 
 export type DragonflyMustacheFnsFactory = {
   getDragonflyMustacheFns: (
-    data: SleightDataInternalFormat
+    data: SleightDataInternalFormat,
+    prefs: Preferences
   ) => DragonflyMustacheFns;
 };
 
@@ -39,36 +41,37 @@ export class DefaultDragonflyMustacheFnsFactory
   ) {}
 
   getDragonflyMustacheFns(
-    data: SleightDataInternalFormat
+    data: SleightDataInternalFormat,
+    prefs: Preferences
   ): DragonflyMustacheFns {
     return {
       printAction: createMustacheFn((id, r) => {
         const action = MapUtil.getOrThrow(data.actions, r(id));
-        return this.actionPrinter.printItem(action, data);
+        return this.actionPrinter.printItem(action, data, prefs);
       }),
       printCommand: createMustacheFn((id, r) => {
         const command = MapUtil.getOrThrow(data.commands, r(id));
-        return this.commandPrinter.printItem(command, data);
+        return this.commandPrinter.printItem(command, data, prefs);
       }),
       printContext: createMustacheFn((id, r) => {
         const context = MapUtil.getOrThrow(data.contexts, r(id));
-        return this.contextPrinter.printItem(context, data);
+        return this.contextPrinter.printItem(context, data, prefs);
       }),
       printFnImport: createMustacheFn((id, r) => {
         const fn = MapUtil.getOrThrow(data.fns, r(id));
-        return this.fnImportPrinter.printItem(fn, data);
+        return this.fnImportPrinter.printItem(fn, data, prefs);
       }),
       printSpec: createMustacheFn((id, r) => {
         const spec = MapUtil.getOrThrow(data.specs, r(id));
-        return this.specPrinter.printItem(spec, data);
+        return this.specPrinter.printItem(spec, data, prefs);
       }),
       printVariable: createMustacheFn((id, r) => {
         const variable = MapUtil.getOrThrow(data.variables, r(id));
-        return this.variablePrinter.printItem(variable, data);
+        return this.variablePrinter.printItem(variable, data, prefs);
       }),
       printDefault: createMustacheFn((id, r) => {
         const variable = MapUtil.getOrThrow(data.variables, r(id));
-        return this.defaultPrinter.printItem(variable, data);
+        return this.defaultPrinter.printItem(variable, data, prefs);
       }),
     };
   }
