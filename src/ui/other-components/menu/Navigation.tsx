@@ -10,7 +10,7 @@ import { DeserializationResultType } from '../../../data/imports/deserialization
 import { useAllData } from '../../../app/custom-hooks/use-all-data-hook';
 import { InjectionContext } from '../../../di/injector-context';
 import { Tokens } from '../../../di/config/brandi-tokens';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { setActions } from '../../../core/reducers/action-reducers';
 import { setCommands } from '../../../core/reducers/command-reducers';
 import { setContexts } from '../../../core/reducers/context-reducers';
@@ -31,6 +31,7 @@ import { CompositeValidationResultType } from '../../../data/composite-validator
 
 export const Navigation: React.FC<{}> = () => {
   const allData = useAllData();
+  const prefs = useAppSelector((state) => state.preferences.preferences);
   const reduxDispatch = useAppDispatch();
   const container = useContext(InjectionContext);
   const importInputId = useId();
@@ -50,12 +51,12 @@ export const Navigation: React.FC<{}> = () => {
   };
   const exportJson = () => {
     const jsonExporter = container.get(Tokens.JsonExporter);
-    const data = jsonExporter.export(allData);
+    const data = jsonExporter.export(allData, prefs);
     simpleSaveFile(data[0], getExportFileName(JSON));
   };
   const exportDragonfly = () => {
     const dragonflyExporter = container.get(Tokens.DragonflyExporter);
-    const data = dragonflyExporter.export(allData);
+    const data = dragonflyExporter.export(allData, prefs);
     simpleSaveFile(data[0], getExportFileName(DRAGONFLY));
   };
   const importFileClickHandler = () => {
