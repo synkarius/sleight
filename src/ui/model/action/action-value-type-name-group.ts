@@ -49,6 +49,12 @@ export type ActionValueFieldGroup =
   | NumericActionFieldGroup
   | EnumActionFieldGroup;
 
+export const groupFieldsOf = (group: AbstractActionFieldGroup): Field[] => [
+  group.radio,
+  group.value,
+  group.variable,
+];
+
 export const groupIncludesField = (
   group: ActionValueFieldGroup,
   action:
@@ -57,6 +63,6 @@ export const groupIncludesField = (
 ): boolean => {
   return (
     action.payload.type === ActionValueChangeIdentifierType.FIELD &&
-    [group.radio, group.value, group.variable].includes(action.payload.field)
+    groupFieldsOf(group).includes(action.payload.field)
   );
 };

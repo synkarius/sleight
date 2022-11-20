@@ -25,7 +25,7 @@ describe('pause action reducer: action.seconds', () => {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE,
       payload: {
         type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_SECONDS_RADIO,
+        field: Field.AC_PAUSE_SECONDS_RADIO,
         actionValueType: ActionValueType.Enum.ENTER_VALUE,
       },
     });
@@ -49,7 +49,7 @@ describe('pause action reducer: action.seconds', () => {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_ENTERED_VALUE,
       payload: {
         type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_SECONDS_VALUE,
+        field: Field.AC_PAUSE_SECONDS_VALUE,
         value: '34',
       },
     });
@@ -71,7 +71,7 @@ describe('pause action reducer: action.seconds', () => {
       type: ActionReducerActionType.CHANGE_ACTION_VALUE_VARIABLE_ID,
       payload: {
         type: ActionValueChangeIdentifierType.FIELD,
-        field: Field.AC_SECONDS_VAR,
+        field: Field.AC_PAUSE_SECONDS_VAR,
         value: 'asdf',
       },
     });

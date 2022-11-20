@@ -18,7 +18,6 @@ export const bindExporters = (container: Container): void => {
     .inSingletonScope();
   injected(
     DragonflyExporter,
-    Tokens.FormatMapper,
     Tokens.DragonflyMustacheFnsFactory,
     Tokens.DragonflyModelMapper
   );
@@ -27,5 +26,9 @@ export const bindExporters = (container: Container): void => {
     .bind(Tokens.DragonflyModelMapper)
     .toInstance(DefaultDragonflyModelMapper)
     .inSingletonScope();
-  injected(DefaultDragonflyModelMapper, Tokens.VariableExtractor);
+  injected(
+    DefaultDragonflyModelMapper,
+    Tokens.VariableExtractor,
+    Tokens.DragonflyBuiltinFnsProvider
+  );
 };

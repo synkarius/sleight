@@ -11,7 +11,7 @@ import {
 } from '../../validation/cross-slice/cross-slice-validation-configs';
 import {
   createCrossSliceValidator,
-  ValidatorFn,
+  CrossSliceValidateFunction,
 } from '../../validation/cross-slice/cross-slice-validator-factory';
 import {
   specDataCopierFn,
@@ -39,7 +39,11 @@ type InvalidSpecDetails = {
   variableName: string;
 };
 
-const specOptionalityValidatorFn: ValidatorFn<Spec> = (specs, data, config) => {
+const specOptionalityValidatorFn: CrossSliceValidateFunction<Spec> = (
+  specs,
+  data,
+  config
+) => {
   // get specs where their variables don't have defaults but the specs are optional
   const invalid = specs
     .flatMap((spec) =>

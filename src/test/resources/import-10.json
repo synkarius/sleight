@@ -1,0 +1,118 @@
+{
+    "import10": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "981fcb99-c5ed-4000-8561-56541ea2733a",
+                "name": "no-vars-action-1",
+                "type": "Pause",
+                "roleKey": "rk-38190",
+                "enabled": true,
+                "locked": false,
+                "seconds": {
+                    "id": "9417f12c-eff1-4c59-a783-1f6ae24201ce",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 789
+                }
+            },
+            {
+                "id": "ca469202-4fe4-4768-a27b-7ed99a315874",
+                "name": "var-action-1",
+                "type": "Pause",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "seconds": {
+                    "id": "3055eeb6-e154-4106-a4c7-a2fdfdbab33d",
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "88f81806-3540-4f1b-a2b3-51fb84e42b83"
+                }
+            }
+        ],
+        "commands": [
+            {
+                "id": "74a112cc-fd02-4b3b-85a6-94d5e5384f83",
+                "name": "no-vars-command",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "specId": "c24b9ad7-21cc-4e59-b7c9-819cef4d505b",
+                "actionIds": [
+                    "981fcb99-c5ed-4000-8561-56541ea2733a"
+                ]
+            },
+            {
+                "id": "8158fcc9-6ab0-4683-8bad-89c532537cae",
+                "name": "var-command-1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "specId": "d0b86116-4410-4d32-850c-417b146f13a4",
+                "actionIds": [
+                    "ca469202-4fe4-4768-a27b-7ed99a315874"
+                ]
+            }
+        ],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "9886bf49-2c9c-44cc-81d9-e317b32d84ed",
+                "items": [
+                    {
+                        "id": "600fe9f8-57d9-492b-b517-55f7e1efa29f",
+                        "value": "asdf"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "c24b9ad7-21cc-4e59-b7c9-819cef4d505b",
+                "name": "selector-spec-1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "90b3f121-ea86-49d7-8ac2-5d280f39c7af",
+                        "itemType": "Selector",
+                        "itemId": "9886bf49-2c9c-44cc-81d9-e317b32d84ed",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            },
+            {
+                "id": "d0b86116-4410-4d32-850c-417b146f13a4",
+                "name": "variable-spec-1",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "62468c41-49a2-4954-9a0b-5a33fcf07a7f",
+                        "itemType": "Variable",
+                        "itemId": "88f81806-3540-4f1b-a2b3-51fb84e42b83",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "88f81806-3540-4f1b-a2b3-51fb84e42b83",
+                "type": "Range",
+                "name": "range-var-88f81806-3540",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9
+            }
+        ]
+    }
+}

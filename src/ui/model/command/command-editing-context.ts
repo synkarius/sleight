@@ -29,7 +29,7 @@ type AbstractCommandReducerAction<T> = {
   payload: T;
 };
 
-export interface CommandReducerNoPayloadAction
+interface CommandReducerNoPayloadAction
   extends Omit<AbstractCommandReducerAction<unknown>, 'payload'> {
   type: typeof CommandReducerActionType.ADD_ACTION;
 }
@@ -54,7 +54,7 @@ export interface CommandReducerDeleteAction
   extends AbstractCommandReducerAction<number> {
   type: typeof CommandReducerActionType.DELETE_ACTION;
 }
-export interface CommandReducerToggleAction
+interface CommandReducerToggleAction
   extends Omit<AbstractCommandReducerAction<unknown>, 'payload'> {
   type:
     | typeof CommandReducerActionType.TOGGLE_ENABLED

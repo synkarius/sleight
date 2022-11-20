@@ -1,4 +1,4 @@
-// TODO: make this a string enum so that all the aria-labels work right with screen readers
+// export namespace Field {}
 
 export enum Field {
   // action:
@@ -27,9 +27,9 @@ export enum Field {
   AC_CALL_FUNC_PARAMETER_VALUE,
   AC_CALL_FUNC_PARAMETER_VAR,
   // action: pause
-  AC_SECONDS_RADIO,
-  AC_SECONDS_VALUE,
-  AC_SECONDS_VAR,
+  AC_PAUSE_SECONDS_RADIO,
+  AC_PAUSE_SECONDS_VALUE,
+  AC_PAUSE_SECONDS_VAR,
   // action: mimic : words
   AC_MIMIC_WORDS_RADIO,
   AC_MIMIC_WORDS_VALUE,

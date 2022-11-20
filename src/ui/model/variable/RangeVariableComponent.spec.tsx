@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -8,102 +8,28 @@ import { VariableComponent } from './VariableComponent';
 import { VariableType } from '../../../data/model/variable/variable-types';
 import { NUMBER_TEXT_BOX } from '../../../core/common/accessibility-roles';
 import { InjectionContext } from '../../../di/injector-context';
-import { createSpecItem, Spec } from '../../../data/model/spec/spec-domain';
-import { SpecItemType } from '../../../data/model/spec/spec-item-type';
-import { saveSpec } from '../../../core/reducers/spec-reducers';
-import {
-  createRangeVariable,
-  RangeVariable,
-} from '../../../data/model/variable/variable';
-import { saveVariable } from '../../../core/reducers/variable-reducers';
 import { container } from '../../../di/config/brandi-config';
-import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
 import { fieldName } from '../../../validation/field-name';
+import { loadTestData } from '../../../test/utils/import-test-json-util';
+import { import12 } from '../../../test/resources/import-12.json';
+import { import13 } from '../../../test/resources/import-13.json';
+import { import14 } from '../../../test/resources/import-14.json';
 
 // optionality:
-const SPEC_WITH_VARIABLE_OPTIONAL_ID = 'spec-with-variable-optional-id-1';
-const SPEC_WITH_VARIABLE_OPTIONAL_NAME = 'spec-with-variable-optional-name-1';
-const SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID =
-  'spec-with-variable-not-optional-id-2';
-const SPEC_WITH_VARIABLE_NOT_OPTIONAL_NAME =
-  'spec-with-variable-not-optional-name-2';
-const NON_DEFAULT_VARIABLE_ID = 'non-default-variable-id-1';
-const NON_DEFAULT_VARIABLE_NAME = 'non-default-variable-name-1';
-const DEFAULT_VARIABLE_ID = 'default-variable-id-2';
-const DEFAULT_VARIABLE_NAME = 'default-variable-name-2';
+const NON_DEFAULT_VARIABLE_ID = 'e54f6949-cbb2-4cfb-a3df-be6cf6d7af71';
+const DEFAULT_VARIABLE_ID = '5e6db954-85a1-442d-ae5a-8fbf4ff6c8cb';
 const SAVE = 'Save';
 
 let user: UserEvent;
 
 beforeAll(() => {
-  const specMapper = container.get(Tokens.DomainMapper_Spec);
-
-  // spec w/ variable; optional
-  const specWithVariableOptional: Spec = {
-    id: SPEC_WITH_VARIABLE_OPTIONAL_ID,
-    name: SPEC_WITH_VARIABLE_OPTIONAL_NAME,
-    items: [
-      {
-        ...createSpecItem(),
-        itemType: SpecItemType.Enum.VARIABLE,
-        variableId: DEFAULT_VARIABLE_ID,
-        optional: true,
-      },
-    ],
-    roleKey: '',
-    enabled: true,
-    locked: false,
-  };
-  const specDTO1 = specMapper.mapFromDomain(specWithVariableOptional);
-  store.dispatch(saveSpec(specDTO1));
-
-  // spec w/ variable; not optional
-  const specWithVariableNotOptional: Spec = {
-    id: SPEC_WITH_VARIABLE_NOT_OPTIONAL_ID,
-    name: SPEC_WITH_VARIABLE_NOT_OPTIONAL_NAME,
-    items: [
-      {
-        ...createSpecItem(),
-        itemType: SpecItemType.Enum.VARIABLE,
-        variableId: NON_DEFAULT_VARIABLE_ID,
-        optional: false,
-      },
-    ],
-    roleKey: '',
-    enabled: true,
-    locked: false,
-  };
-  const specDTO2 = specMapper.mapFromDomain(specWithVariableNotOptional);
-  store.dispatch(saveSpec(specDTO2));
-
   user = userEvent.setup();
 });
 
 beforeEach(async () => {
   /* re-saving variables before each test since some tests dirty the data */
-  const variableMapper = container.get(Tokens.DomainMapper_Variable);
-
-  // save variables
-  // no default
-  const rangeVariable: RangeVariable = {
-    ...createRangeVariable(),
-    id: NON_DEFAULT_VARIABLE_ID,
-    name: NON_DEFAULT_VARIABLE_NAME,
-    defaultValue: undefined,
-  };
-  const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
-  store.dispatch(saveVariable(rangeVariableDTO));
-  // with default
-  const variableWithDefault: RangeVariable = {
-    ...createRangeVariable(),
-    id: DEFAULT_VARIABLE_ID,
-    name: DEFAULT_VARIABLE_NAME,
-    defaultValue: 234,
-  };
-  const variableWithDefaultDTO =
-    variableMapper.mapFromDomain(variableWithDefault);
-  store.dispatch(saveVariable(variableWithDefaultDTO));
+  loadTestData(import12);
 });
 
 describe('range variable component tests', () => {
@@ -258,7 +184,46 @@ describe('range variable component tests', () => {
     expect(useDefaultCheckbox).toHaveClass('is-invalid');
     expect(errorText).toBeInTheDocument();
   });
+
+  it('should invalidate used range var having its range changed to become inappropriate for its use', async () => {
+    loadTestData(import14);
+    doRender(import14.variables[0].id);
+
+    const minInput = screen.getByRole(NUMBER_TEXT_BOX, {
+      name: fieldName(Field.VAR_RANGE_MIN),
+    });
+    // user.type() seems not to work for negative numbers
+    fireEvent.change(minInput, { target: { value: -3 } });
+
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    const errorText = screen.getByText(getUnsuitableRangeErrorRegex());
+
+    expect(saveButton).toBeDisabled();
+    expect(minInput).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+  });
+
+  it('should not invalidate used range var having its range changed to still be appropriate for its use', async () => {
+    loadTestData(import13);
+    doRender(import13.variables[0].id);
+
+    const minInput = screen.getByRole(NUMBER_TEXT_BOX, {
+      name: fieldName(Field.VAR_RANGE_MIN),
+    });
+    // user.type() seems not to work for negative numbers
+    fireEvent.change(minInput, { target: { value: -3 } });
+
+    const saveButton = screen.getByText<HTMLButtonElement>(SAVE);
+    const errorText = screen.queryByText(getUnsuitableRangeErrorRegex());
+
+    expect(saveButton).not.toBeDisabled();
+    expect(minInput).not.toHaveClass('is-invalid');
+    expect(errorText).not.toBeInTheDocument();
+  });
 });
+
+const getUnsuitableRangeErrorRegex = () =>
+  /variables which are in use in actions cannot have their ranges changed; this variable is used in actions\: ".+"/;
 
 const getOptionalityErrorRegex = () =>
   /a default is required because the following specs use this variable in optional variable spec items\: ".+"/;

@@ -95,6 +95,9 @@ import { SpellMapper } from '../../core/mappers/spell/spell-mapper';
 import { Logger } from '../../core/common/basic-logger';
 import { DragonflyModelMapper } from '../../data/exports/dragonfly/dragonfly-model-mapper';
 import { Preferences } from '../../data/preferences/preferences';
+import { DragonflyNegativizerPrinter } from '../../data/exports/dragonfly/element-printers/negativizer/dragonfly-negativizer-printer-augmenter';
+import { DragonflyBuiltinFnsProvider } from '../../data/exports/dragonfly/builtin-fns/builtin-fns-supplier';
+import { FieldGroupsSupplier } from '../../core/common/field-groups-supplier';
 
 /** Dependency injection tokens. */
 export namespace Tokens {
@@ -354,6 +357,9 @@ export namespace Tokens {
   export const DragonflyPrinter_Fn_Import = token<Printer<Fn>>(
     'DragonflyPrinter_Fn_Import'
   );
+  export const DragonflyPrinter_Fn_NegativizerWrapper = token<Printer<Fn>>(
+    'DragonflyPrinter_Fn_NegativizerWrapper'
+  );
   export const DragonflyPrinter_Selector = token<Printer<SelectorDTO>>(
     'DragonflyPrinter_Selector'
   );
@@ -442,5 +448,14 @@ export namespace Tokens {
   export const Logger = token<Logger>('Logger');
   export const DragonflyModelMapper = token<DragonflyModelMapper>(
     'DragonflyModelMapper'
+  );
+  export const DragonflyNegativizerPrinter = token<DragonflyNegativizerPrinter>(
+    'DragonflyNegativizerPrinter'
+  );
+  export const DragonflyBuiltinFnsProvider = token<DragonflyBuiltinFnsProvider>(
+    'DragonflyBuiltinFnsProvider'
+  );
+  export const FieldGroupsSupplier = token<FieldGroupsSupplier>(
+    'FieldGroupsSupplier'
   );
 }

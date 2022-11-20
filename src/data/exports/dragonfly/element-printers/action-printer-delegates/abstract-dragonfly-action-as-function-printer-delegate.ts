@@ -1,4 +1,5 @@
 import { quote } from '../../../../../core/common/common-functions';
+import { MapUtil } from '../../../../../core/common/map-util';
 import {
   isNone,
   isSome,
@@ -10,24 +11,32 @@ import {
 import { ExhaustivenessFailureError } from '../../../../../error/exhaustiveness-failure-error';
 import { ExportError } from '../../../../../error/export-error';
 import { SleightDataInternalFormat } from '../../../../data-formats';
-import { ActionValue } from '../../../../model/action/action-value';
+import {
+  ActionValue,
+  isVariableActionValue,
+  isVariableNumberActionValue,
+} from '../../../../model/action/action-value';
 import { ActionValueType } from '../../../../model/action/action-value-type';
 import { Fn, FnParameter } from '../../../../model/fn/fn';
+import { isRangeVariable } from '../../../../model/variable/variable';
 import { VariableType } from '../../../../model/variable/variable-types';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import {
   isPrintableActionValue,
-  isPrintableCalculatedStringValue,
+  isPrintableStringValue,
   PrintableValue,
   PrintableValueType,
 } from '../../../printable-value';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
+import { DragonflyNegativizerPrinter } from '../negativizer/dragonfly-negativizer-printer-augmenter';
+import { requiresNegativizer } from '../negativizer/negativizer-utils';
 import { AbstractDragonflyActionPrinterDelegate } from './abstract-action-printer-delegate';
 
 export abstract class AbstractDragonflyActionAsFunctionPrinterDelegate extends AbstractDragonflyActionPrinterDelegate {
   constructor(
     private actionValueResolver: DragonflyActionValueResolver,
-    elementTokenPrinter: ElementTokenPrinter
+    elementTokenPrinter: ElementTokenPrinter,
+    private negativizerAugmenter: DragonflyNegativizerPrinter
   ) {
     super(elementTokenPrinter);
   }
@@ -40,7 +49,11 @@ export abstract class AbstractDragonflyActionAsFunctionPrinterDelegate extends A
     const matched = this.matchParams(actionValues, fn.parameters);
     const sorted = this.sortParams(matched);
 
-    const args: string[] = [fn.name];
+    // TODO: supply wrapper fns for printing to exporter
+    // right now, those should only be the builtin mouse fns and any CFA fn
+
+    const fnName = this.calculateFnName(sorted, fn, data);
+    const args: string[] = [fnName];
 
     if (!!sorted.variableValues.length) {
       const dict = [];
@@ -55,6 +68,20 @@ export abstract class AbstractDragonflyActionAsFunctionPrinterDelegate extends A
         if (!this.resultIsEmpty(result) && this.resultIsVariableType(result)) {
           const avName = this.printVariableActionValueName(result);
           dict.push(`${avName}="${v.fnParam.name}"`);
+
+          if (
+            isVariableActionValue(v.avParam.actionValue) &&
+            isVariableNumberActionValue(v.avParam.actionValue)
+          ) {
+            const maybeNegativizer = this.negativizerAugmenter.printForDict(
+              v.avParam.actionValue.variableId,
+              v.fnParam,
+              data
+            );
+            if (isSome(maybeNegativizer)) {
+              dict.push(maybeNegativizer.value);
+            }
+          }
         }
       }
       args.push(['dict(', dict.join(', '), ')'].join(''));
@@ -72,7 +99,7 @@ export abstract class AbstractDragonflyActionAsFunctionPrinterDelegate extends A
         if (!this.resultIsEmpty(result)) {
           arg = some(this.resultToArg(result));
         }
-      } else if (isPrintableCalculatedStringValue(ev.avParam)) {
+      } else if (isPrintableStringValue(ev.avParam)) {
         arg = some(ev.avParam.value);
       }
       if (!isSome(arg)) {
@@ -121,7 +148,7 @@ export abstract class AbstractDragonflyActionAsFunctionPrinterDelegate extends A
           default:
             throw new ExhaustivenessFailureError(actionValueType);
         }
-      } else if (isPrintableCalculatedStringValue(param.avParam)) {
+      } else if (isPrintableStringValue(param.avParam)) {
         result.staticValues.push(param);
       } else {
         throw new ExportError('invalid printable param type (sortParams)');
@@ -135,6 +162,22 @@ export abstract class AbstractDragonflyActionAsFunctionPrinterDelegate extends A
       type: PrintableValueType.ACTION_VALUE,
       actionValue,
     };
+  }
+
+  private calculateFnName(
+    sorted: ParamGroups,
+    fn: Fn,
+    data: SleightDataInternalFormat
+  ): string {
+    const wrapperFnRequired = !!sorted.variableValues
+      .map((vv) => vv.avParam)
+      .filter(isPrintableActionValue)
+      .map((avp) => avp.actionValue)
+      .filter(isVariableActionValue)
+      .map((av) => av.variableId)
+      .map((variableId) => MapUtil.getOrThrow(data.variables, variableId))
+      .find(requiresNegativizer);
+    return wrapperFnRequired ? `wrap_${fn.name}` : fn.name;
   }
 }
 

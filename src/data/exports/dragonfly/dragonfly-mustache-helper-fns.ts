@@ -9,8 +9,12 @@ import { SpecDTO } from '../../model/spec/spec-dto';
 import { VariableDTO } from '../../model/variable/variable-dto';
 import { Fn } from '../../model/fn/fn';
 import { Preferences } from '../../preferences/preferences';
+import { DragonflyNegativizerPrinter } from './element-printers/negativizer/dragonfly-negativizer-printer-augmenter';
+import { isSome } from '../../../core/common/maybe';
+import { DragonflyBuiltinFnsProvider } from './builtin-fns/builtin-fns-supplier';
+import { reduceIded } from '../../imports/model-update/reduce-ided';
 
-export type DragonflyMustacheFns = {
+type DragonflyMustacheFns = {
   printAction: () => MustacheFn;
   printCommand: () => MustacheFn;
   printContext: () => MustacheFn;
@@ -18,6 +22,8 @@ export type DragonflyMustacheFns = {
   printSpec: () => MustacheFn;
   printVariable: () => MustacheFn;
   printDefault: () => MustacheFn;
+  printNegativizerDefault: () => MustacheFn;
+  printNegativizerWrapper: () => MustacheFn;
 };
 
 export type DragonflyMustacheFnsFactory = {
@@ -35,9 +41,12 @@ export class DefaultDragonflyMustacheFnsFactory
     private commandPrinter: Printer<Command>,
     private contextPrinter: Printer<Context>,
     private fnImportPrinter: Printer<Fn>,
+    private fnNegativizerPrinter: Printer<Fn>,
     private specPrinter: Printer<SpecDTO>,
     private variablePrinter: Printer<VariableDTO>,
-    private defaultPrinter: Printer<VariableDTO>
+    private defaultPrinter: Printer<VariableDTO>,
+    private negativizerAugmenter: DragonflyNegativizerPrinter,
+    private builtinFnsProvider: DragonflyBuiltinFnsProvider
   ) {}
 
   getDragonflyMustacheFns(
@@ -72,6 +81,25 @@ export class DefaultDragonflyMustacheFnsFactory
       printDefault: createMustacheFn((id, r) => {
         const variable = MapUtil.getOrThrow(data.variables, r(id));
         return this.defaultPrinter.printItem(variable, data, prefs);
+      }),
+      printNegativizerDefault: createMustacheFn((id, r) => {
+        const variableId = r(id);
+        const maybeNegativizerDefault =
+          this.negativizerAugmenter.printForDefaults(variableId, data);
+        return isSome(maybeNegativizerDefault)
+          ? `${maybeNegativizerDefault.value},`
+          : '';
+      }),
+      printNegativizerWrapper: createMustacheFn((id, r) => {
+        const builtins = this.builtinFnsProvider.getAll();
+        const fromData = Object.values(data.fns);
+        const combined: Record<string, Fn> = [...builtins, ...fromData].reduce(
+          reduceIded,
+          {}
+        );
+        const fnId = r(id);
+        const fn = MapUtil.getOrThrow(combined, fnId);
+        return this.fnNegativizerPrinter.printItem(fn, data, prefs);
       }),
     };
   }

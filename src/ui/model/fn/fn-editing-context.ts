@@ -69,7 +69,7 @@ export interface FnReducerTypeAction
   type: typeof FnReducerActionType.CHANGE_TYPE;
 }
 
-export interface FnReducerToggleAction
+interface FnReducerToggleAction
   extends Omit<AbstractFnReducerAction<unknown>, 'payload'> {
   type:
     | typeof FnReducerActionType.TOGGLE_ENABLED

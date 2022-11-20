@@ -1,3 +1,4 @@
+import { MapUtil } from '../../core/common/map-util';
 import { SleightDataInternalFormat } from '../../data/data-formats';
 import { Action } from '../../data/model/action/action';
 import { Command } from '../../data/model/command/command';
@@ -24,6 +25,21 @@ export const givenActionFindCommands: FinderFn<Action, Command> = (
   );
 };
 
+export const givenActionFindVariables: FinderFn<Action, Variable> = (
+  editing: Action,
+  data: SleightDataInternalFormat
+): Variable[] => {
+  const variableExtractor = container.get(Tokens.VariableExtractor);
+  const variableMapper = container.get(Tokens.DomainMapper_Variable);
+  return variableExtractor
+    .extractVariables(editing)
+    .map((ev) => ev.variableId)
+    .map((variableId) => MapUtil.getOrThrow(data.variables, variableId))
+    .map((variableDTO) =>
+      variableMapper.mapToDomain(variableDTO, data.selectors)
+    );
+};
+
 export const givenSpecFindCommands: FinderFn<Spec, Command> = (
   editing: Spec,
   data: SleightDataInternalFormat
@@ -48,6 +64,20 @@ export const givenSpecFindVariables: FinderFn<Spec, Variable> = (
     .map((variableDTO) =>
       variableMapper.mapToDomain(variableDTO, data.selectors)
     );
+};
+
+export const givenVariableFindActions: FinderFn<Variable, Action> = (
+  editing: Variable,
+  data: SleightDataInternalFormat
+): Action[] => {
+  const variableExtractor = container.get(Tokens.VariableExtractor);
+
+  return Object.values(data.actions).filter((action) =>
+    variableExtractor
+      .extractVariables(action)
+      .map((ev) => ev.variableId)
+      .includes(editing.id)
+  );
 };
 
 export const givenVariableFindSpecs: FinderFn<Variable, Spec> = (

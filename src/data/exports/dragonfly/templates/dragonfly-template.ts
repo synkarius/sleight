@@ -22,11 +22,15 @@ from dragonfly import Grammar
 from dragonfly import RuleWrap
 from dragonfly import RuleRef
 #
-{{#fns}}
+{{#importFns}}
 {{#printFnImport}}{{id}}{{/printFnImport}}
-{{/fns}}
+{{/importFns}}
 
 ${dragonflyTemplateSupportFns}
+
+{{#wrapperFns}}
+{{#printNegativizerWrapper}}{{id}}{{/printNegativizerWrapper}}
+{{/wrapperFns}}
 
 ${dragonflyNegativizer}
 
@@ -54,6 +58,9 @@ ${dragonflyNegativizer}
         {{#defaults}}
         {{#printDefault}}{{id}}{{/printDefault}},
         {{/defaults}}
+        {{#extras}}
+        {{#printNegativizerDefault}}{{id}}{{/printNegativizerDefault}}
+        {{/extras}}
     }
 )
 {{/rules}}

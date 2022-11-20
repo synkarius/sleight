@@ -10,9 +10,9 @@ import { DomainMapper } from '../mappers/mapper';
 import { SpecDomainMapper } from '../mappers/spec-domain-mapper';
 import { VariableDomainMapper } from '../mappers/variable-domain-mapper';
 
-export const GLOBAL_CONTEXT = 'global';
+const GLOBAL_CONTEXT = 'global';
 
-export type CommandListItem = {
+type CommandListItem = {
   command: Command;
   spec: Spec;
   context?: Context;
@@ -20,7 +20,7 @@ export type CommandListItem = {
   variables: Variable[];
 };
 
-export type CommandListFilterCriteria = {
+type CommandListFilterCriteria = {
   contextSearch: string;
 };
 

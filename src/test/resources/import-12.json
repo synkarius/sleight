@@ -1,0 +1,84 @@
+{
+    "import12": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "7baf55bb-79e1-4336-ad11-d8b5571fdbf9",
+                "items": [
+                    {
+                        "id": "836cd13e-5a70-41d0-a65d-d4db8948ddc0",
+                        "value": "a"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "749b7f4d-df0e-4913-829b-ff71613a688e",
+                "name": "spec-with-optional-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "f3318bf4-404a-479e-8ae3-bb74351aa55e",
+                        "itemType": "Selector",
+                        "itemId": "7baf55bb-79e1-4336-ad11-d8b5571fdbf9",
+                        "optional": false,
+                        "grouped": false
+                    },
+                    {
+                        "id": "e8cf6bc7-ffbf-4044-bef5-19065b0e47b9",
+                        "itemType": "Variable",
+                        "itemId": "5e6db954-85a1-442d-ae5a-8fbf4ff6c8cb",
+                        "optional": true,
+                        "grouped": false
+                    }
+                ]
+            },
+            {
+                "id": "b18ccd33-6a3f-423d-9bce-0ed7c8d59db0",
+                "name": "spec-with-non-optional-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "7c750450-f98a-43d1-8254-bae43e6c9587",
+                        "itemType": "Variable",
+                        "itemId": "e54f6949-cbb2-4cfb-a3df-be6cf6d7af71",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": [
+            {
+                "id": "e54f6949-cbb2-4cfb-a3df-be6cf6d7af71",
+                "type": "Range",
+                "name": "no-default-range-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9
+            },
+            {
+                "id": "5e6db954-85a1-442d-ae5a-8fbf4ff6c8cb",
+                "type": "Range",
+                "name": "has-default-range-var",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9,
+                "defaultValue": 234
+            }
+        ]
+    }
+}

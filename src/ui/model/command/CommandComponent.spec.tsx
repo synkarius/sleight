@@ -4,16 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../app/store';
 import { Field } from '../../../validation/validation-field';
-import { saveSpec } from '../../../core/reducers/spec-reducers';
 import { CommandComponent } from './CommandComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { saveVariable } from '../../../core/reducers/variable-reducers';
-import { saveAction } from '../../../core/reducers/action-reducers';
 import { container } from '../../../di/config/brandi-config';
-import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
-import { castJsonForTest } from '../../../test/utils/import-test-json-util';
-import { act } from 'react-dom/test-utils';
+import { loadTestData } from '../../../test/utils/import-test-json-util';
 import { import01 } from '../../../test/resources/command-setup-01.json';
 import { import02 } from '../../../test/resources/command-setup-02.json';
 import { import03 } from '../../../test/resources/command-setup-03.json';
@@ -26,8 +21,6 @@ import { import09 } from '../../../test/resources/command-setup-09.json';
 import { import10 } from '../../../test/resources/command-setup-10.json';
 import { import11 } from '../../../test/resources/command-setup-11.json';
 import { import12 } from '../../../test/resources/command-setup-12.json';
-import { saveCommand } from '../../../core/reducers/command-reducers';
-import { saveContext } from '../../../core/reducers/context-reducers';
 import { fieldName } from '../../../validation/field-name';
 
 let user: UserEvent;
@@ -425,23 +418,3 @@ const getInadequateSpecsRegex = () =>
 
 const getNonUniqueSpecRegex = () =>
   /commands must have unique specs per context, but this spec is used in command ".+"/;
-
-const loadTestData = (json: unknown) => {
-  const formatMapper = container.get(Tokens.FormatMapper);
-  const data = formatMapper.externalFormatToInternal(castJsonForTest(json));
-  act(() => {
-    Object.values(data.actions).forEach((action) =>
-      store.dispatch(saveAction(action))
-    );
-    Object.values(data.commands).forEach((command) =>
-      store.dispatch(saveCommand(command))
-    );
-    Object.values(data.contexts).forEach((context) =>
-      store.dispatch(saveContext(context))
-    );
-    Object.values(data.specs).forEach((spec) => store.dispatch(saveSpec(spec)));
-    Object.values(data.variables).forEach((variable) =>
-      store.dispatch(saveVariable(variable))
-    );
-  });
-};

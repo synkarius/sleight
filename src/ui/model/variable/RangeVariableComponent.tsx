@@ -33,6 +33,7 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
       type: VariableReducerActionType.CHANGE_RANGE_MIN,
       payload: +event.target.value,
     });
+    validationContext.touch(Field.VAR_RANGE_MIN);
   };
   const maxChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     editingContext.localDispatch({
@@ -58,10 +59,10 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
     });
   };
 
-  const rangeMax = Field.VAR_RANGE_MAX;
   const fullErrorResults = validationContext.getErrorResults();
   const errorResults = processErrorResults(fullErrorResults);
-  const rangeIsInvalidErrorMessage = errorResults(rangeMax);
+  const rangeMinInvalidMessage = errorResults(Field.VAR_RANGE_MIN);
+  const rangeMaxInvalidMessage = errorResults(Field.VAR_RANGE_MAX);
 
   return (
     <>
@@ -69,26 +70,29 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
         <Col sm="6">
           <FormControl
             type="number"
-            min={0}
             onChange={minChangedHandler}
             value={props.range.beginInclusive}
             aria-label={fieldName(Field.VAR_RANGE_MIN)}
+            onBlur={() => validationContext.touch(Field.VAR_RANGE_MIN)}
+            isInvalid={!!rangeMinInvalidMessage}
           />
           <FormText className="text-muted">minimum value</FormText>
+          <Form.Control.Feedback type="invalid">
+            {rangeMinInvalidMessage}
+          </Form.Control.Feedback>
         </Col>
         <Col sm="6">
           <FormControl
             type="number"
-            min={0}
             onChange={maxChangedHandler}
             value={props.range.endInclusive}
-            aria-label={fieldName(rangeMax)}
-            onBlur={(_e) => validationContext.touch(rangeMax)}
-            isInvalid={!!rangeIsInvalidErrorMessage}
+            aria-label={fieldName(Field.VAR_RANGE_MAX)}
+            onBlur={() => validationContext.touch(Field.VAR_RANGE_MAX)}
+            isInvalid={!!rangeMaxInvalidMessage}
           />
           <FormText className="text-muted">maximum value</FormText>
           <Form.Control.Feedback type="invalid">
-            {rangeIsInvalidErrorMessage}
+            {rangeMaxInvalidMessage}
           </Form.Control.Feedback>
         </Col>
       </FormGroup>
@@ -116,7 +120,6 @@ export const RangeVariableComponent: React.FC<{ range: RangeVariable }> = (
           >
             <FormControl
               type="number"
-              min={0}
               onChange={defaultValueChangedHandler}
               value={props.range.defaultValue}
               aria-label={fieldName(Field.VAR_RANGE_DEFAULT_VALUE)}

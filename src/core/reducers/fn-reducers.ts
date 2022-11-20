@@ -129,7 +129,7 @@ const deleteParameter = (state: Fn, action: FnReducerNumberAction): Fn => {
   }
 };
 
-export const changeParameterName = (
+const changeParameterName = (
   state: Fn,
   action: FnReducerParamNameAction
 ): Fn => {
@@ -150,7 +150,7 @@ export const changeParameterName = (
   }
 };
 
-export const changeParameterType = (
+const changeParameterType = (
   state: Fn,
   action: FnReducerParamTypeAction
 ): Fn => {

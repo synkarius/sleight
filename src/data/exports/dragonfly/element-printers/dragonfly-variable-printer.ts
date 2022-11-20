@@ -1,4 +1,5 @@
 import { MapUtil } from '../../../../core/common/map-util';
+import { isSome } from '../../../../core/common/maybe';
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { ElementType } from '../../../model/element-types';
 import { SelectorDTO } from '../../../model/selector/selector-dto';
@@ -7,11 +8,13 @@ import { VariableType } from '../../../model/variable/variable-types';
 import { Preferences } from '../../../preferences/preferences';
 import { ElementTokenPrinter } from '../../element-token-printer';
 import { Printer } from '../../printer';
+import { DragonflyNegativizerPrinter } from './negativizer/dragonfly-negativizer-printer-augmenter';
 
 export class DragonflyVariablePrinter implements Printer<VariableDTO> {
   constructor(
     private elementTokenPrinter: ElementTokenPrinter,
-    private selectorPrinter: Printer<SelectorDTO>
+    private selectorPrinter: Printer<SelectorDTO>,
+    private negativizerAugmenter: DragonflyNegativizerPrinter
   ) {}
 
   printItem(
@@ -27,7 +30,16 @@ export class DragonflyVariablePrinter implements Printer<VariableDTO> {
       case VariableType.Enum.TEXT:
         return `Dictation("${name}")`;
       case VariableType.Enum.NUMBER:
-        return `ShortIntegerRef("${name}", ${variable.beginInclusive}, ${variable.endInclusive})`;
+        const sir = `ShortIntegerRef("${name}", ${variable.beginInclusive}, ${variable.endInclusive})`;
+        // negativizer
+        const maybeNegativizer = this.negativizerAugmenter.printForExtras(
+          variable.id,
+          data
+        );
+        const negativizer = isSome(maybeNegativizer)
+          ? `${maybeNegativizer.value}, `
+          : '';
+        return negativizer + sir;
       case VariableType.Enum.ENUM:
         //
         const choiceItems =

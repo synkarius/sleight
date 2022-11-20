@@ -36,37 +36,6 @@ export const createValidator = <T>(
   };
 };
 
-export const createNameTakenValidator = <
-  DTO extends Ided & Named,
-  D extends Ided & Named
->(
-  field: Field,
-  extractFn: (data: SleightDataInternalFormat) => Readonly<Record<string, DTO>>,
-  message: string,
-  code: ValidationErrorCode
-): FieldValidator<D> => {
-  return {
-    validatorType: ValidatorType.FIELD,
-    field: field,
-    isApplicable: alwaysTrue,
-    validate: (action, data): ValidationResult => {
-      const duplicateExists = !!Object.values(extractFn(data))
-        .filter((a) => a.id !== action.id)
-        .find((a) => a.name === action.name);
-      if (!duplicateExists) {
-        return validResult(field);
-      } else {
-        return {
-          type: ValidationResultType.BASIC,
-          errorHighlightField: field,
-          code,
-          message,
-        };
-      }
-    },
-  };
-};
-
 export const createRoleKeyTakenValidator = <
   DTO extends Ided & RoleKeyed,
   D extends Ided & RoleKeyed

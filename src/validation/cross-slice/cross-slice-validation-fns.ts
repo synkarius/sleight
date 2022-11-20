@@ -13,11 +13,18 @@ import {
   getSpecItemOptionalityValidator,
   getVariableOptionalityValidator,
 } from '../../core/validators/optionality-cross-slice-validator';
+import {
+  getRangeSuitabilityActionValidator,
+  getRangeSuitabilityVariableValidator,
+} from '../../core/validators/range-suitability-cross-slice-validator';
 
-// Some validations have to be run cross-slice. This file is a place to keep those organized.
+// Some validations have to be run cross-slice.
+
+// TODO: do proper DI for all of these
 
 export const getCrossSliceActionValidators = (): FieldValidator<Action>[] => [
   getActionSideSpecAdequacyValidator(),
+  getRangeSuitabilityActionValidator(),
 ];
 export const getCrossSliceCommandValidators = (): FieldValidator<Command>[] => [
   getCommandSideSpecAdequacyValidator(),
@@ -29,4 +36,7 @@ export const getCrossSliceSpecValidators = (): FieldValidator<Spec>[] => [
   getSpecItemOptionalityValidator(),
 ];
 export const getCrossSliceVariableValidators =
-  (): FieldValidator<Variable>[] => [getVariableOptionalityValidator()];
+  (): FieldValidator<Variable>[] => [
+    getVariableOptionalityValidator(),
+    getRangeSuitabilityVariableValidator(),
+  ];

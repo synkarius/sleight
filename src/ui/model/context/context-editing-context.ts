@@ -24,7 +24,7 @@ export interface ContextReducerMatcherTypeAction
   extends AbstractContextReducerAction<ContextType.Type> {
   type: typeof ContextReducerActionType.CHANGE_TYPE;
 }
-export interface ContextReducerToggleAction
+interface ContextReducerToggleAction
   extends Omit<AbstractContextReducerAction<unknown>, 'payload'> {
   type:
     | typeof ContextReducerActionType.TOGGLE_ENABLED

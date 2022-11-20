@@ -51,7 +51,7 @@ export const isEnterEnumActionValue = (
 ): actionValue is EnterEnumActionValue =>
   actionValue.enteredValueType === VariableType.Enum.ENUM;
 
-export interface AbstractVariableActionValue extends AbstractActionValue {
+interface AbstractVariableActionValue extends AbstractActionValue {
   readonly actionValueType: typeof ActionValueType.Enum.USE_VARIABLE;
   // if the user has chosen variable binding, this is the variable type
   readonly variableType: VariableType.Type;

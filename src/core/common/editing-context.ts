@@ -1,10 +1,10 @@
 import React from 'react';
 import { DeleteModalConfig } from '../../ui/other-components/DeleteModalComponent';
 
-export type SimpleEditingData<P> = {
+type SimpleEditingData<P> = {
   localDispatch: React.Dispatch<P>;
 };
-export type EditingData<P> = {
+type EditingData<P> = {
   // P is a payload
   localDispatch: React.Dispatch<P>;
   deleteModalConfig: DeleteModalConfig;

@@ -2,15 +2,11 @@ import { UNSELECTED_ENUM, UNSELECTED_ID } from './consts';
 
 export const alwaysTrue = <T>(_t: T): boolean => true;
 
-export const alwaysFalse = <T>(_t: T): boolean => false;
-
 export const notEmpty = (value: string) => value.trim().length > 0;
 
 export const isEmpty = (value: string) => value.trim().length === 0;
 
 export const identity = <T>(t: T) => t;
-
-export const notFalsy = (t: unknown) => !!t;
 
 export const isDefined = <T>(t: T | undefined): t is T => t !== undefined;
 
@@ -31,8 +27,6 @@ export const isIdSelected = (id?: string): boolean =>
 
 export const isEnumSelected = (id?: string): boolean =>
   !!id && id !== UNSELECTED_ENUM;
-
-export const isTruthy = (t: unknown) => !!t;
 
 export const replaceNonAlphaNumeric = (
   value: string,

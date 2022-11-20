@@ -20,15 +20,20 @@ import { bindActionValueUpdater } from './bindings/action-value-updater-bindings
 import { bindCommandCommandListHelper } from './bindings/command-list-helper-bindings';
 import { bindSpellValidators } from './bindings/spell-validator-bindings';
 import { bindLogger } from './bindings/logger-bindings';
+import { bindNegativizer } from './bindings/negativizer-bindings';
+import { bindBuiltinFnsProvider } from './bindings/builtin-fns-provider-bindings';
+import { bindFieldGroupsSupplier } from './bindings/field-groups-supplier-bindings';
 
 export const container = new Container();
 [
   bindActionValueUpdater,
+  bindBuiltinFnsProvider,
   bindCleaners,
   bindCommandCommandListHelper,
   bindCompositeValidators,
   bindDataMerger,
   bindDeserializer,
+  bindFieldGroupsSupplier,
   bindFieldValidators,
   bindImportProcessEvaluators,
   bindExporters,
@@ -38,6 +43,7 @@ export const container = new Container();
   bindLogger,
   bindMappers,
   bindNamers,
+  bindNegativizer,
   bindPrinters,
   bindRoleKeyedDataUpdater,
   bindSleightDataEvaluator,

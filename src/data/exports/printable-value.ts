@@ -14,16 +14,13 @@ export const isPrintableActionValue = (
   pv: PrintableValue
 ): pv is PrintableActionValue => pv.type === PrintableValueType.ACTION_VALUE;
 
-type PrintableCalculatedStringValue = {
+type PrintableStringValue = {
   type: PrintableValueType.STRING_VALUE;
   value: string;
 };
 
-export const isPrintableCalculatedStringValue = (
+export const isPrintableStringValue = (
   pv: PrintableValue
-): pv is PrintableCalculatedStringValue =>
-  pv.type === PrintableValueType.STRING_VALUE;
+): pv is PrintableStringValue => pv.type === PrintableValueType.STRING_VALUE;
 
-export type PrintableValue =
-  | PrintableActionValue
-  | PrintableCalculatedStringValue;
+export type PrintableValue = PrintableActionValue | PrintableStringValue;

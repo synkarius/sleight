@@ -9,7 +9,7 @@ export const getPauseVariableExtractorDelegate =
         return [
           {
             ...action.seconds,
-            field: Field.AC_SECONDS_VAR,
+            field: Field.AC_PAUSE_SECONDS_VAR,
           },
         ];
       }

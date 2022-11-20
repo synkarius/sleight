@@ -18,7 +18,7 @@ import { isPauseAction } from '../../../data/model/action/pause/pause';
 const SECONDS = 'seconds';
 const secondsValidators: ActionValueValidators = {
   variable: createValidator(
-    Field.AC_SECONDS_VAR,
+    Field.AC_PAUSE_SECONDS_VAR,
     (action) => isPauseAction(action) && isVariableActionValue(action.seconds),
     (action) =>
       isPauseAction(action) &&

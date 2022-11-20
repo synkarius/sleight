@@ -1,0 +1,23 @@
+{
+    "import11": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "a8796494-2f92-4d5a-9445-b498c46504a5",
+                "type": "Range",
+                "name": "range-var-a8796494-2f92",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": -17,
+                "endInclusive": 9
+            }
+        ]
+    }
+}

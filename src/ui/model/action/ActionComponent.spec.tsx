@@ -7,148 +7,31 @@ import userEvent from '@testing-library/user-event';
 import { ActionType } from '../../../data/model/action/action-types';
 import { ActionComponent } from './ActionComponent';
 import { InjectionContext } from '../../../di/injector-context';
-import { saveAction } from '../../../core/reducers/action-reducers';
-import {
-  createPauseAction,
-  PauseAction,
-} from '../../../data/model/action/pause/pause';
 import { ActionValueType } from '../../../data/model/action/action-value-type';
-import { VariableType } from '../../../data/model/variable/variable-types';
-import { createRangeVariable } from '../../../data/model/variable/variable';
-import { saveVariable } from '../../../core/reducers/variable-reducers';
-import {
-  createSpecItem,
-  Spec,
-  SpecItem,
-} from '../../../data/model/spec/spec-domain';
-import { SpecItemType } from '../../../data/model/spec/spec-item-type';
-import {
-  createSelector,
-  createSelectorItem,
-} from '../../../data/model/selector/selector-domain';
-import { saveSpec } from '../../../core/reducers/spec-reducers';
-import { saveSelector } from '../../../core/reducers/selector-reducers';
-import { Command, createCommand } from '../../../data/model/command/command';
-import { saveCommand } from '../../../core/reducers/command-reducers';
 import { LIST } from '../../../core/common/accessibility-roles';
 import { container } from '../../../di/config/brandi-config';
-import { Tokens } from '../../../di/config/brandi-tokens';
 import { BrowserRouter } from 'react-router-dom';
 import { fieldName } from '../../../validation/field-name';
+import { import10 } from '../../../test/resources/import-10.json';
+import { import11 } from '../../../test/resources/import-11.json';
+import { loadTestData } from '../../../test/utils/import-test-json-util';
 
-const SPEC_WITH_SELECTOR_ID = 'spec-id-1';
-const SPEC_WITH_SELECTOR_NAME = 'spec-name-1';
-const SPEC_WITH_VARIABLE_ID = 'spec-id-2';
-const SPEC_WITH_VARIABLE_NAME = 'spec-name-2';
-const VARIABLE_ID_1 = 'variable-id-1';
-const VARIABLE_NAME_1 = 'variable-name-1';
-const ACTION_WITH_VARS = 'action-id-1';
-const ACTION_NAME_1 = 'action-name-1';
-const ACTION_NO_VARS = 'action-id-2';
+const VARIABLE_NAME_1 = 'range-var-88f81806-3540';
+const NEGATIVE_MIN_RANGE_VAR_NAME = 'range-var-a8796494-2f92';
+const ACTION_WITH_VARS_ID = 'ca469202-4fe4-4768-a27b-7ed99a315874';
+const ACTION_NO_VARS_ID = '981fcb99-c5ed-4000-8561-56541ea2733a';
 const ROLE_KEY = 'rk-38190';
 const SAVE = 'Save';
 
 let user: UserEvent;
 
 beforeAll(() => {
-  const selectorMapper = container.get(Tokens.DomainMapper_Selector);
-  const specMapper = container.get(Tokens.DomainMapper_Spec);
-  const variableMapper = container.get(Tokens.DomainMapper_Variable);
-
-  // save variable
-  const rangeVariable = {
-    ...createRangeVariable(),
-    id: VARIABLE_ID_1,
-    name: VARIABLE_NAME_1,
-  };
-  const rangeVariableDTO = variableMapper.mapFromDomain(rangeVariable);
-  store.dispatch(saveVariable(rangeVariableDTO));
-
-  // save specs
-  const selectorSpecItem: SpecItem = {
-    ...createSpecItem(),
-    itemType: SpecItemType.Enum.SELECTOR,
-    selector: {
-      ...createSelector(),
-      items: [{ ...createSelectorItem(), value: 'asdf' }],
-    },
-  };
-  const specWithSelector: Spec = {
-    id: SPEC_WITH_SELECTOR_ID,
-    name: SPEC_WITH_SELECTOR_NAME,
-    items: [selectorSpecItem],
-    roleKey: '',
-    enabled: true,
-    locked: false,
-  };
-  const specDTO1 = specMapper.mapFromDomain(specWithSelector);
-  store.dispatch(saveSpec(specDTO1));
-  const selectorDTO1 = selectorMapper.mapFromDomain(selectorSpecItem.selector);
-  store.dispatch(saveSelector(selectorDTO1));
-  const specWithVariable: Spec = {
-    id: SPEC_WITH_VARIABLE_ID,
-    name: SPEC_WITH_VARIABLE_NAME,
-    items: [
-      {
-        ...createSpecItem(),
-        itemType: SpecItemType.Enum.VARIABLE,
-        variableId: VARIABLE_ID_1,
-      },
-    ],
-    roleKey: '',
-    enabled: true,
-    locked: false,
-  };
-  const specDTO2 = specMapper.mapFromDomain(specWithVariable);
-  store.dispatch(saveSpec(specDTO2));
-
-  // save commands
-  const command1: Command = {
-    ...createCommand(),
-    specId: SPEC_WITH_SELECTOR_ID,
-    actionIds: [ACTION_NO_VARS],
-    roleKey: '',
-  };
-  store.dispatch(saveCommand(command1));
-  const command2: Command = {
-    ...createCommand(),
-    specId: SPEC_WITH_VARIABLE_ID,
-    actionIds: [ACTION_WITH_VARS],
-    roleKey: '',
-  };
-  store.dispatch(saveCommand(command2));
-
   user = userEvent.setup();
 });
 
 beforeEach(async () => {
   /* re-save actions before each test b/c some tests dirty the data */
-
-  // save actions
-  const action1: PauseAction = {
-    ...createPauseAction(),
-    id: ACTION_WITH_VARS,
-    name: ACTION_NAME_1,
-    roleKey: ROLE_KEY,
-    seconds: {
-      id: '123',
-      actionValueType: ActionValueType.Enum.USE_VARIABLE,
-      variableType: VariableType.Enum.NUMBER,
-      variableId: VARIABLE_ID_1,
-    },
-  };
-  store.dispatch(saveAction(action1));
-  const action2: PauseAction = {
-    ...createPauseAction(),
-    id: ACTION_NO_VARS,
-    seconds: {
-      id: '234',
-      actionValueType: ActionValueType.Enum.ENTER_VALUE,
-      enteredValueType: VariableType.Enum.NUMBER,
-      value: 789,
-    },
-  };
-  store.dispatch(saveAction(action2));
+  loadTestData(import10);
 });
 
 const doRender = (actionId?: string) => {
@@ -224,7 +107,7 @@ describe('action component tests', () => {
   });
 
   it('should validate action w/ no vars in command w/ spec w/ no vars', async () => {
-    doRender(ACTION_NO_VARS);
+    doRender(ACTION_NO_VARS_ID);
 
     const saveButton = screen.getByRole('button', {
       name: SAVE,
@@ -238,7 +121,7 @@ describe('action component tests', () => {
   });
 
   it('should validate action w/ vars in command w/ spec w/ vars', async () => {
-    doRender(ACTION_WITH_VARS);
+    doRender(ACTION_WITH_VARS_ID);
 
     const saveButton = screen.getByRole('button', {
       name: SAVE,
@@ -253,13 +136,13 @@ describe('action component tests', () => {
 
   it('should invalidate action w/ no vars in command w/ spec w/ vars', async () => {
     // originally: spec has no vars, action has no vars
-    doRender(ACTION_NO_VARS);
+    doRender(ACTION_NO_VARS_ID);
 
     // change action to have vars
     const variableRadio = screen.getByLabelText('Use (Range) Variable');
     await user.click(variableRadio);
     const variableSelect = screen.getByRole(LIST, {
-      name: fieldName(Field.AC_SECONDS_VAR),
+      name: fieldName(Field.AC_PAUSE_SECONDS_VAR),
     });
     await user.selectOptions(variableSelect, VARIABLE_NAME_1);
     const saveButton = screen.getByRole('button', {
@@ -275,7 +158,7 @@ describe('action component tests', () => {
 
   it('should validate action w/ no vars in command w/ spec w/ vars', async () => {
     // originally: spec has vars, action has vars
-    doRender(ACTION_WITH_VARS);
+    doRender(ACTION_WITH_VARS_ID);
 
     // change action to have no vars
     const enterValueRadio = screen.getByLabelText(
@@ -311,6 +194,34 @@ describe('action component tests', () => {
     await user.click(lockedSwitch);
 
     expect(lockedSwitch).toBeChecked();
+  });
+
+  it('should invalidate range-inappropriate variable selection', async () => {
+    loadTestData(import11);
+    doRender();
+
+    const actionTypeSelect = screen.getByRole('list', {
+      name: fieldName(Field.AC_TYPE),
+    });
+    await user.selectOptions(actionTypeSelect, ActionType.Enum.PAUSE);
+
+    const variableRadio = screen.getByLabelText('Use (Range) Variable');
+    await user.click(variableRadio);
+    const variableSelect = screen.getByRole(LIST, {
+      name: fieldName(Field.AC_PAUSE_SECONDS_VAR),
+    });
+    await user.selectOptions(variableSelect, NEGATIVE_MIN_RANGE_VAR_NAME);
+
+    const errorText = screen.getByText(
+      'numeric variables must have an appropriate range for their usage; this variable has a negative minimum'
+    );
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+
+    expect(variableSelect).toHaveClass('is-invalid');
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
   });
 });
 

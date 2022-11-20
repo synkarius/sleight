@@ -4,6 +4,7 @@ import { VariableExtractor } from '../../../validation/variable-extraction/varia
 import { SleightDataInternalFormat } from '../../data-formats';
 import { Command } from '../../model/command/command';
 import { OptionalId } from '../../model/domain';
+import { DragonflyBuiltinFnsProvider } from './builtin-fns/builtin-fns-supplier';
 import { DragonflyModel } from './model/dragonfly-model';
 import { DragonflyRule } from './model/dragonfly-rule';
 
@@ -12,7 +13,10 @@ export type DragonflyModelMapper = {
 };
 
 export class DefaultDragonflyModelMapper implements DragonflyModelMapper {
-  constructor(private variableExtractor: VariableExtractor) {}
+  constructor(
+    private variableExtractor: VariableExtractor,
+    private builtinFnsProvider: DragonflyBuiltinFnsProvider
+  ) {}
 
   mapDataToDragonflyModel(data: SleightDataInternalFormat): DragonflyModel {
     const result = new Map<string, DragonflyRule>();
@@ -40,7 +44,8 @@ export class DefaultDragonflyModelMapper implements DragonflyModelMapper {
 
     return {
       rules: Array.from(result.values()),
-      metadata: { noopCommandsExist },
+      fns: Object.values(data.fns),
+      builtinFns: this.builtinFnsProvider.getAll(),
     };
   }
 

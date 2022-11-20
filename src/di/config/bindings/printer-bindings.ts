@@ -73,7 +73,8 @@ export const bindPrinters = (container: Container): void => {
   injected(
     DragonflySpecPrinter,
     Tokens.ElementTokenPrinter,
-    Tokens.DragonflyPrinter_Selector
+    Tokens.DragonflyPrinter_Selector,
+    Tokens.DragonflyNegativizerPrinter
   );
   container
     .bind(Tokens.DragonflyPrinter_Variable)
@@ -82,7 +83,8 @@ export const bindPrinters = (container: Container): void => {
   injected(
     DragonflyVariablePrinter,
     Tokens.ElementTokenPrinter,
-    Tokens.DragonflyPrinter_Selector
+    Tokens.DragonflyPrinter_Selector,
+    Tokens.DragonflyNegativizerPrinter
   );
   container
     .bind(Tokens.DragonflyPrinter_Variable_Defaults)
@@ -99,9 +101,12 @@ export const bindPrinters = (container: Container): void => {
     Tokens.DragonflyPrinter_Command,
     Tokens.DragonflyPrinter_Context,
     Tokens.DragonflyPrinter_Fn_Import,
+    Tokens.DragonflyPrinter_Fn_NegativizerWrapper,
     Tokens.DragonflyPrinter_Spec,
     Tokens.DragonflyPrinter_Variable,
-    Tokens.DragonflyPrinter_Variable_Defaults
+    Tokens.DragonflyPrinter_Variable_Defaults,
+    Tokens.DragonflyNegativizerPrinter,
+    Tokens.DragonflyBuiltinFnsProvider
   );
 };
 
@@ -122,7 +127,8 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyCallFunctionPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementTokenPrinter
+    Tokens.ElementTokenPrinter,
+    Tokens.DragonflyNegativizerPrinter
   );
   container
     .bind(Tokens.DragonflyMimicPrinter)
@@ -140,7 +146,9 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyMousePrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementTokenPrinter
+    Tokens.ElementTokenPrinter,
+    Tokens.DragonflyNegativizerPrinter,
+    Tokens.DragonflyBuiltinFnsProvider
   );
   container
     .bind(Tokens.DragonflyPausePrinter)
@@ -149,7 +157,8 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflyPausePrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementTokenPrinter
+    Tokens.ElementTokenPrinter,
+    Tokens.DragonflyNegativizerPrinter
   );
   container
     .bind(Tokens.DragonflySendKeyPrinter)
@@ -158,7 +167,8 @@ const bindActionPrinterDelegates = (container: Container): void => {
   injected(
     DragonflySendKeyPrinter,
     Tokens.DragonflyActionValueResolver,
-    Tokens.ElementTokenPrinter
+    Tokens.ElementTokenPrinter,
+    Tokens.DragonflyNegativizerPrinter
   );
   container
     .bind(Tokens.DragonflySendTextPrinter)

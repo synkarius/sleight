@@ -13,7 +13,7 @@ import {
 import { ValidationConfig } from '../../validation/cross-slice/cross-slice-validator-config';
 import {
   createCrossSliceValidator,
-  ValidatorFn,
+  CrossSliceValidateFunction,
 } from '../../validation/cross-slice/cross-slice-validator-factory';
 import {
   actionDataCopierFn,
@@ -47,7 +47,9 @@ type ActionAndField = {
 };
 type NonCoveredVariable = Pick<VariableDTO, 'id' | 'name'> & ActionAndField;
 
-const specsProvideVariablesToCoverActionsValidatorFn: ValidatorFn<Command> = (
+const specsProvideVariablesToCoverActionsValidatorFn: CrossSliceValidateFunction<
+  Command
+> = (
   commands: Command[],
   data: SleightDataInternalFormat,
   config: ValidationConfig

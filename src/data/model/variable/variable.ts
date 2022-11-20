@@ -3,7 +3,7 @@ import { Enablable, Ided, Lockable, Named, RoleKeyed, Typed } from '../domain';
 import { Selector } from '../selector/selector-domain';
 import { VariableType } from './variable-types';
 
-export interface AbstractVariable
+interface AbstractVariable
   extends Enablable,
     Ided,
     Lockable,

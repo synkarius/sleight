@@ -1,0 +1,46 @@
+{
+    "import13": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "92988b95-3e41-4cd5-a72b-499cb1be062d",
+                "name": "mouse-act-92988b95-3e41",
+                "type": "Mouse",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "mouseActionType": "Move",
+                "mouseMovementType": "Absolute Pixels",
+                "x": {
+                    "id": "bd2aeab1-a830-45be-bf0f-355aef9c84b0",
+                    "actionValueType": "Use Variable",
+                    "variableType": "Range",
+                    "variableId": "2163efd1-fd8f-4339-b695-17be00c36e69"
+                },
+                "y": {
+                    "id": "91b84e11-a6d1-41be-9448-69624a9b5a52",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                }
+            }
+        ],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [],
+        "specs": [],
+        "variables": [
+            {
+                "id": "2163efd1-fd8f-4339-b695-17be00c36e69",
+                "type": "Range",
+                "name": "range-var-2163efd1-fd8f",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "beginInclusive": 0,
+                "endInclusive": 9
+            }
+        ]
+    }
+}

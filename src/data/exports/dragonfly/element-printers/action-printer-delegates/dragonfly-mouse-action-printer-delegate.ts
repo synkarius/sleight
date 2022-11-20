@@ -16,13 +16,14 @@ import { AbstractDragonflyActionAsFunctionPrinterDelegate } from './abstract-dra
 import { PythonFn, PythonFnParameter } from '../../../../model/fn/fn';
 import { FnType } from '../../../../model/fn/fn-types';
 import { PrintableValue, PrintableValueType } from '../../../printable-value';
-import { VariableType } from '../../../../model/variable/variable-types';
 import {
   EnterEnumActionValue,
   isVariableActionValue,
   VariableEnumActionValue,
 } from '../../../../model/action/action-value';
 import { MouseMovementType } from '../../../../model/action/mouse/mouse-movement-type';
+import { DragonflyNegativizerPrinter } from '../negativizer/dragonfly-negativizer-printer-augmenter';
+import { DragonflyBuiltinFnsProvider } from '../../builtin-fns/builtin-fns-supplier';
 
 /**
  * Dragonfly mouse action export notes:
@@ -42,9 +43,11 @@ import { MouseMovementType } from '../../../../model/action/mouse/mouse-movement
 export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrinterDelegate {
   constructor(
     actionValueResolver: DragonflyActionValueResolver,
-    elementTokenPrinter: ElementTokenPrinter
+    elementTokenPrinter: ElementTokenPrinter,
+    negativizerAugmenter: DragonflyNegativizerPrinter,
+    private builtinFnsProvider: DragonflyBuiltinFnsProvider
   ) {
-    super(actionValueResolver, elementTokenPrinter);
+    super(actionValueResolver, elementTokenPrinter, negativizerAugmenter);
   }
 
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {
@@ -73,18 +76,18 @@ export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrin
         const mouseMovementType = mouseAction.mouseMovementType;
         switch (mouseMovementType) {
           case MouseMovementType.Enum.ABSOLUTE_PIXELS:
-            return 'execute_mouse_move_abs_px';
+            return this.builtinFnsProvider.getMouseMoveAbsPx().name;
           case MouseMovementType.Enum.RELATIVE_PIXELS:
-            return 'execute_mouse_move_rel_px';
+            return this.builtinFnsProvider.getMouseMoveRelPx().name;
           case MouseMovementType.Enum.WINDOW_PERCENTAGE:
-            return 'execute_mouse_move_win_pct';
+            return this.builtinFnsProvider.getMouseMoveWinPct().name;
           default:
             throw new ExhaustivenessFailureError(mouseMovementType);
         }
       case MouseActionType.Enum.CLICK:
-        return 'execute_mouse_click';
+        return this.builtinFnsProvider.getMouseClick().name;
       case MouseActionType.Enum.HOLD_RELEASE:
-        return 'execute_mouse_hold_release';
+        return this.builtinFnsProvider.getMouseHoldRelease().name;
       default:
         throw new ExhaustivenessFailureError(mouseActionType);
     }
@@ -117,54 +120,13 @@ export class DragonflyMousePrinter extends AbstractDragonflyActionAsFunctionPrin
 
   private getFnParameters(action: MouseAction): PythonFnParameter[] {
     if (isMoveMouseAction(action)) {
-      return [
-        {
-          id: '',
-          name: 'x',
-          type: VariableType.Enum.NUMBER,
-        },
-        {
-          id: '',
-          name: 'y',
-          type: VariableType.Enum.NUMBER,
-        },
-      ];
+      const mouseMoveParams =
+        this.builtinFnsProvider.getMouseMoveAbsPx().parameters;
+      return mouseMoveParams;
     } else if (isClickMouseAction(action)) {
-      return [
-        {
-          id: '',
-          name: 'button',
-          type: VariableType.Enum.ENUM,
-        },
-        {
-          id: '',
-          name: 'repeat',
-          type: VariableType.Enum.NUMBER,
-        },
-        {
-          id: '',
-          name: 'pause',
-          type: VariableType.Enum.NUMBER,
-        },
-      ];
+      return this.builtinFnsProvider.getMouseClick().parameters;
     } else if (isHoldReleaseMouseAction(action)) {
-      return [
-        {
-          id: '',
-          name: 'button',
-          type: VariableType.Enum.ENUM,
-        },
-        {
-          id: '',
-          name: 'direction',
-          type: VariableType.Enum.ENUM,
-        },
-        {
-          id: '',
-          name: 'pause',
-          type: VariableType.Enum.NUMBER,
-        },
-      ];
+      return this.builtinFnsProvider.getMouseHoldRelease().parameters;
     } else {
       throw new ExhaustivenessFailureError(action);
     }

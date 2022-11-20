@@ -6,7 +6,7 @@ import { ValidationConfig } from './cross-slice-validator-config';
 import { DataCopierFn } from './data-copier-fns';
 import { FinderFn } from './finder-fns';
 
-export type ValidatorFn<V> = (
+export type CrossSliceValidateFunction<V> = (
   validated: V[],
   data: SleightDataInternalFormat,
   config: ValidationConfig
@@ -17,10 +17,10 @@ export type ValidatorFn<V> = (
  *
  * V: the validated type
  *
- * @param dataCopierFn
- * @param finderFn
+ * @param dataCopierFn copies the element being edited into a copy of the Sleight data
+ * @param finderFn given the editing element, find the relevant validateable elements
  * @param applicabilityFn determines whether the found validateable elements should be validated
- * @param validatorFn
+ * @param validatorFn validate the validateable elements
  * @param config
  * @returns
  */
@@ -28,7 +28,7 @@ export const createCrossSliceValidator = <E, V>(
   dataCopierFn: DataCopierFn<E>,
   finderFn: FinderFn<E, V>,
   applicabilityFn: Predicate<V>,
-  validatorFn: ValidatorFn<V>,
+  validatorFn: CrossSliceValidateFunction<V>,
   config: ValidationConfig
 ): FieldValidator<E> => {
   return {

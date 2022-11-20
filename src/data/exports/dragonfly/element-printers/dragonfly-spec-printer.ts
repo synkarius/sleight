@@ -1,19 +1,23 @@
 import { quote } from '../../../../core/common/common-functions';
 import { MapUtil } from '../../../../core/common/map-util';
+import { isSome } from '../../../../core/common/maybe';
 import { ExhaustivenessFailureError } from '../../../../error/exhaustiveness-failure-error';
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { ElementType } from '../../../model/element-types';
 import { SelectorDTO } from '../../../model/selector/selector-dto';
 import { SpecDTO, SpecItemDTO } from '../../../model/spec/spec-dto';
 import { SpecItemType } from '../../../model/spec/spec-item-type';
+import { VariableDTO } from '../../../model/variable/variable-dto';
 import { Preferences } from '../../../preferences/preferences';
 import { ElementTokenPrinter } from '../../element-token-printer';
 import { Printer } from '../../printer';
+import { DragonflyNegativizerPrinter } from './negativizer/dragonfly-negativizer-printer-augmenter';
 
 export class DragonflySpecPrinter implements Printer<SpecDTO> {
   constructor(
     private elementTokenPrinter: ElementTokenPrinter,
-    private selectorPrinter: Printer<SelectorDTO>
+    private selectorPrinter: Printer<SelectorDTO>,
+    private negativizerAugmenter: DragonflyNegativizerPrinter
   ) {}
 
   printItem(
@@ -41,17 +45,28 @@ export class DragonflySpecPrinter implements Printer<SpecDTO> {
         return this.selectorPrinter.printItem(selector, data, prefs);
       case SpecItemType.Enum.VARIABLE:
         const variable = MapUtil.getOrThrow(data.variables, specItem.itemId);
-        return (
-          '<' +
-          this.elementTokenPrinter.printElementToken(
-            variable.id,
-            ElementType.Enum.VARIABLE
-          ) +
-          '>'
+        const token = this.getVariableToken(variable);
+
+        // negativizer
+        const maybeNegativizer = this.negativizerAugmenter.printForSpec(
+          variable.id,
+          data
         );
+        const negativizerToken = isSome(maybeNegativizer)
+          ? `${maybeNegativizer.value} `
+          : '';
+
+        return negativizerToken + '<' + token + '>';
       default:
         throw new ExhaustivenessFailureError(specItem.itemType);
     }
+  }
+
+  private getVariableToken(variable: VariableDTO): string {
+    return this.elementTokenPrinter.printElementToken(
+      variable.id,
+      ElementType.Enum.VARIABLE
+    );
   }
 
   private finishSpecsProcessing(partially: PrintingSpecItem[]): string {

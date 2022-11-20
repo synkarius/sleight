@@ -7,14 +7,16 @@ import { FnType } from '../../../../model/fn/fn-types';
 import { VariableType } from '../../../../model/variable/variable-types';
 import { ElementTokenPrinter } from '../../../element-token-printer';
 import { DragonflyActionValueResolver } from '../action-value/dragonfly-action-value-resolver';
+import { DragonflyNegativizerPrinter } from '../negativizer/dragonfly-negativizer-printer-augmenter';
 import { AbstractDragonflyActionAsFunctionPrinterDelegate } from './abstract-dragonfly-action-as-function-printer-delegate';
 
 export class DragonflyPausePrinter extends AbstractDragonflyActionAsFunctionPrinterDelegate {
   constructor(
     actionValueResolver: DragonflyActionValueResolver,
-    elementTokenPrinter: ElementTokenPrinter
+    elementTokenPrinter: ElementTokenPrinter,
+    negativizerAugmenter: DragonflyNegativizerPrinter
   ) {
-    super(actionValueResolver, elementTokenPrinter);
+    super(actionValueResolver, elementTokenPrinter, negativizerAugmenter);
   }
 
   printAction(action: Action, data: SleightDataInternalFormat): Maybe<string> {

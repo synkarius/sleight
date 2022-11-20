@@ -69,9 +69,13 @@ beforeEach(async () => {
 
 describe('pause action component tests', () => {
   it('should invalidate non-selected seconds variable', async () => {
-    await selectActionValueType(user, Field.AC_SECONDS_RADIO, VARIABLE_RADIO);
+    await selectActionValueType(
+      user,
+      Field.AC_PAUSE_SECONDS_RADIO,
+      VARIABLE_RADIO
+    );
     const select = screen.getByRole('list', {
-      name: fieldName(Field.AC_SECONDS_VAR),
+      name: fieldName(Field.AC_PAUSE_SECONDS_VAR),
     });
     await user.click(select);
     await user.tab();
@@ -83,9 +87,13 @@ describe('pause action component tests', () => {
   });
 
   it('should validate selected seconds variable', async () => {
-    await selectActionValueType(user, Field.AC_SECONDS_RADIO, VARIABLE_RADIO);
+    await selectActionValueType(
+      user,
+      Field.AC_PAUSE_SECONDS_RADIO,
+      VARIABLE_RADIO
+    );
     const select = screen.getByRole('list', {
-      name: fieldName(Field.AC_SECONDS_VAR),
+      name: fieldName(Field.AC_PAUSE_SECONDS_VAR),
     });
     await user.selectOptions(select, [RANGE_VARIABLE_NAME]);
 

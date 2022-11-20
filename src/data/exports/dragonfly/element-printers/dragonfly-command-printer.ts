@@ -1,5 +1,4 @@
 import { MapUtil } from '../../../../core/common/map-util';
-import { NotImplementedError } from '../../../../error/not-implemented-error';
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { Action } from '../../../model/action/action';
 import { Command } from '../../../model/command/command';

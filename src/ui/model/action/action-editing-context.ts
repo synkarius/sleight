@@ -78,7 +78,7 @@ export interface ActionReducerActionValueTypePayloadAction
   extends AbstractActionReducerAction<ActionValueTypeChange> {
   type: typeof ActionReducerActionType.CHANGE_ACTION_VALUE_TYPE;
 }
-export interface ActionReducerToggleAction
+interface ActionReducerToggleAction
   extends Omit<AbstractActionReducerAction<unknown>, 'payload'> {
   type:
     | typeof ActionReducerActionType.TOGGLE_ENABLED

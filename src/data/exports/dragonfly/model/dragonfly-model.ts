@@ -1,7 +1,10 @@
+import { Fn } from '../../../model/fn/fn';
 import { DragonflyRule } from './dragonfly-rule';
-import { DragonflyRuleMetadata } from './dragonfly-rule-metadata';
 
+/** a data format convenient for printing */
 export type DragonflyModel = {
   rules: DragonflyRule[];
-  metadata: DragonflyRuleMetadata;
+  fns: Fn[];
+  /** builtin fns in DragonflyModel are for wrapper fn printing */
+  builtinFns: Fn[];
 };

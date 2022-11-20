@@ -6,7 +6,6 @@ export const UNSELECTED_ENUM = 'unselected-sleight-enum';
 export const USE_DEFAULT = 'Use Default';
 
 // paths
-export const EMPTY_PATH = '/';
 export const COMMAND_LIST_PATH = '/commands';
 export const ELEMENT_EDITOR_PATH = '/elements';
 export const PREFERENCES_PATH = '/preferences';

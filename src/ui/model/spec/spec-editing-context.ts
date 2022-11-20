@@ -66,7 +66,7 @@ export interface SpecReducerDeleteSelectorItemAction
   extends AbstractSpecReducerAction<DeleteSelectorItemPayload> {
   type: typeof SpecReducerActionType.DELETE_SELECTOR_ITEM;
 }
-export interface SpecReducerToggleAction
+interface SpecReducerToggleAction
   extends Omit<AbstractSpecReducerAction<unknown>, 'payload'> {
   type:
     | typeof SpecReducerActionType.TOGGLE_ENABLED
@@ -90,44 +90,44 @@ interface AbstractChangeSpecItemTypePayload {
   readonly specItemType: SpecItemType.Type;
 }
 
-export interface ChangeSpecItemTypeToSelectorPayload
+interface ChangeSpecItemTypeToSelectorPayload
   extends AbstractChangeSpecItemTypePayload {
   readonly specItemType: typeof SpecItemType.Enum.SELECTOR;
   readonly selector: Selector;
 }
 
-export interface ChangeSpecItemTypeToVariablePayload
+interface ChangeSpecItemTypeToVariablePayload
   extends AbstractChangeSpecItemTypePayload {
   readonly specItemType: typeof SpecItemType.Enum.VARIABLE;
   readonly variableId: string;
 }
 
-export type ChangeSpecItemTypePayload =
+type ChangeSpecItemTypePayload =
   | ChangeSpecItemTypeToSelectorPayload
   | ChangeSpecItemTypeToVariablePayload;
 
-export type ChangeSpecItemVariableIdPayload = {
+type ChangeSpecItemVariableIdPayload = {
   readonly specItemId: string;
   readonly variableId: string;
 };
 
-export type ChangeSpecItemOrderPayload = {
+type ChangeSpecItemOrderPayload = {
   readonly specItemId: string;
   readonly moveDirection: MoveDirection;
 };
 
-export type AddSelectorItemPayload = {
+type AddSelectorItemPayload = {
   readonly specItemId: string;
   readonly selectorItem: SelectorItem;
 };
 
-export type ChangeSelectorItemPayload = {
+type ChangeSelectorItemPayload = {
   readonly specItemId: string;
   readonly selectorItemId: string;
   readonly value: string;
 };
 
-export type DeleteSelectorItemPayload = {
+type DeleteSelectorItemPayload = {
   readonly specItemId: string;
   readonly selectorItemId: string;
 };

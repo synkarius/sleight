@@ -24,6 +24,4 @@ export interface Typed<T> {
   readonly type: T;
 }
 
-export interface BasicFields<T> extends Ided, Named, RoleKeyed, Typed<T> {}
-
 export type OptionalId = string | undefined;

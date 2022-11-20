@@ -31,7 +31,7 @@ interface AbstractVariableReducerAction<T> {
   readonly payload: T;
 }
 
-export interface VariableReducerToggleAction
+interface VariableReducerToggleAction
   extends Omit<AbstractVariableReducerAction<unknown>, 'payload'> {
   readonly type:
     | typeof VariableReducerActionType.TOGGLE_DEFAULT_ENABLED
@@ -103,44 +103,44 @@ export const VariableEditingContext =
 
 // ===================
 
-export interface AbstractChangeVariableTypePayload {
+interface AbstractChangeVariableTypePayload {
   readonly variableType: VariableType.Type;
 }
 
-export interface ChangeVariableTypeSimplePayload
+interface ChangeVariableTypeSimplePayload
   extends AbstractChangeVariableTypePayload {
   readonly variableType:
     | typeof VariableType.Enum.TEXT
     | typeof VariableType.Enum.NUMBER;
 }
 
-export interface ChangeVariableTypeSelectorPayload
+interface ChangeVariableTypeSelectorPayload
   extends AbstractChangeVariableTypePayload {
   readonly variableType: typeof VariableType.Enum.ENUM;
   readonly selector: Selector;
 }
 
-export type ChangeVariableTypePayload =
+type ChangeVariableTypePayload =
   | ChangeVariableTypeSimplePayload
   | ChangeVariableTypeSelectorPayload;
 
-export type EditChoiceItemValuePayload = {
+type EditChoiceItemValuePayload = {
   readonly choiceItemId: string;
   readonly value: string;
 };
 
-export type AddSelectorItemPayload = {
+type AddSelectorItemPayload = {
   readonly choiceItemId: string;
   readonly selectorItem: SelectorItem;
 };
 
-export type ChangeSelectorItemPayload = {
+type ChangeSelectorItemPayload = {
   readonly choiceItemId: string;
   readonly selectorItemId: string;
   readonly value: string;
 };
 
-export type DeleteSelectorItemPayload = {
+type DeleteSelectorItemPayload = {
   readonly choiceItemId: string;
   readonly selectorItemId: string;
 };
