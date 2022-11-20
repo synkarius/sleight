@@ -31,4 +31,4 @@ app.on("activate", () => {
 
 // remove the electron menu
 // other ways to do this: https://stackoverflow.com/questions/69629262/how-can-i-hide-the-menubar-from-an-electron-app
-//Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
