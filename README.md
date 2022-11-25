@@ -2,9 +2,7 @@
 
 Sleight is a tool that lets you make and edit speech commands for other software without knowing Python / etc.
 
-### What Other Software?
-
-[Dragonfly](https://dragonfly2.readthedocs.io) to start, but other frameworks are on the [roadmap](#roadmap-thus-far).
+What other software? [Dragonfly](https://dragonfly2.readthedocs.io) to start, but other frameworks are on the [roadmap](#roadmap-thus-far).
 
 ## What Problems Does this Solve?
 
