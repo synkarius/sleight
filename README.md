@@ -14,13 +14,15 @@ Creating voice commands in [Dragonfly](https://dragonfly2.readthedocs.io) / [Cas
 
 ### Shareability / Portability
 
-Over the past 20-30 years, we've seen numerous voice command systems appear. The syntax that their commands take seems to always converge on something pretty similar. So, at the risk of [xkcd 927](https://xkcd.com/927), Sleight aims to develop and unify that structure through a common data model.
+Over the past few decades, numerous voice command systems have appeared. The syntax that their commands use seems to always converge on something structurally similar. So, at the risk of [xkcd 927](https://xkcd.com/927), Sleight aims to develop and unify that structure through a common data model.
 
-That voice command data model should be shareable, human-readable, extensible, and accomodating of most common voice command needs / usages.
+This voice command data model should be shareable, human-readable, extensible, and accomodating of most common voice command needs / usages.
 
 ### Grammar Resilience (Merge Conflicts)
 
-The abovementioned frameworks' users often publish sets of commands for others to use. Let's say you download one of those command sets, and then both you and the author make changes. Suppose one of those changes was that both of you changed the same command. You see some of the author's other changes and want them, but you don't want the change to the command that you both changed. This is a "grammar resilience" problem (or, more commonly, a merge conflict). Developers solve this with `git` and merge conflict resolution tools, but with a data model as simple as Sleight's, simpler solutions (like [granular element lockability](#locked-enabled-and-role-keys)) become feasible.
+The aforementioned frameworks' users often publish sets of commands for others to use.
+
+Let's say you download one of those command sets, and then both you and the author make changes separately. Suppose one of those changes was that both of you changed the same command. You see some of the author's other changes and want them, but you don't want the change to the command that you both changed. This is a "grammar resilience" problem (more commonly known as a merge conflict). Developers solve this with `git` and merge conflict resolution tools, but with a data model as simple as Sleight's, easier solutions (like [granular element lockability](#locked-enabled-and-role-keys)) become feasible.
 
 ## Where It's At Now
 
@@ -31,23 +33,23 @@ Sleight is very much alpha software at this point. Though it already supports a 
 There are various ways you can contribute to Sleight:
 
 - giving feedback: see the [feedback](#feedback) section below.
-- expanding / narrowing / organizing / reworking / ordering the roadmap
+- expanding / narrowing / organizing / reworking / ordering the [roadmap](#roadmap-thus-far)
 - writing documentation
 - code contributions
-- demos (YouTube/etc.)
+- demos (YouTube / etc.)
 
 ### Feedback
 
 Sleight needs:
 
 - bug reports
-- UI/UX improvement suggestions
+- UI / UX improvement suggestions
 - validation suggestions
   - are there ways to create or import invalid data which Sleight allows?
 - feature requests
   - please have _lots_ of patience here
     - alternatively, open a PR ;)
-- TypeScript/React best practices suggestions
+- TypeScript / React best practices suggestions
 
 ## Roadmap Thus Far
 
@@ -64,8 +66,8 @@ This is a very rough roadmap at this point, and not in any particular order.
 ### Exports to Other Frameworks
 
 - Caster
-- Vocola
 - Talon
+- Vocola
 - ???
 
 ### Interoperability
@@ -85,13 +87,12 @@ This is a very rough roadmap at this point, and not in any particular order.
   - follow immutable model principle
     - model version adapters
   - aim to provide common "primitives" rather than implement any particular framework's specification
-    - add more `Action`s
-    - simplify existing `Action`s
-  - split off from Dragonfly's model where it makes sense for Sleight vs Dragonfly
+    - add more actions
+    - simplify existing actions
 
-## For Users: Installing Sleight
+## Installing Sleight
 
-See the [releases](#todo-link-this) section for installers / release notes.
+See the [releases](https://github.com/synkarius/sleight/releases) section for installers / release notes.
 
 ## For Devs
 
