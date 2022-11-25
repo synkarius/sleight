@@ -94,6 +94,37 @@ This is a very rough roadmap at this point, and not in any particular order.
 
 See the [releases](https://github.com/synkarius/sleight/releases) section for installers / release notes.
 
+## Locked, Enabled, and Role Keys
+
+The following explains the sharing and resilience features.
+
+### Role Keys
+
+Any Sleight element can be tagged with a `role key`. This allows it to be targeted for update by an import of other Sleight data.
+
+(Role keys must be unique. This is enforced by validators.)
+
+Once an element is tagged, it is targeted for override by an element of the same type and role key in a future import.
+
+This lets command set authors provide commands for users which can be improved or changed later. Examples of such changes might include:
+
+- replacing English role-keyed specs with Spanish role-keyed specs
+- replacing macOS role-keyed actions with Linux role-keyed actions
+
+### Locked
+
+Any Sleight element should be able to be locked. This means that it will not be targeted for update even though it has a role key.
+
+This provides users a way to opt-out of specific parts of command set updates without having to deal with something like a merge conflict.
+
+A user could also just remove the role key from the element they want to edit and opt-out of updates for.
+
+### Enabled
+
+Any Sleight element should be able to be enabled for export. Sleight data which is not enabled will not be exported.
+
+(TODO: the enabled flag isn't implemented yet, so everything gets exported.)
+
 ## For Devs
 
 ### Design Notes
@@ -128,34 +159,3 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include the hashes.
-
-## Locked, Enabled, and Role Keys
-
-The following explains the sharing and resilience features.
-
-### Role Keys
-
-Any Sleight element can be tagged with a `role key`. This allows it to be targeted for update by an import of other Sleight data.
-
-(Role keys must be unique. This is enforced by validators.)
-
-Once an element is tagged, it is targeted for override by an element of the same type and role key in a future import.
-
-This lets command set authors provide commands for users which can be improved or changed later. Examples of such changes might include:
-
-- replacing English role-keyed specs with Spanish role-keyed specs
-- replacing macOS role-keyed actions with Linux role-keyed actions
-
-### Locked
-
-Any Sleight element should be able to be locked. This means that it will not be targeted for update even though it has a role key.
-
-This provides users a way to opt-out of specific parts of command set updates without having to deal with something like a merge conflict.
-
-A user could also just remove the role key from the element they want to edit and opt-out of updates for.
-
-### Enabled
-
-Any Sleight element should be able to be enabled for export. Sleight data which is not enabled will not be exported.
-
-(TODO: the enabled flag isn't implemented yet, so everything gets exported.)
