@@ -47,7 +47,7 @@
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "release": "npm run build && electron-builder --linux --win --mac --x64 --ia32 --publish=never",
-    "build": "npm run react-build && npm run electron-build --publish=never",
+    "build": "npm run react-build && electron-builder --publish=never",
     "electron-start": "wait-on -v -i=1000 http://127.0.0.1:3000 && electron .",
     "start": "concurrently -k \"cross-env BROWSER=none npm run react-start\" \"npm run electron-start\""
   },
