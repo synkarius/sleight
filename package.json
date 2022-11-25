@@ -45,7 +45,7 @@
     "react-build": "react-scripts build",
     "react-test": "react-scripts test --env=jsdom --watchAll",
     "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
+    "github-ci-test": "react-scripts test --env=jsdom",
     "release": "npm run build && electron-builder --linux --win --mac --x64 --ia32 --publish=never",
     "build": "npm run react-build && electron-builder --publish=never",
     "electron-start": "wait-on -v -i=1000 http://127.0.0.1:3000 && electron .",
