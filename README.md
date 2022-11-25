@@ -1,6 +1,6 @@
 # Sleight
 
-![Build + Tests](https://github.com/synkarius/sleight/actions/workflows/node.js.yaml/badge.svg)
+![ci](https://github.com/synkarius/sleight/actions/workflows/node.js.yaml/badge.svg)
 
 Sleight is a tool that lets you make and edit speech commands for other software without knowing Python / etc.
 
