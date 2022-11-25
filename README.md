@@ -4,7 +4,7 @@ Sleight is a tool that lets you make and edit speech commands for other software
 
 ### What Other Software?
 
-[Dragonfly](https://dragonfly2.readthedocs.io) to start, but other frameworks are on the roadmap. (See the roadmap section below.)
+[Dragonfly](https://dragonfly2.readthedocs.io) to start, but other frameworks are on the [roadmap](#roadmap-thus-far).
 
 ## What Problems Does this Solve?
 
