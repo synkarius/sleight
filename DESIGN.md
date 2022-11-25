@@ -1,42 +1,24 @@
-# Sleight Design Notes
+# Design Philosophy
 
-## The Data Model
+The following principles are neither comprehensive nor final.
 
-### Similarities and Differences with Dragonfly
+## Libraries Usage Should Be Minimized
 
-The Sleight data model is similar to Dragonfly's, but has abstracted some things away from the user. Specifically, there is no concept of a grammar or a rule in Sleight.
+Sometimes bringing in a library is the best solution, but especially in the JavaScript world, churn is high and packages break often. Therefore, to minimize maintenance, adequate consideration has to be given to the question of when to build versus when to "buy".
 
-Likewise, the idea of a selector is only implicit in Dragonfly, and role keys don't exist in the Dragonfly model.
+The approach that Sleight has taken thus far has been to mostly keep `packages.json` small, building simple utilities for simple jobs and including only a handful of libraries.
 
-Those differences aside, both have: commands, specs, actions, variables ("extras" in Dragonfly), and contexts. These elements are also common in other voice recognition frameworks.
+## Optimize for Popularity
 
-### Mappers
+When choosing a library or a framework, there are multiple ways to decide what's best. You could opt for performance, ergonomics, stability, or any number of other attributes.
 
-Redux is a tool which handles global state, which is to say, state that needs to be accessed from DOM nodes which have no parent/child relation to each other. For state local to a React component, React's `useReducer` hook is more appropriate. (TODO: cite docs for both.)
+Sleight is a project in its infancy, so it has thus far optimized for popularity: React over Vue or Angular; Electron over Tauri; etc. The main idea here is that using popular choices will have the best chance of attracting code contributors.
 
-Keeping the state for Sleight's elements local during editing has the benefit that intermediate or invalid state is never saved. This makes it easier to reason about what's in Redux for operations like validation and export.
+Popular choices will also likely be decent choices, even if they're not the best choices.
 
-That said, some of the elements (choice variables and specs specifically) are cross- React slice _and_ need to be editable on the fly rather than by switching screens. This means that the data model for their editing screens will be slightly different than it will be for Redux. Hence, mappers are used to translate between the two data models.
+## React Testing Library
 
-#### Sleight Data Sharing
+RTL's philosophy overlaps (and inspired) Sleight's in two aspects.
 
-Role keys allow users to share Sleight data. Let's say a user creates a set of Sleight elements and adds role keys to all of them. Another user can import this set of role-keyed elements and immediately apply them to another set of elements. That's a bit abstract. Here are some examples.
-
-- Replacing English role-keyed specs with Spanish role-keyed specs.
-- Replacing macOS role-keyed actions with Linux role-keyed actions.
-
-#### Grammar Update Resilience
-
-TODO this section.
-
-## Other Notes
-
-- functions
-  - security implications
-    - blessed set
-    - discoverability
-  - registation file
-- share vs export distinction
-  - share json files
-  - export python files
-- versioning
+1. Tests should access the DOM in the same way the user does. This seems like an obvious accessibility benefit, and forces the developer to care about accessibility if they care about testing.
+2. Functional tests provide greater flexibility than unit tests. Fixing unit tests which broke [because underlying implementations changed](https://testing.googleblog.com/2015/01/testing-on-toilet-change-detector-tests.html) isn't a great use of anyone's time. Unit tests are necessary and useful, but should mainly cover implementation details which overly complicate functional tests.

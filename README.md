@@ -1,6 +1,6 @@
 # Sleight
 
-Sleight is a tool that lets you make and edit speech commands for other (free) software without knowing Python/etc.
+Sleight is a tool that lets you make and edit speech commands for other software without knowing Python / etc.
 
 ### What Other Software?
 
@@ -8,9 +8,19 @@ Sleight is a tool that lets you make and edit speech commands for other (free) s
 
 ## What Problems Does this Solve?
 
-Creating voice commands in Python/ Vocola/ Talon is fairly technical. Sleight aims to lower the bar for all and increase velocity for power users.
+### Increased Productivity
 
-Along with these productivity goals, Sleight is looking to improve [shareability/portability](#todo-export-formats) of voice commands and [grammar resilience](#todo-lockability) against framework changes/ updates.
+Creating voice commands in [Dragonfly](https://dragonfly2.readthedocs.io) / [Caster](https://caster.readthedocs.io) / [Vocola](http://vocola.net/v2) / [Talon](https://talonvoice.com) is fairly technical and error prone. Sleight aims to lower the bar to voice command editing / usage for all and increase velocity for power users.
+
+### Shareability / Portability
+
+Over the past 20-30 years, we've seen numerous voice command systems appear. The syntax that their commands take seems to always converge on something pretty similar. So, at the risk of [xkcd 927](https://xkcd.com/927), Sleight aims to develop and unify that structure through a common data model.
+
+That voice command data model should be shareable, human-readable, extensible, and accomodating of most common voice command needs / usages.
+
+### Grammar Resilience (Merge Conflicts)
+
+The abovementioned frameworks' users often publish sets of commands for others to use. Let's say you download one of those command sets, and then both you and the author make changes. Suppose one of those changes was that both of you changed the same command. You see some of the author's other changes and want them, but you don't want the change to the command that you both changed. This is a "grammar resilience" problem (or, more commonly, a merge conflict). Developers solve this with `git` and merge conflict resolution tools, but with a data model as simple as Sleight's, simpler solutions (like [granular element lockability](#locked-enabled-and-role-keys)) become feasible.
 
 ## Where It's At Now
 
@@ -21,7 +31,7 @@ Sleight is very much alpha software at this point. Though it already supports a 
 There are various ways you can contribute to Sleight:
 
 - giving feedback: see the [feedback](#feedback) section below.
-- expanding/narrowing/ordering the roadmap
+- expanding / narrowing / organizing / reworking / ordering the roadmap
 - writing documentation
 - code contributions
 - demos (YouTube/etc.)
@@ -41,60 +51,63 @@ Sleight needs:
 
 ## Roadmap Thus Far
 
-This is a very rough roadmap at this point, and not necessary in order of importance.
+This is a very rough roadmap at this point, and not in any particular order.
+
+### UX Improvements
 
 - documentation
 - demos
 - keyboard shortcuts (customizable)
-- exports to other frameworks
-  - Caster
-  - Vocola
-  - Talon
+- more themes / theme switching
+- validators offer simple solutions where possible
+
+### Exports to Other Frameworks
+
+- Caster
+- Vocola
+- Talon
+- ???
+
+### Interoperability
+
+- web API
+  - read-only at first
+
+### DX Improvements
+
+- documentation
+- code cleanup
+- more/better logging
+
+### Tech Debt Paydown
+
 - model changes
   - follow immutable model principle
     - model version adapters
   - aim to provide common "primitives" rather than implement any particular framework's specification
-    - add more
+    - add more `Action`s
     - simplify existing `Action`s
-  - get away from resemblance to Dragonfly's model
-- web API
-  - read-only at first
-- cleanup
-  - code
-  - UI/UX
+  - split off from Dragonfly's model where it makes sense for Sleight vs Dragonfly
 
-## Design Philosophy
+## For Users: Installing Sleight
 
-Sleight has thus far been designed with "strong opinions loosely held". Among them are the following.
+See the [releases](#todo-link-this) section for installers / release notes.
 
-### Libraries Usage Should Be Minimized
+## For Devs
 
-Sometimes bringing in a library is the best solution, but especially in the JS world, churn is high and packages break often. Therefore, to minimize maintenance, adequate consideration has to be given to the question of when to build versus when to "buy".
+### Design Notes
 
-The approach that Sleight has taken thus far has been to mostly keep `packages.json` small, building simple utilities for simple jobs and including only a handful of libraries.
+Sleight has thus far been designed with "strong opinions loosely held". See [DESIGN.md](DESIGN.md) for details.
 
-### Optimize for Popularity
+### A Guided Tour of the Code
 
-When choosing a library or a framework, there are multiple ways to decide what's best. You could opt for performance, ergonomics, stability, or any number of other attributes.
+Where is everything? [Take the tour](CODE_TOUR.md).
 
-Sleight is a project in its infancy, so it has thus far optimized for popularity: React over Vue or Angular; Electron over Tauri; etc. The main idea here is that using popular choices will have the best chance of attracting code contributors.
+### Running the Project
 
-Popular choices will also likely be decent choices, even if they're not the best choices.
+You will need to install `npm`.
 
-### TypeScript
-
-Versus JavaScript? No competition.
-
-### React Testing Library
-
-RTL's philosophy overlaps (and inspired) Sleight's in two aspects.
-
-1. Tests should access the DOM in the same way the user does. This seems like an obvious accessibility benefit, and forces the developer to care about accessibility if they care about testing.
-2. Functional tests provide greater flexibility than unit tests. Fixing unit tests which broke because underlying implementations changed isn't a great use of anyone's time. Unit tests are necessary and useful, but should mainly cover implementation details which overly complicate functional tests.
-
-## Running the Project
-
-In the project directory, you can run:
+Then, in the project directory, you can run:
 
 ### `npm run react-start`
 
@@ -114,3 +127,34 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include the hashes.
+
+## Locked, Enabled, and Role Keys
+
+The following explains the sharing and resilience features.
+
+### Role Keys
+
+Any Sleight element can be tagged with a `role key`. This allows it to be targeted for update by an import of other Sleight data.
+
+(Role keys must be unique. This is enforced by validators.)
+
+Once an element is tagged, it is targeted for override by an element of the same type and role key in a future import.
+
+This lets command set authors provide commands for users which can be improved or changed later. Examples of such changes might include:
+
+- replacing English role-keyed specs with Spanish role-keyed specs
+- replacing macOS role-keyed actions with Linux role-keyed actions
+
+### Locked
+
+Any Sleight element should be able to be locked. This means that it will not be targeted for update even though it has a role key.
+
+This provides users a way to opt-out of specific parts of command set updates without having to deal with something like a merge conflict.
+
+A user could also just remove the role key from the element they want to edit and opt-out of updates for.
+
+### Enabled
+
+Any Sleight element should be able to be enabled for export. Sleight data which is not enabled will not be exported.
+
+(TODO: the enabled flag isn't implemented yet, so everything gets exported.)
