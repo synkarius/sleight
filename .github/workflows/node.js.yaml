@@ -9,9 +9,6 @@ on:
   pull_request:
     branches: ['main']
 
-env:
-  CI: ''
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,5 +26,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm run github-ci-push-build
+      - run: CI='' npm run github-ci-push-build
       - run: npm run github-ci-push-tests
