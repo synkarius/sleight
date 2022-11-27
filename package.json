@@ -42,12 +42,11 @@
   },
   "scripts": {
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
     "react-test": "react-scripts test --env=jsdom --watchAll",
-    "react-eject": "react-scripts eject",
-    "github-ci-test": "react-scripts test --env=jsdom",
-    "release": "npm run build && electron-builder --linux --win --mac --x64 --ia32 --publish=never",
-    "build": "npm run react-build && electron-builder --publish=never",
+    "react-build": "react-scripts build",
+    "github-ci-push-build": "npm run react-build && electron-builder --publish=never",
+    "github-ci-push-tests": "react-scripts test --env=jsdom",
+    "terminal-release": "npm run build && electron-builder --publish=always",
     "electron-start": "wait-on -v -i=1000 http://127.0.0.1:3000 && electron .",
     "start": "concurrently -k \"cross-env BROWSER=none npm run react-start\" \"npm run electron-start\""
   },
