@@ -1,0 +1,39 @@
+{
+    "import05": {
+        "version": "0.1.0.alpha",
+        "actions": [],
+        "commands": [],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "20951e4d-5541-4dd7-bac9-a7b299e8fe2d",
+                "items": [
+                    {
+                        "id": "62b7df75-5b84-4930-858e-e91a5e9cf7f6",
+                        "value": "alpha"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "0c9209eb-748b-4bee-95c8-3eebc9f9889a",
+                "name": "WG Spec / 'alpha' / spe-0c9209eb-748b",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "f85bb4c7-7a94-4d9c-9794-2d3ac425f579",
+                        "itemType": "Selector",
+                        "itemId": "20951e4d-5541-4dd7-bac9-a7b299e8fe2d",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ]
+            }
+        ],
+        "variables": []
+    }
+}

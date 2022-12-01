@@ -21,6 +21,7 @@ import {
 import { mapSpecToPreview } from '../../ui/model/spec/spec-preview';
 import { container } from '../../di/config/brandi-config';
 import { Tokens } from '../../di/config/brandi-tokens';
+import { VariableDTO } from '../../data/model/variable/variable-dto';
 
 const roleKeyTakenValidator = createRoleKeyTakenValidator<SpecDTO, Spec>(
   Field.SP_ROLE_KEY,
@@ -160,6 +161,13 @@ const deletionValidator: FieldValidator<Spec> = {
   },
 };
 
+const getSpecPreviewComparable = (
+  spec: Spec,
+  variables: Readonly<Record<string, VariableDTO>>
+): string => {
+  return mapSpecToPreview(spec, variables).toLowerCase();
+};
+
 /** Compares spec previews rather than full variable
  * permutations. Probably good enough in most cases.
  */
@@ -174,9 +182,9 @@ const basicSpecUniquenessValidator: FieldValidator<Spec> = {
       .map((sp) => specMapper.mapToDomain(sp, data.selectors))
       .map((sp) => ({
         name: sp.name,
-        preview: mapSpecToPreview(sp, data.variables),
+        preview: getSpecPreviewComparable(sp, data.variables),
       }));
-    const editingSpecPreview = mapSpecToPreview(spec, data.variables);
+    const editingSpecPreview = getSpecPreviewComparable(spec, data.variables);
     for (const existingSpecPreview of existingSpecPreviews) {
       if (existingSpecPreview.preview === editingSpecPreview) {
         return {

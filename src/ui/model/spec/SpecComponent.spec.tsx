@@ -23,7 +23,11 @@ import { spec03 } from '../../../test/resources/spec-03.json';
 import { spec04 } from '../../../test/resources/spec-04.json';
 import { variable01 } from '../../../test/resources/variable-01.json';
 import { variable02 } from '../../../test/resources/variable-02.json';
-import { castJsonForTest } from '../../../test/utils/import-test-json-util';
+import { import05 } from '../../../test/resources/import-send-key-05.json';
+import {
+  castJsonForTest,
+  loadTestData,
+} from '../../../test/utils/import-test-json-util';
 import { container } from '../../../di/config/brandi-config';
 import { BrowserRouter } from 'react-router-dom';
 import { fieldName } from '../../../validation/field-name';
@@ -555,6 +559,31 @@ describe('spec component tests', () => {
       name: fieldName(Field.SP_ITEM_VARIABLE),
     });
     await user.selectOptions(variableTypeSelect, VARIABLE_NAME_1);
+    const saveButton = screen.getByRole('button', {
+      name: SAVE,
+    });
+    await user.click(saveButton);
+
+    const errorText = screen.getByText(getSpecUniquenessErrorRegex());
+
+    expect(errorText).toBeInTheDocument();
+    expect(saveButton).toBeDisabled();
+  });
+
+  it('should invalidate duplicate spec with different case', async () => {
+    loadTestData(import05);
+    doRender();
+
+    const addNewSpecItemButton = screen.getByText(ADD_NEW_SPEC_ITEM);
+    await user.click(addNewSpecItemButton);
+    const specTypeSelect = screen.getByRole('list', {
+      name: fieldName(Field.SP_ITEM_TYPE_SELECT),
+    });
+    await user.selectOptions(specTypeSelect, SpecItemType.Enum.SELECTOR);
+    const selectorInput = screen.getByRole('textbox', {
+      name: fieldName(Field.SP_ITEM_SELECTOR),
+    });
+    await user.type(selectorInput, 'ALPHA');
     const saveButton = screen.getByRole('button', {
       name: SAVE,
     });
