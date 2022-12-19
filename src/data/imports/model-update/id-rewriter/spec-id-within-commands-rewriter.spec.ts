@@ -1,9 +1,6 @@
-import { container } from '../../../../di/config/brandi-config';
-import { Tokens } from '../../../../di/config/brandi-tokens';
 import { castJsonForTest } from '../../../../test/utils/import-test-json-util';
 import { createSleightDataInternalFormat } from '../../../data-formats';
 import { Command, createCommand } from '../../../model/command/command';
-import { createSpec } from '../../../model/spec/spec-domain';
 import { SpecDTO } from '../../../model/spec/spec-dto';
 import { SpecIdWithinCommandsRewriter } from './spec-id-within-commands-rewriter';
 import { spec01 } from '../../../../test/resources/spec-01.json';
@@ -22,7 +19,7 @@ describe('spec id rewriter tests', () => {
     const newId = 'newId';
 
     const rewriter = new SpecIdWithinCommandsRewriter();
-    const rewrittenData = rewriter.rewriteId(specDTO, newId, data);
+    const rewrittenData = rewriter.rewriteId(specDTO.id, newId, data);
 
     const expected = {
       ...createSleightDataInternalFormat(),

@@ -20,7 +20,7 @@ describe('action id rewriter tests', () => {
     const newId = 'newId';
 
     const rewriter = container.get(Tokens.ActionIdWithinCommandsRewriter);
-    const rewrittenData = rewriter.rewriteId(action, newId, data);
+    const rewrittenData = rewriter.rewriteId(action.id, newId, data);
 
     const expected = {
       ...createSleightDataInternalFormat(),

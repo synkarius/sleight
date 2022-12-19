@@ -23,7 +23,7 @@ describe('variable id rewriter tests', () => {
     const rewriter = new VariableIdWithinActionsRewriter([
       getPauseActionVariableIdsRewriterDelegate(),
     ]);
-    const rewrittenData = rewriter.rewriteId(variableDTO, newId, data);
+    const rewrittenData = rewriter.rewriteId(variableDTO.id, newId, data);
 
     const expected = {
       ...createSleightDataInternalFormat(),

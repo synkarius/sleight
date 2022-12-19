@@ -1,16 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { VariableDTO } from '../../../model/variable/variable-dto';
 import { IdRewriter, replaceIdInSlice } from './id-rewriter';
 
-export class VariableIdRewriter implements IdRewriter<VariableDTO> {
+export class VariableIdRewriter implements IdRewriter {
   rewriteId(
-    variable: VariableDTO,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     return {
       ...data,
-      variables: replaceIdInSlice(variable, newId, data.variables),
+      variables: replaceIdInSlice(oldId, newId, data.variables),
     };
   }
 }

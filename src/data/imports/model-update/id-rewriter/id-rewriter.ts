@@ -2,24 +2,28 @@ import { SleightDataInternalFormat } from '../../../data-formats';
 import { Ided } from '../../../model/domain';
 import { reduceIded } from '../reduce-ided';
 
-export type IdRewriter<E extends Ided> = {
+export type IdRewriter = {
   rewriteId: (
-    ided: E,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ) => SleightDataInternalFormat;
 };
 
 export const replaceIdInSlice = <E extends Ided>(
-  ided: E,
+  oldId: string,
   newId: string,
   slice: Record<string, E>
 ): Record<string, E> => {
-  const oldId = ided.id;
-  const removed = Object.values(slice)
-    .filter((i) => i.id !== oldId)
+  return Object.values(slice)
+    .map((ided) => {
+      if (ided.id === oldId) {
+        return {
+          ...ided,
+          id: newId,
+        };
+      }
+      return ided;
+    })
     .reduce(reduceIded, {});
-  const newIded = { ...ided, id: newId };
-
-  return { ...removed, [newId]: newIded };
 };

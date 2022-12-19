@@ -20,7 +20,7 @@ describe('selector id rewriter tests', () => {
     const newId = 'newId';
 
     const rewriter = new SelectorIdWithinSpecsIdRewriter();
-    const rewrittenData = rewriter.rewriteId(selector1, newId, data);
+    const rewrittenData = rewriter.rewriteId(selector1.id, newId, data);
 
     const expected = {
       ...createSleightDataInternalFormat(),

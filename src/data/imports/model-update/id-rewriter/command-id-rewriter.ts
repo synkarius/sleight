@@ -1,16 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { Command } from '../../../model/command/command';
 import { IdRewriter, replaceIdInSlice } from './id-rewriter';
 
-export class CommandIdRewriter implements IdRewriter<Command> {
+export class CommandIdRewriter implements IdRewriter {
   rewriteId(
-    command: Command,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     return {
       ...data,
-      commands: replaceIdInSlice(command, newId, data.commands),
+      commands: replaceIdInSlice(oldId, newId, data.commands),
     };
   }
 }

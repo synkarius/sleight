@@ -10,7 +10,7 @@ export const bindSleightDataIdsRewriter = (container: Container): void => {
   injected(
     DefaultSleightDataIdsRewriter,
     Tokens.ActionIdRewriterArray,
-    Tokens.CommandIdRewriter,
+    Tokens.CommandIdRewriterArray,
     Tokens.ContextIdRewriterArray,
     Tokens.FnIdRewriterArray,
     Tokens.SelectorIdRewriterArray,

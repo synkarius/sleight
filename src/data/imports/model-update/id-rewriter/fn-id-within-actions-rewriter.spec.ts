@@ -18,7 +18,7 @@ describe('fn id rewriter tests', () => {
     const newId = 'newId';
 
     const rewriter = new FnIdWithinActionsRewriter();
-    const rewrittenData = rewriter.rewriteId(fn, newId, data);
+    const rewrittenData = rewriter.rewriteId(fn.id, newId, data);
 
     const expected = {
       ...data,

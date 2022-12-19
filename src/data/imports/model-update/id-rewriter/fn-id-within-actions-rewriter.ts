@@ -1,14 +1,11 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
 import { isCallFunctionAction } from '../../../model/action/call-function/call-function';
-import { Fn } from '../../../model/fn/fn';
 import { reduceIded } from '../reduce-ided';
 import { IdRewriter } from './id-rewriter';
 
 /** Rewrites a fn's id within actions which use that fn. */
-export class FnIdWithinActionsRewriter implements IdRewriter<Fn> {
-  rewriteId(fn: Fn, newId: string, data: SleightDataInternalFormat) {
-    const oldId = fn.id;
-
+export class FnIdWithinActionsRewriter implements IdRewriter {
+  rewriteId(oldId: string, newId: string, data: SleightDataInternalFormat) {
     const actions = Object.values(data.actions)
       .map((action) => {
         if (isCallFunctionAction(action) && action.functionId === oldId) {

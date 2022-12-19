@@ -22,7 +22,7 @@ describe('action variable ids rewriter delegation tests', () => {
 
     // test delegates
     try {
-      idRewriter.rewriteId(variable, '', data);
+      idRewriter.rewriteId(variable.id, 'asdf', data);
     } catch (e: unknown) {
       if (e instanceof MissingDelegateError) {
         throw e;

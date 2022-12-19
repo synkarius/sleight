@@ -31,19 +31,26 @@ export class CopyingImportDataMerger implements ImportDataMerger {
       baseCopy,
       deserializedCopy
     );
-    const idsRewrittenData = this.sleightDataIdsRewriter.rewriteIds(
-      evaluation.rewriteIds
+
+    /**
+     * Combining the rewritten-ids data back in should be additive, so
+     * it shouldn't matter which order it's combined back in.
+     */
+    const idsRewrittenResult = this.sleightDataIdsRewriter.rewriteIds(
+      evaluation.needsIdsRewritten
     );
+
     const updated = this.rolekeyedDataUpdater.update(
       baseCopy,
-      evaluation.override
+      evaluation.roleKeyOverrides,
+      idsRewrittenResult.idsMap
     );
 
     // the result here should be base with updated overlaid and idsRewritten added
     // -- spread base over rewritten (which SHOULD just be additive), then updated over base
     return this.sleightDataMerger.merge(
       this.sleightDataMerger.merge(base, updated),
-      idsRewrittenData
+      idsRewrittenResult.rewrittenData
     );
   }
 }

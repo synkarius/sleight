@@ -17,7 +17,7 @@ describe('context id rewriter tests', () => {
     const newId = 'newId';
 
     const rewriter = new ContextIdWithinCommandsRewriter();
-    const rewrittenData = rewriter.rewriteId(context, newId, data);
+    const rewrittenData = rewriter.rewriteId(context.id, newId, data);
 
     const expected = {
       ...createSleightDataInternalFormat(),

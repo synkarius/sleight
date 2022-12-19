@@ -1,19 +1,10 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { SelectorDTO } from '../../../model/selector/selector-dto';
 import { isChoiceVariableDTO } from '../../../model/variable/variable-dto';
 import { reduceIded } from '../reduce-ided';
 import { IdRewriter } from './id-rewriter';
 
-export class SelectorIdWithinVariablesIdRewriter
-  implements IdRewriter<SelectorDTO>
-{
-  rewriteId(
-    selector: SelectorDTO,
-    newId: string,
-    data: SleightDataInternalFormat
-  ) {
-    const oldId = selector.id;
-
+export class SelectorIdWithinVariablesIdRewriter implements IdRewriter {
+  rewriteId(oldId: string, newId: string, data: SleightDataInternalFormat) {
     const variables = Object.values(data.variables)
       .map((variable) => {
         if (isChoiceVariableDTO(variable)) {

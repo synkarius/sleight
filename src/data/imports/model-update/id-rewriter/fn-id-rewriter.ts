@@ -1,16 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { Fn } from '../../../model/fn/fn';
 import { IdRewriter, replaceIdInSlice } from './id-rewriter';
 
-export class FnIdRewriter implements IdRewriter<Fn> {
+export class FnIdRewriter implements IdRewriter {
   rewriteId(
-    fn: Fn,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     return {
       ...data,
-      fns: replaceIdInSlice(fn, newId, data.fns),
+      fns: replaceIdInSlice(oldId, newId, data.fns),
     };
   }
 }

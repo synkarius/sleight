@@ -1,16 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { Action } from '../../../model/action/action';
 import { IdRewriter, replaceIdInSlice } from './id-rewriter';
 
-export class ActionIdRewriter implements IdRewriter<Action> {
+export class ActionIdRewriter implements IdRewriter {
   rewriteId(
-    action: Action,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     return {
       ...data,
-      actions: replaceIdInSlice(action, newId, data.actions),
+      actions: replaceIdInSlice(oldId, newId, data.actions),
     };
   }
 }

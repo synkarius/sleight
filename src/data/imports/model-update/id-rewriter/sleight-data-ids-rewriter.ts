@@ -1,6 +1,7 @@
 import { getRandomId } from '../../../../core/common/random-id';
 import {
   ActionIdRewriterArray,
+  CommandIdRewriterArray,
   ContextIdRewriterArray,
   FnIdRewriterArray,
   SelectorIdRewriterArray,
@@ -8,16 +9,18 @@ import {
   VariableIdRewriterArray,
 } from '../../../../di/di-collection-types';
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { CommandIdRewriter } from './command-id-rewriter';
+import { Ided } from '../../../model/domain';
+import { IdRewriter } from './id-rewriter';
+import { SleightDataIdsRewriteResult } from './sleight-data-ids-rewrite-result';
 
 export type SleightDataIdsRewriter = {
-  rewriteIds: (data: SleightDataInternalFormat) => SleightDataInternalFormat;
+  rewriteIds: (data: SleightDataInternalFormat) => SleightDataIdsRewriteResult;
 };
 
 export class DefaultSleightDataIdsRewriter implements SleightDataIdsRewriter {
   constructor(
     private actionIdRewriters: ActionIdRewriterArray,
-    private commandIdRewriter: CommandIdRewriter,
+    private commandIdRewriters: CommandIdRewriterArray,
     private contextIdRewriters: ContextIdRewriterArray,
     private fnIdRewriters: FnIdRewriterArray,
     private selectorIdRewriters: SelectorIdRewriterArray,
@@ -25,54 +28,75 @@ export class DefaultSleightDataIdsRewriter implements SleightDataIdsRewriter {
     private variableIdRewriters: VariableIdRewriterArray
   ) {}
 
-  rewriteIds(data: SleightDataInternalFormat): SleightDataInternalFormat {
-    for (const action of Object.values(data.actions)) {
-      const newActionId = getRandomId();
-      for (const actionIdRewriter of this.actionIdRewriters) {
-        data = actionIdRewriter.rewriteId(action, newActionId, data);
+  rewriteIds(data: SleightDataInternalFormat): SleightDataIdsRewriteResult {
+    const idTransforms = [
+      getIdTransform((data) => data.actions, this.actionIdRewriters),
+      getIdTransform((data) => data.commands, this.commandIdRewriters),
+      getIdTransform((data) => data.contexts, this.contextIdRewriters),
+      getIdTransform((data) => data.fns, this.fnIdRewriters),
+      getIdTransform((data) => data.selectors, this.selectorIdRewriters),
+      getIdTransform((data) => data.specs, this.specIdRewriters),
+      getIdTransform((data) => data.variables, this.variableIdRewriters),
+    ];
+    const idMaps: Record<string, string>[] = [];
+    for (const idTransform of idTransforms) {
+      const result = this.rewriteSlice(
+        data,
+        idTransform.sliceFn(data),
+        idTransform.idRewriters
+      );
+      data = result.data;
+      idMaps.push(result.idMap);
+    }
+
+    // TODO: This sucks. Refactor to not use array indices.
+    return {
+      idsMap: {
+        actions: idMaps[0],
+        commands: idMaps[1],
+        contexts: idMaps[2],
+        fns: idMaps[3],
+        selectors: idMaps[4],
+        specs: idMaps[5],
+        variables: idMaps[6],
+      },
+      rewrittenData: data,
+    };
+  }
+
+  private rewriteSlice<T extends Ided>(
+    data: SleightDataInternalFormat,
+    slice: Record<string, T>,
+    idRewriters: Array<IdRewriter>
+  ): SingleSliceRewriteResult {
+    const idMap: Record<string, string> = {};
+    for (const ided of Object.values(slice)) {
+      const newId = getRandomId();
+      idMap[ided.id] = newId;
+      for (const idRewriter of idRewriters) {
+        data = idRewriter.rewriteId(ided.id, newId, data);
       }
     }
-
-    for (const command of Object.values(data.commands)) {
-      const newCommandId = getRandomId();
-      data = this.commandIdRewriter.rewriteId(command, newCommandId, data);
-    }
-
-    for (const context of Object.values(data.contexts)) {
-      const newContextId = getRandomId();
-      for (const contextIdRewriter of this.contextIdRewriters) {
-        data = contextIdRewriter.rewriteId(context, newContextId, data);
-      }
-    }
-
-    for (const fn of Object.values(data.fns)) {
-      const newFnId = getRandomId();
-      for (const fnIdRewriter of this.fnIdRewriters) {
-        data = fnIdRewriter.rewriteId(fn, newFnId, data);
-      }
-    }
-
-    for (const selector of Object.values(data.selectors)) {
-      const newSelectorId = getRandomId();
-      for (const selectorIdRewriter of this.selectorIdRewriters) {
-        data = selectorIdRewriter.rewriteId(selector, newSelectorId, data);
-      }
-    }
-
-    for (const spec of Object.values(data.specs)) {
-      const newSpecId = getRandomId();
-      for (const specIdRewriter of this.specIdRewriters) {
-        data = specIdRewriter.rewriteId(spec, newSpecId, data);
-      }
-    }
-
-    for (const variable of Object.values(data.variables)) {
-      const newVariableId = getRandomId();
-      for (const variableIdRewriter of this.variableIdRewriters) {
-        data = variableIdRewriter.rewriteId(variable, newVariableId, data);
-      }
-    }
-
-    return data;
+    return {
+      idMap,
+      data,
+    };
   }
 }
+
+type SingleSliceRewriteResult = {
+  idMap: Record<string, string>;
+  data: SleightDataInternalFormat;
+};
+
+type IdTransform = {
+  sliceFn: (data: SleightDataInternalFormat) => Readonly<Record<string, Ided>>;
+  idRewriters: IdRewriter[];
+};
+
+const getIdTransform = (
+  sliceFn: (data: SleightDataInternalFormat) => Readonly<Record<string, Ided>>,
+  idRewriters: IdRewriter[]
+): IdTransform => {
+  return { sliceFn, idRewriters };
+};

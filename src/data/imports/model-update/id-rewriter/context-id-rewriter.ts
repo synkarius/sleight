@@ -1,16 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { Context } from '../../../model/context/context';
 import { IdRewriter, replaceIdInSlice } from './id-rewriter';
 
-export class ContextIdRewriter implements IdRewriter<Context> {
+export class ContextIdRewriter implements IdRewriter {
   rewriteId(
-    context: Context,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     return {
       ...data,
-      contexts: replaceIdInSlice(context, newId, data.contexts),
+      contexts: replaceIdInSlice(oldId, newId, data.contexts),
     };
   }
 }

@@ -1,0 +1,116 @@
+{
+    "expectedData": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "312d59e7-928d-4aff-a995-548fd75f106c",
+                "name": "send-key-act-da1ff7d9-8e82",
+                "type": "Send Key",
+                "roleKey": "rk_act",
+                "enabled": true,
+                "locked": false,
+                "modifiers": {
+                    "control": false,
+                    "alt": false,
+                    "shift": false,
+                    "windows": false
+                },
+                "keyToSend": {
+                    "id": "233f42a1-b1a8-4125-8bc1-b993f5eadaab",
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "e52d1a34-f909-432d-9aba-d2a473a89926"
+                },
+                "outerPause": {
+                    "id": "4f9ee221-89c4-4260-87d6-f68917fe9a2d",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                },
+                "sendKeyMode": "Press",
+                "innerPause": {
+                    "id": "7150c366-866f-4888-8cc7-f67b0306ec07",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                },
+                "repeat": {
+                    "id": "d880b96b-8ad2-493c-8034-f43362b631ba",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                }
+            }
+        ],
+        "commands": [
+            {
+                "id": "0b68ddf8-daf2-444e-9df3-e1efb69cb733",
+                "name": "com-ef93446f-426c",
+                "roleKey": "rk_com",
+                "enabled": true,
+                "locked": false,
+                "specId": "1ce1b470-1b4a-487d-8e64-fe69cf63e551",
+                "actionIds": [
+                    "312d59e7-928d-4aff-a995-548fd75f106c"
+                ]
+            }
+        ],
+        "contexts": [],
+        "fns": [],
+        "selectors": [
+            {
+                "id": "4de7275a-759b-4dd3-9e99-e2778b59fa29",
+                "items": [
+                    {
+                        "id": "a3356cdf-44ab-4a1a-8cec-21310613354e",
+                        "value": "some words"
+                    }
+                ]
+            }
+        ],
+        "specs": [
+            {
+                "id": "1ce1b470-1b4a-487d-8e64-fe69cf63e551",
+                "name": "spe-1f7274d6-4bcb",
+                "roleKey": "rk_spec",
+                "items": [
+                    {
+                        "id": "a236fcc5-78af-4ba6-934d-55efe884eae6",
+                        "itemType": "Variable",
+                        "itemId": "e52d1a34-f909-432d-9aba-d2a473a89926",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ],
+                "enabled": true,
+                "locked": false
+            }
+        ],
+        "variables": [
+            {
+                "id": "e52d1a34-f909-432d-9aba-d2a473a89926",
+                "name": "choice-var-d181488d-a5a6",
+                "roleKey": "rk_var",
+                "enabled": true,
+                "locked": false,
+                "type": "Choice",
+                "items": [
+                    {
+                        "id": "a6e1a8be-ca58-4222-add0-e34131cc5fdd",
+                        "selectorId": "asdf-rewritten-id-1",
+                        "value": "choice item value"
+                    }
+                ],
+                "defaultValue": "updated default value"
+            },
+            {
+                "id": "002895ca-7563-4f2c-9656-637943a4b4f5",
+                "type": "Text",
+                "name": "text-var-002895ca-7563",
+                "roleKey": "",
+                "enabled": true,
+                "locked": false
+            }
+        ]
+    }
+}

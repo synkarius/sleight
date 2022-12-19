@@ -1,0 +1,98 @@
+{
+    "importOverridesData": {
+        "version": "0.1.0.alpha",
+        "actions": [
+            {
+                "id": "ca3835d6-cda4-4fa6-938f-00bf502e3810",
+                "name": "send-key-act-da1ff7d9-8e82",
+                "type": "Send Key",
+                "roleKey": "rk_act",
+                "enabled": true,
+                "locked": false,
+                "modifiers": {
+                    "control": false,
+                    "alt": false,
+                    "shift": false,
+                    "windows": false
+                },
+                "keyToSend": {
+                    "id": "233f42a1-b1a8-4125-8bc1-b993f5eadaab",
+                    "actionValueType": "Use Variable",
+                    "variableType": "Choice",
+                    "variableId": "ac5d5fda-0c1f-4504-a15e-f2bf10d55402"
+                },
+                "outerPause": {
+                    "id": "4f9ee221-89c4-4260-87d6-f68917fe9a2d",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                },
+                "sendKeyMode": "Press",
+                "innerPause": {
+                    "id": "7150c366-866f-4888-8cc7-f67b0306ec07",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                },
+                "repeat": {
+                    "id": "d880b96b-8ad2-493c-8034-f43362b631ba",
+                    "actionValueType": "Enter Value",
+                    "enteredValueType": "Range",
+                    "value": 0
+                }
+            }
+        ],
+        "commands": [
+            {
+                "id": "0d69614d-b607-4bfd-affe-dcaa302eae8c",
+                "name": "com-ef93446f-426c",
+                "roleKey": "rk_com",
+                "enabled": true,
+                "locked": false,
+                "specId": "efa8fb26-af5a-4a22-86ca-e89ace30670c",
+                "actionIds": [
+                    "ca3835d6-cda4-4fa6-938f-00bf502e3810"
+                ]
+            }
+        ],
+        "contexts": [],
+        "fns": [],
+        "selectors": [],
+        "specs": [
+            {
+                "id": "efa8fb26-af5a-4a22-86ca-e89ace30670c",
+                "name": "spe-1f7274d6-4bcb",
+                "roleKey": "rk_spec",
+                "items": [
+                    {
+                        "id": "a236fcc5-78af-4ba6-934d-55efe884eae6",
+                        "itemType": "Variable",
+                        "itemId": "ac5d5fda-0c1f-4504-a15e-f2bf10d55402",
+                        "optional": false,
+                        "grouped": false
+                    }
+                ],
+                "enabled": true,
+                "locked": false
+            }
+        ],
+        "variables": [
+            {
+                "id": "ac5d5fda-0c1f-4504-a15e-f2bf10d55402",
+                "name": "choice-var-d181488d-a5a6",
+                "type": "Choice",
+                "roleKey": "rk_var",
+                "enabled": true,
+                "locked": false,
+                "items": [
+                    {
+                        "id": "a6e1a8be-ca58-4222-add0-e34131cc5fdd",
+                        "selectorId": "4de7275a-759b-4dd3-9e99-e2778b59fa29",
+                        "value": "choice item value"
+                    }
+                ],
+                "defaultValue": "updated default value"
+            }
+        ]
+    }
+}

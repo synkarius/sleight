@@ -51,6 +51,7 @@ import { IdRewriter } from '../../data/imports/model-update/id-rewriter/id-rewri
 import {
   ActionDomainMapperDelegateArray,
   ActionIdRewriterArray,
+  CommandIdRewriterArray,
   ContextIdRewriterArray,
   DragonflyActionPrinterDelegateArray,
   FnIdRewriterArray,
@@ -287,53 +288,52 @@ export namespace Tokens {
   export const ActionIdRewriterArray = token<ActionIdRewriterArray>(
     'ActionIdRewriterArray'
   );
-  export const ActionIdRewriter = token<IdRewriter<Action>>('ActionIdRewriter');
-  export const ActionIdWithinCommandsRewriter = token<IdRewriter<Action>>(
+  export const ActionIdRewriter = token<IdRewriter>('ActionIdRewriter');
+  export const ActionIdWithinCommandsRewriter = token<IdRewriter>(
     'ActionIdWithinCommandsRewriter'
   );
-  export const CommandIdRewriter =
-    token<IdRewriter<Command>>('CommandIdRewriter');
-  export const ContextIdRewriter =
-    token<IdRewriter<Context>>('ContextIdRewriter');
-  export const ContextIdWithinCommandsRewriter = token<IdRewriter<Context>>(
+  export const CommandIdRewriterArray = token<CommandIdRewriterArray>(
+    'CommandIdRewriterArray'
+  );
+  export const CommandIdRewriter = token<IdRewriter>('CommandIdRewriter');
+  export const ContextIdRewriter = token<IdRewriter>('ContextIdRewriter');
+  export const ContextIdWithinCommandsRewriter = token<IdRewriter>(
     'ContextIdWithinCommandsRewriter'
   );
   export const ContextIdRewriterArray = token<ContextIdRewriterArray>(
     'ContextIdRewriterArray'
   );
-  export const FnIdRewriter = token<IdRewriter<Fn>>('FnIdRewriter');
-  export const FnIdWithinActionsRewriter = token<IdRewriter<Fn>>(
+  export const FnIdRewriter = token<IdRewriter>('FnIdRewriter');
+  export const FnIdWithinActionsRewriter = token<IdRewriter>(
     'FnIdWithinActionsRewriter'
   );
   export const FnIdRewriterArray =
     token<FnIdRewriterArray>('FnIdRewriterArray');
-  export const SelectorIdRewriter =
-    token<IdRewriter<SelectorDTO>>('SelectorIdRewriter');
-  export const SelectorIdWithinSpecsRewriter = token<IdRewriter<SelectorDTO>>(
+  export const SelectorIdRewriter = token<IdRewriter>('SelectorIdRewriter');
+  export const SelectorIdWithinSpecsRewriter = token<IdRewriter>(
     'SelectorIdWithinSpecsRewriter'
   );
-  export const SelectorIdWithinVariablesRewriter = token<
-    IdRewriter<SelectorDTO>
-  >('SelectorIdWithinVariablesRewriter');
+  export const SelectorIdWithinVariablesRewriter = token<IdRewriter>(
+    'SelectorIdWithinVariablesRewriter'
+  );
   export const SelectorIdRewriterArray = token<SelectorIdRewriterArray>(
     'SelectorIdRewriterArray'
   );
-  export const SpecIdRewriter = token<IdRewriter<SpecDTO>>('SpecIdRewriter');
-  export const SpecIdWithinCommandsRewriter = token<IdRewriter<SpecDTO>>(
+  export const SpecIdRewriter = token<IdRewriter>('SpecIdRewriter');
+  export const SpecIdWithinCommandsRewriter = token<IdRewriter>(
     'SpecIdWithinCommandsRewriter'
   );
   export const SpecIdRewriterArray = token<SpecIdRewriterArray>(
     'SpecIdRewriterArray'
   );
-  export const VariableIdRewriter =
-    token<IdRewriter<VariableDTO>>('VariableIdRewriter');
+  export const VariableIdRewriter = token<IdRewriter>('VariableIdRewriter');
   export const ActionVariableIdsRewriterDelegates = token<
     ActionVariableIdsRewriterDelegate[]
   >('ActionVariableIdsRewriterDelegates');
-  export const VariableIdWithinActionsRewriter = token<IdRewriter<VariableDTO>>(
+  export const VariableIdWithinActionsRewriter = token<IdRewriter>(
     'VariableIdWithinActionsRewriter'
   );
-  export const VariableIdWithinSpecsRewriter = token<IdRewriter<VariableDTO>>(
+  export const VariableIdWithinSpecsRewriter = token<IdRewriter>(
     'VariableIdWithinSpecsRewriter'
   );
   export const VariableIdRewriterArray = token<VariableIdRewriterArray>(

@@ -4,8 +4,6 @@ import { spec02 } from '../../../../test/resources/spec-02.json';
 import { spec03 } from '../../../../test/resources/spec-03.json';
 import { variable01 } from '../../../../test/resources/variable-01.json';
 import { VariableDTO } from '../../../model/variable/variable-dto';
-import { VariableIdWithinActionsRewriter } from './variable-id-within-actions-rewriter';
-import { getPauseActionVariableIdsRewriterDelegate } from './action-variable-ids-rewriter-delegate/pause-action-variable-ids-rewriter-delegate';
 import { SpecDTO } from '../../../model/spec/spec-dto';
 import { VariableIdWithinSpecsRewriter } from './variable-id-within-specs-rewriter';
 
@@ -23,7 +21,7 @@ describe('variable id rewriter tests', () => {
     const newId = 'newId';
 
     const rewriter = new VariableIdWithinSpecsRewriter();
-    const rewrittenData = rewriter.rewriteId(variable1, newId, data);
+    const rewrittenData = rewriter.rewriteId(variable1.id, newId, data);
 
     const expected = {
       ...createSleightDataInternalFormat(),

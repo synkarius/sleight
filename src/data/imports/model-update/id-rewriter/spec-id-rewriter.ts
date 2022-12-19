@@ -1,16 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { SpecDTO } from '../../../model/spec/spec-dto';
 import { IdRewriter, replaceIdInSlice } from './id-rewriter';
 
-export class SpecIdRewriter implements IdRewriter<SpecDTO> {
+export class SpecIdRewriter implements IdRewriter {
   rewriteId(
-    spec: SpecDTO,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     return {
       ...data,
-      specs: replaceIdInSlice(spec, newId, data.specs),
+      specs: replaceIdInSlice(oldId, newId, data.specs),
     };
   }
 }

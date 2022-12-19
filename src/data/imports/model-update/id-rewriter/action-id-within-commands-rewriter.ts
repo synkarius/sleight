@@ -1,17 +1,15 @@
 import { SleightDataInternalFormat } from '../../../data-formats';
-import { Action } from '../../../model/action/action';
 import { reduceIded } from '../reduce-ided';
 import { IdRewriter } from './id-rewriter';
 
 /** Rewrites an action's id within commands which use that action. */
-export class ActionIdWithinCommandsRewriter implements IdRewriter<Action> {
+export class ActionIdWithinCommandsRewriter implements IdRewriter {
   rewriteId(
-    action: Action,
+    oldId: string,
     newId: string,
     data: SleightDataInternalFormat
   ): SleightDataInternalFormat {
     // replace id in action object and slice
-    const oldId = action.id;
 
     // replace action id in commands
     const newCommands = Object.values(data.commands)

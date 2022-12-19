@@ -37,8 +37,8 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
     deserialized: SleightDataInternalFormat
   ): SleightDataEvaluation {
     let evaluation: SleightDataEvaluation = {
-      rewriteIds: createSleightDataInternalFormat(),
-      override: createSleightDataInternalFormat(),
+      needsIdsRewritten: createSleightDataInternalFormat(),
+      roleKeyOverrides: createSleightDataInternalFormat(),
     };
 
     evaluation = this.addToEvaluation(
@@ -135,8 +135,8 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         case ImportProcessEvaluationType.ID_REWRITE:
           sleightDataEvaluation = {
             ...sleightDataEvaluation,
-            rewriteIds: resultSetter(
-              sleightDataEvaluation.rewriteIds,
+            needsIdsRewritten: resultSetter(
+              sleightDataEvaluation.needsIdsRewritten,
               evaluatedElement.candidate
             ),
           };
@@ -144,8 +144,8 @@ export class DefaultSleightDataEvaluator implements SleightDataEvaluator {
         case ImportProcessEvaluationType.OVERRIDE:
           sleightDataEvaluation = {
             ...sleightDataEvaluation,
-            override: resultSetter(
-              sleightDataEvaluation.override,
+            roleKeyOverrides: resultSetter(
+              sleightDataEvaluation.roleKeyOverrides,
               evaluatedElement.candidate
             ),
           };

@@ -2,6 +2,7 @@ import { ActionDomainMapperDelegate } from '../core/mappers/action-mapper-delega
 import { DragonflyActionPrinterDelegate } from '../data/exports/dragonfly/element-printers/action-printer-delegates/action-printer-delegate';
 import { IdRewriter } from '../data/imports/model-update/id-rewriter/id-rewriter';
 import { Action } from '../data/model/action/action';
+import { Command } from '../data/model/command/command';
 import { Context } from '../data/model/context/context';
 import { Fn } from '../data/model/fn/fn';
 import { SelectorDTO } from '../data/model/selector/selector-dto';
@@ -17,12 +18,13 @@ import { VariableDTO } from '../data/model/variable/variable-dto';
  */
 
 // id rewriters
-export class ActionIdRewriterArray extends Array<IdRewriter<Action>> {}
-export class ContextIdRewriterArray extends Array<IdRewriter<Context>> {}
-export class FnIdRewriterArray extends Array<IdRewriter<Fn>> {}
-export class SelectorIdRewriterArray extends Array<IdRewriter<SelectorDTO>> {}
-export class SpecIdRewriterArray extends Array<IdRewriter<SpecDTO>> {}
-export class VariableIdRewriterArray extends Array<IdRewriter<VariableDTO>> {}
+export class ActionIdRewriterArray extends Array<IdRewriter> {}
+export class CommandIdRewriterArray extends Array<IdRewriter> {}
+export class ContextIdRewriterArray extends Array<IdRewriter> {}
+export class FnIdRewriterArray extends Array<IdRewriter> {}
+export class SelectorIdRewriterArray extends Array<IdRewriter> {}
+export class SpecIdRewriterArray extends Array<IdRewriter> {}
+export class VariableIdRewriterArray extends Array<IdRewriter> {}
 // Dragonfly Action Printer Delegates
 export class DragonflyActionPrinterDelegateArray extends Array<DragonflyActionPrinterDelegate> {}
 // Action Mapper Delegates

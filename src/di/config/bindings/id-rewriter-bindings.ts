@@ -9,6 +9,7 @@ import { SpecIdRewriter } from '../../../data/imports/model-update/id-rewriter/s
 import { VariableIdRewriter } from '../../../data/imports/model-update/id-rewriter/variable-id-rewriter';
 import {
   ActionIdRewriterArray,
+  CommandIdRewriterArray,
   ContextIdRewriterArray,
   FnIdRewriterArray,
   SelectorIdRewriterArray,
@@ -60,6 +61,11 @@ export const bindIdRewriters = (container: Container): void => {
     .bind(Tokens.CommandIdRewriter)
     .toInstance(CommandIdRewriter)
     .inSingletonScope();
+  container
+    .bind(Tokens.CommandIdRewriterArray)
+    .toInstance(CommandIdRewriterArray)
+    .inSingletonScope();
+  injected(CommandIdRewriterArray, Tokens.CommandIdRewriter);
   /*
    * CONTEXT ID REWRITERS
    */
